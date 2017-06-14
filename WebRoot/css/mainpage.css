@@ -1,0 +1,202 @@
+/*!
+ * Start Bootstrap - SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+html,body {
+	height:100%;
+    background-color: #fff;
+    overflow:visible;
+}
+
+
+a,
+a:hover,
+a:active,
+a:visited {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+
+@media(min-width:768px) {
+    #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 250px;
+    }
+}
+
+
+.navbar-static-top{
+    background-color: #f8f8f8;
+}
+
+
+/* 消除Bootstrap 中  margin-right:-15px 的设置 */
+.navbar-top-links {
+	position:relative;
+    margin-right: 0;   
+}
+
+
+.navbar-top-links li {
+	position:static;
+    display: inline-block;
+}
+
+
+.navbar-top-links>li:last-child {
+    margin-right: 15px;
+}
+
+
+.navbar-top-links>li>a {
+    padding:15px 10px;
+    height:50px;
+}
+@media (max-width:768px) {
+    .navbar-top-links>li>a{
+       padding:0 10px;
+       height:30px;
+    }
+}
+
+.navbar-top-links.navbar-right .dropdown-menu{
+	position: absolute;
+    top: 100%;
+    left: auto;
+    right:14px;
+}
+
+.navbar-top-links .dropdown-menu>li {
+    display: block;
+}
+
+
+.navbar-top-links .dropdown-menu>li>a {
+    padding: 3px 20px;       
+    min-height: 0;
+}
+
+.Kbar-default.sidebar{
+    background-color: #f8f8f8;
+    border-right: 1px solid #e7e7e7;
+}
+@media (max-width:768px) {
+    .Kbar-default.sidebar{
+        border-right:none;
+    }
+}
+
+#side-menu>li {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+#side-menu>li>a {
+    font-size:14px;
+}
+
+
+
+#side-menu>li:hover i{
+    margin-left:10px;
+}
+
+
+.sidebar .arrow {
+    float: right;
+}
+
+
+.sidebar .fa.arrow:before {
+    font-size:15px;
+    line-height:21px;
+    content: "\f101";
+}
+
+.sidebar .active>a>.fa.arrow:before {
+    font-size:15px;
+    line-height:21px;
+    content: "\f103";
+}
+
+/* 不可删除，解决在部分游览器上左导航width不足问题  */
+.sidebar-nav{
+    width:100%;
+}
+
+.sidebar .nav-second-level li a {
+    padding-left: 54px;
+}
+    
+@media(min-width:768px) {
+    .sidebar {
+        z-index: 1;
+        position: absolute;
+        width: 250px;
+        margin-top: 51px;
+    }
+}
+
+
+/* “正正电商”图标设置  以及  “MWS跨境仓储系统”的设置 */
+.header-1 img{
+    width:105px;
+    height:50px;
+    margin-left:10px;
+}
+.header-2{
+    width:210px;
+    position:absolute;
+    left:50%;
+    margin-left:-100px;
+    top:8px;
+}
+.header-2 a{
+	width:230px;
+}
+.header-2 a:hover{
+    text-decoration: none;
+}
+.header-2 span{
+    font-family: '微软雅黑';
+    font-size: 22px;
+}
+
+
+div object{
+	display:none;
+}
+
+.dropdown .dropdown-menu{
+	min-width:250px;
+}
+
+@media (max-width:767px){
+
+    .header-1 a{
+        display:none;
+    }
+    .header-2{
+        width:210px;
+        position:absolute;
+        margin-left:-115px;
+        left:50%;
+        top:10px;
+    }
+    .header-2 span{
+        font-family:'微软雅黑';
+        font-size: 20px;
+    }
+    .navbar-top-links{
+        float:right;
+    }
+    .navbar-top-links li a {
+        padding:2px 10px 8px 10px;
+    }
+    .sidebar {
+        margin-top:30px;
+    }
+}
+

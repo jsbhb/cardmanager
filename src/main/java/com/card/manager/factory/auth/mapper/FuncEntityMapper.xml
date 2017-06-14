@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.card.manager.factory.auth.mapper.FuncEntityMapper">
+
+	<!-- resultMap -->
+	<resultMap type="com.card.manager.factory.auth.model.FuncEntity" id="funcEntity">
+		<result column="funcId" property="funcId" />
+		<result column="name" property="name" />
+		<result column="url" property="url" />
+		<result column="funcGroupId" property="funcGroupId" />
+		<result column="parentId" property="parentId" />
+		<result column="tag" property="tag" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+		<result column="opt" property="opt" />
+	</resultMap>
+	
+	<select id="queryByList" resultMap="funcEntity" >
+		 select * from auth_func  
+		<where>
+			<if test="funcId != null and funcId !=''">
+				and funcId = #{funcId,jdbcType=NUMERIC}
+			</if>
+			<if test="name != null and name != ''">
+				and name like CONCAT('%',#{name,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="url != null and url != ''">
+				and url like CONCAT('%',#{url,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="funcGroupId != null and funcGroupId !=''">
+				and funcGroupId = #{orderId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and updateTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and updateTime &lt;= #{endTime}
+			</if>
+		</where>
+		order by updateTime desc
+	</select>
+	
+	 
+	<select id="queryByParams" resultMap="funcEntity">
+		 select * from auth_func  
+		<where>
+			<if test="funcId != null and funcId !=''">
+				and funcId = #{funcId,jdbcType=NUMERIC}
+			</if>
+			<if test="name != null and name != ''">
+				and name like CONCAT('%',#{name,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="url != null and url != ''">
+				and url like CONCAT('%',#{url,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="funcGroupId != null and funcGroupId !=''">
+				and funcGroupId = #{orderId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				and updateTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and updateTime &lt;= #{endTime}
+			</if>
+		</where>
+		order by updateTime desc
+	</select>
+	
+	<update id="update" parameterType="Object" >
+		  update auth_func set updateTime = now()
+		  <if test="state != null and state != '' ">
+				,state=#{state}
+		  </if>
+			<if test="name != null and name != ''">
+				,name = #{name}
+			</if>
+			<if test="url != null and url != ''">
+				,url = #{url}
+			</if>
+			<if test="funcGroupId != null and funcGroupId !=''">
+				,funcGroupId = #{orderId}
+			</if>
+		   where funcId=#{funcId}
+	 </update>
+	 
+	 <select id="queryParentFunc" resultMap="funcEntity">
+	 	select * from auth_func where parentId is null or parentId = ''
+	 </select>
+
+</mapper>

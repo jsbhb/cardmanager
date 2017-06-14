@@ -1,0 +1,170 @@
+body {
+    font-size: 12px;
+}
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+  outline:none;
+}
+
+
+
+#ExportModal>.modal-dialog{
+    margin:auto;
+    width:90%;
+    min-width:300px;
+    height:96%;
+    margin-top:1%;
+}
+
+
+#ExportModal .modal-content{
+    height:100%;
+}
+
+
+
+#ExportModal .modal-header{
+    font-family:"微软雅黑";
+    font-size:16px;
+    border-bottom:1px solid #bbb;
+    height:40px;
+    padding:8px 15px;
+}
+
+
+#ExportModal .modal-body{
+   width:100%;
+   height:calc(100% - 80px );
+}
+@media (max-width:768px) {
+    #ExportModal .modal-body{
+      padding:8px;
+    }
+}
+
+#ExportModal .modal-body>.ExportFrame{
+	height:100%;
+	overflow:auto;
+	-webkit-overflow-scrolling:touch;
+}
+
+#ExportModal .modal-body>.ExportFrame>.termsTitle,
+#ExportModal .modal-body>.ExportFrame>.tableTitle,
+#ExportModal .modal-body>.ExportFrame>.describeTitle{
+	height:31px;
+	margin-bottom:10px;
+	border-bottom:solid 1px #337ab7;
+}
+
+#ExportModal .modal-body>.ExportFrame>.termsTitle>h4,
+#ExportModal .modal-body>.ExportFrame>.tableTitle>h4,
+#ExportModal .modal-body>.ExportFrame>.describeTitle>h4{
+    margin:0;
+    font-family:"微软雅黑";
+    font-size:16px;
+    padding:7px 10px;
+    float:left
+}
+#ExportModal .modal-body>.ExportFrame>.tableTitle>.btn{
+    font-family:"微软雅黑";
+    font-size:13px;
+	margin:3px 7px 0 0;
+    padding:2px 4px;
+    float:right;
+}
+
+
+#ExportModal .modal-body>.ExportFrame>.termsContent>ul{
+   margin:0 0 30px 0;
+   padding:0;
+   overflow:auto;
+}
+#ExportModal .modal-body>.ExportFrame>.tableContent>ul{
+   margin:0 0 10px 0;
+   padding:0;
+   overflow:auto;
+}
+@media (max-width:768px) {
+   #ExportModal .modal-body>.ExportFrame>.termsContent>ul{
+      margin:0 0 10px 0;
+   }
+   #ExportModal .modal-body>.ExportFrame>.tableContent>ul{
+      margin:0 0 5px 0;
+   }
+}
+
+
+#ExportModal .modal-body>.ExportFrame>.termsContent>ul>li{
+    list-style-type:none;
+    width:285px;
+    margin:0 0 8px 27px;
+    float:left; 
+}
+
+#ExportModal .modal-body>.ExportFrame>.tableContent>ul>li{
+    list-style-type:none;
+    width:180px;
+    margin:0 0 8px 50px;
+    float:left; 
+}
+
+#ExportModal .modal-body>.ExportFrame>.tableContent>ul>li>input{
+    vertical-align:baseline;
+    margin:0 0 0 5px;
+}
+
+#ExportModal .modal-body>.ExportFrame>.termsContent>ul>li>label{
+    font-family:"微软雅黑";
+    font-size:15px; 
+    font-weight:500; 
+    margin:5px 3px;
+    width:90px;
+    text-align:right;
+    vertical-align:middle;
+}
+
+#ExportModal .modal-body>.ExportFrame>.termsContent>ul>li>label+label{ 
+    font-size:13px; 
+    text-align:center;
+	width:calc(100% - 105px);
+	white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    border-bottom:solid 1px #f44336;
+}
+
+#ExportModal .modal-body>.ExportFrame>.tableContent>ul>li>label{
+    font-family:"微软雅黑";
+    font-size:15px; 
+    font-weight:500; 
+    margin:0 0 0 3px;
+    padding:0 0 0 8px;
+	width:calc(100% - 30px);
+	white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    border-bottom:solid 1px #f44336;
+}
+
+@media (max-width:350px) {
+    #ExportModal .modal-body>.ExportFrame>.termsContent>ul>li{
+       margin-left:3px;
+    }
+}
+
+
+#ExportModal .modal-footer{
+    border-top:1px solid #bbb;
+    padding-top:4px;
+    padding-bottom:4px;
+    height:40px;
+} 
+#ExportModal .modal-footer .btn{
+    padding:4px 10px;
+}
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.card.manager.factory.auth.mapper.FuncMapper">
+	<!-- Result Map -->
+	<resultMap id="authInfo" type="com.card.manager.factory.auth.model.AuthInfo">
+		<result column="funcId" property="funcId" />
+		<result column="name" property="name" />
+		<result column="url" property="url" />
+		<result column="tag" property="tag" />
+		<result column="parentId" property="parentId" />
+		<result column="privilege" property="privilege" />
+	</resultMap>
+
+	<!-- 获取角色菜单 -->
+	<select id="queryFuncByOptId" resultMap="authInfo">
+		select f.*,rf.privilege from auth_func f left join auth_rolefunc rf on rf.funcid = f.funcid 
+		where rf.roleid in (select roleid from auth_operatorrole where operatorid = #{id});
+	</select>
+
+</mapper>
