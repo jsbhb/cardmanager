@@ -22,6 +22,8 @@ public class Operator {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private String token;
+	private String platId;
 
 	public String getOptid() {
 		return optid;
@@ -133,6 +135,22 @@ public class Operator {
 
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getPlatId() {
+		return platId;
+	}
+
+	public void setPlatId(String platId) {
+		this.platId = platId;
 	}
 
 }

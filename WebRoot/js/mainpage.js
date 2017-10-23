@@ -47,13 +47,13 @@ $(function() {
     	if(this.href == "javascript:void(0);"){
     		return;
     	}
-
-    	var width = "100%";  
-        var height = window.innerHeight-topOffset;
+    	
+    	var width = "100%";
+    	var height = window.innerHeight-topOffset+40;
         newIframeObject.width=width;
         newIframeObject.height=height; 
         newIframeObject.src=this.href;
-        newIframeObject.scrolling="no";
+        newIframeObject.scrolling="yes";
         newIframeObject.frameBorder=0;
     	$("#page-wrapper").empty();
         $("#page-wrapper").append(newIframeObject);

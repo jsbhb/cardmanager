@@ -18,14 +18,14 @@
   height: 34px;
 }
 .select2-container--default.select2-container--open {
-  border-color: #3c8dbc;
+  border-color: #cee7f6;
 }
 .select2-dropdown {
   border: 1px solid #d2d6de;
   border-radius: 0;
 }
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background-color: #3c8dbc;
+  background-color: #cee7f6;
   color: white;
 }
 .select2-results__option {

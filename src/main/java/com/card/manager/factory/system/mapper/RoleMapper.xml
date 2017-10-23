@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.card.manager.factory.system.mapper.RoleMapper">
+	<!-- Result Map -->
+	<resultMap id="roleEntity" type="com.card.manager.factory.system.model.RoleEntity">
+		<result column="roleId" property="roleId" />
+		<result column="roleName" property="roleName" />
+		<result column="roleState" property="roleState" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+		<result column="type" property="type" />
+	</resultMap>
+
+	<select id="queryList" resultMap="roleEntity">
+		select * from auth_role
+	</select>
+	
+	<select id="queryById" resultMap="roleEntity">
+		select * from auth_role where roleid = #{roleId}
+	</select>
+	
+	<insert id="insert"  useGeneratedKeys="true"  keyProperty="roleid" parameterType="object">
+         INSERT INTO auth_role (
+              roleName,roleState,createTime,updateTime,opt,type) VALUE (#{roleName},#{roleState},now(),now(),#{opt},#{type})
+    </insert>
+    
+    
+	<update id="update" parameterType="object">
+		update auth_role set updatetime = now()
+		<if test="roleName !=null and roleName !=''">
+			 ,roleName = #{roleName}
+		</if> 
+		<if test="roleState !=null and roleState !=''">
+			 ,roleState = #{roleState}
+		</if>
+		where roleid = #{roleId}
+    </update>
+    
+    <insert id="insertRoleFunc" parameterType="object">
+    	insert IGNORE into auth_rolefunc (roleid,funcid,createTime,updateTime,opt) value 
+    	 <foreach collection="list" item="funcId" index="index" separator="," >  
+        (#{roleId},#{funcId},now(),now(),#{opt})  
+    	</foreach>
+    </insert>
+    
+    <delete id="deleteAllFunc">
+    		delete from auth_rolefunc where roleid=#{roleId};
+    </delete>
+	
+</mapper>

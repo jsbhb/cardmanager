@@ -2,29 +2,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <!-- 公共资源CSS,JS  -->
 <!--Css -->
+<link rel="stylesheet" href="${wmsUrl}/layer/layer.css">
 <link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="${wmsUrl}/css/jquery-confirm.css">
-<link rel="stylesheet" href="${wmsUrl}/css/core.css">
-<link rel="stylesheet" href="${wmsUrl}/css/zoom.css">
-<link rel="stylesheet" href="${wmsUrl}/tableControl/tableControl.css">
-<link rel="stylesheet" href="${wmsUrl}/css/exportTool.css">
-<script type="text/javascript" src="${wmsUrl}/js/jquery.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-<script type="text/javascript" src="${wmsUrl}/js/pagination.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/pageInit.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/jquery-confirm.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/manager.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/syExtJquery.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/zoom.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/transition.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/resetFunction.js"></script>
-<script type="text/javascript" src="${wmsUrl}/tableControl/tableControl.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/autoDeploy.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/exportTool.js"></script>
+<link rel="stylesheet" href="${wmsUrl}/css/mainpage.css">
+<link rel="stylesheet" href="${wmsUrl}/css/tree.css">
+<link rel="stylesheet" href="${wmsUrl}/adminLTE/css/AdminLTE.css">
+<link rel="stylesheet" href="${wmsUrl}/adminLTE/css/skins/_all-skins.css">
+<link rel="stylesheet" href="${wmsUrl}/adminLTE/css/skins/_all-skins.css">
+<script src="${wmsUrl}/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="${wmsUrl}/plugins/jQueryUI/jquery-ui.js"></script>
+<script src="${wmsUrl}/js/manager.js"></script>
+<script src="${wmsUrl}/layer/layer.js"></script>
+<script src="${wmsUrl}/js/syExtJquery.js"></script>
+<script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
+<script src="${wmsUrl}/adminLTE/js/app.js"></script>
 
 <script>
 $(function(){

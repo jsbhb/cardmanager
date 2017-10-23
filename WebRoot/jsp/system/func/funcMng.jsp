@@ -9,46 +9,27 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>功能管理</title>
-<link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="${wmsUrl}/css/core.css">
-<script type="text/javascript" src="${wmsUrl}/js/jquery.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${wmsUrl}/js/pagination.js"></script>
+<link rel="stylesheet" href="${wmsUrl}/AdminLTE/AdminLTE.min.css">
 </head>
 
 <body>
-	<div id="page-wrapper">
-
-		<div class="container-fluid">
-
+	<div id="content-wrapper">
+		<section class="content-header">
 			<!-- Page Heading -->
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">功能管理</h1>
-					<ol class="breadcrumb">
-						<li><i class="fa fa-desktop"></i>系统管理</li>
-						<li class="active"><i class="fa fa-user-md"></i> 功能管理</li>
-					</ol>
-				</div>
-			</div>
+			<h1>系统管理
+		    <small>功能管理</small>
+		    </h1>
 			<!-- /.row -->
 
-			<div class="row" class="query">
-				<div class="col-lg-12">
-						<div class="form-group">
-							<label>功能编号:</label> <input class="form-control" name="funcId">
-						</div>
-
-						<div class="form-group">
-							<label>功能名称:</label> <input class="form-control" name="funcName">
-						</div>
-						<button type="button" class="btn btn-default">查询</button>
-				</div>
-			</div>
-
-			<div class="row">
+			<ol class="breadcrumb">
+		        <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
+		        <li><a href="#">系统管理</a></li>
+		        <li class="active">功能管理</li>
+		     </ol>
+		</section>
+		<section class="content">
+		<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -82,7 +63,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
 	
 	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">

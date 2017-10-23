@@ -20,7 +20,9 @@ public class AuthInfo implements Serializable{
 	private String tag;
 	private String parentId;
 	private String privilege;
+	private String description;
 	private List<AuthInfo> children;
+	private boolean isSelected;
 
 	public String getFuncId() {
 		return funcId;
@@ -78,4 +80,19 @@ public class AuthInfo implements Serializable{
 		this.children = children;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
 }

@@ -20,10 +20,10 @@ public class FuncMngServceImpl implements FuncMngService {
 
 	@Resource
 	FuncMapper<AuthInfo> funcMapper;
-	
+
 	@Resource
 	FuncEntityMapper<FuncEntity> funcEntityMapper;
-	
+
 	@Override
 	public List<AuthInfo> queryFuncByOptId(String id) {
 		return funcMapper.queryFuncByOptId(id);
@@ -33,6 +33,46 @@ public class FuncMngServceImpl implements FuncMngService {
 	public Page<FuncEntity> queryParentFunc(Pagination pagination) {
 		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
 		return funcEntityMapper.queryParentFunc();
+	}
+
+	@Override
+	public AuthInfo queryFuncById(String id) {
+		return funcMapper.queryById(id);
+	}
+
+	@Override
+	public void removeFunc(String id) {
+		funcMapper.deleteFuncById(id);
+	}
+
+	@Override
+	public void updateFunc(AuthInfo authInfo) {
+
+	}
+
+	@Override
+	public void addFunc(AuthInfo authInfo) {
+		
+		if("-1".equals(authInfo.getParentId())){
+			authInfo.setParentId(null);
+		}
+		
+		funcMapper.insertFunc(authInfo);
+	}
+
+	@Override
+	public List<AuthInfo> queryFunc() {
+		return funcMapper.selectFunc();
+	}
+
+	@Override
+	public void editFunc(AuthInfo authInfo) {
+		funcMapper.updateFunc(authInfo);
+	}
+
+	@Override
+	public List<AuthInfo> queryFuncByRoleId(int roleId) {
+		return funcMapper.selectFuncByRoleId(roleId);
 	}
 
 }

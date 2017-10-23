@@ -5,8 +5,9 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>中国商贸城</title>
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
+<title>供销贸易后台</title>
 <link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="${wmsUrl}/css/style.css">
@@ -21,7 +22,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>中国商贸城后台管理系统</strong></h1>
+                            <h1><strong>供销贸易后台</strong></h1>
                             <div class="description">
                             	<p></p>
                             </div>

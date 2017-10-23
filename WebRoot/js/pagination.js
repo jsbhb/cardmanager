@@ -164,7 +164,6 @@ $.page = {
 
 		var that = this;
 		var data = that.generateData(o);
-		$.zzComfirm.startMask();
 		$.ajax({
 			url : o.url,
 			data : data,
@@ -172,8 +171,7 @@ $.page = {
 			dataType : 'json',
 			success : function(data) {
 				if (!data.success) {
-					$.zzComfirm.alertError(data.errTrace);
-					$.zzComfirm.endMask();
+					layer.alert(data.errTrace);
 					return;
 				}
 
@@ -181,6 +179,9 @@ $.page = {
 				o.currentPage = pagination.currentPage + "";
 				o.callback(data);
 				that.setLine(pagination.totalPages, o,pagination.totalRows);
+			},
+			error:function(){
+				layer.alert("分页查询失败，请联系客服！");
 			}
 		});
 	}

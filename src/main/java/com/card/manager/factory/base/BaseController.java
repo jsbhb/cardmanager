@@ -16,8 +16,10 @@ import com.github.pagehelper.Page;
 public abstract class BaseController {
 
 	public final static String SUCCESS = "success";
+	public final static String ERROR = "error";
 	public final static String MSG = "msg";
 	public final static String DATA = "data";
+	public final static String OPT = "opt";
 	public final static String LOGOUT_FLAG = "logoutFlag";
 
 	protected Logger log = LoggerFactory.getLogger(this.getClass());

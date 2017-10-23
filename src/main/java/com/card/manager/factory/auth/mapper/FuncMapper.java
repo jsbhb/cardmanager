@@ -19,4 +19,62 @@ public interface FuncMapper<T> extends BaseMapper<T> {
 	 * @param params
 	 */
 	List<AuthInfo> queryFuncByOptId(String id);
+	
+	/**
+	 * 查找所有登陆信息
+	 * 
+	 * @param params
+	 */
+	List<AuthInfo> selectFunc();
+
+	/**
+	 * 
+	 * queryFuncById:根据编号查询菜单. <br/>
+	 * 
+	 * @author hebin
+	 * @return
+	 * @since JDK 1.7
+	 */
+	AuthInfo selectFuncById(String id);
+
+	/**
+	 * 
+	 * deleteFuncById:删除指定菜单. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @since JDK 1.7
+	 */
+	void deleteFuncById(String id);
+
+	/**
+	 * 
+	 * updateFunc:更新菜单. <br/>
+	 * 
+	 * @author hebin
+	 * @param authInfo
+	 * @since JDK 1.7
+	 */
+	void updateFunc(AuthInfo authInfo);
+	
+	/**
+	 * 
+	 * insertFunc:插入新菜单. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param authInfo  
+	 * @since JDK 1.7
+	 */
+	void insertFunc(AuthInfo authInfo);
+	
+	/**
+	 * 
+	 * selectFuncByRoleId:根据角色查询功能. <br/>   
+	 *  
+	 * @author hebin 
+	 * @return  
+	 * @since JDK 1.7
+	 */
+	List<AuthInfo> selectFuncByRoleId(int roleId);
+
 }

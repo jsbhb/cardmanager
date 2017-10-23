@@ -11,13 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.annotation.Auth;
 import com.card.manager.factory.auth.model.AuthInfo;
 import com.card.manager.factory.auth.model.Operator;
+import com.card.manager.factory.auth.model.PlatUserType;
+import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.auth.service.OperatorMngService;
 import com.card.manager.factory.base.BaseController;
@@ -28,6 +34,8 @@ import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.URLUtils;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin")
@@ -58,7 +66,7 @@ public class LoginController extends BaseController {
 		context.put("msg", req.getAttribute("msg"));
 		return forword("error", context);
 	}
-	
+
 	@RequestMapping(value = "/logout")
 	@Auth(verifyLogin = false, verifyURL = false)
 	public void logout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -80,7 +88,8 @@ public class LoginController extends BaseController {
 	 */
 	@RequestMapping("/login")
 	@Auth(verifyLogin = false, verifyURL = false)
-	public void login(String userName, String pwd, String verifyCode, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void login(String userName, String pwd, String verifyCode, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		// 判断验证码是否正确
 		if (StringUtil.isEmpty(userName)) {
 			sendFailureMessage(response, "账号不能为空.");
@@ -104,6 +113,29 @@ public class LoginController extends BaseController {
 			sendFailureMessage(response, "该账号已被锁定，请联系管理员.");
 			return;
 		}
+
+		Map<String, Object> context = getRootMap();
+		String authUrl = (String) context.get("gateway");
+
+		// 调用权限中心 验证是否可以登录
+		RestTemplate restTemplate = new RestTemplate();
+		UserInfo userInfo = new UserInfo(userName, pwd, operator.getPlatId(), PlatUserType.CROSS_BORDER.getIndex());
+//
+//		HttpEntity<UserInfo> entity = new HttpEntity<UserInfo>(userInfo, null);
+//
+//		try {
+//			ResponseEntity<String> result = restTemplate.exchange(authUrl + "authcenter/auth/login", HttpMethod.POST,
+//					entity, String.class);
+//
+//			JSONObject json = JSONObject.fromObject(result.getBody());
+//			JSONObject obj = (JSONObject) json.getJSONObject("obj");
+//			operator.setToken(obj.getString("token"));
+//
+//		} catch (Exception e) {
+//			sysLogger.error(LoggerConstants.LOGIN_LOGGER, msg + "[" + userName + "]" + "权限认证失败.");
+//			sendFailureMessage(response, "权限认证失败，请重试.");
+//			return;
+//		}
 
 		initSession(request, operator);
 

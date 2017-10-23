@@ -1,26 +1,24 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title> ERROR！！</title>
-    <%@include file="resource.jsp" %>
-  </head>
-  <body>
-  <div class="row">
-	<div class="col-lg-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					<i class="fa fa-bar-chart-o fa-fw"></i>出错了
-				</h3>
-			</div>
-			<div class="panel-body">
-				${msg}
-			</div>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!Doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>错误</title>
+		<link rel="stylesheet" media="screen" href="${wmsUrl}/css/error-style.css">
+		
+	</head>
+	<body>
+
+		<p class="error">404</p>
+		
+		<div class="content">
+			<h2>错误内容</h2>
+			
+			<p class="text">
+				错误信息解释
+			</p>
 		</div>
-	</div>
-  </div>
-   
-  </body>
+		
+	</body>
 </html>
