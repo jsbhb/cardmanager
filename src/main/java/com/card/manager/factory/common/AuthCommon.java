@@ -25,6 +25,15 @@ import com.card.manager.factory.auth.model.AuthInfo;
  */
 public class AuthCommon {
 
+	/*
+	 * 员工状态
+	 */
+	public static final int STAFF_STATUS_ON = 1;
+	public static final int STAFF_STATUS_OFF = 2;
+	public static final int STAFF_STATUS_DELETED = 3;
+	public static final int SUPER_ADMIN = 1;
+	public static final int EARA_ADMIN = 2;
+
 	public static List<AuthInfo> treeAuthInfo(List<AuthInfo> authInfos) {
 		if (authInfos == null || authInfos.size() == 0) {
 			return null;
@@ -76,7 +85,7 @@ public class AuthCommon {
 				}
 			}
 		}
-		
+
 		List<AuthInfo> menuList = treeAuthInfo(optMenuList);
 
 		return menuList;

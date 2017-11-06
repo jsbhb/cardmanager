@@ -7,6 +7,7 @@
  */
 package com.card.manager.factory.system.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.base.BaseMapper;
@@ -33,6 +34,17 @@ public interface RoleMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7
 	 */
 	Page<T> queryList(Map<String,Object> params);
+	
+	/**
+	 * 
+	 * queryList:分页查询. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param params
+	 * @return  
+	 * @since JDK 1.7
+	 */
+	List<T> queryNormal();
 	
 	/**
 	 * 

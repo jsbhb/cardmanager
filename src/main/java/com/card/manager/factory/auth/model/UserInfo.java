@@ -2,21 +2,43 @@ package com.card.manager.factory.auth.model;
 
 /**
  * 
+ * ClassName: UserInfo <br/>
+ * Function: 用户登录<br/>
+ * date: Oct 24, 2017 4:37:11 PM <br/>
+ * 
  * @author hebin
- *
+ * @version
+ * @since JDK 1.7
  */
 public class UserInfo {
-	private String userName;
-	private String password;
-	private String userId;
+	private int userId;//
 	private int platUserType;
 	private int loginType;
+	private int userCenterId;
 
-	public String getUserId() {
+	public UserInfo() {
+
+	}
+
+	public UserInfo(int platUserType, int loginType, int userId) {
+		this.platUserType = platUserType;
+		this.loginType = loginType;
+		this.userId = userId;
+	}
+
+	public int getUserCenterId() {
+		return userCenterId;
+	}
+
+	public void setUserCenterId(int userCenterId) {
+		this.userCenterId = userCenterId;
+	}
+
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
@@ -28,31 +50,6 @@ public class UserInfo {
 		this.platUserType = platUserType;
 	}
 
-	public UserInfo(String userName, String password, String userId, int platUserType) {
-		super();
-		this.userName = userName;
-		this.password = password;
-		this.userId = userId;
-		this.platUserType = platUserType;
-		this.loginType = 3;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public int getLoginType() {
 		return loginType;
 	}
@@ -60,7 +57,4 @@ public class UserInfo {
 	public void setLoginType(int loginType) {
 		this.loginType = loginType;
 	}
-	
-	
-
 }

@@ -1,18 +1,42 @@
 package com.card.manager.factory.base;
 
+import net.sf.json.JSONObject;
+
 /**
  * 
- * @author 贺斌
- * @datetime 2016年7月27日
- * @func 分页组件
+ * ClassName: Pagination <br/>  
+ * Function: 分页组件. <br/>   
+ * date: Oct 29, 2017 8:00:08 PM <br/>  
+ *  
+ * @author hebin  
+ * @version   
+ * @since JDK 1.7
  */
 public class Pagination {
 	private int numPerPage;
-	private long totalRows;
+	private Long totalRows;
 	private int totalPages;
 	private int currentPage;
 	private int startIndex;
 	private int lastIndex;
+
+	/**  
+	 * Creates a new instance of Pagination.  
+	 *  
+	 * @param pJson  
+	 */  
+	public Pagination(){
+		
+	}
+	
+	public Pagination(JSONObject pJson) {
+		this.numPerPage = pJson.getInt("numPerPage");
+		this.totalRows = pJson.getLong("totalRows");
+		this.totalPages = pJson.getInt("totalPages");
+		this.currentPage = pJson.getInt("currentPage");
+		this.startIndex = pJson.getInt("startIndex");
+		this.lastIndex = pJson.getInt("lastIndex");
+	}
 
 	public int getNumPerPage() {
 		return numPerPage;
@@ -22,11 +46,11 @@ public class Pagination {
 		this.numPerPage = numPerPage;
 	}
 
-	public long getTotalRows() {
+	public Long getTotalRows() {
 		return totalRows;
 	}
 
-	public void setTotalRows(long totalRows) {
+	public void setTotalRows(Long totalRows) {
 		this.totalRows = totalRows;
 	}
 

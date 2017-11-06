@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="selectFuncByRoleId" resultMap="authInfo">
-		select c.* from auth_role r left join auth_rolefunc f on f.roleid = r.roleid left join auth_func c on c.funcid = f.funcid where f.roleid = #{roleId};
+		select c.* from auth_role r right join auth_rolefunc f on f.roleid = r.roleid right join auth_func c on c.funcid = f.funcid where f.roleid = #{roleId};
 	</select>
 	
 	<select id="queryById" resultMap="authInfo">

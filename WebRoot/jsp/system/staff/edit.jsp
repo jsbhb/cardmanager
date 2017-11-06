@@ -37,7 +37,7 @@
 								  	<div class="input-group-addon">
 					                    <i class="fa fa-user-o"></i>
 				                    </div>
-		                  			<input type="text" class="form-control" name="optName">
+		                  			<input type="text" class="form-control" name="optName" value="${opt.optName}">
 				                </div>
 							</div>
 						</div>
@@ -63,7 +63,7 @@
 					                    <i class="fa fa-user-o"></i>
 				                  	</div>
 				                   <input type="text"  readonly class="form-control" name="gradeName" value="${opt.gradeName}">
-				                   <input type="hidden"  class="form-control" name="parentGradeId" value="${opt.parentGradeId}">
+				                   
 				                </div>
 							</div>
 						</div>
@@ -88,20 +88,6 @@
 				                  	</div>
 				                   <input type="text"  readonly class="form-control" name="platId" value="${opt.platId}">
 				                   
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>联系方式</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><font style="color:red">*</font>电话:</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-								  <div class="input-group-addon">
-					                    <i class="fa fa-user-o"></i>
-				                  	</div>
-				                  <input type="text" class="form-control" name="phone" placeholder="158xxxxxxxx">
 				                </div>
 							</div>
 						</div>

@@ -7,6 +7,7 @@
  */
 package com.card.manager.factory.system.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.base.Pagination;
@@ -24,7 +25,27 @@ import com.github.pagehelper.Page;
  */
 public interface RoleMngService {
 	
+	/**
+	 * 
+	 * dataList:分页查询. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param pagination
+	 * @param params
+	 * @return  
+	 * @since JDK 1.7
+	 */
 	Page<RoleEntity> dataList(Pagination pagination,Map<String,Object> params);
+	
+	/**
+	 * 
+	 * queryList:查询. <br/>   
+	 *  
+	 * @author hebin 
+	 * @return  
+	 * @since JDK 1.7
+	 */
+	List<RoleEntity> queryAll();
 
 	/**  
 	 * queryById:根据Id查询角色实体类. <br/>   
@@ -64,5 +85,7 @@ public interface RoleMngService {
 	 * @since JDK 1.7  
 	 */
 	void edit(RoleEntity role,boolean needUpdateFunc) throws Exception;
+	
+	
 
 }

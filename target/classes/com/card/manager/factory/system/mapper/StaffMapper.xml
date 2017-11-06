@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.card.manager.factory.system.mapper.StaffMapper">
+	<!-- Result Map -->
+	<resultMap id="operator" type="com.card.manager.factory.system.model.StaffEntity">
+		<result column="optid" property="optid" />
+		<result column="badge" property="badge" />
+		<result column="optName" property="optName" />
+		<result column="password" property="password" />
+		<result column="status" property="status" />
+		<result column="lastLogin" property="lastLogin" />
+		<result column="errCount" property="errCount" />
+		<result column="ipAddress" property="ipAddress" />
+		<result column="partId" property="partId" />
+		<result column="needChangePwd" property="needChangePwd" />
+		<result column="locked" property="locked" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+		<result column="opt" property="opt" />
+		<result column="platid" property="platId" />
+		<result column="userCenterId" property="userCenterId" />
+		<result column="gradeId" property="gradeId" />
+		<result column="gradeName" property="gradeName" />
+		<result column="roleName" property="roleName" />
+		<result column="parentGradeId" property="parentGradeId" />
+	</resultMap>
+
+	<!-- 获取角色菜单 -->
+	<select id="selectByLoginInfo" resultMap="operator">
+	select a.*,r.roleName,r.roleId from auth_operator a 
+		left join auth_operatorrole b on a.optid = b.operatorid 
+		left join auth_role r on r.roleid = b.roleid 
+		where a.status = 1 and a.badge = #{userName} and a.password=#{password};
+	</select>
+
+	<select id="queryByList" resultMap="operator">
+		select a.*,r.roleName from auth_operator a 
+		left join auth_operatorrole b on a.optid = b.operatorid 
+		left join auth_role r on r.roleid = b.roleid 
+		where a.status  in (1,2) 
+		<if test="gradeId !=0 and gradeId != null">
+			 and (gradeId = #{gradeId} or parentGradeId = #{gradeId})
+		</if> 
+	</select>
+	
+	<select id="nextVal" resultType="java.lang.Integer">
+		select nextval_safe(#{gradeId});
+	</select>
+	
+	<select id="insertNextVal">
+		insert into t_sequence value (#{gradeId},1); 
+	</select>
+	
+	<select id="selectByOptId" resultMap="operator">
+		select * from auth_operator where optid = #{optId}
+	</select>
+	
+	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">
+         INSERT INTO auth_operator (
+              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId)
+       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId})
+    </insert>
+    
+    <insert id="insertRoleOpt" parameterType="object">
+    	insert into auth_operatorrole (operatorid,roleid,createTime,updateTime) value (#{optid},#{roleId},now(),now());
+    	
+    </insert>
+    
+	<update id="update" parameterType="object">
+		update auth_role set updatetime = now()
+		<if test="roleName !=null and roleName !=''">
+			 ,roleName = #{roleName}
+		</if> 
+		<if test="roleState !=null and roleState !=''">
+			 ,roleState = #{roleState}
+		</if>
+		where roleid = #{roleId}
+    </update>
+    
+    <update id="updateUserCenterId" parameterType="object">
+		update auth_operator set updatetime = now(),usercenterid = #{userCenterId},status = 1
+		where optid = #{optid}
+    </update>
+    
+    <insert id="insertRoleFunc" parameterType="object">
+    	insert IGNORE into auth_rolefunc (roleid,funcid,createTime,updateTime,opt) value 
+    	 <foreach collection="list" item="funcId" index="index" separator="," >  
+        (#{roleId},#{funcId},now(),now(),#{opt})  
+    	</foreach>
+    </insert>
+    
+    <delete id="deleteAllFunc">
+    		delete from auth_rolefunc where roleid=#{roleId};
+    </delete>
+	
+</mapper>

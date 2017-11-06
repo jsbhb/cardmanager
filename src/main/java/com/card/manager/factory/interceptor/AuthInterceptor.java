@@ -8,7 +8,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.card.manager.factory.annotation.Auth;
-import com.card.manager.factory.auth.model.Operator;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
 
 /**
@@ -29,7 +29,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		//// 验证登陆超时问题 auth = null，默认验证)
 		if (auth == null || auth.verifyLogin()) {
-			Operator opt = SessionUtils.getOperator(request);
+			StaffEntity opt = SessionUtils.getOperator(request);
 
 			if (opt == null) {
 				if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // 如果是ajax请求响应头会有，x-requested-with

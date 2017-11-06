@@ -1,0 +1,156 @@
+/**  
+ * Project Name:cardmanager  
+ * File Name:StaffMngServiceImpl.java  
+ * Package Name:com.card.manager.factory.system.service.impl  
+ * Date:Oct 26, 20172:18:25 PM  
+ *  
+ */
+package com.card.manager.factory.system.service.impl;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.AuthCommon;
+import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.system.exception.OperatorSaveException;
+import com.card.manager.factory.system.exception.SyncUserCenterException;
+import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.system.servercenter.UserCenterEntity;
+import com.card.manager.factory.system.service.StaffMngService;
+import com.card.manager.factory.util.MethodUtil;
+import com.card.manager.factory.util.URLUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+import net.sf.json.JSONObject;
+
+/**
+ * ClassName: StaffMngServiceImpl <br/>
+ * Function: TODO ADD FUNCTION. <br/>
+ * date: Oct 26, 2017 2:18:25 PM <br/>
+ * 
+ * @author hebin
+ * @version
+ * @since JDK 1.7
+ */
+@Service
+public class StaffMngServiceImpl implements StaffMngService {
+
+	@Resource
+	StaffMapper<StaffEntity> staffMapper;
+
+	@Override
+	public Page<StaffEntity> dataList(Pagination pagination, Map<String, Object> params) {
+		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
+		return staffMapper.queryByList(params);
+	}
+
+	@Override
+	public StaffEntity queryById(int optId) {
+		return staffMapper.selectByOptId(optId);
+	}
+
+	@Override
+	public void addStaff(StaffEntity staff) throws OperatorSaveException,SyncUserCenterException {
+		// 生成badge
+		try {
+			int badge = staffMapper.nextVal(staff.getGradeId());
+			badge += staff.getGradeId() * 100000;
+			staff.setBadge(badge + "");
+			staff.setPassword(MethodUtil.MD5("000000"));
+		} catch (Exception e) {
+			throw new OperatorSaveException("生成自增bagde出错:" + e.getMessage());
+		}
+
+		try {
+			staff.setStatus(AuthCommon.STAFF_STATUS_OFF+"");
+			staffMapper.insert(staff);
+			staffMapper.insertRoleOpt(staff);
+			
+		} catch (Exception e) {
+			throw new OperatorSaveException("插入后台员工表出错:" + e.getMessage());
+		}
+
+		// 调用用户中心
+		ResponseEntity<String> result = null;
+		try {
+			result = syncUserCenter(new UserCenterEntity(staff, staff.getPhone()));
+		} catch (Exception e) {
+			throw new SyncUserCenterException("同步用户中心信息出错:" + e.getMessage());
+		}
+
+		try {
+			JSONObject json = JSONObject.fromObject(result.getBody());
+			staff.setUserCenterId(json.getInt("obj"));
+			staffMapper.updateUserCenterId(staff);
+		} catch (Exception e) {
+			throw new SyncUserCenterException("更新用户中心编号失败！" + e.getMessage());
+		}
+
+	}
+
+	@Override
+	public void modifyStaff(StaffEntity staff) {
+	}
+
+	@Override
+	public StaffEntity queryByLoginInfo(String userName, String pwd) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("userName", userName);
+		params.put("password", pwd);
+
+		return staffMapper.selectByLoginInfo(params);
+	}
+
+	@Override
+	public void sync(int optId, String phone) throws Exception {
+		StaffEntity staffeEntity = staffMapper.selectByOptId(optId);
+		UserCenterEntity ucEntity = new UserCenterEntity(staffeEntity, phone);
+
+		// 调用用户中心
+		ResponseEntity<String> result = null;
+		try {
+			result = syncUserCenter(ucEntity);
+		} catch (Exception e) {
+			throw new Exception("同步失败！" + e.getMessage());
+		}
+
+		try {
+			JSONObject json = JSONObject.fromObject(result.getBody());
+			staffeEntity.setUserCenterId(json.getInt("obj"));
+			staffMapper.updateUserCenterId(staffeEntity);
+		} catch (Exception e) {
+			throw new Exception("更新用户中心编号失败！" + e.getMessage());
+		}
+	}
+
+	/**
+	 * syncUserCenter:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param ucEntity
+	 * @return
+	 * @since JDK 1.7
+	 */
+	private ResponseEntity<String> syncUserCenter(UserCenterEntity ucEntity) {
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpEntity<UserCenterEntity> httpEntity = new HttpEntity<UserCenterEntity>(ucEntity, null);
+
+		ResponseEntity<String> result = restTemplate.exchange(
+				(String) URLUtils.getUrlMap().get("gateway") + ServerCenterContants.USER_CENTER_REGISTER,
+				HttpMethod.POST, httpEntity, String.class);
+		return result;
+	}
+
+}

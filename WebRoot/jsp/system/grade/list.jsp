@@ -9,6 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+
+
 
 </head>
 <body>
@@ -23,55 +26,29 @@
 	<section class="content">
 		<div class="box box-warning">
 			<div class="box-header">
-				<div class="row form-horizontal">
-					<div class="col-xs-4">
+				<div class="row form-horizontal"><!--
+				<div class="col-xs-4">
 						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1"> 分级名称<font style="color:red">*</font> </label>
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级编号<font style="color:red">*</font> </label>
 							<div class="col-sm-8">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="name" data-toggle="popover" data-placement="top" data-content="分级名称必须在4-30位字符">
+		                  			<input type="text" class="form-control" name="id">
 				                </div>
 							</div>
 						</div>
 					</div>
 					<div class="col-xs-4">
 						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">负责人电话<font style="color:red">*</font> </label>
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级名称<font style="color:red">*</font> </label>
 							<div class="col-sm-8">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
+				                    <i class="fa fa-user-o"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="phone">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">地址<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="address">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">上级负责人<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                   <input type="text" class="form-control" name="chief">
+		                  			<input type="text" class="form-control" name="gradeName">
 				                </div>
 							</div>
 						</div>
@@ -91,11 +68,11 @@
 					</div>
 					<div class="col-md-offset-10 col-md-12">
 						<div class="form-group">
-                                <button type="submit" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
+                                <button type="button" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
                                 <button type="button" class="btn btn-info" id="resetBtn">重置</button>
                         </div>
-                     </div>
-				</div>
+                     </div>-->
+				</div> 
 			</div>
 			<div class="box-body">
 				<div class="row">
@@ -106,17 +83,17 @@
 								<button type="button" onclick="toAdd()" class="btn btn-primary">新增分级</button>
 								</h3>
 							</div>
-							<table id="asnTable" class="table table-hover">
+							<table id="gradeTable" class="table table-hover">
 								<thead>
 									<tr>
 										<th>操作</th>
 										<th>等级编号</th>
 										<th>名称</th>
-										<th>电话</th>
+										<th>上级机构</th>
+										<th>类型</th>
 										<th>公司</th>
-										<th>传真</th>
 										<th>负责人</th>
-										<th>上级负责人</th>
+										<th>电话</th>
 										<th>创建时间</th>
 									</tr>
 								</thead>
@@ -157,10 +134,102 @@
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
+
+/**
+ * 初始化分页信息
+ */
+var options = {
+			queryForm : ".query",
+			url :  "${wmsUrl}/admin/system/gradeMng/dataList.shtml",
+			numPerPage:"20",
+			currentPage:"",
+			index:"1",
+			callback:rebuildTable
+}
+
+
+$(function(){
+	 $(".pagination-nav").pagination(options);
+})
+
+
+function reloadTable(){
+	$.page.loadData(options);
+}
+
+
+/**
+ * 重构table
+ */
+function rebuildTable(data){
+	$("#gradeTable tbody").html("");
+
+	if (data == null || data.length == 0) {
+		return;
+	}
+	
+	var list = data.obj;
+	
+	if (list == null || list.length == 0) {
+		layer.alert("没有查到数据");
+		return;
+	}
+
+	var str = "";
+	for (var i = 0; i < list.length; i++) {
+		str += "<tr>";
+		//if ("${privilege>=2}") {
+		if (true) {
+			str += "<td align='left'>";
+			str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
+			str += "</td>";
+		}
+		str += "<td>" + list[i].id;
+		str += "</td><td>" + list[i].gradeName;
+		
+		var pgName = list[i].parentGradeName;
+		
+		if(pgName != null && pgName !="null" && pgName != ""){
+			str += "<td>" + list[i].parentGradeName;
+		}else{
+			str += "<td>";
+		}
+		
+		
+		var type = list[i].gradeType;
+		
+		if(type == "0"){
+			str += "</td><td>大贸" ;
+		}else if(type == "1"){
+			str += "</td><td>跨境";
+		}else{
+			str += "</td><td>无";
+		}
+		str += "</td><td>" + list[i].company;
+		str += "</td><td>" + list[i].personInCharge;
+		str += "</td><td>" + list[i].phone;
+		str += "</td><td>" + list[i].createTime;
+		
+		str += "</td></tr>";
+	}
+
+	$("#gradeTable tbody").html(str);
+}
+	
+function toEdit(id){
+	var index = layer.open({
+		  type: 2,
+		  content: '${wmsUrl}/admin/system/gradeMng/toEdit.shtml?gradeId='+id,
+		  maxmin: true
+		});
+		layer.full(index);
+}
+
+
 function toAdd(){
 	var index = layer.open({
 		  type: 2,
-		  content: '${wmsUrl}/admin/system/gradeMng/add.shtml',
+		  content: '${wmsUrl}/admin/system/gradeMng/toAdd.shtml',
 		  maxmin: true
 		});
 		layer.full(index);

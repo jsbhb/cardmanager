@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.card.manager.factory.auth.model.AuthInfo;
-import com.card.manager.factory.auth.model.Operator;
+import com.card.manager.factory.system.model.StaffEntity;
 
 /**
  * 说明：回话管理工具类
@@ -67,8 +67,8 @@ public final class SessionUtils {
 	 * @param request
 	 * @return SysUser
 	 */
-	public static Operator getOperator(HttpServletRequest request) {
-		return (Operator) request.getSession(true).getAttribute(SESSION_OPERATOR);
+	public static StaffEntity getOperator(HttpServletRequest request) {
+		return (StaffEntity) request.getSession(true).getAttribute(SESSION_OPERATOR);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public final class SessionUtils {
 	 * @param request
 	 * @return opt
 	 */
-	public static void setOperator(HttpServletRequest request, Operator opt) {
+	public static void setOperator(HttpServletRequest request, StaffEntity opt) {
 		request.getSession(true).setAttribute(SESSION_OPERATOR, opt);
 	}
 

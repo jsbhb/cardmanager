@@ -8,6 +8,7 @@
 package com.card.manager.factory.system.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -85,6 +86,11 @@ public class RoleMngServiceImpl implements RoleMngService {
 			roleMapper.insertRoleFunc(params);
 					
 		}
+	}
+
+	@Override
+	public List<RoleEntity> queryAll() {
+		return roleMapper.queryNormal();
 	}
 
 }

@@ -7,7 +7,7 @@
  */
 package com.card.manager.factory.system.model;
 
-import java.sql.Date;
+import net.sf.json.JSONObject;
 
 /**
  * ClassName: GradeInfo <br/>
@@ -19,45 +19,113 @@ import java.sql.Date;
  * @since JDK 1.7
  */
 public class GradeEntity {
-	private int id;
-	private String name;
-	private String email;
-	private String phone;
-	private String post;
-	private String fax;
-	private String address;
-	private int chief;
-	private int gradeCenterId;
-	private String company;
-	private String userName;
-	private int staffId;
-	private int userCenterId;
-	private Date createTime;
-	private Date lastUpdateTime;
-	private int opt;
 
-	public int getId() {
+	private Integer id;
+
+	private String account;
+
+	private Integer parentId;
+
+	private String parentGradeName;
+
+	private Integer gradeType;
+
+	private String gradeName;
+
+	private String personInCharge;
+
+	private int personInChargeId;
+
+	private String phone;
+
+	private String attribute;
+
+	private Integer gradePersonInCharge;// 负责该区域中心的人
+
+	private String createTime;
+
+	private String updateTime;
+
+	private String opt;
+
+	private String company;
+
+	public GradeEntity() {
+	}
+
+	public GradeEntity(JSONObject jObj) {
+		this.id = jObj.getInt("id");
+		try {
+			this.parentId = jObj.getInt("parentId");
+		} catch (Exception e) {
+
+		}
+		this.gradeName = jObj.getString("gradeName");
+		this.parentGradeName = jObj.getString("parentGradeName");
+		this.company = jObj.getString("company");
+		this.updateTime = jObj.getString("updateTime");
+		this.createTime = jObj.getString("createTime");
+		this.personInCharge = jObj.getString("personInCharge");
+		this.gradePersonInCharge = jObj.getInt("gradePersonInCharge");
+		this.phone = jObj.getString("phone");
+		this.gradeType = jObj.getInt("gradeType");
+		this.personInChargeId = jObj.getInt("personInChargeId");
+	}
+
+	public String getParentGradeName() {
+		return parentGradeName;
+	}
+
+	public void setParentGradeName(String parentGradeName) {
+		this.parentGradeName = parentGradeName;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Integer getParentId() {
+		return parentId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
-	public String getEmail() {
-		return email;
+	public int getPersonInChargeId() {
+		return personInChargeId;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setPersonInChargeId(int personInChargeId) {
+		this.personInChargeId = personInChargeId;
+	}
+
+	public Integer getGradeType() {
+		return gradeType;
+	}
+
+	public void setGradeType(Integer gradeType) {
+		this.gradeType = gradeType;
+	}
+
+	public String getGradeName() {
+		return gradeName;
+	}
+
+	public void setGradeName(String gradeName) {
+		this.gradeName = gradeName;
+	}
+
+	public String getPersonInCharge() {
+		return personInCharge;
+	}
+
+	public void setPersonInCharge(String personInCharge) {
+		this.personInCharge = personInCharge;
 	}
 
 	public String getPhone() {
@@ -68,44 +136,44 @@ public class GradeEntity {
 		this.phone = phone;
 	}
 
-	public String getPost() {
-		return post;
+	public String getAttribute() {
+		return attribute;
 	}
 
-	public void setPost(String post) {
-		this.post = post;
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
 	}
 
-	public String getFax() {
-		return fax;
+	public Integer getGradePersonInCharge() {
+		return gradePersonInCharge;
 	}
 
-	public void setFax(String fax) {
-		this.fax = fax;
+	public void setGradePersonInCharge(Integer gradePersonInCharge) {
+		this.gradePersonInCharge = gradePersonInCharge;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getCreateTime() {
+		return createTime;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
-	public int getChief() {
-		return chief;
+	public String getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setChief(int chief) {
-		this.chief = chief;
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
 	}
 
-	public int getGradeCenterId() {
-		return gradeCenterId;
+	public String getOpt() {
+		return opt;
 	}
 
-	public void setGradeCenterId(int gradeCenterId) {
-		this.gradeCenterId = gradeCenterId;
+	public void setOpt(String opt) {
+		this.opt = opt;
 	}
 
 	public String getCompany() {
@@ -116,52 +184,12 @@ public class GradeEntity {
 		this.company = company;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getAccount() {
+		return account;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public int getStaffId() {
-		return staffId;
-	}
-
-	public void setStaffId(int staffId) {
-		this.staffId = staffId;
-	}
-
-	public int getUserCenterId() {
-		return userCenterId;
-	}
-
-	public void setUserCenterId(int userCenterId) {
-		this.userCenterId = userCenterId;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getLastUpdateTime() {
-		return lastUpdateTime;
-	}
-
-	public void setLastUpdateTime(Date lastUpdateTime) {
-		this.lastUpdateTime = lastUpdateTime;
-	}
-
-	public int getOpt() {
-		return opt;
-	}
-
-	public void setOpt(int opt) {
-		this.opt = opt;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 }

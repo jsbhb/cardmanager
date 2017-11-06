@@ -15,6 +15,10 @@
 		select * from auth_role
 	</select>
 	
+	<select id="queryNormal" resultMap="roleEntity">
+		select * from auth_role where roleState = 1 and roleId > 1
+	</select>
+	
 	<select id="queryById" resultMap="roleEntity">
 		select * from auth_role where roleid = #{roleId}
 	</select>

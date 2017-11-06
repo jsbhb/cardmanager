@@ -21,15 +21,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.annotation.Auth;
 import com.card.manager.factory.auth.model.AuthInfo;
-import com.card.manager.factory.auth.model.Operator;
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
-import com.card.manager.factory.auth.service.OperatorMngService;
 import com.card.manager.factory.base.BaseController;
+import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.log.SysLogger;
+import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -42,7 +43,7 @@ import net.sf.json.JSONObject;
 public class LoginController extends BaseController {
 
 	@Resource
-	OperatorMngService operatorMngService;
+	StaffMngService staffMngService;
 
 	@Resource
 	FuncMngService funcMngService;
@@ -101,7 +102,7 @@ public class LoginController extends BaseController {
 		}
 
 		String msg = "用户登录日志:";
-		Operator operator = operatorMngService.queryByLoginInfo(userName, MethodUtil.MD5(pwd));
+		StaffEntity operator = staffMngService.queryByLoginInfo(userName, MethodUtil.MD5(pwd));
 		if (operator == null) {
 			// 记录错误登录日志
 			sysLogger.error(LoggerConstants.LOGIN_LOGGER, msg + "[" + userName + "]" + "账号或者密码输入错误.");
@@ -119,30 +120,30 @@ public class LoginController extends BaseController {
 
 		// 调用权限中心 验证是否可以登录
 		RestTemplate restTemplate = new RestTemplate();
-		UserInfo userInfo = new UserInfo(userName, pwd, operator.getPlatId(), PlatUserType.CROSS_BORDER.getIndex());
-//
-//		HttpEntity<UserInfo> entity = new HttpEntity<UserInfo>(userInfo, null);
-//
-//		try {
-//			ResponseEntity<String> result = restTemplate.exchange(authUrl + "authcenter/auth/login", HttpMethod.POST,
-//					entity, String.class);
-//
-//			JSONObject json = JSONObject.fromObject(result.getBody());
-//			JSONObject obj = (JSONObject) json.getJSONObject("obj");
-//			operator.setToken(obj.getString("token"));
-//
-//		} catch (Exception e) {
-//			sysLogger.error(LoggerConstants.LOGIN_LOGGER, msg + "[" + userName + "]" + "权限认证失败.");
-//			sendFailureMessage(response, "权限认证失败，请重试.");
-//			return;
-//		}
+		UserInfo userInfo = new UserInfo(PlatUserType.CROSS_BORDER.getIndex(), 4, operator.getPlatId());
+
+		HttpEntity<UserInfo> entity = new HttpEntity<UserInfo>(userInfo, null);
+
+		try {
+			ResponseEntity<String> result = restTemplate.exchange(authUrl + ServerCenterContants.AUTH_CENTER_LOGIN,
+					HttpMethod.POST, entity, String.class);
+
+			JSONObject json = JSONObject.fromObject(result.getBody());
+			JSONObject obj = (JSONObject) json.getJSONObject("obj");
+			operator.setToken(obj.getString("token"));
+
+		} catch (Exception e) {
+			sysLogger.error(LoggerConstants.LOGIN_LOGGER, msg + "[" + userName + "]" + "权限认证失败.");
+			sendFailureMessage(response, "权限认证失败，请重试.");
+			return;
+		}
 
 		initSession(request, operator);
 
 		sendSuccessMessage(response, "登录成功.");
 	}
 
-	private boolean initSession(HttpServletRequest request, Operator operator) {
+	private boolean initSession(HttpServletRequest request, StaffEntity operator) {
 		// 设置Operator到Session
 		SessionUtils.setOperator(request, operator);
 
@@ -171,7 +172,7 @@ public class LoginController extends BaseController {
 	public ModelAndView main(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
 		Map<String, Object> context = getRootMap();
 
-		Operator operator = SessionUtils.getOperator(req);
+		StaffEntity operator = SessionUtils.getOperator(req);
 		if (operator == null) {
 			return forword("login", context);
 		}

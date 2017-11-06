@@ -1,7 +1,5 @@
 package com.card.manager.factory.auth.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.auth.model.AuthInfo;
-import com.card.manager.factory.auth.model.Operator;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
 
 @Controller
@@ -81,7 +79,7 @@ public class FuncMngController extends BaseController {
 	@RequestMapping(value = "/list")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("menuList", queryMenuList(req, opt));
 		return forword("system/func/funcMng2", context);
 	}
@@ -111,7 +109,7 @@ public class FuncMngController extends BaseController {
 	@RequestMapping(value = "/dataList")
 	public void dataList(Pagination pagination, HttpServletRequest req, HttpServletResponse resp) {
 
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		queryMenuList(req, opt);
 
 		sendSuccessMessage(resp, null);
@@ -126,7 +124,7 @@ public class FuncMngController extends BaseController {
 	 * @param operator
 	 * @since JDK 1.7
 	 */
-	private List<AuthInfo> queryMenuList(HttpServletRequest request, Operator operator) {
+	private List<AuthInfo> queryMenuList(HttpServletRequest request, StaffEntity operator) {
 		// 设置MenuList到Session
 		List<AuthInfo> authInfos = funcMngService.queryFunc();
 		return AuthCommon.treeAuthInfo(authInfos);

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.auth.model.AuthInfo;
-import com.card.manager.factory.auth.model.Operator;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.system.model.RoleEntity;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.RoleMngService;
 import com.card.manager.factory.util.SessionUtils;
 import com.github.pagehelper.Page;
@@ -44,7 +44,7 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		return forword("system/role/roleMng", context);
 	}
@@ -52,7 +52,7 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/toAdd")
 	public ModelAndView add(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		return forword("system/role/add", context);
 	}
@@ -60,7 +60,7 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/addRole", method = RequestMethod.POST)
 	public void addFunc(HttpServletRequest req, HttpServletResponse resp, @RequestBody RoleEntity role) {
 
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		role.setOpt(Integer.parseInt(opt.getOptid()));
 		try {
 			roleMngService.addRole(role);
@@ -75,7 +75,7 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/toEdit")
 	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		try {
 			// 获取角色信息
@@ -102,7 +102,7 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/editRole", method = RequestMethod.POST)
 	public void editFunc(HttpServletRequest req, HttpServletResponse resp, @RequestBody RoleEntity role) {
 		try {
-			Operator opt = SessionUtils.getOperator(req);
+			StaffEntity opt = SessionUtils.getOperator(req);
 			role.setOpt(Integer.parseInt(opt.getOptid()));
 			roleMngService.edit(role, true);
 		} catch (Exception e) {
@@ -116,7 +116,7 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/change", method = RequestMethod.POST)
 	public void change(HttpServletRequest req, HttpServletResponse resp, RoleEntity role) {
 		try {
-			Operator opt = SessionUtils.getOperator(req);
+			StaffEntity opt = SessionUtils.getOperator(req);
 			role.setOpt(Integer.parseInt(opt.getOptid()));
 			roleMngService.edit(role, false);
 		} catch (Exception e) {
@@ -130,14 +130,14 @@ public class RoleMngController extends BaseController {
 	@RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
-		Operator opt = SessionUtils.getOperator(req);
+		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		return forword("system/role/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack query(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
 		PageCallBack pcb = new PageCallBack();
 
 		try {

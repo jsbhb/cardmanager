@@ -66,6 +66,9 @@ CREATE TABLE `auth_operator` (
   `needChangePwd` varchar(2) DEFAULT NULL COMMENT '是否需要修改密码',
   `locked` varchar(2) DEFAULT NULL COMMENT '是否锁定',
   `platid` int(11) DEFAULT NULL,
+  `gradeid` int(11) DEFAULT NULL,
+  `userCenterId` int(11) DEFAULT NULL,
+  `gradeName` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`optid`),
   UNIQUE KEY `optid` (`optid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -83,6 +86,23 @@ CREATE TABLE `auth_operatorrole` (
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   `opt` varchar(20) DEFAULT NULL COMMENT '操作人'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` FUNCTION `nextval_safe`(sequence_name varchar(64)) RETURNS int(11)
+BEGIN
+ declare current integer;
+    set current = 0;
+    
+    select t.value into current from t_sequence t where t.sequence_name = sequence_name for update;
+    update t_sequence t set t.value = t.value + 1 where t.sequence_name = sequence_name;
+    set current = current + 1;
+
+    return current;
+END$$
+DELIMITER ;
+
+
 
 --
 -- Dumping data for table `auth_func`
