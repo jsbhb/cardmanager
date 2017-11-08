@@ -24,6 +24,7 @@ import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -44,50 +45,50 @@ import net.sf.json.JSONObject;
  * @since JDK 1.7
  */
 @Service
-public class GradeMngServiceImpl implements GradeMngService {
+public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implements GradeMngService {
 
 	@Resource
 	StaffMapper<StaffEntity> staffMapper;
 
-	@Override
-	public PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception {
-
-		if (token == null || "".equals(token)) {
-			throw new Exception("无令牌信息");
-		}
-
-		// 调用权限中心 验证是否可以登录
-		RestCommonHelper helper = new RestCommonHelper(pagination);
-
-		ResponseEntity<String> result = helper.requestForPage(
-				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_QUERY_FOR_PAGE, hashMap, token,
-				HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(result.getBody());
-		JSONObject pJson = json.getJSONObject("pagination");
-		pagination = new Pagination(pJson);
-
-		JSONArray obj = json.getJSONArray("obj");
-		int index = obj.size();
-
-		if (index == 0) {
-			throw new Exception("没有查询到相关数据！");
-		}
-
-		List<GradeEntity> gradeList = new ArrayList<GradeEntity>();
-		for (int i = 0; i < index; i++) {
-			JSONObject jObj = obj.getJSONObject(i);
-			GradeEntity temp = new GradeEntity(jObj);
-			gradeList.add(temp);
-		}
-
-		PageCallBack pcb = new PageCallBack();
-		pcb.setObj(gradeList);
-		pcb.setPagination(pagination);
-		pcb.setSuccess(true);
-
-		return pcb;
-	}
+//	@Override
+//	public PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception {
+//
+//		if (token == null || "".equals(token)) {
+//			throw new Exception("无令牌信息");
+//		}
+//
+//		// 调用权限中心 验证是否可以登录
+//		RestCommonHelper helper = new RestCommonHelper(pagination);
+//
+//		ResponseEntity<String> result = helper.requestForPage(
+//				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_QUERY_FOR_PAGE, hashMap, token,
+//				HttpMethod.POST);
+//
+//		JSONObject json = JSONObject.fromObject(result.getBody());
+//		JSONObject pJson = json.getJSONObject("pagination");
+//		pagination = new Pagination(pJson);
+//
+//		JSONArray obj = json.getJSONArray("obj");
+//		int index = obj.size();
+//
+//		if (index == 0) {
+//			throw new Exception("没有查询到相关数据！");
+//		}
+//
+//		List<GradeEntity> gradeList = new ArrayList<GradeEntity>();
+//		for (int i = 0; i < index; i++) {
+//			JSONObject jObj = obj.getJSONObject(i);
+//			GradeEntity temp = new GradeEntity(jObj);
+//			gradeList.add(temp);
+//		}
+//
+//		PageCallBack pcb = new PageCallBack();
+//		pcb.setObj(gradeList);
+//		pcb.setPagination(pagination);
+//		pcb.setSuccess(true);
+//
+//		return pcb;
+//	}
 
 	@Override
 	public void saveGrade(GradeEntity gradeInfo, StaffEntity staff)  throws Exception{

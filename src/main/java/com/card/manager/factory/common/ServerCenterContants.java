@@ -30,6 +30,14 @@ public class ServerCenterContants {
 	 */
 	public static final String AUTH_CENTER_LOGIN = "authcenter/auth/login";
 	public static final String AUTH_CENTER_REGISTER = "authcenter/auth/register";
+	
+	/**
+	 * 供应商中心url
+	 */
+	public static final String SUPPLIER_CENTER_QUERY_FOR_PAGE = "suppliercenter/" + SERVER_CENTER_EDITION+"/supplier/queryForPage";
+	public static final String SUPPLIER_CENTER_SAVE = "suppliercenter/"+SERVER_CENTER_EDITION+"/supplier/save";
+	public static final String SUPPLIER_CENTER_QUERY= "suppliercenter/"+SERVER_CENTER_EDITION+"/supplier/query";
+
 
 
 	/**

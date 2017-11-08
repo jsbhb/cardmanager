@@ -93,7 +93,7 @@ public class RoleMngController extends BaseController {
 			context.put(MENULIST, menuList);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
-			return forword("system/error", context);
+			return forword("error", context);
 		}
 
 		return forword("system/role/edit", context);

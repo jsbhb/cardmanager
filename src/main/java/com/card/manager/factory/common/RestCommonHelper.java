@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,15 +46,15 @@ public class RestCommonHelper {
 
 	/**
 	 * 
-	 * request:普通请求. <br/>   
-	 *  
-	 * @author hebin 
+	 * request:普通请求. <br/>
+	 * 
+	 * @author hebin
 	 * @param url
 	 * @param token
 	 * @param needToken
 	 * @param entity
 	 * @param method
-	 * @return  
+	 * @return
 	 * @since JDK 1.7
 	 */
 	public ResponseEntity<String> request(String url, String token, boolean needToken, Object entity,
@@ -68,23 +69,23 @@ public class RestCommonHelper {
 
 	/**
 	 * 
-	 * requestForPage:分页请求. <br/>   
-	 *  
-	 * @author hebin 
+	 * requestForPage:分页请求. <br/>
+	 * 
+	 * @author hebin
 	 * @param url
 	 * @param params
 	 * @param token
 	 * @param method
-	 * @return  
+	 * @return
 	 * @since JDK 1.7
 	 */
 	public ResponseEntity<String> requestForPage(String url, Map<String, Object> params, String token,
 			HttpMethod method) {
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 		httpHeaders.add("authentication", ServerCenterContants.TOKEN_PREFIX + token);
-		params.put("currentPage", pagination.getCurrentPage());
-		params.put("numPerPage", pagination.getNumPerPage());
 
-		return restTemplate.exchange(url, method, new HttpEntity<Object>(params, httpHeaders), String.class);
+		return restTemplate.exchange(url, method, new HttpEntity<Object>(pagination, httpHeaders), String.class,
+				params);
 
 	}
 

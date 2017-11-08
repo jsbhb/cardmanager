@@ -1,4 +1,4 @@
-package com.card.manager.factory.system.controller;
+package com.card.manager.factory.supplier.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,30 +17,26 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
-import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.supplier.model.SupplierEntity;
+import com.card.manager.factory.supplier.service.SupplierService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
-import com.card.manager.factory.system.service.GradeMngService;
-import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.SessionUtils;
 
 @Controller
-@RequestMapping("/admin/system/gradeMng")
-public class GradeMngController extends BaseController {
+@RequestMapping("/admin/supplier/supplierMng")
+public class SupplierMngController extends BaseController {
 
 	@Resource
-	GradeMngService gradeMngService;
-
-	@Resource
-	StaffMngService staffMngService;
+	SupplierService supplierService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("system/grade/gradeMng", context);
+		return forword("supplier/mng", context);
 	}
 
 	@RequestMapping(value = "/toAdd")
@@ -48,15 +44,15 @@ public class GradeMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("system/grade/add", context);
+		return forword("supplier/add", context);
 	}
 
-	@RequestMapping(value = "/addGrade", method = RequestMethod.POST)
-	public void addGrade(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
+	@RequestMapping(value = "/addSupplier", method = RequestMethod.POST)
+	public void addSupplier(HttpServletRequest req, HttpServletResponse resp, @RequestBody SupplierEntity entity) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			gradeMngService.saveGrade(gradeInfo, staffEntity);
+			supplierService.addSupplier(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
@@ -70,30 +66,18 @@ public class GradeMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("system/grade/list", context);
+		return forword("supplier/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
 		PageCallBack pcb = null;
-
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
-		String gradeName = req.getParameter("gradeName");
-		if (gradeName != null && "".equals(gradeName)) {
-			params.put("gradeName", gradeName);
-		}
-
-		StaffEntity opt = SessionUtils.getOperator(req);
-
-		if (opt.getRoleId() != AuthCommon.SUPER_ADMIN) {
-			int id = opt.getGradeId();
-			params.put("id", id);
-		}
-
 		try {
-			pcb = gradeMngService.dataList(pagination, params, opt.getToken(),
-					ServerCenterContants.USER_CENTER_GRADE_QUERY_FOR_PAGE, GradeEntity.class);
+			pcb = supplierService.dataList(pagination, params, staffEntity.getToken(),
+					ServerCenterContants.SUPPLIER_CENTER_QUERY_FOR_PAGE, SupplierEntity.class);
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -112,25 +96,25 @@ public class GradeMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		String gradeId = req.getParameter("gradeId");
+		String id = req.getParameter("supplierId");
 
 		try {
-			GradeEntity entity = gradeMngService.queryById(gradeId, opt.getToken());
-			context.put("grade", entity);
+			SupplierEntity supplier = supplierService.queryById(id, opt.getToken());
+			context.put("supplier", supplier);
 		} catch (Exception e) {
-			context.put("error", e.getMessage());
+			context.put(ERROR, e.getMessage());
 			return forword("error", context);
 		}
 
-		return forword("system/grade/edit", context);
+		return forword("supplier/edit", context);
 	}
 
-	@RequestMapping(value = "/editGrade", method = RequestMethod.POST)
-	public void editGrade(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
+	@RequestMapping(value = "/editSupplier", method = RequestMethod.POST)
+	public void editSupplier(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			gradeMngService.saveGrade(gradeInfo, staffEntity);
+			// gradeMngService.saveGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
@@ -138,28 +122,4 @@ public class GradeMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
-
-	@RequestMapping(value = "/syncStaff", method = RequestMethod.POST)
-	public void syncStaff(HttpServletRequest req, HttpServletResponse resp) {
-
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			String gradeId = req.getParameter("gradeId");
-			GradeEntity grade = gradeMngService.queryById(gradeId, staffEntity.getToken());
-			staffEntity = new StaffEntity();
-			staffEntity.setGradeName(grade.getGradeName());
-			staffEntity.setParentGradeId(grade.getParentId());
-			staffEntity.setOptName(grade.getPersonInCharge());
-			staffEntity.setGradeId(grade.getId());
-			staffEntity.setUserCenterId(grade.getPersonInChargeId());
-			gradeMngService.registerAuthCenter(staffEntity, false);
-			;
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-
-		sendSuccessMessage(resp, null);
-	}
-
 }

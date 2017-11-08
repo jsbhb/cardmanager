@@ -7,10 +7,7 @@
  */
 package com.card.manager.factory.system.service;
 
-import java.util.Map;
-
-import com.card.manager.factory.base.PageCallBack;
-import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 
@@ -23,18 +20,18 @@ import com.card.manager.factory.system.model.StaffEntity;
  * @version
  * @since JDK 1.7
  */
-public interface GradeMngService {
+public interface GradeMngService extends ServerCenterService{
 
-	/**
-	 * dataList:分页查询. <br/>
-	 * 
-	 * @author hebin
-	 * @param pagination
-	 * @param hashMap
-	 * @return
-	 * @since JDK 1.7
-	 */
-	PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception;
+//	/**
+//	 * dataList:分页查询. <br/>
+//	 * 
+//	 * @author hebin
+//	 * @param pagination
+//	 * @param hashMap
+//	 * @return
+//	 * @since JDK 1.7
+//	 */
+//	PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception;
 
 	/**
 	 * saveGrade:新增分级. <br/>
