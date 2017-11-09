@@ -197,6 +197,7 @@ function rebuildTable(data){
 function toAdd(){
 	
 	var index = layer.open({
+		  title:"新增角色",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/system/roleMng/toAdd.shtml?',
 		  area: ['320px', '195px'],
@@ -212,6 +213,7 @@ function toEdit(id){
 	}
 	
 	var index = layer.open({
+		  title:"编辑角色",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/system/roleMng/toEdit.shtml?roleId='+id,
 		  area: ['320px', '195px'],

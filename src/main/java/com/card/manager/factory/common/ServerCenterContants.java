@@ -48,6 +48,14 @@ public class ServerCenterContants {
 			+ "/grade/queryForPage";
 	public static final String USER_CENTER_GRADE_SAVE = "usercenter/" + SERVER_CENTER_EDITION + "/user/grade/save";
 	public static final String USER_CENTER_GRADE_QUERY = "usercenter/" + SERVER_CENTER_EDITION + "/grade/query";
+	
+	
+	/**
+	 * 商品中心url
+	 */
+	public static final String GOODS_CENTER_BRAND_QUERY_FOR_PAGE = "goodscenter/" + SERVER_CENTER_EDITION+"/goods/brand/queryForPage";
+	public static final String GOODS_CENTER_BRAND_SAVE = "goodscenter/"+SERVER_CENTER_EDITION+"/goods/brand/save";
+	public static final String GOODS_CENTER_BRAND_QUERY= "goodscenter/"+SERVER_CENTER_EDITION+"/goods/brand/query";
 
 	
 

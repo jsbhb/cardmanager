@@ -94,7 +94,7 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	 * @return  
 	 * @since JDK 1.7  
 	 */
-	int nextVal(int gradeId);
+	int nextVal(String gradeId);
 
 	/**  
 	 * insertRoleOpt:角色编号表插入. <br/>   

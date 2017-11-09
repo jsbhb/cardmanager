@@ -64,7 +64,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 	public void addStaff(StaffEntity staff) throws OperatorSaveException,SyncUserCenterException {
 		// 生成badge
 		try {
-			int badge = staffMapper.nextVal(staff.getGradeId());
+			int badge = staffMapper.nextVal(staff.getGradeId()+"");
 			badge += staff.getGradeId() * 100000;
 			staff.setBadge(badge + "");
 			staff.setPassword(MethodUtil.MD5("000000"));

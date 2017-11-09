@@ -7,20 +7,21 @@
  */
 package com.card.manager.factory.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
-import com.card.manager.factory.base.PageCallBack;
-import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
@@ -32,7 +33,6 @@ import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -167,5 +167,4 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return new GradeEntity(json.getJSONObject("obj"));
 	}
-
 }
