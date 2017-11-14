@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.service.BrandService;
-import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.util.URLUtils;
 
@@ -55,12 +55,14 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
+		
+		CachePoolComponent.syncBrand(token);
 
 	}
 
 	@Override
 	public BrandEntity queryById(String id, String token) {
-		SupplierEntity entity = new SupplierEntity();
+		BrandEntity entity = new BrandEntity();
 		entity.setId(Integer.parseInt(id));
 
 		RestCommonHelper helper = new RestCommonHelper();

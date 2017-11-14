@@ -5,7 +5,9 @@
  * Date:Nov 7, 20173:22:23 PM  
  *  
  */
-package com.card.manager.factory.supplier.service.impl;
+package com.card.manager.factory.goods.service.impl;
+
+import javax.annotation.Resource;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,12 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
-import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.goods.model.BrandEntity;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.service.BrandService;
+import com.card.manager.factory.goods.service.GoodsBaseService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
-import com.card.manager.factory.supplier.service.SupplierService;
+import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONObject;
@@ -31,13 +36,17 @@ import net.sf.json.JSONObject;
  * @since JDK 1.7
  */
 @Service
-public class SupplierServiceImpl extends AbstractServcerCenterBaseService implements SupplierService {
+public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService implements GoodsBaseService {
+
+	@Resource
+	StaffMapper staffMapper;
 
 	@Override
-	public void addSupplier(SupplierEntity entity, String token) throws Exception {
+	public void addEntity(GoodsBaseEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
+
 		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.SUPPLIER_CENTER_SAVE, token, true, entity,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BASE_SAVE, token, true, entity,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
@@ -46,21 +55,20 @@ public class SupplierServiceImpl extends AbstractServcerCenterBaseService implem
 			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
 
-		CachePoolComponent.syncSupplier(token);
 	}
 
 	@Override
-	public SupplierEntity queryById(String id, String token) {
+	public GoodsBaseEntity queryById(String id, String token) {
 		SupplierEntity entity = new SupplierEntity();
 		entity.setId(Integer.parseInt(id));
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.SUPPLIER_CENTER_QUERY, token, true, entity,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BASE_QUERY, token, true, entity,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return new SupplierEntity(json.getJSONObject("obj"));
+		return new GoodsBaseEntity(json.getJSONObject("obj"));
 	}
 
 }

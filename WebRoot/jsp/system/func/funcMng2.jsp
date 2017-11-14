@@ -27,13 +27,13 @@
 								</li>
 								<c:forEach var="item" items="${menuList}">
 								<li>
-									<span><i class="fa fa-folder-open"></i> ${item.name}</span>
+									<span><i class="fa fa-folder"></i> ${item.name}</span>
 									<a href="#" onclick="showAddFunc(${item.funcId})"><i class="fa fa-plus"></i></a>
 									<a href="#" onclick="showEditFunc(${item.funcId})"><i class="fa fa-pencil"></i></a>
 			                		<a href="#" onclick="deleteFunc(${item.funcId})"><i class="fa fa-trash-o"></i></a>
 									<ul>
 										<c:forEach var="node" items="${item.children}">
-											<li>
+											<li style="display: none;">
 							                	<span class="tree-font">
 							                		${node.name}(${node.url})
 							                		<a href="#" onclick="showEditFunc(${node.funcId})"><i class="fa fa-pencil"></i></a>

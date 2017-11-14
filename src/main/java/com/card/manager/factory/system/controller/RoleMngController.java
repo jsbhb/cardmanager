@@ -78,18 +78,25 @@ public class RoleMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		try {
+
 			// 获取角色信息
 			int roleId = Integer.parseInt(req.getParameter(ROLE_ID));
 			RoleEntity role = roleMngService.queryById(roleId);
 			context.put(ROLE, role);
 
+			List<AuthInfo> menuList = null;
+			List<AuthInfo> optMenuList = null;
 			// 获取编辑角色信息
-			List<AuthInfo> roleMenuList = funcMngService.queryFuncByRoleId(roleId);
+			List<AuthInfo> roleMenuList  = funcMngService.queryFuncByRoleId(roleId);
+			if (roleId == AuthCommon.SUPER_ADMIN) {
+				optMenuList = funcMngService.queryFunc();
+				menuList = AuthCommon.treeAuthInfo(optMenuList,roleMenuList);
+			} else {
+				// 获取当前用户可操作所有功能菜单
+				optMenuList = funcMngService.queryFuncByOptId(opt.getOptid());
+				menuList = AuthCommon.treeAuthInfo(optMenuList, roleMenuList);
+			}
 
-			// 获取当前用户可操作所有功能菜单
-			List<AuthInfo> optMenuList = funcMngService.queryFuncByOptId(opt.getOptid());
-
-			List<AuthInfo> menuList = AuthCommon.treeAuthInfo(optMenuList, roleMenuList);
 			context.put(MENULIST, menuList);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());

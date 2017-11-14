@@ -17,6 +17,7 @@ public abstract class BaseController {
 
 	public final static String SUCCESS = "success";
 	public final static String ERROR = "error";
+	public final static String ERROR_CODE = "code";
 	public final static String MSG = "msg";
 	public final static String DATA = "data";
 	public final static String OPT = "opt";

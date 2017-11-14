@@ -12,7 +12,7 @@
 	</head>
 	<body>
 
-		<p class="error">404</p>
+		<p class="error">${code}</p>
 		
 		<div class="content">
 			<h2>错误内容</h2>

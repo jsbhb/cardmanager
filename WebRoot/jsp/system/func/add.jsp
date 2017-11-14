@@ -89,7 +89,7 @@
 						 parent.layer.closeAll();
 						 parent.location.reload();
 					 }else{
-						  layer.alert(data.errInfo);
+						  layer.alert(data.msg);
 					 }
 				 },
 				 error:function(){
