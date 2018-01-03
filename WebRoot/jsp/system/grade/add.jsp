@@ -28,7 +28,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="gradeName">
 				                </div>
@@ -39,7 +39,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                  <input type="text" class="form-control" name="company" placeholder="请输入...">
 				                </div>
@@ -50,7 +50,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${opt.gradeName}">
 				                  <input type="hidden" readonly class="form-control" name="parentId" value="${opt.gradeId}">
@@ -88,7 +88,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                   <input type="text" class="form-control" name="gradePersonInCharge" placeholder="请选择">
 				                </div>
@@ -102,7 +102,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                  <input type="text" class="form-control" name="phone" placeholder="请输入...">
 				                </div>

@@ -51,7 +51,7 @@ public class GradeEntity {
 	private String company;
 	
 	private Integer gradeLevel;
-
+	
 	public Integer getGradeLevel() {
 		return gradeLevel;
 	}
@@ -67,11 +67,10 @@ public class GradeEntity {
 		this.id = jObj.getInt("id");
 		try {
 			this.parentId = jObj.getInt("parentId");
-		} catch (Exception e) {
-
+			this.parentGradeName = jObj.getString("parentGradeName");
+			} catch (Exception e) {
 		}
 		this.gradeName = jObj.getString("gradeName");
-		this.parentGradeName = jObj.getString("parentGradeName");
 		this.company = jObj.getString("company");
 		this.updateTime = jObj.getString("updateTime");
 		this.createTime = jObj.getString("createTime");

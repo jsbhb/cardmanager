@@ -184,7 +184,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		List<String> list = new ArrayList<String>();
 		list.add(itemId);
 
-		String url = (ServerCenterContants.TOKEN_NOT_NEED ? "/" : "goodscenter/")
+		String url = (ServerCenterContants.TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 				+ ServerCenterContants.SERVER_CENTER_EDITION + "/goods/syncgoods/" + gradeId;
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway") + url, token, true, list,
