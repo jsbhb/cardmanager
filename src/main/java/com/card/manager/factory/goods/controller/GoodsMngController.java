@@ -140,6 +140,7 @@ public class GoodsMngController extends BaseController {
 				}
 				ThirdWarehouseGoods thirdGoods = goodsService.queryThirdById(id, opt.getToken());
 				context.put("third", thirdGoods);
+				context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 
 			} else if (NORMAL.equals(type)) {
 				// List<BrandEntity> brands =
