@@ -118,25 +118,25 @@ public class LoginController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		String authUrl = (String) context.get("gateway");
 
-		// 调用权限中心 验证是否可以登录
-//		RestTemplate restTemplate = new RestTemplate();
-//		UserInfo userInfo = new UserInfo(PlatUserType.CROSS_BORDER.getIndex(), 4, operator.getPlatId());
-//
-//		HttpEntity<UserInfo> entity = new HttpEntity<UserInfo>(userInfo, null);
-//
-//		try {
-//			ResponseEntity<String> result = restTemplate.exchange(authUrl + ServerCenterContants.AUTH_CENTER_LOGIN,
-//					HttpMethod.POST, entity, String.class);
-//
-//			JSONObject json = JSONObject.fromObject(result.getBody());
-//			JSONObject obj = (JSONObject) json.getJSONObject("obj");
-//			operator.setToken(obj.getString("token"));
-//
-//		} catch (Exception e) {
-//			sysLogger.error(LoggerConstants.LOGIN_LOGGER, msg + "[" + userName + "]" + "权限认证失败.");
-//			sendFailureMessage(response, "权限认证失败，请重试.");
-//			return;
-//		}
+		 //调用权限中心 验证是否可以登录
+		RestTemplate restTemplate = new RestTemplate();
+		UserInfo userInfo = new UserInfo(PlatUserType.CROSS_BORDER.getIndex(), 4, operator.getPlatId());
+
+		HttpEntity<UserInfo> entity = new HttpEntity<UserInfo>(userInfo, null);
+
+		try {
+			ResponseEntity<String> result = restTemplate.exchange(authUrl + ServerCenterContants.AUTH_CENTER_LOGIN,
+					HttpMethod.POST, entity, String.class);
+
+			JSONObject json = JSONObject.fromObject(result.getBody());
+			JSONObject obj = (JSONObject) json.getJSONObject("obj");
+			operator.setToken(obj.getString("token"));
+
+		} catch (Exception e) {
+			sysLogger.error(LoggerConstants.LOGIN_LOGGER, msg + "[" + userName + "]" + "权限认证失败.");
+			sendFailureMessage(response, "权限认证失败，请重试.");
+			return;
+		}
 
 		initSession(request, operator);
 

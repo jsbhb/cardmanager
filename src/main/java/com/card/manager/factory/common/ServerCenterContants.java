@@ -20,7 +20,7 @@ public class ServerCenterContants {
 
 	public static final String SERVER_CENTER_EDITION = "1.0";
 
-	public static final boolean TOKEN_NOT_NEED = true;
+	public static final boolean TOKEN_NOT_NEED = false;
 
 	/**
 	 * 
