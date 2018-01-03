@@ -66,7 +66,7 @@
 	        	<div class="box box-primary">
 	        		<div class="box-header with-border">
 						<div class="box-header with-border">
-			            	<h5 class="box-title">规格模板<font style="color:yellow">(非必需)</font> <a href="#" onclick="showSpaceGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
+			            	<h5 class="box-title">规格模板<font style="color:red">(非必需)</font> <a href="#" onclick="showSpaceGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
 			            	<div class="box-tools pull-right">
 			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 			              	</div>
@@ -113,7 +113,7 @@
 											<select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
 						                   	  <option selected="selected" value="-1">未选择</option>
 						                   	  <c:forEach var="supplier" items="${suppliers}">
-						                   	  	<option value="${supplier.id}">${supplier.supplierId}</option>
+						                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
 						                   	  </c:forEach>
 							                </select>
 							               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
