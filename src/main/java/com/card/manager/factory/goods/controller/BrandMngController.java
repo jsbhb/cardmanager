@@ -18,6 +18,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.service.BrandService;
 import com.card.manager.factory.system.model.GradeEntity;
@@ -79,7 +80,15 @@ public class BrandMngController extends BaseController {
 		try {
 			pcb = brandService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BRAND_QUERY_FOR_PAGE, BrandEntity.class);
-		} catch (Exception e) {
+		}catch(ServerCenterNullDataException e){
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(true);
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return pcb;
+		}catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
