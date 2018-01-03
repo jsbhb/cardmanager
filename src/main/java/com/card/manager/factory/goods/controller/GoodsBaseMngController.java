@@ -88,6 +88,15 @@ public class GoodsBaseMngController extends BaseController {
 		context.put(OPT, opt);
 		return forword("goods/base/list", context);
 	}
+	
+	
+	@RequestMapping(value = "/listForAdd")
+	public ModelAndView listForAdd(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		return forword("goods/base/listForAdd", context);
+	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody

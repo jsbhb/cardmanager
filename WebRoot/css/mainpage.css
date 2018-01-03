@@ -196,6 +196,12 @@ div object {
 }
 
 table{
-	font-size:14px;
+	font-size:12px;
+	vertical-align:middle;
 }
+
+table .btn{
+	font-size:12px;
+}
+
 

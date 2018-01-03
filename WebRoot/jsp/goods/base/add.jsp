@@ -28,7 +28,7 @@
 							<div class="col-sm-2">
 								<div class="input-group">
 									 <select class="form-control" name="brandId" id="brandId" style="width: 100%;">
-				                   	  <option selected="selected" value="-1">选择品牌</option>
+				                   	  <option selected="selected" value="-1">未选择</option>
 				                   	  <c:forEach var="brand" items="${brands}">
 				                   	  	<option value="${brand.brandId}">${brand.brand}</option>
 				                   	  </c:forEach>
@@ -42,7 +42,7 @@
 							<div class="col-sm-2">
 								<div class="input-group">
 									 <select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;">
-				                   	  <option selected="selected" value="-1">选择分类</option>
+				                   	  <option selected="selected" value="-1">未选择</option>
 				                   	  <c:forEach var="first" items="${firsts}">
 				                   	  	<option value="${first.firstId}">${first.name}</option>
 				                   	  </c:forEach>
@@ -69,7 +69,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="goodsName">
 				                </div>
@@ -80,7 +80,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="encode">
 				                </div>
@@ -91,7 +91,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="unit">
 				                </div>
@@ -105,7 +105,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="hscode">
 				                </div>
@@ -116,7 +116,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="incrementTax">
 				                </div>
@@ -127,7 +127,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="tariff">
 				                </div>
@@ -244,7 +244,7 @@
 					 if(data.success){	
 						 layer.alert("插入成功");
 						 parent.layer.closeAll();
-						 parent.reloadTable();
+						 parent.location.reload();
 					 }else{
 						 layer.alert(data.msg);
 					 }
@@ -294,7 +294,31 @@
                      message: '条形码不能为空！'
                  }
              }
-     	  }
+     	  },
+     	 tariff:{
+			   message: '关税不正确',
+			   validators: {
+				   notEmpty: {
+                     message: '关税不能为空'
+                 },
+				   regexp: {
+	                   regexp: /^\d+(\.\d+)?$/,
+	                   message: '关税为数字类型'
+	               }
+			   }
+		   },
+		   incrementTax:{
+			   message: '增值税不正确',
+			   validators: {
+				   notEmpty: {
+                     message: '增值税不能为空'
+                 },
+				   regexp: {
+	                   regexp: /^\d+(\.\d+)?$/,
+	                   message: '关税为数字类型'
+	               }
+			   }
+		   }
       }
   });
 	

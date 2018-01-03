@@ -8,7 +8,7 @@
 package com.card.manager.factory.goods.model;
 
 /**
- * ClassName: GoodsItem <br/>
+ * ClassName: GoodsItemEntity <br/>
  * Function: 商品明细实体. <br/>
  * date: Nov 12, 2017 10:35:27 PM <br/>
  * 
@@ -16,16 +16,14 @@ package com.card.manager.factory.goods.model;
  * @version
  * @since JDK 1.7
  */
-public class GoodsItem {
+public class GoodsItemEntity {
 	private int id;//
 	private String goodsId;// 商品ID
 	private String itemId;// itemID
 	private String itemCode;// 商家自有编码
 	private String sku;// sku信息
-	private String weight;// 商品重量（克）
-	private double proxyPrice;// 代理价格
-	private double fxPrice;// 分销价格
-	private double excise_tax;// 消费税
+	private double weight;// 商品重量（克）
+	private double exciseTax;// 消费税
 	private int isPromotion;// 是否促销0：否；1：是
 	private int status;// 商品状态0：停售，1：在售
 	private double discount;// 促销折扣
@@ -33,6 +31,12 @@ public class GoodsItem {
 	private String createTime;// 创建时间
 	private String updateTime;// 更新时间
 	private String opt;// 操作人
+	private String simpleInfo;
+	private GoodsPrice goodsPrice;
+	private String goodsName;
+	private int supplierId;
+	private String supplierName;
+	private GoodsStockEntity stock;
 
 	public int getId() {
 		return id;
@@ -74,36 +78,20 @@ public class GoodsItem {
 		this.sku = sku;
 	}
 
-	public String getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
-	public double getProxyPrice() {
-		return proxyPrice;
+	public double getExciseTax() {
+		return exciseTax;
 	}
 
-	public void setProxyPrice(double proxyPrice) {
-		this.proxyPrice = proxyPrice;
-	}
-
-	public double getFxPrice() {
-		return fxPrice;
-	}
-
-	public void setFxPrice(double fxPrice) {
-		this.fxPrice = fxPrice;
-	}
-
-	public double getExcise_tax() {
-		return excise_tax;
-	}
-
-	public void setExcise_tax(double excise_tax) {
-		this.excise_tax = excise_tax;
+	public void setExciseTax(double exciseTax) {
+		this.exciseTax = exciseTax;
 	}
 
 	public int getIsPromotion() {
@@ -160,6 +148,54 @@ public class GoodsItem {
 
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+
+	public String getSimpleInfo() {
+		return simpleInfo;
+	}
+
+	public void setSimpleInfo(String simpleInfo) {
+		this.simpleInfo = simpleInfo;
+	}
+
+	public GoodsPrice getGoodsPrice() {
+		return goodsPrice;
+	}
+
+	public void setGoodsPrice(GoodsPrice goodsPrice) {
+		this.goodsPrice = goodsPrice;
+	}
+
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+	public int getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(int supplierId) {
+		this.supplierId = supplierId;
+	}
+
+	public String getSupplierName() {
+		return supplierName;
+	}
+
+	public void setSupplierName(String supplierName) {
+		this.supplierName = supplierName;
+	}
+
+	public GoodsStockEntity getStock() {
+		return stock;
+	}
+
+	public void setStock(GoodsStockEntity stock) {
+		this.stock = stock;
 	}
 
 }

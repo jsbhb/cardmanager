@@ -74,7 +74,7 @@
 	<script type="text/javascript">
 	
 	 function btnSubmit(){
-		 
+		 $('#funcForm').data("bootstrapValidator").validate();
 		 if($('#funcForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/funcMng/editFunc.shtml",

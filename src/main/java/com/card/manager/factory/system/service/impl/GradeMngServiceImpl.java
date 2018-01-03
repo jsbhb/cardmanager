@@ -7,18 +7,11 @@
  */
 package com.card.manager.factory.system.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;

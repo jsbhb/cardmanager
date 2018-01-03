@@ -7,7 +7,6 @@
  */
 package com.card.manager.factory.common.serivce.impl;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.RestCommonHelper;
+import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONArray;
@@ -42,8 +44,10 @@ public abstract class AbstractServcerCenterBaseService implements ServerCenterSe
 	@Override
 	public PageCallBack dataList(Pagination pagination, Map<String, Object> params, String token, String url,
 			Class<?> entityClass) throws Exception {
-		if (token == null || "".equals(token)) {
-			throw new Exception("无令牌信息");
+		if (!ServerCenterContants.TOKEN_NOT_NEED) {
+			if (token == null || "".equals(token)) {
+				throw new Exception("无令牌信息");
+			}
 		}
 
 		// 调用权限中心 验证是否可以登录
@@ -60,18 +64,20 @@ public abstract class AbstractServcerCenterBaseService implements ServerCenterSe
 		int index = obj.size();
 
 		if (index == 0) {
-			throw new Exception("没有查询到相关数据！");
+			throw new ServerCenterNullDataException("没有查询到相关数据！");
 		}
 
-		List<Object> gradeList = new ArrayList<Object>();
+		List<Object> list = new ArrayList<Object>();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
-			Constructor<?> cons = entityClass.getDeclaredConstructor(JSONObject.class);
-			gradeList.add(cons.newInstance(jObj));
+//			Constructor<?> cons = entityClass.getDeclaredConstructor(JSONObject.class);
+//			list.add(cons.newInstance(jObj));
+			list.add(JSONUtilNew.parse(jObj.toString(), entityClass));
 		}
+		
 
 		PageCallBack pcb = new PageCallBack();
-		pcb.setObj(gradeList);
+		pcb.setObj(list);
 		pcb.setPagination(pagination);
 		pcb.setSuccess(true);
 

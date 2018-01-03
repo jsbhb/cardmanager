@@ -28,7 +28,7 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="supplierName">
 				                </div>

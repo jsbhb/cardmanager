@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.goods.model;
 
+import java.util.List;
+
 /**
  * ClassName: GoodsEntity <br/>
  * Function: 商品实体 <br/>
@@ -38,6 +40,10 @@ public class GoodsEntity {
 	private String createTime;// 创建时间
 	private String updateTime;// 更新时间
 	private String opt;// 操作人
+	private int templateId;
+	private GoodsItemEntity goodsItem;
+	private List<GoodsItemEntity> items;
+	private int thirdId;
 
 	public int getId() {
 		return id;
@@ -205,6 +211,38 @@ public class GoodsEntity {
 
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+
+	public int getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(int templateId) {
+		this.templateId = templateId;
+	}
+
+	public GoodsItemEntity getGoodsItem() {
+		return goodsItem;
+	}
+
+	public void setGoodsItem(GoodsItemEntity goodsItem) {
+		this.goodsItem = goodsItem;
+	}
+
+	public List<GoodsItemEntity> getItems() {
+		return items;
+	}
+
+	public void setItems(List<GoodsItemEntity> items) {
+		this.items = items;
+	}
+
+	public int getThirdId() {
+		return thirdId;
+	}
+
+	public void setThirdId(int thirdId) {
+		this.thirdId = thirdId;
 	}
 
 }

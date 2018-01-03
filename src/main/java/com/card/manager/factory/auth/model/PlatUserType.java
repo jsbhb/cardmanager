@@ -17,7 +17,7 @@ package com.card.manager.factory.auth.model;
  * @since JDK 1.7
  */
 public enum PlatUserType {
-	CROSS_BORDER("跨境业务", 1), EARA("区域中心", 2), BIG_TRADE("大贸", 3), DISTRIBUTION("分销", 4), CONSUMER("消费者", 5);
+	CROSS_BORDER("跨境业务", 1), EARA("后台用户", 2), BIG_TRADE("大贸", 3), DISTRIBUTION("分销", 4), CONSUMER("消费者", 5);
 
 	private String name;
 	private int index;

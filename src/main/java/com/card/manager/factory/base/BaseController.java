@@ -82,6 +82,21 @@ public abstract class BaseController {
 		result.put(MSG, message);
 		HtmlUtil.writerJson(response, result);
 	}
+	
+	
+	/**
+	 *
+	 * 提示成功信息
+	 *
+	 * @param message
+	 *
+	 */
+	public void sendSuccessObject(HttpServletResponse response, Object obj) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(SUCCESS, true);
+		result.put(DATA, obj);
+		HtmlUtil.writerJson(response, result);
+	}
 
 	/**
 	 * 返回信息

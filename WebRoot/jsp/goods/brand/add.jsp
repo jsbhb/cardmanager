@@ -28,7 +28,7 @@
 							<div class="col-sm-5">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="fa fa-pencil"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="brand">
 				                </div>
@@ -59,8 +59,7 @@
 				 success:function(data){
 					 if(data.success){	
 						 layer.alert("插入成功");
-						 parent.layer.closeAll();
-						 parent.reloadTable();
+						 parent.location.reload();
 					 }else{
 						 parent.reloadTable();
 						 layer.alert(data.msg);
