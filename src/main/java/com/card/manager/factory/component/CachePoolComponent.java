@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
-import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -69,13 +68,17 @@ public class CachePoolComponent {
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
-		if (json != null && json.getJSONArray("obj") != null) {
-			JSONArray array = json.getJSONArray("obj");
-			if (array != null && array.size() != 0) {
-				for (int i = 0; i < array.size(); i++) {
-					BRANDS.add(new BrandEntity(array.getJSONObject(i)));
-				}
-			}
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		
+		if (index == 0) {
+			return;
+		}
+		
+		BRANDS.clear();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			BRANDS.add(JSONUtilNew.parse(jObj.toString(), BrandEntity.class));
 		}
 	}
 
