@@ -17,6 +17,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.service.OrderService;
@@ -76,6 +77,13 @@ public class OrderMngController extends BaseController {
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			return pcb;
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -87,7 +95,7 @@ public class OrderMngController extends BaseController {
 
 		return pcb;
 	}
-	
+
 	@RequestMapping(value = "/dataListForOrderGoods", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataListForOrderGoods(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
@@ -95,14 +103,14 @@ public class OrderMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			
+
 			String orderId = req.getParameter("orderId");
 			if (StringUtil.isEmpty(orderId)) {
 				params.put("orderId", "");
 			} else {
 				params.put("orderId", orderId);
 			}
-			
+
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_GOODS_FOR_PAGE, OrderGoods.class);
 		} catch (Exception e) {
@@ -113,7 +121,7 @@ public class OrderMngController extends BaseController {
 			pcb.setSuccess(false);
 			return pcb;
 		}
-		
+
 		return pcb;
 	}
 

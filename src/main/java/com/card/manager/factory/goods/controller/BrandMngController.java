@@ -80,15 +80,14 @@ public class BrandMngController extends BaseController {
 		try {
 			pcb = brandService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BRAND_QUERY_FOR_PAGE, BrandEntity.class);
-		}catch(ServerCenterNullDataException e){
+		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
-			pcb.setErrTrace(e.getMessage());
+			pcb.setPagination(pagination);
 			pcb.setSuccess(true);
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return pcb;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}

@@ -70,6 +70,13 @@ public class GoodsMngController extends BaseController {
 		try {
 			pcb = goodsService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_QUERY_FOR_PAGE, GoodsEntity.class);
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			return pcb;
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -180,12 +187,12 @@ public class GoodsMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		pojo.setOpt(staffEntity.getOptid());
 		try {
-			
-			if(pojo.getBaseId() == 0 ){
+
+			if (pojo.getBaseId() == 0) {
 				sendFailureMessage(resp, "没有基础商品信息！");
 				return;
 			}
-			
+
 			if (StringUtil.isEmpty(pojo.getType())) {
 				sendFailureMessage(resp, "没有新增类型，请联系管理处理！");
 				return;

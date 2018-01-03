@@ -20,6 +20,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.SpecsEntity;
 import com.card.manager.factory.goods.model.SpecsTemplateEntity;
 import com.card.manager.factory.goods.model.SpecsValueEntity;
@@ -121,6 +122,13 @@ public class SpecsMngController extends BaseController {
 		try {
 			pcb = specsService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_SPECS_QUERY_FOR_PAGE, SpecsTemplateEntity.class);
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			return pcb;
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();

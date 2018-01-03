@@ -20,6 +20,7 @@ import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
@@ -107,7 +108,14 @@ public class GoodsBaseMngController extends BaseController {
 		try {
 			pcb = goodsBaseService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BASE_QUERY_FOR_PAGE, GoodsBaseEntity.class);
-		} catch (Exception e) {
+		}  catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			return pcb;
+		}catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}

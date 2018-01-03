@@ -19,6 +19,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
@@ -83,6 +84,13 @@ public class GoodsItemMngController extends BaseController {
 				GoodsUtil.changeSpecsInfo(entity);
 			}
 
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			return pcb;
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -94,8 +102,7 @@ public class GoodsItemMngController extends BaseController {
 
 		return pcb;
 	}
-	
-	
+
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
@@ -104,45 +111,45 @@ public class GoodsItemMngController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			String status = req.getParameter("status");
-			if(!StringUtil.isEmpty(status)){
+			if (!StringUtil.isEmpty(status)) {
 				params.put("status", status);
-			}else{
+			} else {
 				params.put("status", "");
 			}
 			String itemCode = req.getParameter("itemCode");
-			if(!StringUtil.isEmpty(itemCode)){
+			if (!StringUtil.isEmpty(itemCode)) {
 				params.put("itemCode", itemCode);
-			}else{
+			} else {
 				params.put("itemCode", "");
 			}
 			String supplierId = req.getParameter("supplierId");
-			if(!StringUtil.isEmpty(supplierId)){
+			if (!StringUtil.isEmpty(supplierId)) {
 				params.put("supplierId", supplierId);
-			}else{
+			} else {
 				params.put("supplierId", "");
 			}
 			String goodsName = req.getParameter("goodsName");
-			if(!StringUtil.isEmpty(goodsName)){
+			if (!StringUtil.isEmpty(goodsName)) {
 				params.put("goodsName", goodsName);
-			}else{
+			} else {
 				params.put("goodsName", "");
 			}
 			String sku = req.getParameter("sku");
-			if(!StringUtil.isEmpty(sku)){
+			if (!StringUtil.isEmpty(sku)) {
 				params.put("sku", sku);
-			}else{
+			} else {
 				params.put("sku", "");
 			}
 			String goodsId = req.getParameter("goodsId");
-			if(!StringUtil.isEmpty(goodsId)){
+			if (!StringUtil.isEmpty(goodsId)) {
 				params.put("goodsId", goodsId);
-			}else{
+			} else {
 				params.put("goodsId", "");
 			}
 			String itemId = req.getParameter("itemId");
-			if(!StringUtil.isEmpty(itemId)){
+			if (!StringUtil.isEmpty(itemId)) {
 				params.put("itemId", itemId);
-			}else{
+			} else {
 				params.put("itemId", "");
 			}
 			pcb = goodsItemService.dataList(pagination, params, staffEntity.getToken(),
@@ -153,6 +160,13 @@ public class GoodsItemMngController extends BaseController {
 				GoodsUtil.changeSpecsInfo(entity);
 			}
 
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			return pcb;
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -183,17 +197,17 @@ public class GoodsItemMngController extends BaseController {
 
 		return forword("goods/item/add", context);
 	}
-	
+
 	@RequestMapping(value = "/beUse", method = RequestMethod.POST)
 	public void beUse(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String itemId = req.getParameter("itemId");
-			if(StringUtil.isEmpty(itemId)){
-				sendFailureMessage(resp, "操作失败：没有明细编号" );
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
 				return;
 			}
-			goodsItemService.beUse(itemId, staffEntity.getToken(),staffEntity.getOptid());
+			goodsItemService.beUse(itemId, staffEntity.getToken(), staffEntity.getOptid());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
@@ -201,59 +215,61 @@ public class GoodsItemMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
+
 	@RequestMapping(value = "/beFx", method = RequestMethod.POST)
 	public void beFx(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String itemId = req.getParameter("itemId");
-			if(StringUtil.isEmpty(itemId)){
-				sendFailureMessage(resp, "操作失败：没有明细编号" );
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
 				return;
 			}
-			goodsItemService.beFx(itemId, staffEntity.getToken(),staffEntity.getOptid());
+			goodsItemService.beFx(itemId, staffEntity.getToken(), staffEntity.getOptid());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-		
+
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/fx", method = RequestMethod.POST)
 	public void fx(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String itemId = req.getParameter("itemId");
-			if(StringUtil.isEmpty(itemId)){
-				sendFailureMessage(resp, "操作失败：没有明细编号" );
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
 				return;
 			}
-			goodsItemService.fx(itemId, staffEntity.getToken(),staffEntity.getOptid(),staffEntity.getGradeId());
+			goodsItemService.fx(itemId, staffEntity.getToken(), staffEntity.getOptid(), staffEntity.getGradeId());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-		
+
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/noBeFx", method = RequestMethod.POST)
 	public void noBeFx(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String itemId = req.getParameter("itemId");
-			if(StringUtil.isEmpty(itemId)){
-				sendFailureMessage(resp, "操作失败：没有明细编号" );
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
 				return;
 			}
-			goodsItemService.noBeFx(itemId, staffEntity.getToken(),staffEntity.getOptid());
+			goodsItemService.noBeFx(itemId, staffEntity.getToken(), staffEntity.getOptid());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-		
+
 		sendSuccessMessage(resp, null);
 	}
+
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public void save(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsPojo pojo) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -264,7 +280,7 @@ public class GoodsItemMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-		
+
 		sendSuccessMessage(resp, null);
 	}
 
