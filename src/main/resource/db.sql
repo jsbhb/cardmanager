@@ -102,7 +102,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-
+INSERT INTO `t_sequence` VALUES ('1',1),('10',1),('11',1),('12',1),('13',1),('14',1),('15',1),('16',1),('17',1),('4',1),('5',1),('6',1),('8',1),('brand',1),('first',1),('goods',1),('goodsItem',1),('second',1),('third',1);
 
 --
 -- Dumping data for table `auth_func`
@@ -115,7 +115,7 @@ UNLOCK TABLES;
 -- Dumping data for table `auth_operator`
 --
 LOCK TABLES `auth_operator` WRITE;
-INSERT INTO `auth_operator` VALUES (1,'1600001','超级管理员','6BD507D551CEA30F1B5B6B81F5322709','1',NULL,NULL,NULL,NULL,'2016-07-26 13:21:17',NULL,NULL,NULL,NULL,13);
+INSERT INTO `coopback`.`auth_operator` (`badge`, `optName`, `password`, `status`, `platid`, `gradeid`, `userCenterId`, `gradeName`, `gradelevel`) VALUES ('100001', 'admin', '670B14728AD9902AECBA32E22FA4F6BD', '1', '21', '1', '8001', '鑫海总公司', '1');
 UNLOCK TABLES;
 
 --
