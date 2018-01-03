@@ -51,6 +51,7 @@ public class GoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
+		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/goods/sync", context);
 	}
 
@@ -131,6 +132,7 @@ public class GoodsMngController extends BaseController {
 		context.put(OPT, opt);
 		try {
 
+			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 			String type = req.getParameter("type");
 			if (SYNC.equals(type)) {
 				String id = req.getParameter("id");
@@ -140,7 +142,6 @@ public class GoodsMngController extends BaseController {
 				}
 				ThirdWarehouseGoods thirdGoods = goodsService.queryThirdById(id, opt.getToken());
 				context.put("third", thirdGoods);
-				context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 
 			} else if (NORMAL.equals(type)) {
 				// List<BrandEntity> brands =
