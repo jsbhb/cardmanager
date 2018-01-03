@@ -317,6 +317,10 @@
 			parent.location.reload();
 	 }
 	 
+	 $("#supplierId").change(function(){
+			$("#supplierName").val($("#supplierId").find("option:selected").text());
+	});
+	 
 	 $("#submitBtn").click(function(){
 		 $('#itemForm').data("bootstrapValidator").validate();
 		 if($('#itemForm').data("bootstrapValidator").isValid()){
