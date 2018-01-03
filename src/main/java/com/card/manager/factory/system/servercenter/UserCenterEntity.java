@@ -22,6 +22,7 @@ import com.card.manager.factory.system.model.StaffEntity;
 public class UserCenterEntity {
 	private String account;// badge
 	private int platUserType;
+	private int userType;
 	private int centerId;
 	private int shopId;
 	private String phone;
@@ -38,7 +39,16 @@ public class UserCenterEntity {
 		this.shopId = entity.getShopId();
 		this.centerId = entity.getGradeId();
 		this.phone = phone;
+		this.userType = entity.getGradeLevel();
 		this.account = entity.getBadge();
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
 	}
 
 	public String getAccount() {
