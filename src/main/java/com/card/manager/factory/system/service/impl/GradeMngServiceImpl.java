@@ -99,6 +99,17 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		StaffEntity staffEntity = new StaffEntity();
 		staffEntity.setGradeName(gradeInfo.getGradeName());
 		staffEntity.setParentGradeId(staff.getGradeId());
+		int gradeLevel = gradeInfo.getGradeLevel();
+		staffEntity.setGradeLevel(gradeLevel);
+		
+		if(gradeLevel == ServerCenterContants.SECOND_GRADE){
+			staffEntity.setGradeId(gradeId);
+		}
+		if(gradeLevel == ServerCenterContants.THIRD_GRADE){
+			staffEntity.setGradeId(staffEntity.getParentGradeId());
+			staffEntity.setShopId(gradeId);
+		}
+		
 		staffEntity.setOptName(gradeInfo.getPersonInCharge());
 		staffEntity.setGradeId(gradeId);
 		staffEntity.setUserCenterId(userId);

@@ -218,6 +218,25 @@ public class GoodsItemMngController extends BaseController {
 		
 		sendSuccessMessage(resp, null);
 	}
+	
+	@RequestMapping(value = "/fx", method = RequestMethod.POST)
+	public void fx(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemId = req.getParameter("itemId");
+			if(StringUtil.isEmpty(itemId)){
+				sendFailureMessage(resp, "操作失败：没有明细编号" );
+				return;
+			}
+			goodsItemService.fx(itemId, staffEntity.getToken(),staffEntity.getOptid(),staffEntity.getGradeId());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		
+		sendSuccessMessage(resp, null);
+	}
+	
 	@RequestMapping(value = "/noBeFx", method = RequestMethod.POST)
 	public void noBeFx(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);

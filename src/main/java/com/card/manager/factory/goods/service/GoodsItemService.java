@@ -32,45 +32,57 @@ public interface GoodsItemService extends ServerCenterService {
 	 */
 	void addEntity(GoodsPojo entity, String token) throws Exception;
 
-	/**  
-	 * queryById:根据编号查询商品信息. <br/>   
-	 *  
-	 * @author hebin 
+	/**
+	 * queryById:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
 	 * @param id
 	 * @param token
-	 * @return  
-	 * @since JDK 1.7  
+	 * @return
+	 * @since JDK 1.7
 	 */
 	GoodsItemEntity queryById(String id, String token);
 
-	/**  
-	 * beUse:设置商品明细可用. <br/>   
-	 *  
-	 * @author hebin 
+	/**
+	 * beUse:设置商品明细可用. <br/>
+	 * 
+	 * @author hebin
 	 * @param parameter
-	 * @param token  
-	 * @since JDK 1.7  
+	 * @param token
+	 * @since JDK 1.7
 	 */
-	void beUse(String itemId, String token,String optId) throws Exception;
+	void beUse(String itemId, String token, String optId) throws Exception;
 
-	/**  
-	 * noBeFx:设置商品不可分销. <br/>   
-	 *  
-	 * @author hebin 
+	/**
+	 * noBeFx:设置商品不可分销. <br/>
+	 * 
+	 * @author hebin
 	 * @param parameter
-	 * @param token  
-	 * @since JDK 1.7  
+	 * @param token
+	 * @since JDK 1.7
 	 */
-	void noBeFx(String itemId, String token,String optId) throws Exception;
-	
-	/**  
-	 * noBeFx:设置商品可分销. <br/>   
-	 *  
-	 * @author hebin 
+	void noBeFx(String itemId, String token, String optId) throws Exception;
+
+	/**
+	 * noBeFx:设置商品可分销. <br/>
+	 * 
+	 * @author hebin
 	 * @param parameter
-	 * @param token  
-	 * @since JDK 1.7  
+	 * @param token
+	 * @since JDK 1.7
 	 */
-	void beFx(String itemId, String token,String optId) throws Exception;
+	void beFx(String itemId, String token, String optId) throws Exception;
+
+	/**
+	 * fx:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param itemId
+	 * @param token
+	 * @param optid
+	 * @param gradeId
+	 * @since JDK 1.7
+	 */
+	void fx(String itemId, String token, String optid, int gradeId) throws Exception;
 
 }

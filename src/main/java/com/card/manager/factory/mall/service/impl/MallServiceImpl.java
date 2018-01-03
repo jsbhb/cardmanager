@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
-import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.DictData;
 import com.card.manager.factory.goods.model.Layout;
 import com.card.manager.factory.goods.model.PopularizeDict;
@@ -41,9 +40,10 @@ import net.sf.json.JSONObject;
 public class MallServiceImpl extends AbstractServcerCenterBaseService implements MallService {
 
 	@Override
-	public PopularizeDict queryById(String id, String token) {
+	public PopularizeDict queryById(String id,int centerId, String token) {
 		PopularizeDict entity = new PopularizeDict();
 		entity.setId(Integer.parseInt(id));
+		entity.setCenterId(centerId);
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
@@ -52,6 +52,21 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), PopularizeDict.class);
+	}
+	
+	@Override
+	public DictData queryDataById(String id, int gradeId, String token) {
+		DictData data = new DictData();
+		data.setId(Integer.parseInt(id));
+		data.setCenterId(gradeId);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_QUERY_DATA, token, true, data,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), DictData.class);
 	}
 
 	@Override
@@ -156,13 +171,6 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		}
 	}
 
-	/**
-	 * TODO 简单描述该方法的实现功能（可选）.
-	 * @throws Exception 
-	 * 
-	 * @see com.card.manager.factory.mall.service.MallService#queryDataAll(int,
-	 *      java.lang.String, java.lang.String)
-	 */
 	@Override
 	public List<DictData> queryDataAll(Layout layout, String token) throws Exception {
 		if (!ServerCenterContants.TOKEN_NOT_NEED) {
@@ -194,5 +202,21 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		}
 		return list;
 	}
+
+	@Override
+	public void updateData(DictData data, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_UPDATE_DATA, token, true, data,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
 
 }

@@ -23,6 +23,8 @@
 		<result column="gradeName" property="gradeName" />
 		<result column="roleName" property="roleName" />
 		<result column="parentGradeId" property="parentGradeId" />
+		<result column="gradeLevel" property="gradeLevel" />
+		<result column="shopId" property="shopId" />
 	</resultMap>
 
 	<!-- 获取角色菜单 -->
@@ -57,8 +59,8 @@
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">
          INSERT INTO auth_operator (
-              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId)
-       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId})
+              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel)
+       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel})
     </insert>
     
     <insert id="insertRoleOpt" parameterType="object">

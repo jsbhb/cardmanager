@@ -23,6 +23,7 @@ public class UserCenterEntity {
 	private String account;// badge
 	private int platUserType;
 	private int centerId;
+	private int shopId;
 	private String phone;
 
 	/**
@@ -34,6 +35,7 @@ public class UserCenterEntity {
 
 	public UserCenterEntity(StaffEntity entity, String phone) {
 		this.platUserType = PlatUserType.CROSS_BORDER.getIndex();
+		this.shopId = entity.getShopId();
 		this.centerId = entity.getGradeId();
 		this.phone = phone;
 		this.account = entity.getBadge();
@@ -70,4 +72,14 @@ public class UserCenterEntity {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public int getShopId() {
+		return shopId;
+	}
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
+	
+	
 }

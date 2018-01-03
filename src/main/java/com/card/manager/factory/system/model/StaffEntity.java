@@ -29,6 +29,8 @@ public class StaffEntity {
 	private String token;
 	private int platId;
 	private int gradeId;
+	private int shopId;
+	private int gradeLevel;
 	private int userCenterId;
 	private String gradeName;
 	private String phone;
@@ -219,6 +221,22 @@ public class StaffEntity {
 
 	public void setParentGradeId(int parentGradeId) {
 		this.parentGradeId = parentGradeId;
+	}
+
+	public int getShopId() {
+		return shopId;
+	}
+
+	public void setShopId(int shopId) {
+		this.shopId = shopId;
+	}
+
+	public int getGradeLevel() {
+		return gradeLevel;
+	}
+
+	public void setGradeLevel(int gradeLevel) {
+		this.gradeLevel = gradeLevel;
 	}
 
 }

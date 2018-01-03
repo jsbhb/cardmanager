@@ -54,7 +54,7 @@
 									<label class="col-sm-2 control-label no-padding-right">大图(1240*345px)</label>
 									<div class="col-sm-6">
 										<div class="input-group">
-											<input type="text" class="form-control" name="picPath1" id="picPath" value="${data.picPath}"> 
+											<input type="text" class="form-control" name="picPath" id="picPath" value="${data.picPath}"> 
 											<input type="file" name="pic" id="pic" />
 											<button type="button" class="btn btn-info" onclick="uploadFile()">上传</button>
 										</div>
@@ -62,7 +62,7 @@
 								</div>
 								<div class="col-md-offset-1 col-md-9">
 									<div class="form-group">
-											<button type="button" class="btn btn-info" onclick="save(${dict.id})">保存</button>
+											<button type="button" class="btn btn-info" onclick="save()">保存</button>
 					                 </div>
 					            </div>
 							</div>
@@ -78,7 +78,7 @@
 		$('#adForm').data("bootstrapValidator").validate();
 		 if($('#adForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
-					url : '${wmsUrl}/admin/mall/indexMng/saveAd.shtml',
+					url : '${wmsUrl}/admin/mall/indexMng/updateAd.shtml',
 					type : 'post',
 					contentType : "application/json; charset=utf-8",
 					data : JSON.stringify(sy.serializeObject($('#adForm'))),
@@ -108,7 +108,7 @@
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
-					$("#picPath1").val(data.msg);
+					$("#picPath").val(data.msg);
 				} else {
 					layer.alert(data.msg);
 				}
@@ -125,7 +125,7 @@
           validating: 'glyphicon glyphicon-refresh'
       },
       fields: {
-    	  picPath1: {
+    	  picPath: {
               message: '大图地址不能空',
               validators: {
                   notEmpty: {

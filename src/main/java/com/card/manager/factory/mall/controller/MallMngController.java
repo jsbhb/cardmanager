@@ -82,7 +82,7 @@ public class MallMngController extends BaseController {
 
 		return forword("mall/index/floorAdd", context);
 	}
-	
+
 	@RequestMapping(value = "/toEditFloor")
 	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -90,7 +90,7 @@ public class MallMngController extends BaseController {
 		context.put(OPT, opt);
 		try {
 			String id = req.getParameter("id");
-			PopularizeDict entity = mallService.queryById(id, opt.getToken());
+			PopularizeDict entity = mallService.queryById(id, opt.getGradeId(), opt.getToken());
 			context.put("dict", entity);
 			return forword("mall/index/floorEdit", context);
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class MallMngController extends BaseController {
 			return forword(ERROR, context);
 		}
 	}
-	
+
 	@RequestMapping(value = "/ad")
 	public ModelAndView ad(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -120,7 +120,7 @@ public class MallMngController extends BaseController {
 
 		return forword("mall/index/ad", context);
 	}
-	
+
 	@RequestMapping(value = "/toEditAd")
 	public ModelAndView toEditAd(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -128,8 +128,8 @@ public class MallMngController extends BaseController {
 		context.put(OPT, opt);
 		try {
 			String id = req.getParameter("id");
-			PopularizeDict entity = mallService.queryById(id, opt.getToken());
-			context.put("dict", entity);
+			DictData data = mallService.queryDataById(id, opt.getGradeId(), opt.getToken());
+			context.put("data", data);
 			return forword("mall/index/adEdit", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -186,7 +186,6 @@ public class MallMngController extends BaseController {
 
 		return pcb;
 	}
-
 
 	@RequestMapping(value = "/saveDict", method = RequestMethod.POST)
 	public void save(HttpServletRequest req, HttpServletResponse resp, @RequestBody FloorDictPojo pojo) {
@@ -276,6 +275,21 @@ public class MallMngController extends BaseController {
 			return;
 		}
 
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/updateAd", method = RequestMethod.POST)
+	public void updateAd(HttpServletRequest req, HttpServletResponse resp, @RequestBody DictData data) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		data.setOpt(staffEntity.getOptid());
+		data.setCenterId(staffEntity.getGradeId());
+		try {
+			mallService.updateData(data, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		
 		sendSuccessMessage(resp, null);
 	}
 

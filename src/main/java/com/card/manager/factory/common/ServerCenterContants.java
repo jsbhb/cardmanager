@@ -18,7 +18,7 @@ package com.card.manager.factory.common;
  */
 public class ServerCenterContants {
 
-	private static final String SERVER_CENTER_EDITION = "1.0";
+	public static final String SERVER_CENTER_EDITION = "1.0";
 
 	public static final boolean TOKEN_NOT_NEED = true;
 
@@ -30,6 +30,11 @@ public class ServerCenterContants {
 	public static final String FIRST_CATALOG = "first";
 	public static final String SECOND_CATALOG = "second";
 	public static final String THIRD_CATALOG = "third";
+	
+	public static final Integer FIRST_GRADE = 1;
+	public static final Integer SECOND_GRADE = 2;
+	public static final Integer THIRD_GRADE = 3;
+	public static final Integer FOURTH_GRADE = 4;
 
 	/**
 	 * 权限中心url
@@ -150,19 +155,25 @@ public class ServerCenterContants {
 	
 	/*------------------------商城管理-----------------------*/
 	public static final String GOODS_CENTER_MALL_QUERY_DICT_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/queryDictForPage?code={code}&centerId={centerId}";
+			+ SERVER_CENTER_EDITION + "/mall/index/queryDictForPage?code={code}&centerId={centerId}";
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/queryDataForPage?dictId={dictId}&centerId={centerId}";
+			+ SERVER_CENTER_EDITION + "/mall/index/queryDataForPage?dictId={dictId}&centerId={centerId}";
 	public static final String GOODS_CENTER_MALL_QUERY_DICT = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/queryDict";
+			+ SERVER_CENTER_EDITION + "/mall/index/queryDict";
+	public static final String GOODS_CENTER_MALL_QUERY_DATA = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/queryData";
 	public static final String GOODS_CENTER_MALL_SAVE_DICT = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/saveDict";
+			+ SERVER_CENTER_EDITION + "/mall/index/saveDict";
 	public static final String GOODS_CENTER_MALL_SAVE_DATA = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/saveData";
+			+ SERVER_CENTER_EDITION + "/mall/index/saveData";
 	public static final String GOODS_CENTER_MALL_DELETE_DICT = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/deleteDict";
+			+ SERVER_CENTER_EDITION + "/mall/index/deleteDict";
 	public static final String GOODS_CENTER_MALL_DELETE_DATA = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/floor/deleteData";
+			+ SERVER_CENTER_EDITION + "/mall/index/deleteData";
+	public static final String GOODS_CENTER_MALL_UPDATE_DICT = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/updateDict";
+	public static final String GOODS_CENTER_MALL_UPDATE_DATA = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/updateData";
 	public static final String GOODS_CENTER_MALL_INIT_DICT = (TOKEN_NOT_NEED ? "/" : "goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/init";
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_ALL = (TOKEN_NOT_NEED ? "/" : "goodscenter/")

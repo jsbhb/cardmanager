@@ -233,7 +233,7 @@ function rebuildTable(data){
 				str += "<button type='button' class='btn btn-warning' onclick='beFx("+list[i].itemId+")' >可分销</button>";
 			}else if(status == 2){
 				str += "<button type='button' class='btn btn-warning' onclick='noBeFx("+list[i].itemId+")' >不可分销</button>";
-				str += "<button type='button' class='btn btn-warning' onclick='fx("+list[i].itemId+")' >分销</button>";
+				str += "<button type='button' class='btn btn-warning' onclick='fx("+list[i].itemId+")' >同步</button>";
 			}
 			str += "</td>";
 		}
@@ -303,6 +303,23 @@ function noBeFx(id){
 	 });
 }
 function fx(id){
+	$.ajax({
+		 url:"${wmsUrl}/admin/goods/itemMng/fx.shtml?itemId="+id,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("设置成功");
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
 }
 
 </script>

@@ -54,6 +54,7 @@
 				                  </div>
 				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${opt.gradeName}">
 				                  <input type="hidden" readonly class="form-control" name="parentId" value="${opt.gradeId}">
+				                  <input type="hidden" readonly class="form-control" name="gradeLevel" value="${opt.gradeLevel+1}">
 				                </div>
 							</div>
 						</div>

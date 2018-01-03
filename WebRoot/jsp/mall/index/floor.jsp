@@ -150,7 +150,7 @@ function rebuildTable(data){
 	
 function toEdit(id){
 	var index = layer.open({
-		  title:"基础商品编辑",		
+		  title:"楼层编辑",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/mall/indexMng/toEditFloor.shtml?id='+id,
 		  maxmin: true
@@ -160,7 +160,7 @@ function toEdit(id){
 
 function toAdd(id){
 	var index = layer.open({
-		  title:"查看商品",		
+		  title:"新增楼层",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/mall/indexMng/toAddFloor.shtml',
 		  maxmin: true

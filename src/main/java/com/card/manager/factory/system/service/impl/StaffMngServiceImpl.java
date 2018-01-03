@@ -61,10 +61,10 @@ public class StaffMngServiceImpl implements StaffMngService {
 	}
 
 	@Override
-	public void addStaff(StaffEntity staff) throws OperatorSaveException,SyncUserCenterException {
+	public void addStaff(StaffEntity staff) throws OperatorSaveException, SyncUserCenterException {
 		// 生成badge
 		try {
-			int badge = staffMapper.nextVal(staff.getGradeId()+"");
+			int badge = staffMapper.nextVal(staff.getGradeId() + "");
 			badge += staff.getGradeId() * 100000;
 			staff.setBadge(badge + "");
 			staff.setPassword(MethodUtil.MD5("000000"));
@@ -73,10 +73,10 @@ public class StaffMngServiceImpl implements StaffMngService {
 		}
 
 		try {
-			staff.setStatus(AuthCommon.STAFF_STATUS_OFF+"");
+			staff.setStatus(AuthCommon.STAFF_STATUS_OFF + "");
 			staffMapper.insert(staff);
 			staffMapper.insertRoleOpt(staff);
-			
+
 		} catch (Exception e) {
 			throw new OperatorSaveException("插入后台员工表出错:" + e.getMessage());
 		}

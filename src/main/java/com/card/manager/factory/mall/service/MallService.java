@@ -31,11 +31,12 @@ public interface MallService extends ServerCenterService {
 	 * 
 	 * @author hebin
 	 * @param id
+	 * @param centerId 
 	 * @param token
 	 * @return
 	 * @since JDK 1.7
 	 */
-	PopularizeDict queryById(String id, String token);
+	PopularizeDict queryById(String id, int centerId, String token);
 
 	/**
 	 * delateData:删除商品数据. <br/>
@@ -98,5 +99,27 @@ public interface MallService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	List<DictData> queryDataAll(Layout layout, String token) throws Exception;
+
+	/**  
+	 * queryDataById:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param id
+	 * @param gradeId
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	DictData queryDataById(String id, int gradeId, String token);
+
+	/**  
+	 * updateData:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param data
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void updateData(DictData data, String token) throws Exception;
 
 }

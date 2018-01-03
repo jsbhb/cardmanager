@@ -10,255 +10,189 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resource.jsp"%>
 
-<link rel="stylesheet"
-	href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
+<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
 <script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 <script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 </head>
 
-<body>
-	<section class="content-wrapper" style="height: 900px">
-		<section class="content">
-			<form class="form-horizontal" role="form" id="floorForm">
-				<div class="col-md-12">
-					<div class="box box-info">
+<body >
+<section class="content-wrapper" style="height:900px">
+	<section class="content">
+		<form class="form-horizontal" role="form" id="floorForm" >
+			<div class="col-md-12">
+	        	<div class="box box-info">
+	        		<div class="box-header with-border">
 						<div class="box-header with-border">
-							<div class="box-header with-border">
-								<h5 class="box-title">楼层编辑</h5>
-								<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool"
-										data-widget="collapse">
-										<i class="fa fa-minus"></i>
-									</button>
-								</div>
+			            	<h5 class="box-title">新增楼层</h5>
+			            	<div class="box-tools pull-right">
+			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			              	</div>
+			            </div>
+					</div>
+		            <div class="box-body">
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">分类选择</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+									<select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;">
+				                   	  <option selected="selected" value="-1">未选择</option>
+				                   	  <c:forEach var="first" items="${firsts}">
+				                   	  	<option value="${first.firstId}">${first.name}</option>
+				                   	  </c:forEach>
+					                </select>
+				                </div>
 							</div>
 						</div>
-						<div class="box-body">
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">编号</label>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<input type="text" class="form-control" name="id" value="${dict.id}"> 
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">名称</label>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<input type="text" class="form-control" name="name" value="${dict.name}"> 
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">别称</label>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<input type="text" class="form-control" name="enname" value="${dict.enname}"> 
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">描述</label>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<input type="text" class="form-control" name="description" value="${dict.description}"> 
-									</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">大图(1240*345px)</label>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<input type="text" class="form-control" name="picPath1" id="picPath1" value="${data.picPath}"> 
-										<input type="file" name="pic" id="pic" />
-										<button type="button" class="btn btn-info" onclick="uploadFile()">上传</button>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-offset-1 col-md-9">
-								<div class="form-group">
-										<button type="button" class="btn btn-info" onclick="save(${dict.id})">保存</button>
-				                 </div>
-				            </div>
-						</div>
-					</div>
-				</div>
-			</form>
-			<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-							<button type="button" class="btn btn-primary" onclick="toAdd(${dict.firstCatalogId})">新增商品</button>
-					</div>
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="floorGoodsTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>商品编号</th>
-										<th>图片地址</th>
-										<th>title</th>
-										<th>规格</th>
-										<th>国家</th>
-										<th>价格</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">页面类型</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+		                  			<input type="radio" name="pageType" value="0" checked >手机
+		                  			<input type="radio" name="pageType" value="1" >H5
+				                </div>
 							</div>
 						</div>
-					</div>
-				</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">是否显示</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+		                  			<input type="radio"  name="show" value="1" checked>显示
+		                  			<input type="radio"  name="show" value="0" >不显示
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">楼层名称</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                  	</div>
+	                  				<input type="text" class="form-control" name="name">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">别称</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                  	</div>
+	                  				<input type="text" class="form-control" name="enname">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">楼层大图</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+							 		<input type="hidden" class="form-control" name="picPath1" id="picPath1">
+	                  				<input type="file" name="pic" id="pic"/>
+	                  				<button type="button" class="btn btn-info"  onclick="uploadFile()">上传 </button>
+				                </div>
+							</div>
+						</div>
+	            	</div>
+          		</div>
 			</div>
-		</div>
-		</section>
+			<div class="col-md-offset-1 col-md-9">
+				<div class="form-group">
+                     <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
+                 </div>
+            </div>
+		</form>
 	</section>
+</section>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
+
 	
-	/**
-	 * 初始化分页信息
-	 */
-	var options = {
-				queryForm : ".query",
-				url :  "${wmsUrl}/admin/mall/indexMng/dataListForData.shtml?dictId=${dict.id}",
-				numPerPage:"20",
-				currentPage:"",
-				index:"1",
-				callback:rebuildTable
-	}
-
-
-	$(function(){
-		 $(".pagination-nav").pagination(options);
-	})
-
-
-	function reloadTable(){
-		$.page.loadData(options);
-	}
-	
-	/**
-	 * 重构table
-	 */
-	function rebuildTable(data){
-		$("#floorGoodsTable tbody").html("");
-
-		if (data == null || data.length == 0) {
-			return;
-		}
-		
-		var list = data.obj;
-		
-		if (list == null || list.length == 0) {
-			layer.alert("没有查到数据");
-			return;
-		}
-		
-		var str = "";
-		for (var i = 0; i < list.length; i++) {
-			str += "<tr>";
-			//if ("${privilege>=2}") {
-			
-			str += "</td><td>" + list[i].id;
-			str += "</td><td>" + list[i].goodId;
-			str += "</td><td>" + list[i].picName;
-			str += "</td><td>" + list[i].title;
-			str += "</td><td>" + list[i].orginal;
-			str += "</td><td>" + list[i].price;
-			
-			if (true) {
-				str += "<td align='left'>";
-				str += "<a href='#' onclick='toEditGoods("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-				str += "</td>";
-			}
-			
-			str += "</td></tr>";
-		}
-			
-
-		$("#floorGoodsTable tbody").html(str);
-	}
-	
-	
-	
-	function save(){
-		$('#floorForm').data("bootstrapValidator").validate();
-		 if($('#floorForm').data("bootstrapValidator").isValid()){
-			 $.ajax({
-					url : '${wmsUrl}/admin/mall/indexMng/saveFloor.shtml',
-					type : 'post',
-					contentType : "application/json; charset=utf-8",
-					data : JSON.stringify(sy.serializeObject($('#floorForm'))),
-					dataType : 'json',
-					success : function(data) {
-						if (data.success) {
-							parent.location.reload();
-							layer.alert("修改成功");
-						} else {
-							layer.alert(data.msg);
-						}
-					},
-					error : function() {
-						layer.alert("提交失败，请联系客服处理");
-					}
-				});
-		 }else{
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	}
-
-	function uploadFile(id) {
-		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/mall/indexMng/uploadFile.shtml', //你处理上传文件的服务端
-			secureuri : false,
-			fileElementId : "pic",
-			dataType : 'json',
-			success : function(data) {
-				if (data.success) {
-					$("#picPath1").val(data.msg);
-				} else {
-					layer.alert(data.msg);
+	 function refresh(){
+			parent.location.reload();
+	 }
+	 
+	 function uploadFile(){
+			$.ajaxFileUpload({
+				url:'${wmsUrl}/admin/mall/indexMng/uploadFile.shtml', //你处理上传文件的服务端
+				secureuri:false,
+				fileElementId:"pic",
+				dataType: 'json',
+				success: function (data){
+				   if(data.success){
+					   $("#picPath1").attr("type", "text")
+					   $("#picPath1").val(data.msg);
+				   }else{
+					   layer.alert(data.msg);
+				   }
 				}
-			}
-		})
-	}
-	
-	$('#floorForm').bootstrapValidator({
-//      live: 'disabled',
-      message: 'This value is not valid',
-      feedbackIcons: {
-          valid: 'glyphicon glyphicon-ok',
-          invalid: 'glyphicon glyphicon-remove',
-          validating: 'glyphicon glyphicon-refresh'
-      },
-      fields: {
-    	  picPath1: {
-              message: '大图地址不能空',
-              validators: {
-                  notEmpty: {
-                      message: '大图地址不能空！'
-                  }
-              }
-      	  },
-      	 name: {
-            message: '楼层名称不能为空',
-            validators: {
-                notEmpty: {
-                    message: '楼层名称不能为空！'
-                }
-            }
-    	  }
-      }
-  });
-	
-
+			})
+		}
+	 
+	 $("#submitBtn").click(function(){
+		 $('#floorForm').data("bootstrapValidator").validate();
+		 if($('#floorForm').data("bootstrapValidator").isValid()){
+			 
+			 var url = "${wmsUrl}/admin/mall/indexMng/saveDict.shtml";
+		
+			 $.ajax({
+				 url:url,
+				 type:'post',
+				 data:JSON.stringify(sy.serializeObject($('#floorForm'))),
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){
+						 refresh();
+						 layer.alert("插入成功");
+						 
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("提交失败，请联系客服处理");
+				 }
+			 });
+		 }else{
+			 layer.alert("信息填写有误");
+		 }
+	 });
+	 
+		
+		$('#floorForm').bootstrapValidator({
+		//   live: 'disabled',
+		   message: 'This value is not valid',
+		   feedbackIcons: {
+		       valid: 'glyphicon glyphicon-ok',
+		       invalid: 'glyphicon glyphicon-remove',
+		       validating: 'glyphicon glyphicon-refresh'
+		   },
+		   fields: {
+			   name: {
+			 		trigger:"change",
+		          	message: '分类名称未添加',
+		          	validators: {
+			               notEmpty: {
+			                   message: '分类名称未添加！'
+			               }
+			           }
+			   	  },
+				  picPath1: {
+					   trigger:"change",
+			           message: '商家编码不正确',
+			           validators: {
+			               notEmpty: {
+			                   message: '商家编码不能为空！'
+			               }
+			           }
+			   	  }
+		}});
+		
+		
+		function toList(){
+				$("#list",window.parent.document).trigger("click");
+		}
 	</script>
 </body>
 </html>

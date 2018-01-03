@@ -71,10 +71,10 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		goodsPrice.setMin(entity.getMin());
 		goodsPrice.setItemId(goodsItem.getItemId());
 		goodsPrice.setOpt(entity.getOpt());
-		
+
 		goodsItem.setGoodsPrice(goodsPrice);
 		goodsItem.setOpt(entity.getOpt());
-		
+
 		String keys = entity.getKeys();
 		String values = entity.getValues();
 
@@ -127,7 +127,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
-	public void beUse(String itemId, String token,String optId) throws Exception {
+	public void beUse(String itemId, String token, String optId) throws Exception {
 		GoodsItemEntity entity = new GoodsItemEntity();
 		entity.setItemId(itemId);
 		entity.setOpt(optId);
@@ -144,7 +144,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
-	public void noBeFx(String itemId, String token,String optId)  throws Exception{
+	public void noBeFx(String itemId, String token, String optId) throws Exception {
 		GoodsItemEntity entity = new GoodsItemEntity();
 		entity.setItemId(itemId);
 		entity.setOpt(optId);
@@ -161,7 +161,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
-	public void beFx(String itemId, String token,String optId)  throws Exception {
+	public void beFx(String itemId, String token, String optId) throws Exception {
 		GoodsItemEntity entity = new GoodsItemEntity();
 		entity.setItemId(itemId);
 		entity.setOpt(optId);
@@ -169,6 +169,25 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_BE_FX, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void fx(String itemId, String token, String optid, int gradeId) throws Exception {
+
+		List<String> list = new ArrayList<String>();
+		list.add(itemId);
+
+		String url = (ServerCenterContants.TOKEN_NOT_NEED ? "/" : "goodscenter/")
+				+ ServerCenterContants.SERVER_CENTER_EDITION + "/goods/syncgoods/" + gradeId;
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway") + url, token, true, list,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
