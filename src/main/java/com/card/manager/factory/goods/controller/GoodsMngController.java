@@ -18,6 +18,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
@@ -58,6 +59,7 @@ public class GoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
+		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/goods/list", context);
 	}
 
