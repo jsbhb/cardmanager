@@ -110,7 +110,9 @@ public class StaffMngController extends BaseController {
 
 	@RequestMapping(value = "/addStaff", method = RequestMethod.POST)
 	public void addStaff(HttpServletRequest req, HttpServletResponse resp, @RequestBody StaffEntity staffEntity) {
+		StaffEntity opt = SessionUtils.getOperator(req);
 		try {
+			staffEntity.setGradeLevel(opt.getGradeLevel());
 			staffMngService.addStaff(staffEntity);
 		} catch (OperatorSaveException e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
