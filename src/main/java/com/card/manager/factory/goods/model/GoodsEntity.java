@@ -21,7 +21,7 @@ import java.util.List;
 public class GoodsEntity {
 	private int id;
 	private String goodsId;// 商品ID
-	private String supplierId;// 商家ID
+	private int supplierId;// 商家ID
 	private String supplierName;// 商家名称
 	private int baseId;// 商品基本信息ID
 	private String goodsName;// 商品名称
@@ -61,11 +61,11 @@ public class GoodsEntity {
 		this.goodsId = goodsId;
 	}
 
-	public String getSupplierId() {
+	public int getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(String supplierId) {
+	public void setSupplierId(int supplierId) {
 		this.supplierId = supplierId;
 	}
 

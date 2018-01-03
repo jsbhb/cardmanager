@@ -61,6 +61,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setGoodsId(SequeceRule.getGoodsId(goodsId));
 		goods.setTemplateId(entity.getTemplateId());
 		goods.setGoodsName(entity.getName());
+		goods.setSupplierId(entity.getSupplierId());
 		goods.setSupplierName(entity.getSupplierName());
 		goods.setBaseId(entity.getBaseId());
 		goods.setOrigin(entity.getOrigin());
