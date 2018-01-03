@@ -70,7 +70,27 @@
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
-	
+function init(){
+	 $.ajax({
+		 url:"${wmsUrl}/admin/mall/indexMng/init.shtml?module=module_00006",
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("插入成功");
+				 window.location.reload();
+			 }else{
+				 parent.reloadTable();
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
+}
+
 function toEdit(id){
 	var index = layer.open({
 		  title:"基础商品编辑",		
