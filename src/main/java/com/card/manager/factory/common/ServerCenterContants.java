@@ -39,8 +39,8 @@ public class ServerCenterContants {
 	/**
 	 * 权限中心url
 	 */
-	public static final String AUTH_CENTER_LOGIN = (TOKEN_NOT_NEED ? "/" : "/authcenter") + "auth/login";
-	public static final String AUTH_CENTER_REGISTER = (TOKEN_NOT_NEED ? "/" : "/authcenter") + "auth/register";
+	public static final String AUTH_CENTER_LOGIN = (TOKEN_NOT_NEED ? "/" : "/authcenter") + "/auth/login";
+	public static final String AUTH_CENTER_REGISTER = (TOKEN_NOT_NEED ? "/" : "/authcenter") + "/auth/register";
 
 	/**
 	 * 供应商中心url
