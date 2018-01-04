@@ -80,7 +80,7 @@ CREATE TABLE `auth_operatorrole` (
   `opt` varchar(20) DEFAULT NULL COMMENT '操作人'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `coopback`.`auth_operatorrole`(`operatorid`,`roleid`,`isLose`,`partId`,`createTime`,`updateTime`,`opt`)VALUES(1,1,1,1,now(),now(),1);
+INSERT INTO `coopback`.`auth_operatorrole`(`operatorid`,`roleid`,`isLose`,`partId`,`createTime`,`updateTime`,`opt`)VALUES(24,1,1,1,now(),now(),1);
 
 
 
