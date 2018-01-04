@@ -98,7 +98,7 @@ CREATE TABLE `auth_role` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `coopback`.`auth_role` (`roleName`, `roleState`, `createTime`, `updateTime`, `type`) VALUES ('超级管理员', '1', now(), now(), '1');
+INSERT INTO `coopback`.`auth_role` (`roleid`, `roleName`, `roleState`, `createTime`, `updateTime`, `type`) VALUES (1, '超级管理员', '1', now(), now(), '1'),(2, '区域中心管理员', '1', now(), now(), '1');
 
 
 DROP TABLE IF EXISTS `auth_rolefunc`;

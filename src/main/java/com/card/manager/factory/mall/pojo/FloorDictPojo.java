@@ -20,7 +20,7 @@ public class FloorDictPojo {
 
 	private int show;
 	private int type;
-	private int page;
+	private int pageType;
 	private String firstCatalogId;
 	private String name;
 	private String enname;
@@ -37,12 +37,12 @@ public class FloorDictPojo {
 		this.type = type;
 	}
 
-	public int getPage() {
-		return page;
+	public int getPageType() {
+		return pageType;
 	}
 
-	public void setPage(int page) {
-		this.page = page;
+	public void setPageType(int pageType) {
+		this.pageType = pageType;
 	}
 
 	public String getOpt() {

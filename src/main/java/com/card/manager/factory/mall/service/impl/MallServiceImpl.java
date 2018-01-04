@@ -107,7 +107,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 
 		layout.setDescription(dict.getName());
 		layout.setShow(pojo.getShow());
-		layout.setPageType(pojo.getPage());
+		layout.setPageType(pojo.getPageType());
 		layout.setType(pojo.getType());
 		layout.setType(2);
 
