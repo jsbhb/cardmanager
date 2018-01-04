@@ -56,7 +56,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		GoodsItemEntity goodsItem = new GoodsItemEntity();
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setSku(entity.getSku());
-		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex());
+		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex()+"");
 		goodsItem.setItemCode(entity.getItemCode());
 		goodsItem.setWeight(entity.getWeight());
 

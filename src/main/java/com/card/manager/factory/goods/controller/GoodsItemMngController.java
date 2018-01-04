@@ -107,54 +107,45 @@ public class GoodsItemMngController extends BaseController {
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity item) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			String status = req.getParameter("status");
 			if (!StringUtil.isEmpty(status)) {
-				params.put("status", status);
-			} else {
-				params.put("status", "");
+				item.setStatus(status);
 			}
 			String itemCode = req.getParameter("itemCode");
 			if (!StringUtil.isEmpty(itemCode)) {
-				params.put("itemCode", itemCode);
-			} else {
-				params.put("itemCode", "");
+				item.setItemCode(itemCode);
 			}
 			String supplierId = req.getParameter("supplierId");
 			if (!StringUtil.isEmpty(supplierId)) {
-				params.put("supplierId", supplierId);
-			} else {
-				params.put("supplierId", "");
+				item.setSupplierId(supplierId);
 			}
 			String goodsName = req.getParameter("goodsName");
 			if (!StringUtil.isEmpty(goodsName)) {
-				params.put("goodsName", goodsName);
-			} else {
-				params.put("goodsName", "");
+				item.setGoodsName(goodsName);
 			}
 			String sku = req.getParameter("sku");
 			if (!StringUtil.isEmpty(sku)) {
-				params.put("sku", sku);
-			} else {
-				params.put("sku", "");
+				item.setSku(sku);
 			}
 			String goodsId = req.getParameter("goodsId");
 			if (!StringUtil.isEmpty(goodsId)) {
-				params.put("goodsId", goodsId);
-			} else {
-				params.put("goodsId", "");
+				item.setGoodsId(goodsId);
 			}
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {
-				params.put("itemId", itemId);
-			} else {
-				params.put("itemId", "");
+				item.setItemId(itemId);
 			}
-			pcb = goodsItemService.dataList(pagination, params, staffEntity.getToken(),
+			
+			params.put("centerId", "");
+			params.put("shopId", "");
+			params.put("gradeLevel", staffEntity.getGradeLevel());
+			
+			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
 
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
@@ -166,7 +157,7 @@ public class GoodsItemMngController extends BaseController {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
-			pcb.setPagination(pagination);
+			pcb.setPagination(item);
 			pcb.setSuccess(true);
 			return pcb;
 		} catch (Exception e) {

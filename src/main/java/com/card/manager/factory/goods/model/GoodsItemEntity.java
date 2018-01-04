@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.goods.model;
 
+import com.card.manager.factory.base.Pagination;
+
 /**
  * ClassName: GoodsItemEntity <br/>
  * Function: 商品明细实体. <br/>
@@ -16,7 +18,7 @@ package com.card.manager.factory.goods.model;
  * @version
  * @since JDK 1.7
  */
-public class GoodsItemEntity {
+public class GoodsItemEntity extends Pagination{
 	private int id;//
 	private String goodsId;// 商品ID
 	private String itemId;// itemID
@@ -25,7 +27,7 @@ public class GoodsItemEntity {
 	private double weight;// 商品重量（克）
 	private double exciseTax;// 消费税
 	private int isPromotion;// 是否促销0：否；1：是
-	private int status;// 商品状态0：停售，1：在售
+	private String status;// 商品状态0：停售，1：在售
 	private double discount;// 促销折扣
 	private String info;// 规格信息
 	private String createTime;// 创建时间
@@ -34,9 +36,10 @@ public class GoodsItemEntity {
 	private String simpleInfo;
 	private GoodsPrice goodsPrice;
 	private String goodsName;
-	private int supplierId;
+	private String supplierId;
 	private String supplierName;
 	private GoodsStockEntity stock;
+	
 
 	public int getId() {
 		return id;
@@ -102,11 +105,11 @@ public class GoodsItemEntity {
 		this.isPromotion = isPromotion;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -174,11 +177,11 @@ public class GoodsItemEntity {
 		this.goodsName = goodsName;
 	}
 
-	public int getSupplierId() {
+	public String getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(int supplierId) {
+	public void setSupplierId(String supplierId) {
 		this.supplierId = supplierId;
 	}
 

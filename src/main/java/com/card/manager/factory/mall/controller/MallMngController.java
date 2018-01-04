@@ -22,13 +22,18 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
+import com.card.manager.factory.goods.GoodsUtil;
 import com.card.manager.factory.goods.model.DictData;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
+import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.Layout;
 import com.card.manager.factory.goods.model.PopularizeDict;
 import com.card.manager.factory.goods.service.CatalogService;
+import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.mall.pojo.FloorDictPojo;
 import com.card.manager.factory.mall.pojo.PageTypeEnum;
 import com.card.manager.factory.mall.pojo.PopularizeDictTypeEnum;
@@ -49,6 +54,9 @@ public class MallMngController extends BaseController {
 
 	@Resource
 	SftpService sftpService;
+
+	@Resource
+	GoodsItemService goodsItemService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -150,6 +158,83 @@ public class MallMngController extends BaseController {
 
 			pcb = mallService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_MALL_QUERY_DICT_FOR_PAGE, PopularizeDict.class);
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			return pcb;
+		}
+
+		return pcb;
+	}
+
+	@RequestMapping(value = "/goodsItemList")
+	public ModelAndView goodsItemList(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		return forword("mall/index/centerGoodsItemList", context);
+	}
+
+	@RequestMapping(value = "/goodsItemDataList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack goodsItemdataList(HttpServletRequest req, HttpServletResponse resp,
+			GoodsItemEntity item) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String status = req.getParameter("status");
+			if (!StringUtil.isEmpty(status)) {
+				item.setStatus(status);
+			}
+			String itemCode = req.getParameter("itemCode");
+			if (!StringUtil.isEmpty(itemCode)) {
+				item.setItemCode(itemCode);
+			}
+			String supplierId = req.getParameter("supplierId");
+			if (!StringUtil.isEmpty(supplierId)) {
+				item.setSupplierId(supplierId);
+			}
+			String goodsName = req.getParameter("goodsName");
+			if (!StringUtil.isEmpty(goodsName)) {
+				item.setGoodsName(goodsName);
+			}
+			String sku = req.getParameter("sku");
+			if (!StringUtil.isEmpty(sku)) {
+				item.setSku(sku);
+			}
+			String goodsId = req.getParameter("goodsId");
+			if (!StringUtil.isEmpty(goodsId)) {
+				item.setGoodsId(goodsId);
+			}
+			String itemId = req.getParameter("itemId");
+			if (!StringUtil.isEmpty(itemId)) {
+				item.setItemId(itemId);
+			}
+			
+			params.put("centerId", staffEntity.getGradeId());
+			params.put("shopId", staffEntity.getShopId());
+			params.put("gradeLevel", staffEntity.getGradeLevel());
+			
+			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
+					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
+
+			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+			for (GoodsItemEntity entity : list) {
+				GoodsUtil.changeSpecsInfo(entity);
+			}
+
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(item);
+			pcb.setSuccess(true);
+			return pcb;
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -277,7 +362,7 @@ public class MallMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/updateAd", method = RequestMethod.POST)
 	public void updateAd(HttpServletRequest req, HttpServletResponse resp, @RequestBody DictData data) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -289,7 +374,7 @@ public class MallMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-		
+
 		sendSuccessMessage(resp, null);
 	}
 

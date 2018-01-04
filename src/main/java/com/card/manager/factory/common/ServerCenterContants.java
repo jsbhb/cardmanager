@@ -132,7 +132,7 @@ public class ServerCenterContants {
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";
 	
 	public static final String GOODS_CENTER_ITEM_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/item/queryForPage?goodsId={goodsId}&itemId={itemId}&itemCode={itemCode}&supplierId={supplierId}&goodsName={goodsName}&status={status}&sku={sku}";
+			+ SERVER_CENTER_EDITION + "/goods/item/queryForPage?centerId={centerId}&shopId={shopId}&gradeLevel={gradeLevel}";
 	public static final String GOODS_CENTER_ITEM_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/item/save";
 	public static final String GOODS_CENTER_ITEM_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
