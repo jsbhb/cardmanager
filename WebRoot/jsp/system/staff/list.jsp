@@ -181,7 +181,7 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].gradeName;
 		str += "</td><td>" + list[i].userCenterId;
 		str += "</td><td>" + list[i].roleName;
-		str += "</td><td>" + list[i].createTime;
+		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 
 		
 		if(list[i].updateTime == null){

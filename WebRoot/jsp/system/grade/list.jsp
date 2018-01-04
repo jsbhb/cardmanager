@@ -168,7 +168,7 @@ function rebuildTable(data){
 			str += "</td>";
 		}
 		str += "<td>" + list[i].id;
-		str += "</td><td>" + list[i].gradeName;
+		str += "</td><td>" + (list[i].gradeName == null ? "" : list[i].gradeName);
 		
 		var pgName = list[i].parentGradeName;
 		
@@ -185,13 +185,15 @@ function rebuildTable(data){
 			str += "</td><td>大贸" ;
 		}else if(type == "1"){
 			str += "</td><td>跨境";
+		}else if(type == "100"){
+			str += "</td><td>总公司";
 		}else{
 			str += "</td><td>无";
 		}
-		str += "</td><td>" + list[i].company;
-		str += "</td><td>" + list[i].personInCharge;
-		str += "</td><td>" + list[i].phone;
-		str += "</td><td>" + list[i].createTime;
+		str += "</td><td>" + (list[i].company == null ? "" : list[i].company);
+		str += "</td><td>" + (list[i].personInCharge == null ? "" : list[i].personInCharge);
+		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
+		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		
 		str += "</td></tr>";
 	}

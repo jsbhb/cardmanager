@@ -175,7 +175,7 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].incrementTax;
 		str += "</td><td>" + list[i].tariff;
 		str += "</td><td>" + list[i].unit;
-		str += "</td><td>" + list[i].hscode;
+		str += "</td><td>" + (list[i].hscode == null ? "" : list[i].hscode);
 		str += "</td><td>" + list[i].encode;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
 		str += "</td><td>" + list[i].centerId;

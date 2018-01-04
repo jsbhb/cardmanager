@@ -8,6 +8,7 @@
 package com.card.manager.factory.common.serivce.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,10 @@ import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
@@ -73,6 +77,18 @@ public abstract class AbstractServcerCenterBaseService implements ServerCenterSe
 //			Constructor<?> cons = entityClass.getDeclaredConstructor(JSONObject.class);
 //			list.add(cons.newInstance(jObj));
 			list.add(JSONUtilNew.parse(jObj.toString(), entityClass));
+		}
+		if(entityClass.isAssignableFrom(OrderInfo.class)){
+			List<SupplierEntity> suppList = CachePoolComponent.getSupplier(token);
+			Map<Integer, String> supNameMap = new HashMap<Integer, String>();
+			for(SupplierEntity entity : suppList){
+				supNameMap.put(entity.getId(), entity.getSupplierName());
+			}
+			OrderInfo orderInfo = null;
+			for(Object info : list){
+				orderInfo = (OrderInfo) info;
+				orderInfo.setSupplierName(supNameMap.get(orderInfo.getSupplierId()));
+			}
 		}
 		
 

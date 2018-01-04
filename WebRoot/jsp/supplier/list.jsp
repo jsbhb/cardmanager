@@ -88,7 +88,7 @@
 									<tr>
 										<th>操作</th>
 										<th>供应商名称</th>
-										<th>国家省事</th>
+										<th>国家省市</th>
 										<th>地址</th>
 										<th>负责人</th>
 										<th>电话</th>
@@ -168,13 +168,13 @@ function rebuildTable(data){
 			str += "</td>";
 		}
 		str += "</td><td>" + list[i].supplierName;
-		str += "</td><td>" + list[i].country+" "+list[i].province;
-		str += "</td><td>" + list[i].city+" "+list[i].area+" "+list[i].address;
-		str += "</td><td>" + list[i].operator;
-		str += "</td><td>" + list[i].phone;
-		str += "</td><td>" + list[i].email;
-		str += "</td><td>" + list[i].fax;
-		str += "</td><td>" + list[i].enterTime;
+		str += "</td><td>" + (list[i].country == null ? "" : list[i].country) +" "+(list[i].province == null ? "" : list[i].province);
+		str += "</td><td>" + (list[i].city == null ? "" : list[i].city)+" "+(list[i].area == null ? "" : list[i].area)+" "+(list[i].address == null ? "" : list[i].address);
+		str += "</td><td>" + (list[i].operator == null ? "" : list[i].operator);
+		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
+		str += "</td><td>" + (list[i].email == null ? "" : list[i].email);
+		str += "</td><td>" + (list[i].fax == null ? "" : list[i].fax);
+		str += "</td><td>" + (list[i].enterTime==null ? "" : list[i].enterTime);
 		
 		str += "</td></tr>";
 	}

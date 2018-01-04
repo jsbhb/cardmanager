@@ -45,7 +45,7 @@
 								<div class="input-group">
 				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
 				                   	  <option selected="selected" value="">未选择</option>
-				                   	  <c:forEach var="supplier" items="${suppliers}">
+				                   	  <c:forEach var="supplier" items="${supplierId}">
 				                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
 				                   	  </c:forEach>
 					                </select>
@@ -192,18 +192,18 @@ function rebuildTable(data){
 		var expressId ="";
 		if(express !=null){
 			for(var j=0;j<express.length;j++){
-				expressName += express[j].expressName;
-				expressId += express[j].expressId;
+				expressName += (express[j].expressName == null ? "" : express[j].expressName);
+				expressId += (express[j].expressId == null ? "" : express[j].expressId);
 			}
 		}
 		str += "</td><td>" + expressName;
 		str += "</td><td>" + expressId;
-		str += "</td><td>" + list[i].supplierName;
+		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
 		str += "</td><td>" + list[i].userId;
 		str += "</td><td>" + list[i].centerId;
-		str += "</td><td>" + list[i].shopId;
-		str += "</td><td>" + list[i].updateTime;
+		str += "</td><td>" + (list[i].shopId == null ? "" : list[i].shopId);
+		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		if (true) {
 			str += "<td align='left'>";
 			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")' >详情</button>";
