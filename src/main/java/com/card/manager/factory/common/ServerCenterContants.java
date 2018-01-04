@@ -146,7 +146,7 @@ public class ServerCenterContants {
 	
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/order/stockOut/queryForPage?orderId={orderId}&status={status}&supplierId={supplierId}";
+			+ SERVER_CENTER_EDITION + "/order/stockOut/queryForPage";
 	public static final String ORDER_CENTER_QUERY_GOODS_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryForPageForGoods?orderId={orderId}";
 	public static final String ORDER_CENTER_QUERY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION

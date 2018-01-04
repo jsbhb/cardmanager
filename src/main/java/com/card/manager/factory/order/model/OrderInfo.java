@@ -2,7 +2,9 @@ package com.card.manager.factory.order.model;
 
 import java.util.List;
 
-public class OrderInfo {
+import com.card.manager.factory.base.Pagination;
+
+public class OrderInfo extends Pagination{
 
 	private Integer id;
 

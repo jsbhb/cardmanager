@@ -46,7 +46,7 @@
 				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
 				                   	  <option selected="selected" value="">未选择</option>
 				                   	  <c:forEach var="supplier" items="${suppliers}">
-				                   	  	<option value="${supplier.id}">${supplier.supplierId}</option>
+				                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
 				                   	  </c:forEach>
 					                </select>
 				                </div>

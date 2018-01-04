@@ -17,6 +17,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
@@ -45,35 +46,42 @@ public class OrderMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
+		context.put("supplierId",CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("order/stockout/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, OrderInfo pagination) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-
-			String orderId = req.getParameter("orderId");
-			if (StringUtil.isEmpty(orderId)) {
-				params.put("orderId", "");
-			} else {
-				params.put("orderId", orderId);
-			}
+			pagination.setOrderId(req.getParameter("orderId"));
+			
+//			String orderId = req.getParameter("orderId");
+//			if (StringUtil.isEmpty(orderId)) {
+//				params.put("orderId", "");
+//			} else {
+//				params.put("orderId", orderId);
+//			}
 			String status = req.getParameter("status");
-			if (StringUtil.isEmpty(status)) {
-				params.put("status", "");
-			} else {
-				params.put("status", status);
+			if (!StringUtil.isEmpty(status)) {
+				pagination.setStatus(Integer.parseInt(status));
 			}
 			String supplierId = req.getParameter("supplierId");
-			if (StringUtil.isEmpty(supplierId)) {
-				params.put("supplierId", "");
-			} else {
-				params.put("supplierId", supplierId);
+			if (!StringUtil.isEmpty(supplierId)) {
+				pagination.setSupplierId(Integer.parseInt(supplierId));
 			}
+			
+			
+			int gradeLevel = staffEntity.getGradeLevel();
+			if(ServerCenterContants.FIRST_GRADE != gradeLevel){
+				pagination.setCenterId(staffEntity.getGradeId());
+				pagination.setShopId(staffEntity.getShopId());
+			}
+			
+			
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
