@@ -59,7 +59,7 @@ public class GoodsItemMngController extends BaseController {
 
 	@RequestMapping(value = "/dataListForGoods", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataListForGoods(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataListForGoods(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity entity) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -71,26 +71,25 @@ public class GoodsItemMngController extends BaseController {
 				pcb.setSuccess(false);
 				return pcb;
 			}
-			params.put("goodsId", goodsId);
-			params.put("itemCode", "");
-			params.put("sku", "");
-			params.put("supplierId", "");
-			params.put("status", "");
-			params.put("goodsName", "");
-			params.put("itemId", "");
-			pcb = goodsItemService.dataList(pagination, params, staffEntity.getToken(),
+
+			params.put("centerId", staffEntity.getGradeId());
+			params.put("shopId", staffEntity.getShopId());
+			params.put("gradeLevel", staffEntity.getGradeLevel());
+
+			entity.setGoodsId(goodsId);
+			pcb = goodsItemService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
 
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
-			for (GoodsItemEntity entity : list) {
-				GoodsUtil.changeSpecsInfo(entity);
+			for (GoodsItemEntity goodsItem : list) {
+				GoodsUtil.changeSpecsInfo(goodsItem);
 			}
 
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
-			pcb.setPagination(pagination);
+			pcb.setPagination(entity);
 			pcb.setSuccess(true);
 			return pcb;
 		} catch (Exception e) {
@@ -140,11 +139,11 @@ public class GoodsItemMngController extends BaseController {
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
 			}
-			
-			params.put("centerId", "");
-			params.put("shopId", "");
+
+			params.put("centerId", staffEntity.getGradeId());
+			params.put("shopId", staffEntity.getShopId());
 			params.put("gradeLevel", staffEntity.getGradeLevel());
-			
+
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
 

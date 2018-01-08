@@ -219,9 +219,9 @@ function rebuildTable(data){
 		var status = list[i].status;
 		
 		switch(status){
-			case 0:str += "</td><td>初始化";break;
-			case 1:str += "</td><td>可用";break;
-			case 2:str += "</td><td>可分销";break;
+			case '0':str += "</td><td>初始化";break;
+			case '1':str += "</td><td>可用";break;
+			case '2':str += "</td><td>可分销";break;
 			default:str += "</td><td>状态错误："+status;
 		}
 		str += "</td><td>" + list[i].updateTime;
@@ -233,7 +233,6 @@ function rebuildTable(data){
 				str += "<button type='button' class='btn btn-warning' onclick='beFx("+list[i].itemId+")' >可分销</button>";
 			}else if(status == 2){
 				str += "<button type='button' class='btn btn-warning' onclick='noBeFx("+list[i].itemId+")' >不可分销</button>";
-				str += "<button type='button' class='btn btn-warning' onclick='fx("+list[i].itemId+")' >同步</button>";
 			}
 			str += "</td>";
 		}

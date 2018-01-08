@@ -216,24 +216,22 @@ function rebuildTable(data){
 		str += "</td><td>无";
 		str += "</td><td>无";
 		}
-		var status = list[i].status;
+		var status = list[i].centerStatus;
 		
 		switch(status){
-			case 0:str += "</td><td>初始化";break;
-			case 1:str += "</td><td>可用";break;
-			case 2:str += "</td><td>可分销";break;
-			default:str += "</td><td>状态错误："+status;
+			case 0:str += "</td><td>未上架";break;
+			case 0:str += "</td><td>已上架";break;
+			default:str += "</td><td>未上架："+status;
 		}
 		str += "</td><td>" + list[i].updateTime;
 		if (true) {
 			str += "<td align='left'>";
 			if(status == 0){
-				str += "<button type='button' class='btn btn-warning' onclick='beUse("+list[i].itemId+")' >可用</button>";
+				str += "<button type='button' class='btn btn-warning' onclick='puton("+list[i].itemId+")' >上架</button>";
 			}else if(status == 1){
-				str += "<button type='button' class='btn btn-warning' onclick='beFx("+list[i].itemId+")' >可分销</button>";
-			}else if(status == 2){
-				str += "<button type='button' class='btn btn-warning' onclick='noBeFx("+list[i].itemId+")' >不可分销</button>";
-				str += "<button type='button' class='btn btn-warning' onclick='fx("+list[i].itemId+")' >同步</button>";
+				str += "<button type='button' class='btn btn-warning' onclick='putoff("+list[i].itemId+")' >下架</button>";
+			}else {
+				str += "<button type='button' class='btn btn-warning' onclick='putoff("+list[i].itemId+")' >下架</button>";
 			}
 			str += "</td>";
 		}

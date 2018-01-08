@@ -76,30 +76,30 @@ public class GradeMngController extends BaseController {
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GradeEntity entity) {
 		PageCallBack pcb = null;
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		String gradeName = req.getParameter("gradeName");
 		if (gradeName != null && "".equals(gradeName)) {
-			params.put("gradeName", gradeName);
+			entity.setGradeName(gradeName);
 		}
 
 		StaffEntity opt = SessionUtils.getOperator(req);
 
 		if (opt.getRoleId() != AuthCommon.SUPER_ADMIN) {
 			int id = opt.getGradeId();
-			params.put("id", id);
+			entity.setId(id);
 		}
-
+		
 		try {
-			pcb = gradeMngService.dataList(pagination, params, opt.getToken(),
+			pcb = gradeMngService.dataList(entity, params, opt.getToken(),
 					ServerCenterContants.USER_CENTER_GRADE_QUERY_FOR_PAGE, GradeEntity.class);
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
-			pcb.setPagination(pagination);
+			pcb.setPagination(entity);
 			pcb.setSuccess(true);
 			return pcb;
 		} catch (Exception e) {

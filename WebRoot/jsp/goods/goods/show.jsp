@@ -201,9 +201,9 @@
 			var status = list[i].status;
 			
 			switch(status){
-				case 0:str += "</td><td>初始化";break;
-				case 1:str += "</td><td>可用";break;
-				case 2:str += "</td><td>可分销";break;
+				case '0':str += "</td><td>初始化";break;
+				case '1':str += "</td><td>可用";break;
+				case '2':str += "</td><td>可分销";break;
 				default:str += "</td><td>状态错误："+status;
 			}
 			

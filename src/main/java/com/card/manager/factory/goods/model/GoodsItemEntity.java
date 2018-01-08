@@ -18,7 +18,7 @@ import com.card.manager.factory.base.Pagination;
  * @version
  * @since JDK 1.7
  */
-public class GoodsItemEntity extends Pagination{
+public class GoodsItemEntity extends Pagination {
 	private int id;//
 	private String goodsId;// 商品ID
 	private String itemId;// itemID
@@ -39,7 +39,8 @@ public class GoodsItemEntity extends Pagination{
 	private String supplierId;
 	private String supplierName;
 	private GoodsStockEntity stock;
-	
+	private int centerItemId;
+	private int centerStatus;
 
 	public int getId() {
 		return id;
@@ -199,6 +200,22 @@ public class GoodsItemEntity extends Pagination{
 
 	public void setStock(GoodsStockEntity stock) {
 		this.stock = stock;
+	}
+
+	public int getCenterItemId() {
+		return centerItemId;
+	}
+
+	public void setCenterItemId(int centerItemId) {
+		this.centerItemId = centerItemId;
+	}
+
+	public int getCenterStatus() {
+		return centerStatus;
+	}
+
+	public void setCenterStatus(int centerStatus) {
+		this.centerStatus = centerStatus;
 	}
 
 }

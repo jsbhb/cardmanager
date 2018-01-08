@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.system.model;
 
+import com.card.manager.factory.base.Pagination;
+
 import net.sf.json.JSONObject;
 
 /**
@@ -18,7 +20,7 @@ import net.sf.json.JSONObject;
  * @version
  * @since JDK 1.7
  */
-public class GradeEntity {
+public class GradeEntity extends Pagination{
 
 	private Integer id;
 
