@@ -21,6 +21,8 @@ public class SpecsPojo {
 	private String templateName;
 	private String specsName;
 	private String specsValue;
+	private int templateId;
+	private int specsId;
 
 	public String getTemplateName() {
 		return templateName;
@@ -44,6 +46,22 @@ public class SpecsPojo {
 
 	public void setSpecsValue(String specsValue) {
 		this.specsValue = specsValue;
+	}
+
+	public int getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(int templateId) {
+		this.templateId = templateId;
+	}
+
+	public int getSpecsId() {
+		return specsId;
+	}
+
+	public void setSpecsId(int specsId) {
+		this.specsId = specsId;
 	}
 
 }

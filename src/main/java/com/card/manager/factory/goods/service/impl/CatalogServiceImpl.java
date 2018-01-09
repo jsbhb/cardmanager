@@ -21,12 +21,14 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.goods.model.CatalogModel;
+import com.card.manager.factory.goods.model.CategoryTypeEnum;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.URLUtils;
 
@@ -44,10 +46,6 @@ import net.sf.json.JSONObject;
  */
 @Service
 public class CatalogServiceImpl implements CatalogService {
-
-	private static String FIRST_CATALOG_TYPE = "1";
-	private static String SECOND_CATALOG_TYPE = "2";
-	private static String THIRD_CATALOG_TYPE = "3";
 
 	@Resource
 	StaffMapper staffMapper;
@@ -87,7 +85,7 @@ public class CatalogServiceImpl implements CatalogService {
 	public void add(CatalogModel model, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
-		if (FIRST_CATALOG_TYPE.equals(model.getType())) {
+		if (CategoryTypeEnum.FIRST.getType().equals(model.getType())) {
 			FirstCatalogEntity entity = new FirstCatalogEntity();
 			int sequence = staffMapper.nextVal(ServerCenterContants.FIRST_CATALOG);
 			entity.setFirstId(ServerCenterContants.FIRST_CATALOG + sequence);
@@ -98,7 +96,7 @@ public class CatalogServiceImpl implements CatalogService {
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_FIRST_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
 
-		} else if (SECOND_CATALOG_TYPE.equals(model.getType())) {
+		} else if (CategoryTypeEnum.SECOND.getType().equals(model.getType())) {
 
 			if (StringUtil.isEmpty(model.getParentId())) {
 				throw new Exception("新增二级分类没有上级分类信息！");
@@ -113,7 +111,7 @@ public class CatalogServiceImpl implements CatalogService {
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_SECOND_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
-		} else if (THIRD_CATALOG_TYPE.equals(model.getType())) {
+		} else if (CategoryTypeEnum.THIRD.getType().equals(model.getType())) {
 			if (StringUtil.isEmpty(model.getParentId())) {
 				throw new Exception("新增三级分类没有上级分类信息！");
 			}
@@ -138,6 +136,49 @@ public class CatalogServiceImpl implements CatalogService {
 			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
 
+	}
+	
+	@Override
+	public void modify(CatalogModel model, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+		if (CategoryTypeEnum.FIRST.getType().equals(model.getType())) {
+			FirstCatalogEntity entity = new FirstCatalogEntity();
+			entity.setFirstId(model.getId());
+			entity.setName(model.getName());
+			entity.setOpt(staffEntity.getOpt());
+
+			result = helper.request(
+					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_FIRST_CATALOG,
+					staffEntity.getToken(), true, entity, HttpMethod.POST);
+
+		} else if (CategoryTypeEnum.SECOND.getType().equals(model.getType())) {
+
+			SecondCatalogEntity entity = new SecondCatalogEntity();
+			entity.setSecondId(model.getId());
+			entity.setName(model.getName());
+
+			result = helper.request(
+					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_SECOND_CATALOG,
+					staffEntity.getToken(), true, entity, HttpMethod.POST);
+		} else if (CategoryTypeEnum.THIRD.getType().equals(model.getType())) {
+			ThirdCatalogEntity entity = new ThirdCatalogEntity();
+			entity.setThirdId(model.getId());
+			entity.setName(model.getName());
+
+			result = helper.request(
+					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_THIRD_CATALOG,
+					staffEntity.getToken(), true, entity, HttpMethod.POST);
+		}
+
+		if (result == null)
+			throw new Exception("没有返回信息");
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
 	}
 
 	@Override
@@ -174,10 +215,10 @@ public class CatalogServiceImpl implements CatalogService {
 	@Override
 	public List<SecondCatalogEntity> querySecondCatalogByFirstId(String token, String firstId) {
 		RestCommonHelper helper = new RestCommonHelper();
-		
-		Map<String,Object> params = new HashMap<String,Object>();
+
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("firstId", firstId);
-		
+
 		ResponseEntity<String> query_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_SECOND_BY_FIRST_ID, token,
 				true, params, HttpMethod.POST);
@@ -208,10 +249,10 @@ public class CatalogServiceImpl implements CatalogService {
 
 	@Override
 	public List<ThirdCatalogEntity> queryThirdCatalogBySecondId(String token, String secondId) {
-		
-		Map<String,Object> params = new HashMap<String,Object>();
+
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("secondId", secondId);
-		
+
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_THIRD_BY_SECOND_ID, token,
@@ -241,4 +282,37 @@ public class CatalogServiceImpl implements CatalogService {
 		return res;
 	}
 
+	@Override
+	public void delete(String id, String type, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		params.put("type", type);
+
+		result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_DELETE_CATALOG,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
+
+		if (result == null)
+			throw new Exception("没有返回信息");
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public CatalogModel queryForEdit(CatalogModel model, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_THIRD_BY_SECOND_ID, token,
+				true, model, HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CatalogModel.class);
+
+	}
 }

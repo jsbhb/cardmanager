@@ -21,9 +21,9 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.service.BrandService;
-import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
 
 @Controller
 @RequestMapping("/admin/goods/brandMng")
@@ -118,12 +118,33 @@ public class BrandMngController extends BaseController {
 		return forword("goods/brand/edit", context);
 	}
 
-	@RequestMapping(value = "/editBrand", method = RequestMethod.POST)
-	public void editBrand(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public void editBrand(HttpServletRequest req, HttpServletResponse resp, @RequestBody BrandEntity entity) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			// gradeMngService.saveGrade(gradeInfo, staffEntity);
+			brandService.modify(entity, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public void delete(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String brandId = req.getParameter("brandId");
+			if (StringUtil.isEmpty(brandId)) {
+				sendFailureMessage(resp, "信息不全");
+				return;
+			}
+
+			brandService.delete(brandId, staffEntity);
+
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

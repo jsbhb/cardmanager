@@ -19,7 +19,7 @@
         <div class="main-content">
 			<div class="row">
 				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="supplierForm" >
+					<form class="form-horizontal" role="form" id="brandForm" >
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>基本信息</h4></label>
 						</div>
@@ -41,7 +41,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="country" placeholder="请输入..." readonly value="${brand.brandId}">
+				                  <input type="text" class="form-control" name="brandId" placeholder="请输入..." readonly value="${brand.brandId}">
 				                </div>
 							</div>
 						</div>
@@ -52,13 +52,13 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="area" placeholder="请输入..." readonly value="${brand.brand}">
+				                  <input type="text" class="form-control" name="brand" placeholder="请输入..." value="${brand.brand}">
 				                </div>
 							</div>
 						</div>
 						<div class="col-md-offset-3 col-md-9">
 							<div class="form-group">
-	                            <button type="button" disabled class="btn btn-primary" id="submitBtn">保存</button>
+	                            <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
 	                        </div>
                        </div>
 					</form>
@@ -66,20 +66,19 @@
 			</div>
 		</div>
 	</section>
-	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
 		 if($('#brandForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/brandMng/editbrand.shtml",
+				 url:"${wmsUrl}/admin/goods/brandMng/modify.shtml",
 				 type:'post',
 				 data:JSON.stringify(sy.serializeObject($('#brandForm'))),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	
-						 layer.alert("插入成功");
+						 layer.alert("更新成功");
 						 parent.layer.closeAll();
 						 parent.reloadTable();
 					 }else{

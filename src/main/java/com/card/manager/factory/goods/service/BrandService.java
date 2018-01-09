@@ -9,6 +9,7 @@ package com.card.manager.factory.goods.service;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.BrandEntity;
+import com.card.manager.factory.system.model.StaffEntity;
 
 /**
  * ClassName: SupplierService <br/>
@@ -31,15 +32,35 @@ public interface BrandService extends ServerCenterService {
 	 */
 	void addBrand(BrandEntity entity, String string) throws Exception;
 
-	/**  
-	 * queryById:根据编号查询供应商信息. <br/>   
-	 *  
-	 * @author hebin 
+	/**
+	 * queryById:根据编号查询供应商信息. <br/>
+	 * 
+	 * @author hebin
 	 * @param id
 	 * @param token
-	 * @return  
-	 * @since JDK 1.7  
+	 * @return
+	 * @since JDK 1.7
 	 */
 	BrandEntity queryById(String id, String token);
+
+	/**
+	 * delete:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param brandId
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void delete(String brandId, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * modify:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param gradeInfo
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void modify(BrandEntity entity, StaffEntity staffEntity) throws Exception;
 
 }

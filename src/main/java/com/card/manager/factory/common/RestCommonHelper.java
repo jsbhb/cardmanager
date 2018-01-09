@@ -57,6 +57,29 @@ public class RestCommonHelper {
 	 * @return
 	 * @since JDK 1.7
 	 */
+	public ResponseEntity<String> requestWithParams(String url, String token, boolean needToken, Object entity,
+			HttpMethod method, Map<String, Object> params) {
+		if (needToken) {
+			httpHeaders.add("authentication", ServerCenterContants.TOKEN_PREFIX + token);
+		}
+
+		return restTemplate.exchange(url, method, new HttpEntity<Object>(entity, httpHeaders), String.class, params);
+
+	}
+
+	/**
+	 * 
+	 * request:普通请求. <br/>
+	 * 
+	 * @author hebin
+	 * @param url
+	 * @param token
+	 * @param needToken
+	 * @param entity
+	 * @param method
+	 * @return
+	 * @since JDK 1.7
+	 */
 	public ResponseEntity<String> request(String url, String token, boolean needToken, Object entity,
 			HttpMethod method) {
 		if (needToken) {

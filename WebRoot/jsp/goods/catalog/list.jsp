@@ -30,24 +30,24 @@
 								<li>
 									<span><i class="fa fa-folder"></i> ${first.name}</span>
 									<a href="#" onclick="toAdd('${first.firstId}',2,'${first.name}')"><i class="fa fa-plus"></i></a>
-									<a href="#" onclick="toEdit(${first.id},1)"><i class="fa fa-pencil"></i></a>
-			                		<a href="#" onclick="todelete(${first.id},1)"><i class="fa fa-trash-o"></i></a>
+			                		<a href="#" onclick="toEdit('${first.firstId}',1,'${first.name}')"><i class="fa fa-pencil"></i></a>
+			                		<a href="#" onclick="del('${first.firstId}',1)"><i class="fa fa-trash-o"></i></a>
 									<ul>
 										<c:forEach var="second" items="${first.seconds}">
 											<li style="display: none;">
 							                	<span class="tree-font"><i class="fa fa-folder"></i>
 							                		${second.name}
              										<a href="#" onclick="toAdd('${second.secondId}',3,'${second.name}')"><i class="fa fa-plus"></i></a>
-							                		<a href="#" onclick="toEdit(${second.id},2)"><i class="fa fa-pencil"></i></a>
-							                		<a href="#" onclick="todelete(${second.id},2)"><i class="fa fa-trash-o"></i></a>
+							                		<a href="#" onclick="toEdit('${second.secondId}',2,'${second.name}')"><i class="fa fa-pencil"></i></a>
+							                		<a href="#" onclick="del('${second.secondId}',2)"><i class="fa fa-trash-o"></i></a>
 							                	</span>
 							                	<ul>
 													<c:forEach var="third" items="${second.thirds}">
 														<li style="display: none;">
 										                	<span class="tree-font">
 										                		${third.name}
-										                		<a href="#" onclick="toEdit(${third.id},3)"><i class="fa fa-pencil"></i></a>
-										                		<a href="#" onclick="todelete(${third.id},3)"><i class="fa fa-trash-o"></i></a>
+										                		<a href="#" onclick="toEdit('${third.thirdId}',3,'${third.name}')"><i class="fa fa-pencil"></i></a>
+										                		<a href="#" onclick="del('${third.thirdId}',3)"><i class="fa fa-trash-o"></i></a>
 										                	</span>
 														</li>
 													</c:forEach>
@@ -97,16 +97,19 @@ function toAdd(id,catalog,name){
 		layer.full(index);
 }
 
-function toEdit(id,catalog){
+function toEdit(id,catalog,name){
 	if(id == 0 || id == null){
 		layer.alert("信息不全，请联系技术人员！");
 		return;
 	}
 	
+	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/catalogMng/toEdit.shtml?id='+id+"&type="+catalog+"&name="+name));
+
+	
 	var index = layer.open({
 		  title : "编辑分类",
 		  type: 2,
-		  content: '${wmsUrl}/admin/goods/catalogMng/toEdit.shtml?id='+id+"$type="+catalog,
+		  content: url,
 		  area: ['320px', '195px'],
 		  maxmin: true
 		});
@@ -114,13 +117,12 @@ function toEdit(id,catalog){
 }
 
 
-function toDelete(id,catalog){
-	
+function del(id,catalog){
 	layer.confirm('确定要删除该功能吗？', {
 		  btn: ['确认删除','取消'] //按钮
 		}, function(){
 			$.ajax({
-				 url:"${wmsUrl}/admin/goods/catalogMng/delete.shtml?id="+id,
+				 url:"${wmsUrl}/admin/goods/catalogMng/delete.shtml?id="+id+"&type="+catalog,
 				 type:'post',
 				 dataType:'json',
 				 success:function(data){
@@ -128,7 +130,7 @@ function toDelete(id,catalog){
 						 layer.alert("删除成功");
 						 location.reload();
 					 }else{
-						 layer.alert(data.errInfo);
+						 layer.alert(data.msg);
 					 }
 				 },
 				 error:function(){

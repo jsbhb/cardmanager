@@ -36,7 +36,7 @@
 				                  	<c:forEach var="value" items="${spec.values}">
 		                  				<button type="button" disabled class="btn btn-warning">${value.value}</button>
 		                  			</c:forEach>
-		                  			<button type="button" disabled class="btn btn-danger"><i class="fa fa-plus"></i></button>
+		                  			<button type="button" onclick="toAddValue(${spec.id})" class="btn btn-danger"><i class="fa fa-plus"></i></button>
 				                </div>
 							</div>
 						</div>
@@ -45,7 +45,7 @@
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"></label>
 							<div class="col-sm-5">
 								<div class="input-group">
-		                  			<button type="button" disabled class="btn btn-danger"><i class="fa fa-plus"></i></button>
+		                  			<button type="button" onclick="toAddSpec(${entity.id})" class="btn btn-danger"><i class="fa fa-plus"></i></button>
 				                </div>
 							</div>
 						</div>
@@ -56,56 +56,25 @@
 	</section>
 	<script type="text/javascript">
 	
-	 $("#submitBtn").click(function(){
-		 if($('#brandForm').data("bootstrapValidator").isValid()){
-			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/brandMng/editbrand.shtml",
-				 type:'post',
-				 data:JSON.stringify(sy.serializeObject($('#brandForm'))),
-				 contentType: "application/json; charset=utf-8",
-				 dataType:'json',
-				 success:function(data){
-					 if(data.success){	
-						 layer.alert("插入成功");
-						 parent.layer.closeAll();
-						 parent.reloadTable();
-					 }else{
-						 parent.reloadTable();
-						 layer.alert(data.msg);
-					 }
-				 },
-				 error:function(){
-					 layer.alert("提交失败，请联系客服处理");
-				 }
-			 });
-		 }else{
-			 layer.alert("信息填写有误");
-		 }
-	 });
+	function toAddValue(id){
+		var index = layer.open({
+			  title:"新增规格值",		
+			  type: 2,
+			  content: '${wmsUrl}/admin/goods/specsMng/toAddValue.shtml?specsId='+id,
+			  maxmin: true
+			});
+			layer.full(index);
+	}
 	
-	 $('#resetBtn').click(function() {
-	        $('#brandForm').data('bootstrapValidator').resetForm(true);
-	    });
-	
-	$('#brandForm').bootstrapValidator({
-//      live: 'disabled',
-      message: 'This value is not valid',
-      feedbackIcons: {
-          valid: 'glyphicon glyphicon-ok',
-          invalid: 'glyphicon glyphicon-remove',
-          validating: 'glyphicon glyphicon-refresh'
-      },
-      fields: {
-    	  brand: {
-              message: '品牌不正确',
-              validators: {
-                  notEmpty: {
-                      message: '品牌不能为空！'
-                  }
-              }
-      	  }
-      }
-  });
+	function toAddSpec(id){
+		var index = layer.open({
+			  title:"品牌查看",		
+			  type: 2,
+			  content: '${wmsUrl}/admin/goods/specsMng/toAddSpec.shtml?templateId='+id,
+			  maxmin: true
+			});
+			layer.full(index);
+	}
 	
 	
 	

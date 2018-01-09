@@ -75,16 +75,24 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/brand/queryForPage";
 	public static final String GOODS_CENTER_BRAND_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/brand/save";
+	public static final String GOODS_CENTER_BRAND_MODIFY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/brand/modify";
 	public static final String GOODS_CENTER_BRAND_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/brand/query";
 	public static final String GOODS_CENTER_BRAND_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/brand/queryAll";
+	public static final String GOODS_CENTER_BRAND_DELETE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/brand/remove?brandId={brandId}";
 
 	/*------------------------规格管理---------------------*/
 	public static final String GOODS_CENTER_SPECS_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/queryForPage";
 	public static final String GOODS_CENTER_SPECS_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/specs/save";
+	public static final String GOODS_CENTER_SPECS_SAVE_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/specs/saveValue";
+	public static final String GOODS_CENTER_SPECS_SAVE_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/specs/saveSpecs";
 	public static final String GOODS_CENTER_SPECS_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/query";
 	public static final String GOODS_CENTER_SPECS_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -105,6 +113,14 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/savesecond";
 	public static final String GOODS_CENTER_CATALOG_SAVE_THIRD_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/catalog/savethird";
+	public static final String GOODS_CENTER_CATALOG_MODIFY_FIRST_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/modifyFirst";
+	public static final String GOODS_CENTER_CATALOG_MODIFY_SECOND_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/modifySecond";
+	public static final String GOODS_CENTER_CATALOG_MODIFY_THIRD_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/modifyThird";
+	public static final String GOODS_CENTER_CATALOG_DELETE_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/delete?id={id}&type={type}";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_CENTER_BASE_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")

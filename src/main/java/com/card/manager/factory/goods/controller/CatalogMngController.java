@@ -91,6 +91,86 @@ public class CatalogMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
+	
+	
+	@RequestMapping(value = "/toEdit")
+	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		try {
+			StaffEntity opt = SessionUtils.getOperator(req);
+			context.put("opt", opt);
+
+			String id = req.getParameter("id");
+			if (StringUtil.isEmpty(id)) {
+				context.put(ERROR, "编号不存在!");
+				return forword("error", context);
+			}
+			context.put("id", id);
+
+			String type = req.getParameter("type");
+			if (StringUtil.isEmpty(type)) {
+				context.put(ERROR, "没有级别信息!");
+				return forword("error", context);
+			}
+			context.put("type", type);
+
+			String name = java.net.URLDecoder.decode(req.getParameter("name"), "UTF-8");
+			if (StringUtil.isEmpty(name)) {
+				context.put(ERROR, "没有分类名称!");
+				return forword("error", context);
+			}
+
+			context.put("name", name);
+
+			return forword("goods/catalog/edit", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public void modify(HttpServletRequest req, HttpServletResponse resp, @RequestBody CatalogModel model) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+
+			if (model == null) {
+				sendFailureMessage(resp, "参数不全！");
+				return;
+			}
+
+			catalogService.modify(model, staffEntity);
+
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public void delete(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String id = req.getParameter("id");
+			String type = req.getParameter("type");
+			if(StringUtil.isEmpty(id)||StringUtil.isEmpty(type)){
+				sendFailureMessage(resp, "信息不全");
+				return;
+			}
+			
+			catalogService.delete(id,type,staffEntity);
+
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
 
 	@RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {

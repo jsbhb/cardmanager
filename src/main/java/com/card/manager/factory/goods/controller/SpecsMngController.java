@@ -60,6 +60,46 @@ public class SpecsMngController extends BaseController {
 
 	}
 
+	@RequestMapping(value = "/toAddValue")
+	public ModelAndView toAddValue(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String specsId = req.getParameter("specsId");
+			if (StringUtil.isEmpty(specsId)) {
+				context.put(ERROR, "没有规格信息");
+				return forword("error", context);
+			}
+			context.put("specsId", specsId);
+			return forword("goods/specs/addValue", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+
+	}
+
+	@RequestMapping(value = "/toAddSpec")
+	public ModelAndView toAddSpec(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String templateId = req.getParameter("templateId");
+			if (StringUtil.isEmpty(templateId)) {
+				context.put(ERROR, "没有模板信息");
+				return forword("error", context);
+			}
+			context.put("templateId", templateId);
+			return forword("goods/specs/addSpec", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+
+	}
+
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public void save(HttpServletRequest req, HttpServletResponse resp, @RequestBody SpecsPojo pojo) {
 
@@ -89,6 +129,65 @@ public class SpecsMngController extends BaseController {
 			entity.setSpecses(specsEntitis);
 
 			specsService.add(entity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/saveSpecsValue", method = RequestMethod.POST)
+	public void saveSpecsValue(HttpServletRequest req, HttpServletResponse resp, @RequestBody SpecsPojo pojo) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		SpecsValueEntity entity = new SpecsValueEntity();
+		entity.setOpt(staffEntity.getOptid());
+		try {
+
+			if (pojo.getSpecsId() <= 0 || StringUtil.isEmpty(pojo.getSpecsValue())) {
+				sendFailureMessage(resp, "保存参数有误！");
+				return;
+			}
+
+			entity.setSpecsId(pojo.getSpecsId());
+			entity.setValue(pojo.getSpecsValue());
+			specsService.addSpecsValue(entity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/saveSpecs", method = RequestMethod.POST)
+	public void saveSpecs(HttpServletRequest req, HttpServletResponse resp, @RequestBody SpecsPojo pojo) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			SpecsEntity specsEntity = new SpecsEntity();
+			
+			if(pojo.getTemplateId()<=0||StringUtil.isEmpty(pojo.getSpecsName())){
+				sendFailureMessage(resp, "保存参数有误！");
+				return;
+			}
+			
+			specsEntity.setTemplateId(pojo.getTemplateId());
+			specsEntity.setName(pojo.getSpecsName());
+			specsEntity.setOpt(staffEntity.getOptid());
+			
+			
+			List<SpecsValueEntity> specsValueEntities = new ArrayList<SpecsValueEntity>();
+			String[] values = pojo.getSpecsValue().split(";");
+			for (int j = 0; j < values.length; j++) {
+				if (!StringUtil.isEmpty(values[j].trim())) {
+					specsValueEntities.add(new SpecsValueEntity(values[j]));
+				}
+			}
+			specsEntity.setValues(specsValueEntities);
+
+			specsService.addSpecs(specsEntity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

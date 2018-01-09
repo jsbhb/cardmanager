@@ -162,6 +162,7 @@ function rebuildTable(data){
 		if (true) {
 			str += "<td align='left'>";
 			str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
+			str += "<a href='#' onclick='del(\""+list[i].brandId+"\")'><i class='fa fa-trash-o' style='font-size:20px'></i></a>";
 			str += "</td>";
 		}
 		str += "</td><td>" + list[i].brandId;
@@ -174,6 +175,31 @@ function rebuildTable(data){
 		
 
 	$("#brandTable tbody").html(str);
+}
+	
+function del(id){
+	layer.confirm('确定要删除该功能吗？', {
+		  btn: ['确认删除','取消'] //按钮
+		}, function(){
+			$.ajax({
+				 url:"${wmsUrl}/admin/goods/brandMng/delete.shtml?brandId="+id,
+				 type:'post',
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){	
+						 layer.alert("删除成功");
+						 location.reload();
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("系统出现问题啦，快叫技术人员处理");
+				 }
+			 });
+		}, function(){
+		  layer.close();
+		});
 }
 	
 function toEdit(id){

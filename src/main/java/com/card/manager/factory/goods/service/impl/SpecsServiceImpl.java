@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.goods.model.SpecsEntity;
 import com.card.manager.factory.goods.model.SpecsTemplateEntity;
+import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
@@ -62,6 +64,36 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		 JSONObject json = JSONObject.fromObject(query_result.getBody());
 		// return new SpecsTemplateEntity(json.getJSONObject("obj"));
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), SpecsTemplateEntity.class);
+	}
+
+	@Override
+	public void addSpecsValue(SpecsValueEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS_SAVE_VALUE, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void addSpecs(SpecsEntity specsEntity, String token) throws Exception{
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS_SAVE_SPECS, token, true, specsEntity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
 	}
 
 }

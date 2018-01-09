@@ -7,6 +7,9 @@
  */
 package com.card.manager.factory.goods.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpMethod;
@@ -20,6 +23,7 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.service.BrandService;
 import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONObject;
@@ -55,7 +59,7 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
-		
+
 		CachePoolComponent.syncBrand(token);
 
 	}
@@ -72,6 +76,41 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return new BrandEntity(json.getJSONObject("obj"));
+	}
+
+	@Override
+	public void delete(String brandId, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("brandId", brandId);
+
+		result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BRAND_DELETE,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
+
+		if (result == null)
+			throw new Exception("没有返回信息");
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void modify(BrandEntity entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BRAND_MODIFY, staffEntity.getToken(), true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
 	}
 
 }

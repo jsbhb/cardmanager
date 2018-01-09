@@ -8,7 +8,9 @@
 package com.card.manager.factory.goods.service;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.goods.model.SpecsEntity;
 import com.card.manager.factory.goods.model.SpecsTemplateEntity;
+import com.card.manager.factory.goods.model.SpecsValueEntity;
 
 /**
  * ClassName: SpecsService <br/>
@@ -41,5 +43,25 @@ public interface SpecsService extends ServerCenterService {
 	 * @since JDK 1.7  
 	 */
 	SpecsTemplateEntity queryById(String id, String token);
+
+	/**  
+	 * addSpecsValue:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param entity
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void addSpecsValue(SpecsValueEntity entity, String token) throws Exception;
+
+	/**  
+	 * addSpecs:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param specsEntity
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void addSpecs(SpecsEntity specsEntity, String token) throws Exception;
 
 }
