@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.goods.model;
 
+import com.card.manager.factory.base.Pagination;
+
 import net.sf.json.JSONObject;
 
 /**
@@ -18,7 +20,7 @@ import net.sf.json.JSONObject;
  * @version
  * @since JDK 1.7
  */
-public class GoodsBaseEntity {
+public class GoodsBaseEntity extends Pagination{
 	private int id;
 	private String brandId;// 品牌ID
 	private String goodsName;// 商品名称

@@ -36,7 +36,7 @@ public class GoodsBaseMngController extends BaseController {
 
 	@Resource
 	GoodsBaseService goodsBaseService;
-	
+
 	@Resource
 	CatalogService catalogService;
 
@@ -45,25 +45,25 @@ public class GoodsBaseMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		try{
+		try {
 			List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
-			if(brands.size() == 0){
-				context.put(ERROR,"没有品牌信息,无法查看基础商品！");
-				context.put(ERROR_CODE,"405！");
+			if (brands.size() == 0) {
+				context.put(ERROR, "没有品牌信息,无法查看基础商品！");
+				context.put(ERROR_CODE, "405！");
 				return forword("error", context);
 			}
-			
+
 			context.put("brands", brands);
-			
+
 			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 			context.put("firsts", catalogs);
-			
+
 			return forword("goods/base/add", context);
-		}catch(Exception e){
+		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -86,13 +86,14 @@ public class GoodsBaseMngController extends BaseController {
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
+		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
+		context.put("brands", brands);
 		context.put(OPT, opt);
 		return forword("goods/base/list", context);
 	}
-	
-	
+
 	@RequestMapping(value = "/listForAdd")
-	public ModelAndView listForAdd(HttpServletRequest req, HttpServletResponse resp) {
+	public ModelAndView listForAdd(HttpServletRequest req, HttpServletResponse resp, GoodsBaseEntity entity) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
@@ -101,21 +102,21 @@ public class GoodsBaseMngController extends BaseController {
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GoodsBaseEntity entity) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			pcb = goodsBaseService.dataList(pagination, params, staffEntity.getToken(),
+			pcb = goodsBaseService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BASE_QUERY_FOR_PAGE, GoodsBaseEntity.class);
-		}  catch (ServerCenterNullDataException e) {
+		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
-			pcb.setPagination(pagination);
+			pcb.setPagination(entity);
 			pcb.setSuccess(true);
 			return pcb;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}

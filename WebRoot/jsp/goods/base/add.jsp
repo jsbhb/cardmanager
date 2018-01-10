@@ -76,17 +76,6 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品条码<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="encode">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">单位<font style="color:red">*</font> </label>
 							<div class="col-sm-5">
 								<div class="input-group">
@@ -284,14 +273,6 @@
              validators: {
                  notEmpty: {
                      message: '品牌不能为空！'
-                 }
-             }
-     	  },
-      	 encode: {
-             message: '条形码不正确',
-             validators: {
-                 notEmpty: {
-                     message: '条形码不能为空！'
                  }
              }
      	  },
