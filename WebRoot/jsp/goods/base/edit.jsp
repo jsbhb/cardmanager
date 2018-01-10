@@ -34,7 +34,7 @@
 				                   	  	<option value="${brand.brandId}">${brand.brand}</option>
 				                   	  </c:forEach> -->
 					                </select>
-					               <input type="hidden" class="form-control" name="brand" id="brand"/>
+					               <input type="hidden" class="form-control" name="brand" id="brand" value="${brand.brand}"/>
 				                </div>
 							</div>
 						</div>
@@ -43,24 +43,27 @@
 							<div class="col-sm-2">
 								<div class="input-group">
 									 <select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;">
-				                   	  <option selected="selected" value="-1">未选择</option>
+				                   	  <option selected="selected" value="${firstId}">${firstName}</option>
+				                   	  <!-- <option selected="selected" value="-1">未选择</option>
 				                   	  <c:forEach var="first" items="${firsts}">
 				                   	  	<option value="${first.firstId}">${first.name}</option>
-				                   	  </c:forEach>
+				                   	  </c:forEach> -->
 					                </select>
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">二级分类<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									 <select class="form-control" name="secondCatalogId" id="secondCatalogId" style="width: 100%;">
+									<select class="form-control" name="secondCatalogId" id="secondCatalogId" style="width: 100%;">
+									 <option selected="selected" value="${secondId}">${secondName}</option>
 					                </select>
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">三级分类<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									 <select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" style="width: 100%;">
+									<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" style="width: 100%;">
+									<option selected="selected" value="${thirdId}">${thirdName}</option>
 					                </select>
 				                </div>
 							</div>
@@ -72,7 +75,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="goodsName">
+		                  			<input type="text" class="form-control" name="goodsName" value="${brand.goodsName}">
 				                </div>
 							</div>
 						</div>
@@ -83,7 +86,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="encode">
+		                  			<input type="text" class="form-control" name="encode" value="${brand.encode}">
 				                </div>
 							</div>
 						</div>
@@ -94,7 +97,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="unit">
+		                  			<input type="text" class="form-control" name="unit" value="${brand.unit}">
 				                </div>
 							</div>
 						</div>
@@ -108,7 +111,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="hscode">
+		                  			<input type="text" class="form-control" name="hscode" value="${brand.hscode}">
 				                </div>
 							</div>
 						</div>
@@ -119,7 +122,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="incrementTax">
+		                  			<input type="text" class="form-control" name="incrementTax" value="${brand.incrementTax}">
 				                </div>
 							</div>
 						</div>
@@ -130,14 +133,14 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="tariff">
+		                  			<input type="text" class="form-control" name="tariff" value="${brand.tariff}">
 				                </div>
 							</div>
 						</div>
 						<div class="col-md-offset-3 col-md-9">
 							<div class="form-group">
 	                            <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-	                            <button type="button" class="btn btn-info" id="resetBtn">重置</button>
+	                            <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->
 	                        </div>
                        </div>
 					</form>
@@ -148,7 +151,7 @@
 	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript">
 	
-	$("#brandId").change(function(){
+	/*$("#brandId").change(function(){
 		$("#brand").val($("#brandId").find("option:selected").text());
 	});
 	
@@ -230,15 +233,16 @@
 				 layer.alert("提交失败，请联系客服处理");
 			 }
 		 });
-	});
+	});*/
 	
 	
 	 $("#submitBtn").click(function(){
-		 if($('#baseForm').data("bootstrapValidator").isValid()){
+		 $('#goodsBaseForm').data("bootstrapValidator").validate();
+		 if($('#goodsBaseForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/baseMng/save.shtml",
+				 url:"${wmsUrl}/admin/goods/baseMng/editGoodsBase.shtml",
 				 type:'post',
-				 data:JSON.stringify(sy.serializeObject($('#baseForm'))),
+				 data:JSON.stringify(sy.serializeObject($('#goodsBaseForm'))),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
@@ -260,7 +264,7 @@
 	 });
 	
 	 $('#resetBtn').click(function() {
-	        $('#baseForm').data('bootstrapValidator').resetForm(true);
+	        $('#goodsBaseForm').data('bootstrapValidator').resetForm(true);
 	    });
 	
 	$('#goodsBaseForm').bootstrapValidator({
@@ -273,10 +277,10 @@
       },
       fields: {
     	  goodsName: {
-              message: '品牌不正确',
+              message: '商品名称不正确',
               validators: {
                   notEmpty: {
-                      message: '品牌不能为空！'
+                      message: '商品名称不能为空！'
                   }
               }
       	  },

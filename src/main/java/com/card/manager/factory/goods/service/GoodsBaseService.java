@@ -43,4 +43,14 @@ public interface GoodsBaseService extends ServerCenterService {
 	 */
 	GoodsBaseEntity queryById(String id, String token);
 
+	/**
+	 * updGoodsBase:更新基础商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void updEntity(GoodsBaseEntity entity, String token) throws Exception;
+
 }

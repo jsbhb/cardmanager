@@ -71,4 +71,20 @@ public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService imple
 		return new GoodsBaseEntity(json.getJSONObject("obj"));
 	}
 
+	@Override
+	public void updEntity(GoodsBaseEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> goodscenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BASE_EDIT, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
 }

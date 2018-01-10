@@ -129,6 +129,8 @@ public class ServerCenterContants {
 			+ "/goods/base/save";
 	public static final String GOODS_CENTER_BASE_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/base/query";
+	public static final String GOODS_CENTER_BASE_EDIT = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/base/edit";
 
 	/*------------------------商品管理-----------------------*/
 	public static final String GOODS_ID_SEQUENCE = "goods";

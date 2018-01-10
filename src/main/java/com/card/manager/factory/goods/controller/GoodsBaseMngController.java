@@ -24,6 +24,8 @@ import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsBaseService;
 import com.card.manager.factory.system.model.GradeEntity;
@@ -138,12 +140,55 @@ public class GoodsBaseMngController extends BaseController {
 		try {
 			GoodsBaseEntity brand = goodsBaseService.queryById(id, opt.getToken());
 			context.put("brand", brand);
+			
+			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
+			for (FirstCatalogEntity fce : catalogs) {
+				if (fce.getFirstId().equals(brand.getFirstCatalogId())) {
+					context.put("firstId", brand.getFirstCatalogId());
+					context.put("firstName", fce.getName());
+					break;
+				}
+			}
+			
+			List<SecondCatalogEntity> secondCatalogs = catalogService.querySecondCatalogByFirstId(opt.getToken(),brand.getFirstCatalogId());
+			for (SecondCatalogEntity sce : secondCatalogs) {
+				if (sce.getSecondId().equals(brand.getSecondCatalogId())) {
+					context.put("secondId", brand.getSecondCatalogId());
+					context.put("secondName", sce.getName());
+					break;
+				}
+			}
+			
+			List<ThirdCatalogEntity> thirdCatalogs = catalogService.queryThirdCatalogBySecondId(opt.getToken(),brand.getSecondCatalogId());
+			for (ThirdCatalogEntity tce : thirdCatalogs) {
+				if (tce.getThirdId().equals(brand.getThirdCatalogId())) {
+					context.put("thirdId", brand.getThirdCatalogId());
+					context.put("thirdName", tce.getName());
+					break;
+				}
+			}
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
 		}
 
 		return forword("goods/base/edit", context);
+	}
+
+	@RequestMapping(value = "/editGoodsBase", method = RequestMethod.POST)
+	public void editGoodsBase(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsBaseEntity entity) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptid());
+		try {
+			entity.setCenterId(staffEntity.getGradeId());
+			goodsBaseService.updEntity(entity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
 	}
 
 	@RequestMapping(value = "/editBrand", method = RequestMethod.POST)
