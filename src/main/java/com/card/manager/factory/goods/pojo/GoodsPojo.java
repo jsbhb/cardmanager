@@ -29,6 +29,7 @@ public class GoodsPojo {
 	private double weight;
 	private double proxyPrice;
 	private double fxPrice;
+	private double retailPrice;
 	private double exciseFax;
 	private String opt;
 	private String keys;
@@ -198,4 +199,13 @@ public class GoodsPojo {
 	public void setMin(int min) {
 		this.min = min;
 	}
+
+	public double getRetailPrice() {
+		return retailPrice;
+	}
+
+	public void setRetailPrice(double retailPrice) {
+		this.retailPrice = retailPrice;
+	}
+
 }

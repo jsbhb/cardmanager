@@ -67,6 +67,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setProxyPrice(entity.getProxyPrice());
+		goodsPrice.setRetailPrice(entity.getRetailPrice());
 		goodsPrice.setFxPrice(entity.getProxyPrice());
 		goodsPrice.setMax(entity.getMax());
 		goodsPrice.setMin(entity.getMin());

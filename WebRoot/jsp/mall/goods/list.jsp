@@ -133,8 +133,8 @@
 										<th>明细编号</th>
 										<th>供应商</th>
 										<th>分销价</th>
+										<th>零售价</th>
 										<th>库存</th>
-										<th>分销库存</th>
 										<th>状态</th>
 										<th>更新时间</th>
 										<th>操作</th>
@@ -209,9 +209,9 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].supplierName;
 		str += "</td><td>" + list[i].goodsPrice.fxPrice;
+		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if(list[i].stock!=null){
 			str += "</td><td>" + list[i].stock.qpQty;
-			str += "</td><td>" + list[i].stock.fxQty;
 		}else{
 		str += "</td><td>无";
 		str += "</td><td>无";

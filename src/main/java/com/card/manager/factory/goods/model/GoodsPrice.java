@@ -14,12 +14,14 @@ public class GoodsPrice {
 	private Integer max;
 
 	private Double price;
-	
+
 	private Double proxyPrice;
 
 	private Double fxPrice;
 
 	private Double vipPrice;
+
+	private Double retailPrice;
 
 	private String deliveryPlace;
 
@@ -111,7 +113,7 @@ public class GoodsPrice {
 	public void setOpt(String opt) {
 		this.opt = opt;
 	}
-	
+
 	public Double getProxyPrice() {
 		return proxyPrice;
 	}
@@ -126,6 +128,14 @@ public class GoodsPrice {
 
 	public void setFxPrice(Double fxPrice) {
 		this.fxPrice = fxPrice;
+	}
+
+	public Double getRetailPrice() {
+		return retailPrice;
+	}
+
+	public void setRetailPrice(Double retailPrice) {
+		this.retailPrice = retailPrice;
 	}
 
 	@Override

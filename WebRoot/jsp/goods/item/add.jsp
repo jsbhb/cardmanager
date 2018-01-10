@@ -90,6 +90,17 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">零售价</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+		                  			<input type="text" class="form-control" name="retailPrice">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right">消费税</label>
 							<div class="col-sm-6">
 								<div class="input-group">
@@ -254,10 +265,22 @@
 				   }
 			   },
 			   exciseFax:{
-				   message: '消费税有无',
+				   message: '消费税有误',
 				   validators: {
 					   notEmpty: {
 	                       message: '消费税不能为空'
+	                   },
+					   regexp: {
+		                   regexp: /^\d+(\.\d+)?$/,
+		                   message: '消费税格式有误'
+		               }
+				   }
+			   },
+			   retailPrice:{
+				   message: '零售价有误',
+				   validators: {
+					   notEmpty: {
+	                       message: '零售价不能为空'
 	                   },
 					   regexp: {
 		                   regexp: /^\d+(\.\d+)?$/,

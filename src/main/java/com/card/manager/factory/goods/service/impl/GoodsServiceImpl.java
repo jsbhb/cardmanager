@@ -85,6 +85,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsPrice.setMin(entity.getMin());
 		goodsPrice.setItemId(goodsItem.getItemId());
 		goodsPrice.setOpt(entity.getOpt());
+		goodsPrice.setRetailPrice(entity.getRetailPrice());
 		
 		goodsItem.setGoodsPrice(goodsPrice);
 		goodsItem.setOpt(entity.getOpt());
