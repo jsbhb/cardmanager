@@ -25,56 +25,62 @@
 	      </ol>
     </section>	
 	<section class="content">
-		<div class="box box-warning">
-			<div class="box-header">
-				<div class="row form-horizontal"><!--
-				<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级编号<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="id">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="brandName">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">公司名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="company">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-offset-10 col-md-12">
-						<div class="form-group">
-                                <button type="button" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
-                                <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-                        </div>
-                     </div>-->
-				</div> 
+		<div class="box box-info">
+			<div class="box-header with-border">
+				<div class="box-header with-border">
+	            	<h5 class="box-title">搜索</h5>
+	            	<div class="box-tools pull-right">
+	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	              	</div>
+	            </div>
 			</div>
+		    <div class="box-body">
+			<div class="row form-horizontal query">
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">品牌</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+			                  <select class="form-control" name="brandId" id="brandId" style="width: 100%;">
+		                   	  <option selected="selected" value="">未选择</option>
+		                   	  <c:forEach var="brand" items="${brands}">
+		                   	  	<option value="${brand.brandId}">${brand.brand}</option>
+		                   	  </c:forEach>
+			                </select>
+			                </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">基础编码</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+	                  			<input type="text" class="form-control" name="id">
+			                </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">名称</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+			                  <input type="text" class="form-control" name="goodsName">
+			                </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-offset-10 col-md-12">
+					<div class="form-group">
+                         <button type="button" class="btn btn-primary" id="querybtns" name="signup">提交</button>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+	
+		<div class="box box-warning">
 			<div class="box-body">
 				<div class="row">
 					<div class="col-md-12">
@@ -113,7 +119,7 @@
 			</div>
 		</div>	
 	</section>
-	</section>
+</section>
 	
 	<%@ include file="../../footer.jsp"%>
 	
