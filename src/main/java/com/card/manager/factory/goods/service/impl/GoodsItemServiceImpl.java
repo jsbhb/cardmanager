@@ -27,6 +27,7 @@ import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SequeceRule;
 import com.card.manager.factory.util.URLUtils;
@@ -56,7 +57,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		GoodsItemEntity goodsItem = new GoodsItemEntity();
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setSku(entity.getSku());
-		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex()+"");
+		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
 		goodsItem.setItemCode(entity.getItemCode());
 		goodsItem.setWeight(entity.getWeight());
 
@@ -150,8 +151,8 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		entity.setOpt(optId);
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_NOT_BE_USE, token, true, entity,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_NOT_BE_USE + itemId, token, true,
+				entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
@@ -189,6 +190,40 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway") + url, token, true, list,
 				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void puton(String itemId, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		List<String> list = new ArrayList<String>();
+		list.add(itemId);
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
+				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/" + staffEntity.getGradeId(),
+				staffEntity.getToken(), true, list, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void putoff(String itemId, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> query_result = helper
+				.request(
+						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/"
+								+ staffEntity.getGradeId() + "?itemId=" + itemId,
+						staffEntity.getToken(), true, null, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 

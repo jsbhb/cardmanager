@@ -220,7 +220,7 @@ function rebuildTable(data){
 		
 		switch(status){
 			case 0:str += "</td><td>未上架";break;
-			case 0:str += "</td><td>已上架";break;
+			case 1:str += "</td><td>已上架";break;
 			default:str += "</td><td>未上架："+status;
 		}
 		str += "</td><td>" + list[i].updateTime;
@@ -243,9 +243,9 @@ function rebuildTable(data){
 	$("#itemTable tbody").html(str);
 }
 	
-function beUse(id){
+function puton(id){
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+id,
+		 url:"${wmsUrl}/admin/mall/goodsMng/puton.shtml?itemId="+id,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
@@ -262,9 +262,9 @@ function beUse(id){
 		 }
 	 });
 }
-function beFx(id){
+function putoff(id){
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+id,
+		 url:"${wmsUrl}/admin/mall/goodsMng/putoff.shtml?itemId="+id,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',

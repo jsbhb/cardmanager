@@ -46,17 +46,16 @@ public class MallGoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		try{
+		try {
 			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
-		}catch(Exception e){
+		} catch (Exception e) {
 		}
 		return forword("mall/goods/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack goodsItemdataList(HttpServletRequest req, HttpServletResponse resp,
-			GoodsItemEntity item) {
+	public PageCallBack goodsItemdataList(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity item) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -89,11 +88,11 @@ public class MallGoodsMngController extends BaseController {
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
 			}
-			
+
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());
 			params.put("gradeLevel", staffEntity.getGradeLevel());
-			
+
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
 
@@ -121,5 +120,40 @@ public class MallGoodsMngController extends BaseController {
 		return pcb;
 	}
 
+	@RequestMapping(value = "/puton", method = RequestMethod.POST)
+	public void puton(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemId = req.getParameter("itemId");
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
+				return;
+			}
+			goodsItemService.puton(itemId, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/putoff", method = RequestMethod.POST)
+	public void putoff(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemId = req.getParameter("itemId");
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
+				return;
+			}
+			goodsItemService.putoff(itemId, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
 
 }

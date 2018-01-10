@@ -10,6 +10,7 @@ package com.card.manager.factory.goods.service;
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.system.model.StaffEntity;
 
 /**
  * ClassName: GoodsItemService <br/>
@@ -84,5 +85,25 @@ public interface GoodsItemService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void fx(String itemId, String token, String optid, int gradeId) throws Exception;
+
+	/**
+	 * puton:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param itemId
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void puton(String itemId, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * putoff:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param itemId
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void putoff(String itemId, StaffEntity staffEntity) throws Exception;
 
 }
