@@ -5,18 +5,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.annotation.Auth;
@@ -25,9 +30,12 @@ import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.base.BaseController;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
+import com.card.manager.factory.ftp.common.ReadIniInfo;
+import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
@@ -47,6 +55,9 @@ public class LoginController extends BaseController {
 
 	@Resource
 	FuncMngService funcMngService;
+
+	@Resource
+	SftpService sftpService;
 
 	@Resource
 	SysLogger sysLogger;
@@ -118,7 +129,7 @@ public class LoginController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		String authUrl = (String) context.get("gateway");
 
-		 //调用权限中心 验证是否可以登录
+		// 调用权限中心 验证是否可以登录
 		RestTemplate restTemplate = new RestTemplate();
 		UserInfo userInfo = new UserInfo(PlatUserType.CROSS_BORDER.getIndex(), 4, operator.getPlatId());
 
@@ -158,6 +169,83 @@ public class LoginController extends BaseController {
 		SessionUtils.setMenuList(request, menuList);
 
 		return true;
+
+	}
+
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	@Auth(verifyLogin = false, verifyURL = false)
+	public void uploadFile(@RequestParam("pic") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		ReadIniInfo iniInfo = new ReadIniInfo();
+
+		try {
+			sftpService.login(iniInfo);
+		} catch (Exception e2) {
+			sendFailureMessage(resp, "操作失败：无法连接sftp：" + iniInfo.getFtpServer() + ":" + iniInfo.getFtpPort());
+			return;
+		}
+
+		try {
+			if (pic != null) {
+				String fileName = pic.getOriginalFilename();
+				// 当前上传文件的文件后缀
+				String suffix = fileName.indexOf(".") != -1
+						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
+
+				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
+						&& !".jpeg".equalsIgnoreCase(suffix)) {
+					sendFailureMessage(resp, "文件格式有误！");
+					return;
+				}
+
+				// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
+				if (!StringUtils.isBlank(fileName)) {
+					// 重命名上传后的文件名
+					String saveFileName = UUID.randomUUID().toString() + suffix;
+					// 定义上传路径
+					// 当前上传文件信息
+
+					int gradeLevel = staffEntity.getGradeLevel();
+
+					String descPath = "";
+					String remotePath = "";
+					String invitePath = "";
+
+					if (gradeLevel != 1) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.CMS + "/";
+						descPath = staffEntity.getGradeId() + "";
+					} else {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
+					}
+
+					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), iniInfo, descPath);
+					sftpService.logout();
+
+					if (gradeLevel != 1) {
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.CMS + "/"
+								+ staffEntity.getGradeId() + "/" + saveFileName;
+					} else {
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					}
+
+					sendSuccessMessage(resp, invitePath);
+				} else {
+					sendFailureMessage(resp, "操作失败：没有文件信息");
+				}
+
+			}
+
+		} catch (Exception e) {
+			try {
+				sftpService.logout();
+			} catch (Exception e1) {
+				sendFailureMessage(resp, "操作失败：" + e1.getMessage());
+				return;
+			}
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
 
 	}
 

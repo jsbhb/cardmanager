@@ -44,6 +44,7 @@ public class GoodsEntity {
 	private GoodsItemEntity goodsItem;
 	private List<GoodsItemEntity> items;
 	private int thirdId;
+	private List<GoodsFile> files;
 
 	public int getId() {
 		return id;
@@ -243,6 +244,14 @@ public class GoodsEntity {
 
 	public void setThirdId(int thirdId) {
 		this.thirdId = thirdId;
+	}
+
+	public List<GoodsFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<GoodsFile> files) {
+		this.files = files;
 	}
 
 }

@@ -39,6 +39,7 @@ public class GoodsPojo {
 	private int thirdId;
 	private int max;
 	private int min;
+	private String picPath;
 
 	public int getBaseId() {
 		return baseId;
@@ -206,6 +207,14 @@ public class GoodsPojo {
 
 	public void setRetailPrice(double retailPrice) {
 		this.retailPrice = retailPrice;
+	}
+
+	public String getPicPath() {
+		return picPath;
+	}
+
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
 	}
 
 }

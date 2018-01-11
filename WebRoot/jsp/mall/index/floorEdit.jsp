@@ -227,7 +227,7 @@
 
 	function uploadFile(id) {
 		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/mall/indexMng/uploadFile.shtml', //你处理上传文件的服务端
+			url : '${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
 			secureuri : false,
 			fileElementId : "pic",
 			dataType : 'json',
