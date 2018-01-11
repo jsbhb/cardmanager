@@ -27,13 +27,14 @@
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">品牌<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									 <select class="form-control" name="brandId" id="brandId" style="width: 100%;">
+									 <select class="form-control" name="brandId" id="brandId" style="width: 100%;" disabled="disabled">
 				                   	  <option selected="selected" value="${brand.brandId}">${brand.brand}</option>
 				                   	  <!-- <option selected="selected" value="-1">未选择</option>
 				                   	  <c:forEach var="brand" items="${brands}">
 				                   	  	<option value="${brand.brandId}">${brand.brand}</option>
 				                   	  </c:forEach> -->
 					                </select>
+					               <input type="hidden" class="form-control" name="id" id="id" value="${brand.id}"/>
 					               <input type="hidden" class="form-control" name="brand" id="brand" value="${brand.brand}"/>
 				                </div>
 							</div>
@@ -42,7 +43,7 @@
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">一级分类<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									 <select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;">
+									 <select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;" disabled="disabled">
 				                   	  <option selected="selected" value="${firstId}">${firstName}</option>
 				                   	  <!-- <option selected="selected" value="-1">未选择</option>
 				                   	  <c:forEach var="first" items="${firsts}">
@@ -54,7 +55,7 @@
 							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">二级分类<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									<select class="form-control" name="secondCatalogId" id="secondCatalogId" style="width: 100%;">
+									<select class="form-control" name="secondCatalogId" id="secondCatalogId" style="width: 100%;" disabled="disabled">
 									 <option selected="selected" value="${secondId}">${secondName}</option>
 					                </select>
 				                </div>
@@ -62,7 +63,7 @@
 							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">三级分类<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" style="width: 100%;">
+									<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" style="width: 100%;" disabled="disabled">
 									<option selected="selected" value="${thirdId}">${thirdName}</option>
 					                </select>
 				                </div>
@@ -79,7 +80,7 @@
 				                </div>
 							</div>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品条码<font style="color:red">*</font> </label>
 							<div class="col-sm-5">
 								<div class="input-group">
@@ -100,11 +101,11 @@
 		                  			<input type="text" class="form-control" name="unit" value="${brand.unit}">
 				                </div>
 							</div>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"><h4>海关信息(*跨境商品必填)</h4></label>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
 							<div class="col-sm-5">
 								<div class="input-group">
@@ -114,7 +115,7 @@
 		                  			<input type="text" class="form-control" name="hscode" value="${brand.hscode}">
 				                </div>
 							</div>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">增值税</label>
 							<div class="col-sm-5">
@@ -292,14 +293,14 @@
                  }
              }
      	  },
-      	 encode: {
-             message: '条形码不正确',
-             validators: {
-                 notEmpty: {
-                     message: '条形码不能为空！'
-                 }
-             }
-     	  },
+//       	 encode: {
+//              message: '条形码不正确',
+//              validators: {
+//                  notEmpty: {
+//                      message: '条形码不能为空！'
+//                  }
+//              }
+//      	  },
      	 tariff:{
 			   message: '关税不正确',
 			   validators: {
