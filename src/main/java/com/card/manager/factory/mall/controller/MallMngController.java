@@ -3,6 +3,7 @@ package com.card.manager.factory.mall.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
@@ -41,6 +43,7 @@ import com.card.manager.factory.mall.service.MallService;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.URLUtils;
 
 @Controller
 @RequestMapping("/admin/mall/indexMng")
@@ -51,9 +54,6 @@ public class MallMngController extends BaseController {
 
 	@Resource
 	CatalogService catalogService;
-
-	@Resource
-	SftpService sftpService;
 
 	@Resource
 	GoodsItemService goodsItemService;
@@ -181,8 +181,7 @@ public class MallMngController extends BaseController {
 
 	@RequestMapping(value = "/goodsItemDataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack goodsItemdataList(HttpServletRequest req, HttpServletResponse resp,
-			GoodsItemEntity item) {
+	public PageCallBack goodsItemdataList(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity item) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -215,11 +214,11 @@ public class MallMngController extends BaseController {
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
 			}
-			
+
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());
 			params.put("gradeLevel", staffEntity.getGradeLevel());
-			
+
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
 
@@ -287,66 +286,6 @@ public class MallMngController extends BaseController {
 		}
 
 		sendSuccessMessage(resp, null);
-	}
-
-	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public void uploadFile(@RequestParam("pic") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
-
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		ReadIniInfo iniInfo = new ReadIniInfo();
-
-		// try {
-		// sftpService.login(iniInfo);
-		// } catch (Exception e2) {
-		// sendFailureMessage(resp, "操作失败：无法连接sftp：" + iniInfo.getFtpServer() +
-		// ":" + iniInfo.getFtpPort());
-		// return;
-		// }
-
-		try {
-			if (pic != null) {
-				String fileName = pic.getOriginalFilename();
-				// 当前上传文件的文件后缀
-				String suffix = fileName.indexOf(".") != -1
-						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
-
-				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
-						&& !".jpeg".equalsIgnoreCase(suffix)) {
-					sendFailureMessage(resp, "文件格式有误！");
-					return;
-				}
-
-				// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
-				if (!StringUtils.isBlank(fileName)) {
-					// 重命名上传后的文件名
-					String saveFileName = System.currentTimeMillis() + suffix;
-					// 定义上传路径
-					String savePath = "/opt/static/images/";
-					// 当前上传文件信息
-
-					// sftpService.uploadFile(savePath, saveFileName,
-					// pic.getInputStream(), iniInfo,
-					// staffEntity.getGradeId() + "");
-					// sftpService.logout();
-					sendSuccessMessage(resp, "http://" + iniInfo.getFtpServer() + ":8080" + savePath
-							+ staffEntity.getGradeId() + "/" + saveFileName);
-				} else {
-					sendFailureMessage(resp, "操作失败：没有文件信息");
-				}
-
-			}
-
-		} catch (Exception e) {
-			try {
-				sftpService.logout();
-			} catch (Exception e1) {
-				sendFailureMessage(resp, "操作失败：" + e1.getMessage());
-				return;
-			}
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-
 	}
 
 	@RequestMapping(value = "/saveData", method = RequestMethod.POST)

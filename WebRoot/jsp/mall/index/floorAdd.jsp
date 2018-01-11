@@ -47,7 +47,7 @@
 							<label class="col-sm-2 control-label no-padding-right">页面类型</label>
 							<div class="col-sm-6">
 								<div class="input-group">
-		                  			<input type="radio" name="pageType" value="0" checked >手机
+		                  			<input type="radio" name="pageType" value="0" checked >pc
 		                  			<input type="radio" name="pageType" value="1" >H5
 				                </div>
 							</div>
@@ -114,7 +114,7 @@
 	 
 	 function uploadFile(){
 			$.ajaxFileUpload({
-				url:'${wmsUrl}/admin/mall/indexMng/uploadFile.shtml', //你处理上传文件的服务端
+				url:'${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
 				secureuri:false,
 				fileElementId:"pic",
 				dataType: 'json',

@@ -20,6 +20,7 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.goods.model.GoodsEntity;
+import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
@@ -70,14 +71,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		GoodsItemEntity goodsItem = new GoodsItemEntity();
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setSku(entity.getSku());
-		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex()+"");
+		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
 		goodsItem.setItemCode(entity.getItemCode());
 		goodsItem.setWeight(entity.getWeight());
-		
+
 		int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
 		goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
 		goodsItem.setGoodsId(goods.getGoodsId());
-		
+
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setProxyPrice(entity.getProxyPrice());
 		goodsPrice.setFxPrice(entity.getProxyPrice());
@@ -86,7 +87,18 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsPrice.setItemId(goodsItem.getItemId());
 		goodsPrice.setOpt(entity.getOpt());
 		goodsPrice.setRetailPrice(entity.getRetailPrice());
+
+		List<GoodsFile> files = new ArrayList<GoodsFile>();
+		String[] goodsFiles = entity.getPicPath().split(",");
+		for (String file : goodsFiles) {
+			GoodsFile f = new GoodsFile();
+			f.setPath(file);
+			f.setGoodsId(goods.getGoodsId());
+			files.add(f);
+		}
 		
+		goods.setFiles(files);
+
 		goodsItem.setGoodsPrice(goodsPrice);
 		goodsItem.setOpt(entity.getOpt());
 

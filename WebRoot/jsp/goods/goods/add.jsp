@@ -295,6 +295,64 @@
           		</div>
 			</div>
 			<div class="col-md-12">
+				<div class="col-lg-3 col-xs-3">
+					<div class="sbox-body">
+						<div class="form-group">
+							<img src="" id="img1" width="120px" height="160px" alt="添加主图">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="hidden" class="form-control" name="picPath" id="picPath1"> 
+								<input type="file" name="pic" id="pic1" />
+								<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-xs-3">
+					<div class="sbox-body">
+						<div class="form-group">
+							<img src="" id="img2" width="120px" height="160px" alt="添加主图">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="hidden" class="form-control" name="picPath" id="picPath2"> 
+								<input type="file" name="pic" id="pic2" />
+								<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-xs-3">
+					<div class="sbox-body">
+						<div class="form-group">
+							<img src="" id="img3" width="120px" height="160px" alt="添加主图">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="hidden" class="form-control" name="picPath" id="picPath3"> 
+								<input type="file" name="pic" id="pic3" />
+								<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-xs-3">
+					<div class="sbox-body">
+						<div class="form-group">
+							<img src="" id="img4" width="120px" height="160px" alt="添加主图">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<input type="hidden" class="form-control" name="picPath" id="picPath4"> 
+								<input type="file" name="pic" id="pic4" />
+								<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
 	        	<div class="box box-error">
 	        		<div class="box-header with-border">
 						<div class="box-header with-border">
@@ -318,11 +376,30 @@
 		</form>
 	</section>
 </section>
+	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	 $(function () {
 	     CKEDITOR.replace('editor1');
 	     $(".textarea").wysihtml5();
 	 });
+	 
+	 
+	 function uploadFile(id) {
+			$.ajaxFileUpload({
+				url : '${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
+				secureuri : false,
+				fileElementId : "pic"+id,
+				dataType : 'json',
+				success : function(data) {
+					if (data.success) {
+						$("#picPath"+id).val(data.msg);
+						$("#img"+id).attr("src",data.msg);
+					} else {
+						layer.alert(data.msg);
+					}
+				}
+			})
+		}
 	 
 	 function refresh(){
 			parent.location.reload();
