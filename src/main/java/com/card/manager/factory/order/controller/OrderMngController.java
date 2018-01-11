@@ -46,7 +46,7 @@ public class OrderMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		context.put("supplierId",CachePoolComponent.getSupplier(opt.getToken()));
+		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("order/stockout/list", context);
 	}
 
@@ -58,13 +58,13 @@ public class OrderMngController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			pagination.setOrderId(req.getParameter("orderId"));
-			
-//			String orderId = req.getParameter("orderId");
-//			if (StringUtil.isEmpty(orderId)) {
-//				params.put("orderId", "");
-//			} else {
-//				params.put("orderId", orderId);
-//			}
+
+			// String orderId = req.getParameter("orderId");
+			// if (StringUtil.isEmpty(orderId)) {
+			// params.put("orderId", "");
+			// } else {
+			// params.put("orderId", orderId);
+			// }
 			String status = req.getParameter("status");
 			if (!StringUtil.isEmpty(status)) {
 				pagination.setStatus(Integer.parseInt(status));
@@ -73,15 +73,24 @@ public class OrderMngController extends BaseController {
 			if (!StringUtil.isEmpty(supplierId)) {
 				pagination.setSupplierId(Integer.parseInt(supplierId));
 			}
-			
-			
+
 			int gradeLevel = staffEntity.getGradeLevel();
-			if(ServerCenterContants.FIRST_GRADE != gradeLevel){
-				pagination.setCenterId(staffEntity.getGradeId());
+			if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
+
+			} else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
+				pagination.setCenterId(staffEntity.getParentGradeId());
 				pagination.setShopId(staffEntity.getShopId());
+			} else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
+				pagination.setCenterId(staffEntity.getParentGradeId());
+				pagination.setShopId(staffEntity.getShopId());
+			} else {
+				if (pcb == null) {
+					pcb = new PageCallBack();
+				}
+				pcb.setPagination(pagination);
+				pcb.setSuccess(true);
+				return pcb;
 			}
-			
-			
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
