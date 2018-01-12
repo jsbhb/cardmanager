@@ -66,18 +66,32 @@ public class GoodsMngController extends BaseController {
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GoodsEntity entity) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			pcb = goodsService.dataList(pagination, params, staffEntity.getToken(),
+			
+			String supplierId = req.getParameter("supplierId");
+			if (!StringUtil.isEmpty(supplierId)) {
+				entity.setSupplierId(Integer.parseInt(supplierId));
+			}
+			String goodsName = req.getParameter("goodsName");
+			if (!StringUtil.isEmpty(goodsName)) {
+				entity.setGoodsName(goodsName);
+			}
+			String goodsId = req.getParameter("goodsId");
+			if (!StringUtil.isEmpty(goodsId)) {
+				entity.setGoodsId(goodsId);
+			}
+			
+			pcb = goodsService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_QUERY_FOR_PAGE, GoodsEntity.class);
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
 			}
-			pcb.setPagination(pagination);
+			pcb.setPagination(entity);
 			pcb.setSuccess(true);
 			return pcb;
 		} catch (Exception e) {

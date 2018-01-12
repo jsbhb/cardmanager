@@ -54,6 +54,21 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商</label>
+							<div class="col-sm-8">
+								<div class="input-group">
+				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
+			                   	  <option selected="selected" value="">未选择</option>
+			                   	  <c:forEach var="supplier" items="${suppliers}">
+			                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+			                   	  </c:forEach>
+				                </select>
+				                </div>
+							</div>
+						</div>
+					</div>
 					<div class="col-md-offset-10 col-md-12">
 						<div class="form-group">
                                 <button type="button" class="btn btn-primary" id="querybtns" name="signup">提交</button>

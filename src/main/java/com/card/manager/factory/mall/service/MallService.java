@@ -122,4 +122,14 @@ public interface MallService extends ServerCenterService {
 	 */
 	void updateData(DictData data, String token) throws Exception;
 
+	/**  
+	 * updateDict:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param dict
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void updateDict(PopularizeDict dict, String token) throws Exception;
+
 }

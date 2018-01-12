@@ -9,6 +9,8 @@ package com.card.manager.factory.goods.model;
 
 import java.util.List;
 
+import com.card.manager.factory.base.Pagination;
+
 /**
  * ClassName: GoodsEntity <br/>
  * Function: 商品实体 <br/>
@@ -18,7 +20,7 @@ import java.util.List;
  * @version
  * @since JDK 1.7
  */
-public class GoodsEntity {
+public class GoodsEntity extends Pagination{
 	private int id;
 	private String goodsId;// 商品ID
 	private int supplierId;// 商家ID

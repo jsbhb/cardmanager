@@ -9,210 +9,98 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resource.jsp"%>
-
-<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 <script src="${wmsUrl}/js/pagination.js"></script>
 
-</head>
 
+
+</head>
 <body>
-	<section class="content-wrapper">
-        <div class="content">
-        	<div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">商品信息</h5>
-	            	<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
-			</div>
-		    <div class="box-body">
-				<div class="row form-horizontal">
-					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right">商品编号</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-			                  <div class="input-group-addon">
-			                    <i class="fa fa-pencil"></i>
-			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.id}">
-			                </div>
-						</div>
-						<label class="col-sm-1 control-label no-padding-right">商品编码</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-			                  <div class="input-group-addon">
-			                    <i class="fa fa-pencil"></i>
-			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.goodsId}">
-			                </div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right">供应商</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-			                  <div class="input-group-addon">
-			                    <i class="fa fa-pencil"></i>
-			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.supplierName}">
-			                </div>
-						</div>
-						<label class="col-sm-1 control-label no-padding-right">国家</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-			                  <div class="input-group-addon">
-			                    <i class="fa fa-pencil"></i>
-			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.origin}">
-			                </div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right">基础商品编码</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-			                  <div class="input-group-addon">
-			                    <i class="fa fa-pencil"></i>
-			                  </div>
-			                  <input type="text" class="form-control"  readonly value="${goods.baseId}">
-			                </div>
-						</div>
-						<label class="col-sm-1 control-label no-padding-right">商品名称</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-		                    	<div class="input-group-addon">
-			                    	<i class="fa fa-pencil"></i>
-			                	</div>
-			                  	<input type="text" class="form-control" name="area" readonly value="${goods.goodsName}">
-			                </div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-			<div class="box box-warning">
-				<div class="box-header with-border">
-					<div class="box-header with-border">
-		            	<h5 class="box-title">明细信息</h5>
-		            	<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						</div>
-		            </div>
-				</div>
-				<div class="box-body">
-					<div class="row">
-						<div class="col-md-12">
-							<c:if test="${goods.templateId > 0}">
-								<button type="button" class="btn btn-primary" onclick="addItem()">新增明细</button>
-							</c:if>
-						</div>
-						<div class="col-md-12">
-							<div class="panel panel-default">
-								<table id="itemTable" class="table table-hover">
-									<thead>
-										<tr>
-											<th>明细编号</th>
-											<th>itemCode</th>
-											<th>sku</th>
-											<th>重量</th>
-											<th>消费税</th>
-											<th>状态</th>
-											<th>规格</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<div class="pagination-nav">
-									<ul id="pagination" class="pagination">
-									</ul>
+<section class="content-wrapper">
+	<section class="content">
+		<c:choose>
+			<c:when test="${dataList==null}">
+				<button type="button" class="btn btn-info" onclick="init()">初始化PC轮播</button>
+			</c:when>
+			<c:otherwise>
+				<div class="box box-warning">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<table id="floorTable" class="table table-hover">
+										<thead>
+											<tr>
+												<th>编号</th>
+												<th>字典分类</th>
+												<th>页面链接</th>
+												<th>图片链接</th>
+												<th>商品编号</th>
+												<th>创建时间</th>
+												<th>操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${dataList}" var="item">
+												<tr>
+													<td>轮播${item.id}</td>
+													<td>${item.dictId}</td>
+													<td>${item.href}</td>
+													<td>${item.picPath}</td>
+													<td>${item.goodsId}</td>
+													<td>${item.createTime}</td>
+													<td><button type='button' class='btn btn-warning' onclick='toEdit(${item.id})' >编辑</button></td>
+												<tr>
+											</c:forEach>
+										</tbody>
+									</table>
+									<div class="pagination-nav">
+										<ul id="pagination" class="pagination">
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			</c:otherwise>
+		</c:choose>
 	</section>
+	</section>
+	
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
-	<script type="text/javascript">
-	
-	/**
-	 * 初始化分页信息
-	 */
-	var options = {
-				queryForm : ".query",
-				url :  "${wmsUrl}/admin/goods/itemMng/dataListForGoods.shtml?goodsId="+"${goods.goodsId}",
-				numPerPage:"20",
-				currentPage:"",
-				index:"1",
-				callback:rebuildTable
-	}
+<script type="text/javascript">
 
+function init(){
+	 $.ajax({
+		 url:"${wmsUrl}/admin/mall/indexMng/init.shtml?module=module_00003&pageType=0",
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("插入成功");
+				 window.location.reload();
+			 }else{
+				 parent.reloadTable();
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
+}
 
-	$(function(){
-		 $(".pagination-nav").pagination(options);
-	})
+function toEdit(id){
+	var index = layer.open({
+		  title:"pc轮播编辑",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id,
+		  maxmin: true
+		});
+		layer.full(index);
+}
 
-
-	function reloadTable(){
-		$.page.loadData(options);
-	}
-	
-	function addItem(){
-		var index = layer.open({
-			  title:"新增商品明细",		
-			  type: 2,
-			  content: '${wmsUrl}/admin/goods/itemMng/toAdd.shtml?templateId=${goods.templateId}&goodsId=${goods.goodsId}',
-			  maxmin: true
-			});
-			layer.full(index);
-	}
-	
-	/**
-	 * 重构table
-	 */
-	function rebuildTable(data){
-		$("#itemTable tbody").html("");
-
-		if (data == null || data.length == 0) {
-			return;
-		}
-		
-		var list = data.obj;
-		
-		if (list == null || list.length == 0) {
-			layer.alert("没有查到数据");
-			return;
-		}
-
-		var str = "";
-		for (var i = 0; i < list.length; i++) {
-			str += "<tr>";
-			str += "</td><td>" + list[i].itemId;
-			str += "</td><td>" + list[i].itemCode;
-			str += "</td><td>" + list[i].sku;
-			str += "</td><td>" + list[i].weight;
-			str += "</td><td>" + list[i].exciseTax;
-			
-			var status = list[i].status;
-			
-			switch(status){
-				case 0:str += "</td><td>初始化";break;
-				case 1:str += "</td><td>可用";break;
-				case 2:str += "</td><td>可分销";break;
-				default:str += "</td><td>状态错误："+status;
-			}
-			
-			str += "</td><td>" + list[i].simpleInfo;
-			str += "</td></tr>";
-		}
-
-		$("#itemTable tbody").html(str);
-	}
-	</script>
+</script>
 </body>
 </html>

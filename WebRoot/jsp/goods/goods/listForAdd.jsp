@@ -27,7 +27,7 @@
 	            </div>
 			</div>
 		    <div class="box-body">
-			<div class="row form-horizontal">
+			<div class="row form-horizontal query">
 				<div class="col-xs-4">
 						<div class="form-group">
 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">商品编号<font style="color:red">*</font> </label>
@@ -50,7 +50,6 @@
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
 		                  			<input type="text" class="form-control" name="goodsName">
-		                  			<input type="hidden" class="form-control" name="supplierId" value=${supplierId}>
 				                </div>
 							</div>
 						</div>

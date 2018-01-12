@@ -19,7 +19,7 @@
 	<section class="content">
 		<c:choose>
 			<c:when test="${dataList==null}">
-				<button type="button" class="btn btn-info" onclick="init()">初始化广告位</button>
+				<button type="button" class="btn btn-info" onclick="init()">初始化H5轮播</button>
 			</c:when>
 			<c:otherwise>
 				<div class="box box-warning">
@@ -34,7 +34,7 @@
 												<th>字典分类</th>
 												<th>页面链接</th>
 												<th>图片链接</th>
-												<th>描述</th>
+												<th>商品编号</th>
 												<th>创建时间</th>
 												<th>操作</th>
 											</tr>
@@ -42,11 +42,11 @@
 										<tbody>
 											<c:forEach items="${dataList}" var="item">
 												<tr>
-													<td>广告${item.id}</td>
+													<td>轮播${item.id}</td>
 													<td>${item.dictId}</td>
 													<td>${item.href}</td>
 													<td>${item.picPath}</td>
-													<td>${item.description}</td>
+													<td>${item.goodsId}</td>
 													<td>${item.createTime}</td>
 													<td><button type='button' class='btn btn-warning' onclick='toEdit(${item.id})' >编辑</button></td>
 												<tr>
@@ -72,7 +72,7 @@
 
 function init(){
 	 $.ajax({
-		 url:"${wmsUrl}/admin/mall/indexMng/init.shtml?module=module_00006&pageType=0",
+		 url:"${wmsUrl}/admin/mall/indexMng/init.shtml?module=module_00003&pageType=1",
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
@@ -93,7 +93,7 @@ function init(){
 
 function toEdit(id){
 	var index = layer.open({
-		  title:"广告编辑",		
+		  title:"h5轮播编辑",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id,
 		  maxmin: true

@@ -24,7 +24,7 @@
 						<div class="box box-info">
 							<div class="box-header with-border">
 								<div class="box-header with-border">
-									<h5 class="box-title">广告${data.id}设置</h5>
+									<h5 class="box-title">内容设置</h5>
 									<div class="box-tools pull-right">
 										<button type="button" class="btn btn-box-tool"
 											data-widget="collapse">
@@ -43,6 +43,38 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">跳转链接</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="href" value="${data.href}"> 
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">标题</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="title" value="${data.title}"> 
+										</div>
+									</div>
+								</div>
+									<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">国家</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="origin" value="${data.origin}"> 
+										</div>
+									</div>
+								</div>
+									<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">商品编号</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="goodsId" value="${data.goodsId}"> 
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
 									<label class="col-sm-2 control-label no-padding-right">描述</label>
 									<div class="col-sm-6">
 										<div class="input-group">
@@ -51,7 +83,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">大图(1240*345px)</label>
+									<label class="col-sm-2 control-label no-padding-right">大图(309*148px)</label>
 									<div class="col-sm-6">
 										<div class="input-group">
 											<input type="text" class="form-control" name="picPath" id="picPath" value="${data.picPath}"> 
@@ -78,7 +110,7 @@
 		$('#adForm').data("bootstrapValidator").validate();
 		 if($('#adForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
-					url : '${wmsUrl}/admin/mall/indexMng/updateAd.shtml',
+					url : '${wmsUrl}/admin/mall/indexMng/update.shtml',
 					type : 'post',
 					contentType : "application/json; charset=utf-8",
 					data : JSON.stringify(sy.serializeObject($('#adForm'))),

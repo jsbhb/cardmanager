@@ -218,5 +218,21 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		}
 	}
 
+	@Override
+	public void updateDict(PopularizeDict dict, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_UPDATE_DICT, token, true, dict,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+		
+	}
+
 
 }

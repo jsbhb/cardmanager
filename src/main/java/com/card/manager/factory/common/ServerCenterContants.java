@@ -176,6 +176,9 @@ public class ServerCenterContants {
 	
 	
 	/*------------------------商城管理-----------------------*/
+	public static final int PC = 0;
+	public static final int H5 = 1;
+	
 	public static final String GOODS_CENTER_MALL_QUERY_DICT_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/queryDictForPage?code={code}&centerId={centerId}";
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")

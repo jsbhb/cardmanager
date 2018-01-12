@@ -26,7 +26,8 @@
 				<div class="box-header">
 				<ul id="navTab" class="nav nav-tabs">
 					<li class="active"><a id="list"  href="${wmsUrl}/admin/mall/indexMng/list.shtml">楼层设置</a></li>
-					<li><a href="${wmsUrl}/admin/mall/indexMng/banner.shtml">轮播设置</a></li>
+					<li><a href="${wmsUrl}/admin/mall/indexMng/banner.shtml">PC轮播设置</a></li>
+					<li><a href="${wmsUrl}/admin/mall/indexMng/h5Banner.shtml">H5轮播设置</a></li>
 					<li><a href="${wmsUrl}/admin/mall/indexMng/ad.shtml">广告设置</a></li>
 				</ul>
 				</div>
