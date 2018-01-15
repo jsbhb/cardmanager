@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.card.manager.factory.base.Pagination;
 
+import net.sf.json.JSONObject;
+
 /**
  * ClassName: GoodsEntity <br/>
  * Function: 商品实体 <br/>
@@ -23,7 +25,7 @@ import com.card.manager.factory.base.Pagination;
 public class GoodsEntity extends Pagination{
 	private int id;
 	private String goodsId;// 商品ID
-	private int supplierId;// 商家ID
+	private Integer supplierId;// 商家ID
 	private String supplierName;// 商家名称
 	private int baseId;// 商品基本信息ID
 	private String goodsName;// 商品名称
@@ -48,6 +50,19 @@ public class GoodsEntity extends Pagination{
 	private int thirdId;
 	private List<GoodsFile> files;
 
+	public GoodsEntity() {
+	}
+
+	public GoodsEntity(JSONObject obj) {
+		this.id = obj.getInt("id");
+		this.goodsId = obj.getString("goodsId");
+		this.supplierId = "".equals(obj.getString("supplierId")) ? null : Integer.valueOf(obj.getString("supplierId").toLowerCase());
+		this.goodsName = obj.getString("goodsName");
+		this.createTime = obj.getString("createTime");
+		this.updateTime = obj.getString("updateTime");
+		this.opt = obj.getString("opt");
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -64,11 +79,11 @@ public class GoodsEntity extends Pagination{
 		this.goodsId = goodsId;
 	}
 
-	public int getSupplierId() {
+	public Integer getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(int supplierId) {
+	public void setSupplierId(Integer supplierId) {
 		this.supplierId = supplierId;
 	}
 

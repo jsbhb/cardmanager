@@ -89,12 +89,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsPrice.setRetailPrice(entity.getRetailPrice());
 
 		List<GoodsFile> files = new ArrayList<GoodsFile>();
-		String[] goodsFiles = entity.getPicPath().split(",");
-		for (String file : goodsFiles) {
-			GoodsFile f = new GoodsFile();
-			f.setPath(file);
-			f.setGoodsId(goods.getGoodsId());
-			files.add(f);
+		if(entity.getPicPath() != null){
+			String[] goodsFiles = entity.getPicPath().split(",");
+			for (String file : goodsFiles) {
+				GoodsFile f = new GoodsFile();
+				f.setPath(file);
+				f.setGoodsId(goods.getGoodsId());
+				files.add(f);
+			}
 		}
 		
 		goods.setFiles(files);
