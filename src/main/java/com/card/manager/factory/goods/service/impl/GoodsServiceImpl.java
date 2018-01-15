@@ -177,4 +177,34 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ThirdWarehouseGoods.class);
 	}
 
+	@Override
+	public void updEntity(GoodsEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_EDIT, token,
+				true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public void delEntity(GoodsEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_REMOVE, token,
+				true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
 }
