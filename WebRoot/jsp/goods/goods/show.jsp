@@ -29,6 +29,8 @@
 	            </div>
 			</div>
 		    <div class="box-body">
+		    
+					<form class="form-horizontal" role="form" id="goodsForm" >
 				<div class="row form-horizontal">
 					<div class="form-group">
 						<label class="col-sm-2 control-label no-padding-right">商品编号</label>
@@ -37,7 +39,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-pencil"></i>
 			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.id}">
+	                  			<input type="text" class="form-control" name="id" readonly  value="${goods.id}">
 			                </div>
 						</div>
 						<label class="col-sm-1 control-label no-padding-right">商品编码</label>
@@ -46,7 +48,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-pencil"></i>
 			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.goodsId}">
+	                  			<input type="text" class="form-control" name="goodsId" readonly  value="${goods.goodsId}">
 			                </div>
 						</div>
 					</div>
@@ -57,7 +59,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-pencil"></i>
 			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.supplierName}">
+	                  			<input type="text" class="form-control" name="supplierName" readonly  value="${goods.supplierName}">
 			                </div>
 						</div>
 						<label class="col-sm-1 control-label no-padding-right">国家</label>
@@ -66,7 +68,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-pencil"></i>
 			                  </div>
-	                  			<input type="text" class="form-control" readonly  value="${goods.origin}">
+	                  			<input type="text" class="form-control" name="origin" readonly  value="${goods.origin}">
 			                </div>
 						</div>
 					</div>
@@ -77,7 +79,7 @@
 			                  <div class="input-group-addon">
 			                    <i class="fa fa-pencil"></i>
 			                  </div>
-			                  <input type="text" class="form-control"  readonly value="${goods.baseId}">
+			                  <input type="text" class="form-control"  name="baseId" readonly value="${goods.baseId}">
 			                </div>
 						</div>
 						<label class="col-sm-1 control-label no-padding-right">商品名称</label>
@@ -86,11 +88,24 @@
 		                    	<div class="input-group-addon">
 			                    	<i class="fa fa-pencil"></i>
 			                	</div>
-			                  	<input type="text" class="form-control" name="area" readonly value="${goods.goodsName}">
+			                  	<input type="text" class="form-control" name="goodsName" name="area" value="${goods.goodsName}">
+			                </div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right"></label>
+						<div class="col-sm-4">
+						</div>
+						<label class="col-sm-1 control-label no-padding-right"></label>
+						<div class="col-sm-4">
+							<div class="input-group">
+			                  	<button type="button" class="btn btn-primary"  id="updateBtn">更新</button>
+			                  	<button type="button" class="btn btn-danger" id="deleteBtn">删除</button>
 			                </div>
 						</div>
 					</div>
 				</div>
+					</form>
 			</div>
 		</div>
 			<div class="box box-warning">
@@ -213,6 +228,55 @@
 
 		$("#itemTable tbody").html(str);
 	}
+	
+	$("#updateBtn").click(function(){
+		$.ajax({
+			 url:"${wmsUrl}/admin/goods/goodsMng/edit.shtml",
+			 type:'post',
+			 data:JSON.stringify(sy.serializeObject($('#goodsForm'))),
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 success:function(data){
+				 if(data.success){	
+					 layer.alert("更新成功");
+					 parent.layer.closeAll();
+					 parent.location.reload();
+				 }else{
+					 layer.alert(data.msg);
+				 }
+			 },
+			 error:function(){
+				 layer.alert("更新失败，请联系客服处理");
+			 }
+		 });
+	 });
+	
+	$("#deleteBtn").click(function(){
+		
+		 if( confirm("确定要删除该商品记录吗？")) {
+			 $.ajax({
+				 url:"${wmsUrl}/admin/goods/goodsMng/remove.shtml",
+				 type:'post',
+				 data:JSON.stringify(sy.serializeObject($('#goodsForm'))),
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){	
+						 layer.alert("删除成功");
+						 parent.layer.closeAll();
+						 parent.location.reload();
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("提交失败，请联系客服处理");
+				 }
+			 });
+		 }
+		
+	 });
+	
 	</script>
 </body>
 </html>

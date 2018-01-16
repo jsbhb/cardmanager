@@ -55,4 +55,24 @@ public interface GoodsService extends ServerCenterService {
 	 */
 	ThirdWarehouseGoods queryThirdById(String id, String token);
 
+	/**
+	 * addEntity:新增商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void updEntity(GoodsEntity entity, String token) throws Exception;
+
+	/**
+	 * addEntity:新增商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void delEntity(GoodsEntity entity, String token) throws Exception;
+
 }

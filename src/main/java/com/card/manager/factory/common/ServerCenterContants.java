@@ -147,6 +147,10 @@ public class ServerCenterContants {
 			+ "/goods/goods/queryThird";
 	public static final String GOODS_CENTER_QUERY_THIRD_GOODS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/third/queryForPage?sku={sku}&itemCode={itemCode}&supplierId={supplierId}&status={status}";
+	public static final String GOODS_CENTER_EDIT = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/edit";
+	public static final String GOODS_CENTER_REMOVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/remove";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";

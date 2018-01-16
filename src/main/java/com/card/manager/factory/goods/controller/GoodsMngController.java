@@ -60,7 +60,7 @@ public class GoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/goods/list", context);
 	}
 
@@ -198,6 +198,34 @@ public class GoodsMngController extends BaseController {
 			return forword(ERROR, context);
 		}
 
+	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public void edit(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsEntity goodsEntity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		goodsEntity.setOpt(staffEntity.getOptid());
+		try {
+			goodsService.updEntity(goodsEntity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public void remove(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsEntity goodsEntity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		goodsEntity.setOpt(staffEntity.getOptid());
+		try {
+			goodsService.delEntity(goodsEntity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
