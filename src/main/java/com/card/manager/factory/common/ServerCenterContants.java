@@ -83,6 +83,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/brand/queryAll";
 	public static final String GOODS_CENTER_BRAND_DELETE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/brand/remove?brandId={brandId}";
+	public static final String GOODS_CENTER_SYNC_STOCK = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/syncStock";
 
 	/*------------------------规格管理---------------------*/
 	public static final String GOODS_CENTER_SPECS_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -153,6 +155,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/queryForPage?centerId={centerId}&shopId={shopId}&gradeLevel={gradeLevel}";
 	public static final String GOODS_CENTER_ITEM_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/item/save";
+	public static final String GOODS_CENTER_ITEM_UPDATE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/item/update";
 	public static final String GOODS_CENTER_ITEM_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/item/query";
 	public static final String GOODS_CENTER_ITEM_BE_USE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION

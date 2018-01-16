@@ -170,6 +170,27 @@ public class GoodsItemMngController extends BaseController {
 		return pcb;
 	}
 
+	@RequestMapping(value = "/toShow")
+	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+
+		String id = req.getParameter("id");
+		if (StringUtil.isEmpty(id)) {
+			context.put(ERROR, "没有明细编号");
+			return forword("error", context);
+		}
+		try {
+			context.put("item", goodsItemService.queryById(id,opt.getToken()));
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+
+		return forword("goods/item/show", context);
+	}
+
 	@RequestMapping(value = "/toAdd")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -225,6 +246,24 @@ public class GoodsItemMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
+	@RequestMapping(value = "/syncStock", method = RequestMethod.POST)
+	public void syncStock(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemId = req.getParameter("itemId");
+			if (StringUtil.isEmpty(itemId)) {
+				sendFailureMessage(resp, "操作失败：没有明细编号");
+				return;
+			}
+			goodsItemService.syncStock(itemId, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
 	@RequestMapping(value = "/fx", method = RequestMethod.POST)
 	public void fx(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -272,6 +311,20 @@ public class GoodsItemMngController extends BaseController {
 			return;
 		}
 
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public void update(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsPojo pojo) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		pojo.setOpt(staffEntity.getOptid());
+		try {
+			goodsItemService.updateEntity(pojo, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		
 		sendSuccessMessage(resp, null);
 	}
 

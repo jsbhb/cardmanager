@@ -40,6 +40,7 @@ public class GoodsPojo {
 	private int max;
 	private int min;
 	private String picPath;
+	private String itemId;
 
 	public int getBaseId() {
 		return baseId;
@@ -215,6 +216,14 @@ public class GoodsPojo {
 
 	public void setPicPath(String picPath) {
 		this.picPath = picPath;
+	}
+
+	public String getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
 	}
 
 }

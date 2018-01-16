@@ -106,4 +106,24 @@ public interface GoodsItemService extends ServerCenterService {
 	 */
 	void putoff(String itemId, StaffEntity staffEntity) throws Exception;
 
+	/**
+	 * syncStock:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param itemId
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void syncStock(String itemId, StaffEntity staffEntity) throws Exception;
+
+	/**  
+	 * updateEntity:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param pojo
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void updateEntity(GoodsPojo pojo, String token) throws Exception;
+
 }

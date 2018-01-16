@@ -60,7 +60,7 @@
 							<div class="col-sm-8">
 								<div class="input-group">
 				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
-			                   	  <option selected="selected" value="">未选择</option>
+			                   	  <option selected="selected" value="-1">未选择</option>
 			                   	  <c:forEach var="supplier" items="${suppliers}">
 			                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
 			                   	  </c:forEach>

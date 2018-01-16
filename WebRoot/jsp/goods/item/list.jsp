@@ -126,6 +126,7 @@
 							<table id="itemTable" class="table table-hover">
 								<thead>
 									<tr>
+										<th>编辑</th>
 										<th>商品名称</th>
 										<th>sku</th>
 										<th>itemCode</th>
@@ -203,6 +204,11 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
+		if (true) {
+			str += "<td align='left'>";
+			str += "<a href='#' onclick='toShow("+list[i].id+")'><i class='fa fa-pencil'></i></a>";
+			str += "</td>";
+		}
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td>" + list[i].sku;
 		str += "</td><td>" + list[i].itemCode;
@@ -236,14 +242,31 @@ function rebuildTable(data){
 			}else if(status == 2){
 				str += "<button type='button' class='btn btn-warning' onclick='noBeFx("+list[i].itemId+")' >不可分销</button>";
 			}
+			if(status==1||status==2){
+				if(list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
+					str += "<button type='button' class='btn btn-info' onclick='syncStock("+list[i].itemId+")' >同步库存</button>";
+				}
+			}
+			
 			str += "</td>";
 		}
+		
 		
 		str += "</td></tr>";
 	}
 		
 
 	$("#itemTable tbody").html(str);
+}
+
+function toShow(id){
+	var index = layer.open({
+		  title:"查看明细",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/goods/itemMng/toShow.shtml?id='+id,
+		  maxmin: true
+		});
+		layer.full(index);
 }
 	
 function beUse(id){
@@ -312,6 +335,25 @@ function fx(id){
 		 success:function(data){
 			 if(data.success){	
 				 layer.alert("设置成功");
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
+}
+function syncStock(id){
+	$.ajax({
+		 url:"${wmsUrl}/admin/goods/itemMng/syncStock.shtml?itemId="+id,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("开始同步。。稍后刷新查看");
 				 reloadTable();
 			 }else{
 				 layer.alert(data.msg);
