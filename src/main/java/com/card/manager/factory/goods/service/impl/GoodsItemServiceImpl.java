@@ -121,7 +121,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY, token, true, entity,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_QUERY, token, true, entity,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -227,6 +227,56 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 						staffEntity.getToken(), true, null, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void syncStock(String itemId, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> query_result = helper
+				.request(
+						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_STOCK + "/"
+								+ staffEntity.getGradeId() + "?itemId=" + itemId,
+						staffEntity.getToken(), true, null, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void updateEntity(GoodsPojo pojo, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		GoodsItemEntity goodsItem = new GoodsItemEntity();
+		goodsItem.setExciseTax(pojo.getExciseFax());
+		goodsItem.setSku(pojo.getSku());
+		goodsItem.setItemCode(pojo.getItemCode());
+		goodsItem.setWeight(pojo.getWeight());
+		goodsItem.setItemId(pojo.getItemId());
+
+		GoodsPrice goodsPrice = new GoodsPrice();
+		goodsPrice.setProxyPrice(pojo.getProxyPrice());
+		goodsPrice.setRetailPrice(pojo.getRetailPrice());
+		goodsPrice.setFxPrice(pojo.getProxyPrice());
+		goodsPrice.setMax(pojo.getMax());
+		goodsPrice.setMin(pojo.getMin());
+		goodsPrice.setItemId(goodsItem.getItemId());
+		goodsPrice.setOpt(pojo.getOpt());
+
+		goodsItem.setGoodsPrice(goodsPrice);
+		goodsItem.setOpt(pojo.getOpt());
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_UPDATE, token, true, pojo,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
