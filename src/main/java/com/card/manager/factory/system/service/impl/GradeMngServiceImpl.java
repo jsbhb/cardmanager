@@ -145,8 +145,13 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 		// 插入用户表
 		staffEntity.setBadge(staffEntity.getGradeId() * 10000 + "1");
-		staffEntity.setRoleId(AuthCommon.EARA_ADMIN);
-		staffEntity.setRoleName("区域负责人");
+		if(staffEntity.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
+			staffEntity.setRoleId(AuthCommon.EARA_ADMIN);
+			staffEntity.setRoleName("区域负责人");
+		}else{
+			staffEntity.setRoleName("店铺负责人");
+			staffEntity.setRoleId(AuthCommon.SHOP_ADMIN);
+		}
 		
 		if(hasUserId){
 			staffEntity.setStatus(AuthCommon.STAFF_STATUS_ON + "");

@@ -273,7 +273,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		goodsItem.setOpt(pojo.getOpt());
 
 		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_UPDATE, token, true, pojo,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_UPDATE, token, true, goodsItem,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());

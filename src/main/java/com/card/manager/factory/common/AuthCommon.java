@@ -33,6 +33,7 @@ public class AuthCommon {
 	public static final int STAFF_STATUS_DELETED = 3;
 	public static final int SUPER_ADMIN = 1;
 	public static final int EARA_ADMIN = 2;
+	public static final int SHOP_ADMIN = 3;
 
 	public static List<AuthInfo> treeAuthInfo(List<AuthInfo> authInfos) {
 		if (authInfos == null || authInfos.size() == 0) {
