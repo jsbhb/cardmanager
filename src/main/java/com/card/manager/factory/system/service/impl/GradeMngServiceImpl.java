@@ -23,6 +23,7 @@ import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
 
@@ -174,6 +175,21 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 				HttpMethod.POST);
 		
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return new GradeEntity(json.getJSONObject("obj"));
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GradeEntity.class);
+	}
+
+	@Override
+	public void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> goodscenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_UPDATE, staffEntity.getToken(), true, gradeInfo,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
 	}
 }

@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
-import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
@@ -133,12 +132,12 @@ public class GradeMngController extends BaseController {
 		return forword("system/grade/edit", context);
 	}
 
-	@RequestMapping(value = "/editGrade", method = RequestMethod.POST)
-	public void editGrade(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public void update(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			gradeMngService.saveGrade(gradeInfo, staffEntity);
+			gradeMngService.updateGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

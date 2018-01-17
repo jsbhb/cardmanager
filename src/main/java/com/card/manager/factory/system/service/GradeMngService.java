@@ -20,18 +20,19 @@ import com.card.manager.factory.system.model.StaffEntity;
  * @version
  * @since JDK 1.7
  */
-public interface GradeMngService extends ServerCenterService{
+public interface GradeMngService extends ServerCenterService {
 
-//	/**
-//	 * dataList:分页查询. <br/>
-//	 * 
-//	 * @author hebin
-//	 * @param pagination
-//	 * @param hashMap
-//	 * @return
-//	 * @since JDK 1.7
-//	 */
-//	PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception;
+	// /**
+	// * dataList:分页查询. <br/>
+	// *
+	// * @author hebin
+	// * @param pagination
+	// * @param hashMap
+	// * @return
+	// * @since JDK 1.7
+	// */
+	// PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap,
+	// String token) throws Exception;
 
 	/**
 	 * saveGrade:新增分级. <br/>
@@ -63,5 +64,15 @@ public interface GradeMngService extends ServerCenterService{
 	 * @since JDK 1.7
 	 */
 	GradeEntity queryById(String gradeId, String token);
+
+	/**
+	 * updateGrade:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param gradeInfo
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception;
 
 }

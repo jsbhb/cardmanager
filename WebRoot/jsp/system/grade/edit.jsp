@@ -32,7 +32,8 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="gradeName" value="${grade.gradeName}">
+		                  			<input type="text" class="form-control" name="gradeName" value="${grade.gradeName}">
+		                  			<input type="hidden" class="form-control" name="id" value="${grade.id}">
 				                </div>
 							</div>
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">公司名称<font style="color:red">*</font> </label>
@@ -41,7 +42,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="company" value="${grade.company}">
+				                  <input type="text" class="form-control" name="company" value="${grade.company}">
 				                </div>
 							</div>
 						</div>
@@ -79,7 +80,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-phone"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="personInCharge" value="${grade.personInCharge}">
+				                  <input type="text" class="form-control" name="personInCharge" value="${grade.personInCharge}">
 				                </div>
 							</div>
 						</div>
@@ -90,7 +91,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                   <input type="text" readonly class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}">
+				                   <input type="text" class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}">
 				                </div>
 							</div>
 						</div>
@@ -104,11 +105,16 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-phone"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="phone" value="${grade.phone}">
+				                  <input type="text" class="form-control" name="phone" value="${grade.phone}">
 				                </div>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="col-md-offset-3 col-md-9">
+							<div class="form-group">
+	                            <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
+	                        </div>
+                       </div>
+                       <div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>员工列表</h4></label>
 						</div>
 						<div class="form-group" id="syncStaff" style="display:none;">
@@ -163,6 +169,35 @@
 	$(function(){
 		 $(".pagination-nav").pagination(options);
 	})
+	
+	
+	$("#submitBtn").click(function(){
+		 $('#gradeForm').data("bootstrapValidator").validate();
+		 if($('#gradeForm').data("bootstrapValidator").isValid()){
+			 $.ajax({
+				 url:"${wmsUrl}/admin/system/gradeMng/update.shtml",
+				 type:'post',
+				 data:JSON.stringify(sy.serializeObject($('#gradeForm'))),
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){	
+						 layer.alert("插入成功");
+						 parent.layer.closeAll();
+						 parent.reloadTable();
+					 }else{
+						 parent.reloadTable();
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("提交失败，请联系客服处理");
+				 }
+			 });
+		 }else{
+			 layer.alert("信息填写有误");
+		 }
+	 });
 
 
 	function reloadTable(){
@@ -177,7 +212,7 @@
 			 dataType:'json',
 			 success:function(data){
 				 if(data.success){	
-					reloadTable();
+					window.reload();
 				 }else{
 					 layer.alert(data.msg);
 				 }
@@ -255,23 +290,16 @@
                   },
               }
       	  },
-      	 personInCharge: {
-	          message: '负责人不能为空',
-	          validators: {
-	              notEmpty: {
-	                  message: '负责人不能为空！'
-	              }
-	          }
+      	gradePersonInCharge: {
+      		message: '负责人为数字编号',
+			   validators: {
+				   regexp: {
+	                   regexp: /^\d+(\.\d+)?$/,
+	                   message: '负责人为数字编号'
+	               }
+			   }
 	  	  },
-	      address: {
-	          message: '地址不能为空',
-	          validators: {
-	              notEmpty: {
-	                  message: '地址不能为空！'
-	              }
-	          }
-	  	  },
-	  	gradePersonInCharge: {
+	  	personInCharge: {
 	          message: '负责人不能为空',
 	          validators: {
 	              notEmpty: {
@@ -284,7 +312,11 @@
 	          validators: {
 	              notEmpty: {
 	                  message: '电话不能为空！'
-	              }
+	              },
+				   regexp: {
+	                   regexp: /^\d+(\.\d+)?$/,
+	                   message: '电话人为数字编号'
+	               }
 	          }
 	  	  },
 	  	company: {

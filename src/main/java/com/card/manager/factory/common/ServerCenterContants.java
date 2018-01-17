@@ -64,6 +64,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/grade/queryForPage";
 	public static final String USER_CENTER_GRADE_SAVE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/user/grade/save";
+	public static final String USER_CENTER_GRADE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/update";
 	public static final String USER_CENTER_GRADE_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/query";
 
