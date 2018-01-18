@@ -59,6 +59,14 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">商品编号</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="goodsId"> 
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
 									<label class="col-sm-2 control-label no-padding-right">价格</label>
 									<div class="col-sm-6">
 										<div class="input-group">
