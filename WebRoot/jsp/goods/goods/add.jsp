@@ -352,22 +352,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
-	        	<div class="box box-error">
-	        		<div class="box-header with-border">
-						<div class="box-header with-border">
-			            	<h5 class="box-title">商品详情编辑</h5>
-			            	<div class="box-tools pull-right">
-			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-			              	</div>
-			            </div>
-					</div>
-					<div class="box-body pad">
-						<textarea id="editor1" rows="10" cols="80">
-                    	</textarea>
-					</div>
-				</div>
-			</div>
 			<div class="col-md-offset-1 col-md-9">
 				<div class="form-group">
                      <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
