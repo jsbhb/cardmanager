@@ -98,6 +98,8 @@ public class GoodsBaseMngController extends BaseController {
 	public ModelAndView listForAdd(HttpServletRequest req, HttpServletResponse resp, GoodsBaseEntity entity) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
+		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
+		context.put("brands", brands);
 		context.put(OPT, opt);
 		return forword("goods/base/listForAdd", context);
 	}
