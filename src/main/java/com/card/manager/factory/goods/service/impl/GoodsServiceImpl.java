@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -249,15 +250,16 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		String savePath;
 		String invitePath;
+		
 		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/{yyyy}{mm}{dd}/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/{yyyy}{mm}{dd}/";
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
 
 		} else {
 			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
-					+ staffEntity.getGradeId() + "/{yyyy}{mm}{dd}/";
+					+ staffEntity.getGradeId() + "/";
 			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId()
-					+ "/{yyyy}{mm}{dd}/";
+					+ "	/";
 
 		}
 		ReadIniInfo iniInfo = new ReadIniInfo();
