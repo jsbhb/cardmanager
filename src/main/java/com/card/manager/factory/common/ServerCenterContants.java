@@ -153,6 +153,8 @@ public class ServerCenterContants {
 			+ "/goods/goods/edit";
 	public static final String GOODS_CENTER_REMOVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/remove";
+	public static final String GOODS_CENTER_SAVE_DETAIL_PATH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/saveDetailPath";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";

@@ -95,6 +95,7 @@
 										<th>供应商</th>
 										<th>产地</th>
 										<th>创建时间</th>
+										<th>编辑</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -173,6 +174,12 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].supplierName;
 		str += "</td><td>" + list[i].origin;
 		str += "</td><td>" + list[i].createTime;
+		if (true) {
+			str += "<td align='left'>";
+			var detailPath = (list[i].detailPath=="null"?"":list[i].detailPath);
+			str += "<button type='button' class='btn btn-info' onclick='toEditDetail("+list[i].goodsId+",\""+detailPath+"\")' id='resetBtn'>编辑商详</button>";
+			str += "</td>";
+		}
 		str += "</td></tr>";
 	}
 		
@@ -189,6 +196,17 @@ function toEdit(id){
 		});
 		layer.full(index);
 }
+
+function toEditDetail(id,path){
+	var index = layer.open({
+		  title:"查看商品",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/goods/goodsMng/ueditor.shtml?goodsId='+id+"&html="+path,
+		  maxmin: true
+		});
+		layer.full(index);
+}
+
 
 function toShow(id){
 	var index = layer.open({

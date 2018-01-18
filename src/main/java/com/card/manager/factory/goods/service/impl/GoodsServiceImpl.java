@@ -7,18 +7,29 @@
  */
 package com.card.manager.factory.goods.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
+import com.baidu.ueditor.PathFormat;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.ftp.common.ReadIniInfo;
+import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
@@ -30,6 +41,7 @@ import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SequeceRule;
 import com.card.manager.factory.util.URLUtils;
@@ -89,7 +101,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsPrice.setRetailPrice(entity.getRetailPrice());
 
 		List<GoodsFile> files = new ArrayList<GoodsFile>();
-		if(entity.getPicPath() != null){
+		if (entity.getPicPath() != null) {
 			String[] goodsFiles = entity.getPicPath().split(",");
 			for (String file : goodsFiles) {
 				GoodsFile f = new GoodsFile();
@@ -98,7 +110,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				files.add(f);
 			}
 		}
-		
+
 		goods.setFiles(files);
 
 		goodsItem.setGoodsPrice(goodsPrice);
@@ -181,8 +193,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	public void updEntity(GoodsEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_EDIT, token,
-				true, entity, HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_EDIT, token, true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
@@ -196,8 +207,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	public void delEntity(GoodsEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_REMOVE, token,
-				true, entity, HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_REMOVE, token, true, entity,
+				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
@@ -205,6 +216,84 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
 
+	}
+
+	@Override
+	public String getHtmlContext(String html, StaffEntity staffEntity) throws Exception {
+		Document doc = Jsoup.parse(new URL(html), 3000);
+		return htmlToCode(doc.toString());
+
+	}
+
+	private String htmlToCode(String context) {
+		if (context == null) {
+			return "";
+		} else {
+			context = context.replace("<html>", "");
+			context = context.replace("</html>", "");
+			context = context.replace("<body>", "");
+			context = context.replace("</body>", "");
+			context = context.replace("<head>", "");
+			context = context.replace("</head>", "");
+			context = context.replace("\n", "");
+			context = context.replace("\t", "");
+			context = context.replaceAll("\n\r", "<br>&nbsp;&nbsp;");
+			context = context.replaceAll("\r\n", "<br>&nbsp;&nbsp;");// 这才是正确的！
+			context = context.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+			return context;
+		}
+	}
+
+	@Override
+	public void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception {
+
+		String savePath;
+		String invitePath;
+		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/{yyyy}{mm}{dd}/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/{yyyy}{mm}{dd}/";
+
+		} else {
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
+					+ staffEntity.getGradeId() + "/{yyyy}{mm}{dd}/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId()
+					+ "/{yyyy}{mm}{dd}/";
+
+		}
+		ReadIniInfo iniInfo = new ReadIniInfo();
+
+		// long maxSize = ((Long) conf.get("maxSize")).longValue();
+		//
+		// if (!validType(suffix, (String[]) conf.get("allowFiles"))) {
+		// return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
+		// }
+
+		savePath = PathFormat.parse(savePath);
+		invitePath = PathFormat.parse(invitePath);
+
+		// String physicalPath = (String) conf.get("rootPath") + savePath;
+
+		InputStream is = new ByteArrayInputStream(html.getBytes("utf-8"));
+
+		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+		SftpService service = (SftpService) wac.getBean("sftpService");
+		service.login(iniInfo);
+		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, iniInfo, "");
+
+		GoodsEntity entity = new GoodsEntity();
+		entity.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
+		entity.setGoodsId(goodsId);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SAVE_DETAIL_PATH, staffEntity.getToken(),
+				true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
 	}
 
 }

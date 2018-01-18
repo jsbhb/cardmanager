@@ -46,12 +46,85 @@ public class GoodsMngController extends BaseController {
 		return forword("goods/goods/mng", context);
 	}
 
+	@RequestMapping(value = "/ueditor")
+	public ModelAndView ueditor(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+
+		if (StringUtil.isEmpty(req.getParameter("goodsId"))) {
+			context.put(ERROR, "没有商品id");
+			return forword("error", context);
+		}
+		
+		String html = req.getParameter("html");
+
+		if (!StringUtil.isEmpty(html)) {
+			context.put("html", html);
+		}
+		context.put("goodsId", req.getParameter("goodsId"));
+		context.put("opt", opt);
+		return forword("ueditor/index", context);
+	}
+
+	@RequestMapping(value = "/getDetailHtml", method = RequestMethod.POST)
+	public void getDetailHtml(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+
+		String html = req.getParameter("html");
+
+		if (StringUtil.isEmpty(html)) {
+			sendFailureMessage(resp, "没有内容，无需上传");
+			return;
+		}
+
+		String context = "";
+		try {
+			context = goodsService.getHtmlContext(html, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, context);
+	}
+
+	@RequestMapping(value = "/saveHtml", method = RequestMethod.POST)
+	public void saveHtml(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+
+		String html = req.getParameter("html");
+		String goodsId = req.getParameter("goodsId");
+
+		if (StringUtil.isEmpty(html)) {
+			sendFailureMessage(resp, "没有内容，无需上传");
+			return;
+		}
+
+		if (StringUtil.isEmpty(goodsId)) {
+			sendFailureMessage(resp, "没有商品编号上传失败，请将文本保存到本地，联系客服处理！");
+			return;
+		}
+		try {
+			goodsService.saveHtml(goodsId, html, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
 	@RequestMapping(value = "/syncGoods")
 	public ModelAndView syncGoods(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		try {
+			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		} catch (Exception e) {
+			context.put(ERROR, "同步供应商失败");
+			return forword("error", context);
+		}
 		return forword("goods/goods/sync", context);
 	}
 
@@ -60,7 +133,8 @@ public class GoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		// context.put("suppliers",
+		// CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/goods/list", context);
 	}
 
@@ -71,7 +145,7 @@ public class GoodsMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			
+
 			String supplierId = req.getParameter("supplierId");
 			if (!StringUtil.isEmpty(supplierId)) {
 				entity.setSupplierId(Integer.parseInt(supplierId));
@@ -84,7 +158,7 @@ public class GoodsMngController extends BaseController {
 			if (!StringUtil.isEmpty(goodsId)) {
 				entity.setGoodsId(goodsId);
 			}
-			
+
 			pcb = goodsService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_QUERY_FOR_PAGE, GoodsEntity.class);
 		} catch (ServerCenterNullDataException e) {
@@ -145,8 +219,8 @@ public class GoodsMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		try {
-
 			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+			context.put("brands", CachePoolComponent.getBrands(opt.getToken()));
 			String type = req.getParameter("type");
 			if (SYNC.equals(type)) {
 				String id = req.getParameter("id");

@@ -11,6 +11,7 @@ import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.system.model.StaffEntity;
 
 /**
  * ClassName: GoodsService <br/>
@@ -33,25 +34,25 @@ public interface GoodsService extends ServerCenterService {
 	 */
 	void addEntity(GoodsPojo entity, String token) throws Exception;
 
-	/**  
-	 * queryById:根据编号查询商品信息. <br/>   
-	 *  
-	 * @author hebin 
+	/**
+	 * queryById:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
 	 * @param id
 	 * @param token
-	 * @return  
-	 * @since JDK 1.7  
+	 * @return
+	 * @since JDK 1.7
 	 */
 	GoodsEntity queryById(String id, String token);
 
-	/**  
-	 * queryThirdById:根据id查询同步商品. <br/>   
-	 *  
-	 * @author hebin 
+	/**
+	 * queryThirdById:根据id查询同步商品. <br/>
+	 * 
+	 * @author hebin
 	 * @param id
 	 * @param token
-	 * @return  
-	 * @since JDK 1.7  
+	 * @return
+	 * @since JDK 1.7
 	 */
 	ThirdWarehouseGoods queryThirdById(String id, String token);
 
@@ -74,5 +75,25 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void delEntity(GoodsEntity entity, String token) throws Exception;
+
+	/**
+	 * getHtmlContext:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param parameter
+	 * @since JDK 1.7
+	 */
+	String getHtmlContext(String html, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * saveHtml:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param html
+	 * @param html
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception;
 
 }

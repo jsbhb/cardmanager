@@ -22,4 +22,5 @@ public class ResourceContants {
 	public static final String CMS = "cms";
 	public static final String IMAGE = "images";
 	public static final String HTML = "html";
+	public static final String HTML_SUFFIX = ".html";
 }
