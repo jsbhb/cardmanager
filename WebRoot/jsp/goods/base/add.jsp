@@ -75,7 +75,7 @@
 				                </div>
 							</div>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">单位<font style="color:red">*</font> </label>
 							<div class="col-sm-5">
 								<div class="input-group">
@@ -85,11 +85,11 @@
 		                  			<input type="text" class="form-control" name="unit">
 				                </div>
 							</div>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"><h4>海关信息(*跨境商品必填)</h4></label>
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
 							<div class="col-sm-5">
 								<div class="input-group">
@@ -99,7 +99,7 @@
 		                  			<input type="text" class="form-control" name="hscode">
 				                </div>
 							</div>
-						</div>
+						</div> -->
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">增值税</label>
 							<div class="col-sm-5">
