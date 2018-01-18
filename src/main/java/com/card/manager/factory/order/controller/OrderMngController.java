@@ -76,9 +76,8 @@ public class OrderMngController extends BaseController {
 
 			int gradeLevel = staffEntity.getGradeLevel();
 			if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
-
 			} else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
-				pagination.setCenterId(staffEntity.getParentGradeId());
+				pagination.setCenterId(staffEntity.getGradeId());
 				pagination.setShopId(staffEntity.getShopId());
 			} else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
 				pagination.setCenterId(staffEntity.getParentGradeId());
