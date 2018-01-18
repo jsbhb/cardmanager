@@ -32,7 +32,7 @@ import com.jcraft.jsch.SftpException;
  * @version
  * @since JDK 1.7
  */
-@Service
+@Service("sftpService")
 public class SftpServiceImpl implements SftpService {
 
 	Logger logger = LoggerFactory.getLogger(SftpServiceImpl.class);
@@ -93,8 +93,8 @@ public class SftpServiceImpl implements SftpService {
 			sftp.cd(remotePath + pathContants);
 		} catch (SftpException e) {
 			logger.warn("directory is not exist");
-			sftp.mkdir(remotePath);
-			sftp.cd(remotePath);
+			sftp.mkdir(remotePath + pathContants);
+			sftp.cd(remotePath + pathContants);
 		}
 		sftp.put(inputStream, sftpFileName);
 		logger.info("file:{} is upload successful", sftpFileName);
