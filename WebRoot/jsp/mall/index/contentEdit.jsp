@@ -58,6 +58,14 @@
 										</div>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label no-padding-right">价格</label>
+									<div class="col-sm-6">
+										<div class="input-group">
+											<input type="text" class="form-control" name="price" value="${data.price}"> 
+										</div>
+									</div>
+								</div>
 									<div class="form-group">
 									<label class="col-sm-2 control-label no-padding-right">国家</label>
 									<div class="col-sm-6">
