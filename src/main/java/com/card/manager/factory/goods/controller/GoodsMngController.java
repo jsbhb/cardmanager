@@ -68,6 +68,13 @@ public class GoodsMngController extends BaseController {
 
 	@RequestMapping(value = "/getDetailHtml", method = RequestMethod.POST)
 	public void getDetailHtml(HttpServletRequest req, HttpServletResponse resp) {
+		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 
 		String html = req.getParameter("html");
