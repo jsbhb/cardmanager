@@ -100,9 +100,8 @@
 							<div class="input-group">
 			                 <select class="form-control" name="status" id="status" style="width: 100%;">
 			                   	  <option selected="selected" value="">未选择</option>
-			                   	  <option value="0">初始化</option>
-			                   	  <option value="1">可用</option>
-			                   	  <option value="1">可分销</option>
+			                   	  <option value="0">未上架</option>
+			                   	  <option value="1">上架</option>
 				                </select>
 			                </div>
 						</div>

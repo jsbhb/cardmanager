@@ -220,11 +220,10 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	public void putoff(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-		ResponseEntity<String> query_result = helper
-				.request(
-						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/"
-								+ staffEntity.getGradeId() + "?itemId=" + itemId,
-						staffEntity.getToken(), true, null, HttpMethod.POST);
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/"
+						+ staffEntity.getGradeId() + "?itemId=" + itemId,
+				staffEntity.getToken(), true, null, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
@@ -237,11 +236,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	public void syncStock(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-		ResponseEntity<String> query_result = helper
-				.request(
-						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_STOCK + "/"
-								+ staffEntity.getGradeId() + "?itemId=" + itemId,
-						staffEntity.getToken(), true, null, HttpMethod.POST);
+		List<String> itemList = new ArrayList<String>();
+		itemList.add(itemId);
+
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_STOCK, staffEntity.getToken(), true,
+				itemList, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
