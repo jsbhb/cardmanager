@@ -98,8 +98,8 @@
 										<th>商品名称</th>
 										<th>增值税</th>
 										<th>关税</th>
-										<th>单位</th>
-										<th>hscode</th>
+										<!-- <th>单位</th>
+										<th>hscode</th> -->
 										<th>条码</th>
 										<th>分类</th>
 										<th>所属机构</th>
@@ -178,8 +178,8 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td>" + list[i].incrementTax;
 		str += "</td><td>" + list[i].tariff;
-		str += "</td><td>" + list[i].unit;
-		str += "</td><td>" + (list[i].hscode == null ? "" : list[i].hscode);
+		//str += "</td><td>" + list[i].unit;
+		//str += "</td><td>" + (list[i].hscode == null ? "" : list[i].hscode);
 		str += "</td><td>" + list[i].encode;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
 		str += "</td><td>" + list[i].centerId;
