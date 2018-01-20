@@ -153,4 +153,12 @@ public class StaffMngServiceImpl implements StaffMngService {
 		return result;
 	}
 
+	@Override
+	public void modifyPwd(String userName, String pwd) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("userName", userName);
+		params.put("password", pwd);
+
+		staffMapper.updatePwd(params);
+	}
 }

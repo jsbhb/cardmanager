@@ -115,5 +115,5 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	 */
 	void insertNextVal(int parseInt);
 
-
+	void updatePwd(Map<String, String> params);
 }

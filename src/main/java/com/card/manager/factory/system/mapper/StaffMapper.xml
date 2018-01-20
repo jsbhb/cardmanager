@@ -94,5 +94,11 @@
     <delete id="deleteAllFunc">
     		delete from auth_rolefunc where roleid=#{roleId};
     </delete>
+    
+    
+	<update id="updatePwd">
+		update auth_operator set password=#{password}
+		where badge = #{userName}
+	</update>
 	
 </mapper>

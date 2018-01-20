@@ -88,5 +88,7 @@ public interface StaffMngService {
 	 * @since JDK 1.7
 	 */
 	void modifyStaff(StaffEntity staff);
+	
+	void modifyPwd(String userName, String pwd);
 
 }

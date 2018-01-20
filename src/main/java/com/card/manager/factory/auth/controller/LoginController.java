@@ -17,6 +17,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,9 @@ import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.PopularizeDict;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
@@ -44,6 +48,8 @@ import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.URLUtils;
 
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -301,5 +307,50 @@ public class LoginController extends BaseController {
 		}
 
 		return menuAuth;
+	}
+	
+	@RequestMapping("/modifyPwd")
+	@Auth(verifyLogin = false, verifyURL = false)
+	public ModelAndView modifyPwd(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+		Map<String, Object> context = getRootMap();
+
+		StaffEntity operator = SessionUtils.getOperator(req);
+		if (operator == null) {
+			return forword("login", context);
+		}
+		return forword("modify", context);
+	}
+	
+	@RequestMapping(value = "/chkModifyPwd", method = RequestMethod.POST)
+	@Auth(verifyLogin = false, verifyURL = false)
+	public void chkModifyPwd(HttpServletRequest req, HttpServletResponse resp, HttpSession session, @RequestBody String param) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		try {
+			JSONObject jsonObj  = JSONObject.fromObject(param);
+			
+			String oldPwd = jsonObj.get("oldPwd").toString();
+			String newPwd = jsonObj.get("newPwd").toString();
+
+			StaffEntity operator = staffMngService.queryByLoginInfo(opt.getBadge(), MethodUtil.MD5(oldPwd));
+			if (operator == null) {
+				//验证登录失败
+				sendFailureMessage(resp, "账号或者密码输入错误.");
+				return;
+			}
+			if (Constants.ACCOUNT_LOCKED.equals(operator.getLocked())) {
+				//验证账号是否被锁定
+				sendFailureMessage(resp, "该账号已被锁定，请联系管理员.");
+				return;
+			}
+			
+			//进行更新密码操作
+			staffMngService.modifyPwd(opt.getBadge(), MethodUtil.MD5(newPwd));
+			
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
 	}
 }

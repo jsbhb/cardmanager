@@ -56,7 +56,8 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <!-- <a href="modifyPwd()" class="btn btn-default btn-flat">Modify pwd</a> -->
+                  <button type="button" onclick="modifyPwd()" class="btn btn-primary">Modify pwd</button>
                 </div>
                 <div class="pull-right">
                   <a href="${wmsUrl}/admin/logout.shtml" class="btn btn-default btn-flat">Sign out</a>
@@ -120,6 +121,16 @@
   <script src="${wmsUrl}/layer/layer.js"></script>
 <script>
   $.widget.bridge('uibutton', $.ui.button);
+  
+  function modifyPwd(){
+		var index = layer.open({
+			  title:"修改密码",		
+			  type: 2,
+			  content: '${wmsUrl}/admin/modifyPwd.shtml',
+			  maxmin: true
+			});
+			layer.full(index);
+	}
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
