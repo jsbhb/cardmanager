@@ -100,7 +100,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		layout.setPage("index");
 
 		if (pojo.getPageType() == 1) {
-			layout.setCode("module_0009");
+			layout.setCode("module_00009");
 		} else {
 			layout.setCode("module_00024");
 		}
