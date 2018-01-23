@@ -38,6 +38,15 @@ public class StaffEntity {
 
 	private int roleId;
 	private String roleName;
+	private String tbFlg;
+
+	public String getTbFlg() {
+		return tbFlg;
+	}
+
+	public void setTbFlg(String tbFlg) {
+		this.tbFlg = tbFlg;
+	}
 
 	public String getOptid() {
 		return optid;

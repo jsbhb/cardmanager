@@ -172,3 +172,5 @@ DELIMITER ;
 LOCK TABLES `t_sequence` WRITE;
 INSERT INTO `t_sequence` VALUES ('1',1),('brand',1),('first',1),('goods',1),('goodsItem',1),('second',1),('third',1);
 UNLOCK TABLES;
+
+alter table auth_operator add column `2BFlg` char(1) DEFAULT '0' COMMENT '订货平台标记';

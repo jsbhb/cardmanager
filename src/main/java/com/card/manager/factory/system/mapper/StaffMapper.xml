@@ -25,6 +25,7 @@
 		<result column="parentGradeId" property="parentGradeId" />
 		<result column="gradeLevel" property="gradeLevel" />
 		<result column="shopId" property="shopId" />
+		<result column="2BFlg" property="tbFlg" />
 	</resultMap>
 
 	<!-- 获取角色菜单 -->
@@ -36,7 +37,7 @@
 	</select>
 
 	<select id="queryByList" resultMap="operator">
-		select a.*,r.roleName from auth_operator a 
+		select a.*,r.roleName,r.roleId from auth_operator a 
 		left join auth_operatorrole b on a.optid = b.operatorid 
 		left join auth_role r on r.roleid = b.roleid 
 		where a.status  in (1,2) 
