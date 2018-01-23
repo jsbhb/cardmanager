@@ -1,3 +1,8 @@
+drop SCHEMA if exists  `coopback`;
+CREATE SCHEMA `coopback` ;
+
+use coopback;
+
 
 --
 -- Table structure for table `auth_func`
@@ -23,7 +28,7 @@ CREATE TABLE `auth_func` (
 --
 
 LOCK TABLES `auth_func` WRITE;
-INSERT INTO `auth_func` VALUES (1,'首页','/admin/index/index.shtml',NULL,NULL,'fa-home','2017-10-18 17:11:54','2017-10-18 17:11:54',NULL,'首页界面'),(3,'角色管理','/admin/system/roleMng/list.shtml',NULL,23,NULL,'2016-07-26 13:40:42',NULL,NULL,NULL),(4,'功能管理','/admin/system/funcMng/list.shtml',NULL,23,NULL,'2016-07-26 13:40:42',NULL,NULL,NULL),(6,'分级管理','/admin/system/gradeMng/list.shtml',NULL,23,'window-restore','2017-09-17 14:43:06','2017-09-17 14:43:06',NULL,NULL),(21,'员工管理','/admin/system/staffMng/list.shtml',NULL,23,NULL,'2017-10-17 16:19:46','2017-10-17 16:19:46',NULL,'员工管理界面'),(23,'系统管理','',NULL,NULL,'fa-desktop','2016-07-26 13:36:41','2017-10-24 10:37:50','1600001','1231'),(24,'商品管理',NULL,NULL,NULL,'fa-shopping-bag','2017-11-06 09:20:52','2017-11-06 09:20:52',NULL,NULL),(25,'基础商品','/admin/goods/baseMng/list.shtml',NULL,24,NULL,'2017-11-06 09:22:16','2017-11-06 09:22:16',NULL,'基础信息维护'),(26,'商品明细管理','/admin/goods/itemMng/mng.shtml',NULL,24,NULL,'2017-11-06 09:23:11','2017-11-06 09:23:11',NULL,NULL),(27,'供应商管理',NULL,NULL,NULL,'fa-car','2017-11-06 09:28:43','2017-11-06 09:28:43',NULL,NULL),(28,'供应商管理','/admin/supplier/supplierMng/list.shtml',NULL,27,NULL,'2017-11-06 09:29:42','2017-11-06 09:29:42',NULL,NULL),(29,'品牌管理','/admin/goods/brandMng/list.shtml',NULL,24,NULL,'2017-11-06 09:31:20','2017-11-06 09:31:20',NULL,NULL),(30,'分类管理','/admin/goods/catalogMng/list.shtml',NULL,24,NULL,'2017-11-06 09:31:57','2017-11-06 09:31:57',NULL,NULL),(31,'规格管理','/admin/goods/specsMng/mng.shtml',NULL,24,NULL,'2017-11-06 09:33:03','2017-11-06 09:33:03',NULL,NULL),(32,'商城管理',NULL,NULL,NULL,'fa-building','2017-11-15 01:48:40','2017-11-15 01:48:40',NULL,NULL),(33,'首页设置','/admin/mall/indexMng/mng.shtml',NULL,32,'fa-laptop','2017-11-15 01:49:46','2017-11-15 01:49:46',NULL,NULL),(34,'采购管理',NULL,NULL,NULL,'fa-shopping-bag ','2017-11-15 01:51:00','2017-11-15 01:51:00',NULL,NULL),(35,'采购合同','/admin/purchase/contract/list.shtml',NULL,34,NULL,'2017-11-15 01:52:17','2017-11-15 01:52:17',NULL,NULL),(36,'订单管理',NULL,NULL,NULL,'fa-newspaper-o','2017-11-15 01:53:32','2017-11-15 01:53:32',NULL,NULL),(37,'财务管理',NULL,NULL,NULL,'fa-money','2017-11-15 01:54:11','2017-11-15 01:54:11',NULL,NULL),(38,'报表','/admin/report/reportMng/list.shtml',NULL,1,NULL,'2017-11-15 01:55:44','2017-11-15 01:55:44',NULL,NULL),(39,'订单管理','/admin/order/stockOutMng/list.shtml',NULL,36,NULL,'2017-11-15 01:56:18','2018-01-01 15:02:25',NULL,NULL),(40,'商品管理','/admin/goods/goodsMng/mng.shtml',NULL,24,NULL,'2017-12-22 13:57:44','2017-12-22 13:58:54',NULL,NULL);
+INSERT INTO `auth_func` VALUES (1,'首页','/admin/index/index.shtml',NULL,NULL,'fa-home','2017-10-18 17:11:54','2017-10-18 17:11:54',NULL,'首页界面'),(3,'角色管理','/admin/system/roleMng/list.shtml',NULL,23,NULL,'2016-07-26 13:40:42',NULL,NULL,NULL),(4,'功能管理','/admin/system/funcMng/list.shtml',NULL,23,NULL,'2016-07-26 13:40:42',NULL,NULL,NULL),(6,'分级管理','/admin/system/gradeMng/list.shtml',NULL,23,'window-restore','2017-09-17 14:43:06','2017-09-17 14:43:06',NULL,NULL),(21,'员工管理','/admin/system/staffMng/list.shtml',NULL,23,NULL,'2017-10-17 16:19:46','2017-10-17 16:19:46',NULL,'员工管理界面'),(23,'系统管理','',NULL,NULL,'fa-desktop','2016-07-26 13:36:41','2017-10-24 10:37:50','1600001','1231'),(24,'商品管理',NULL,NULL,NULL,'fa-shopping-bag','2017-11-06 09:20:52','2017-11-06 09:20:52',NULL,NULL),(25,'基础商品','/admin/goods/baseMng/list.shtml',NULL,24,NULL,'2017-11-06 09:22:16','2017-11-06 09:22:16',NULL,'基础信息维护'),(26,'商品明细管理','/admin/goods/itemMng/mng.shtml',NULL,24,NULL,'2017-11-06 09:23:11','2017-11-06 09:23:11',NULL,NULL),(27,'供应商管理',NULL,NULL,NULL,'fa-car','2017-11-06 09:28:43','2017-11-06 09:28:43',NULL,NULL),(28,'供应商管理','/admin/supplier/supplierMng/list.shtml',NULL,27,NULL,'2017-11-06 09:29:42','2017-11-06 09:29:42',NULL,NULL),(29,'品牌管理','/admin/goods/brandMng/list.shtml',NULL,24,NULL,'2017-11-06 09:31:20','2017-11-06 09:31:20',NULL,NULL),(30,'分类管理','/admin/goods/catalogMng/list.shtml',NULL,24,NULL,'2017-11-06 09:31:57','2017-11-06 09:31:57',NULL,NULL),(31,'规格管理','/admin/goods/specsMng/mng.shtml',NULL,24,NULL,'2017-11-06 09:33:03','2017-11-06 09:33:03',NULL,NULL),(32,'商城管理',NULL,NULL,NULL,'fa-building','2017-11-15 01:48:40','2017-11-15 01:48:40',NULL,NULL),(33,'首页设置','/admin/mall/indexMng/mng.shtml',NULL,32,'fa-laptop','2017-11-15 01:49:46','2017-11-15 01:49:46',NULL,NULL),(34,'采购管理',NULL,NULL,NULL,'fa-shopping-bag ','2017-11-15 01:51:00','2017-11-15 01:51:00',NULL,NULL),(35,'采购合同','/admin/purchase/contract/list.shtml',NULL,34,NULL,'2017-11-15 01:52:17','2017-11-15 01:52:17',NULL,NULL),(36,'订单管理',NULL,NULL,NULL,'fa-newspaper-o','2017-11-15 01:53:32','2017-11-15 01:53:32',NULL,NULL),(37,'财务管理',NULL,NULL,NULL,'fa-money','2017-11-15 01:54:11','2017-11-15 01:54:11',NULL,NULL),(38,'报表','/admin/report/reportMng/list.shtml',NULL,1,NULL,'2017-11-15 01:55:44','2017-11-15 01:55:44',NULL,NULL),(39,'订单管理','/admin/order/stockOutMng/list.shtml',NULL,36,NULL,'2017-11-15 01:56:18','2018-01-01 15:02:25',NULL,NULL),(40,'商品管理','/admin/goods/goodsMng/mng.shtml',NULL,24,NULL,'2017-12-22 13:57:44','2017-12-22 13:58:54',NULL,NULL),(41,'商城商品','/admin/mall/goodsMng/mng.shtml',NULL,32,NULL,'2017-12-22 13:57:44','2017-12-22 13:58:54',NULL,NULL);
 UNLOCK TABLES;
 
 --
@@ -98,7 +103,7 @@ CREATE TABLE `auth_role` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `coopback`.`auth_role` (`roleid`, `roleName`, `roleState`, `createTime`, `updateTime`, `type`) VALUES (1, '超级管理员', '1', now(), now(), '1'),(2, '区域中心管理员', '1', now(), now(), '1');
+INSERT INTO `coopback`.`auth_role` (`roleid`, `roleName`, `roleState`, `createTime`, `updateTime`, `type`) VALUES (1, '超级管理员', '1', now(), now(), '1'),(2, '区域中心管理员', '1', now(), now(), '1'),(3, '门店管理员', '1', now(), now(), '1');
 
 
 DROP TABLE IF EXISTS `auth_rolefunc`;
@@ -133,7 +138,8 @@ INSERT INTO `auth_rolefunc` VALUES (1,1,'1','2017-12-22 13:57:59','2017-12-22 13
 ,(1,37,'1','2017-12-22 13:57:59','2017-12-22 13:57:59','1')
 ,(1,38,'1','2017-12-22 13:57:59','2017-12-22 13:57:59','1')
 ,(1,39,'1','2017-12-22 13:57:59','2017-12-22 13:57:59','1')
-,(1,40,'1','2017-12-22 13:57:59','2017-12-22 13:57:59','1');
+,(1,40,'1','2017-12-22 13:57:59','2017-12-22 13:57:59','1')
+,(1,41,'1','2017-12-22 13:57:59','2017-12-22 13:57:59','1');
 
 
 --
@@ -147,7 +153,7 @@ CREATE TABLE `t_sequence` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 
-drop function nextval_safe;
+drop function IF EXISTS nextval_safe;
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `nextval_safe`(sequence_name varchar(64)) RETURNS int(11)
 BEGIN
@@ -164,5 +170,5 @@ DELIMITER ;
 
 
 LOCK TABLES `t_sequence` WRITE;
-INSERT INTO `t_sequence` VALUES ('1',1),('10',1),('11',1),('12',1),('13',1),('14',1),('15',1),('16',4),('17',1),('4',1),('5',1),('6',1),('8',1),('brand',1),('first',1),('goods',1),('goodsItem',1),('second',1),('third',1);
+INSERT INTO `t_sequence` VALUES ('1',1),('brand',1),('first',1),('goods',1),('goodsItem',1),('second',1),('third',1);
 UNLOCK TABLES;
