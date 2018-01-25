@@ -49,6 +49,10 @@ public class GoodsEntity extends Pagination{
 	private List<GoodsItemEntity> items;
 	private int thirdId;
 	private List<GoodsFile> files;
+	private String picPath1;
+	private String picPath2;
+	private String picPath3;
+	private String picPath4;
 
 	public GoodsEntity() {
 	}
@@ -269,6 +273,38 @@ public class GoodsEntity extends Pagination{
 
 	public void setFiles(List<GoodsFile> files) {
 		this.files = files;
+	}
+
+	public String getPicPath1() {
+		return picPath1;
+	}
+
+	public void setPicPath1(String picPath1) {
+		this.picPath1 = picPath1;
+	}
+
+	public String getPicPath2() {
+		return picPath2;
+	}
+
+	public void setPicPath2(String picPath2) {
+		this.picPath2 = picPath2;
+	}
+
+	public String getPicPath3() {
+		return picPath3;
+	}
+
+	public void setPicPath3(String picPath3) {
+		this.picPath3 = picPath3;
+	}
+
+	public String getPicPath4() {
+		return picPath4;
+	}
+
+	public void setPicPath4(String picPath4) {
+		this.picPath4 = picPath4;
 	}
 
 }

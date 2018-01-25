@@ -1,6 +1,8 @@
 package com.card.manager.factory.goods.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -21,6 +23,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.GoodsEntity;
+import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.service.GoodsService;
@@ -140,7 +143,7 @@ public class GoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/goods/list", context);
 	}
 
@@ -285,7 +288,34 @@ public class GoodsMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		goodsEntity.setOpt(staffEntity.getOptid());
 		try {
-			goodsService.updEntity(goodsEntity, staffEntity.getToken());
+			GoodsEntity entity = goodsService.queryById(goodsEntity.getId()+"", staffEntity.getToken());
+			List<GoodsFile> fileList = new ArrayList<GoodsFile>();
+			int fs = entity.getFiles().size();
+			GoodsFile gf = new GoodsFile();
+			//要保存的主图数
+			int ufs = 0;
+			for(int index = 1; index < 5; index++) {
+				String fu = "getPicPath" + index;
+				if (goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}) != null 
+						&& !"".equals(goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}))) {
+					if (index <= fs) {
+						gf = entity.getFiles().get(ufs);
+						gf.setPath(goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}).toString());
+					} else {
+						gf = new GoodsFile();
+						gf.setGoodsId(goodsEntity.getGoodsId());
+						gf.setPath(goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}).toString());
+						gf.setStoreType(0);
+						gf.setType(0);
+						gf.setOpt(staffEntity.getOpt());
+					}
+					fileList.add(gf);
+					ufs++;
+				}
+			}
+			entity.setFiles(fileList);
+			entity.setGoodsName(goodsEntity.getGoodsName());
+			goodsService.updEntity(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
