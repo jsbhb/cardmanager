@@ -100,7 +100,7 @@
 						</div>
 						<div class="form-group">
 							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
+								<input type="hidden" class="form-control" name="picPath1" id="picPath1" value="${goods.files[0].path}"> 
 								<input type="file" name="pic" id="pic1" />
 								<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
 							</div>
@@ -114,7 +114,7 @@
 						</div>
 						<div class="form-group">
 							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath2" id="picPath2"> 
+								<input type="hidden" class="form-control" name="picPath2" id="picPath2" value="${goods.files[1].path}"> 
 								<input type="file" name="pic" id="pic2" />
 								<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
 							</div>
@@ -128,7 +128,7 @@
 						</div>
 						<div class="form-group">
 							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath3" id="picPath3"> 
+								<input type="hidden" class="form-control" name="picPath3" id="picPath3" value="${goods.files[2].path}"> 
 								<input type="file" name="pic" id="pic3" />
 								<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
 							</div>
@@ -142,7 +142,7 @@
 						</div>
 						<div class="form-group">
 							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath4" id="picPath4"> 
+								<input type="hidden" class="form-control" name="picPath4" id="picPath4" value="${goods.files[3].path}"> 
 								<input type="file" name="pic" id="pic4" />
 								<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
 							</div>
