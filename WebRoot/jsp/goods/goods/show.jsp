@@ -33,7 +33,7 @@
 					<form class="form-horizontal" role="form" id="goodsForm" >
 				<div class="row form-horizontal">
 					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right">商品编号</label>
+						<label class="col-sm-2 control-label no-padding-right">商品id</label>
 						<div class="col-sm-4">
 							<div class="input-group">
 			                  <div class="input-group-addon">
@@ -42,7 +42,7 @@
 	                  			<input type="text" class="form-control" name="id" readonly  value="${goods.id}">
 			                </div>
 						</div>
-						<label class="col-sm-1 control-label no-padding-right">商品编码</label>
+						<label class="col-sm-1 control-label no-padding-right">商品编号</label>
 						<div class="col-sm-4">
 							<div class="input-group">
 			                  <div class="input-group-addon">
