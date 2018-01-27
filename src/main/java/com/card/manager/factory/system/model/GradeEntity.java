@@ -54,6 +54,35 @@ public class GradeEntity extends Pagination{
 	
 	private Integer gradeLevel;
 	
+	//新添加审核资料字段
+
+	private String storeName;
+
+	private String contacts;
+
+	private String contactsPhone;
+
+	private String province;
+
+	private String city;
+
+	private String district;
+
+	private String address;
+
+	private String storeOperator;
+
+	private String operatorIDNum;
+
+	private String picPath1;
+
+	private String picPath2;
+
+	private String picPath3;
+
+	private String picPath4;
+	
+	
 	public Integer getGradeLevel() {
 		return gradeLevel;
 	}
@@ -81,6 +110,20 @@ public class GradeEntity extends Pagination{
 		this.phone = jObj.getString("phone");
 		this.gradeType = jObj.getInt("gradeType");
 		this.personInChargeId = jObj.getInt("personInChargeId");
+		//添加注册资料
+		this.storeName = jObj.getString("storeName");
+		this.contacts = jObj.getString("contacts");
+		this.contactsPhone = jObj.getString("contactsPhone");
+		this.province = jObj.getString("province");
+		this.city = jObj.getString("city");
+		this.district = jObj.getString("district");
+		this.address = jObj.getString("address");
+		this.storeOperator = jObj.getString("storeOperator");
+		this.operatorIDNum = jObj.getString("operatorIDNum");
+		this.picPath1 = jObj.getString("picPath1");
+		this.picPath2 = jObj.getString("picPath2");
+		this.picPath3 = jObj.getString("picPath3");
+		this.picPath4 = jObj.getString("picPath4");
 	}
 
 	public String getParentGradeName() {
@@ -201,6 +244,110 @@ public class GradeEntity extends Pagination{
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+	public String getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(String contacts) {
+		this.contacts = contacts;
+	}
+
+	public String getContactsPhone() {
+		return contactsPhone;
+	}
+
+	public void setContactsPhone(String contactsPhone) {
+		this.contactsPhone = contactsPhone;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getStoreOperator() {
+		return storeOperator;
+	}
+
+	public void setStoreOperator(String storeOperator) {
+		this.storeOperator = storeOperator;
+	}
+
+	public String getOperatorIDNum() {
+		return operatorIDNum;
+	}
+
+	public void setOperatorIDNum(String operatorIDNum) {
+		this.operatorIDNum = operatorIDNum;
+	}
+
+	public String getPicPath1() {
+		return picPath1;
+	}
+
+	public void setPicPath1(String picPath1) {
+		this.picPath1 = picPath1;
+	}
+
+	public String getPicPath2() {
+		return picPath2;
+	}
+
+	public void setPicPath2(String picPath2) {
+		this.picPath2 = picPath2;
+	}
+
+	public String getPicPath3() {
+		return picPath3;
+	}
+
+	public void setPicPath3(String picPath3) {
+		this.picPath3 = picPath3;
+	}
+
+	public String getPicPath4() {
+		return picPath4;
+	}
+
+	public void setPicPath4(String picPath4) {
+		this.picPath4 = picPath4;
 	}
 
 }

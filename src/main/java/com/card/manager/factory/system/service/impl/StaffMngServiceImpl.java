@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
+import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.system.exception.OperatorSaveException;
 import com.card.manager.factory.system.exception.SyncUserCenterException;
@@ -160,5 +161,35 @@ public class StaffMngServiceImpl implements StaffMngService {
 		params.put("password", pwd);
 
 		staffMapper.updatePwd(params);
+	}
+
+	@Override
+	public void sync2B(StaffEntity staff,int optId) throws Exception {
+		//根据id进行查询
+		StaffEntity staffeEntity = staffMapper.selectByOptId(optId);
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", optId);
+		//设置platform为订货平台（6）
+		params.put("platUserType", 6);
+
+		try {
+			result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.AUTH_CENTER_PLATFORM_REGISTER,
+					staff.getToken(), true, null, HttpMethod.POST, params);
+			
+			if (result == null)
+				throw new Exception("没有返回信息");
+			
+			JSONObject json = JSONObject.fromObject(result.getBody());
+	
+			if (!json.getBoolean("success")) {
+				throw new Exception("开通订货平台账号失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			}
+			staffMapper.update2BFlg(staffeEntity);
+		} catch (Exception e) {
+			throw new Exception("更新账号状态失败！" + e.getMessage());
+		}
 	}
 }

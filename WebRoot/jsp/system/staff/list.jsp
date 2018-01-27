@@ -185,8 +185,11 @@ function rebuildTable(data){
 		
 		var tbFlg = list[i].tbFlg;
 		var roleId = list[i].roleId;
+		//未开通订货账号
 		if(tbFlg == 0){
+			//分级是区域中心管理员或门店管理员
 			if (roleId == 2 || roleId == 3) {
+				//账号状态是已同步
 				if(status == 1){
 					str += "</td><td>待开通" ;
 					str += "<a href='#' onclick='sync2B("+list[i].optid+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
@@ -275,29 +278,24 @@ function sync2B(id){
 		layer.alert("信息不全，请联系技术人员！");
 		return;
 	}
-	
-	layer.prompt({title: '输入该员工手机号', formType: 2}, function(phone, index){
-		
-		  $.ajax({
-				 url:"${wmsUrl}/admin/system/staffMng/sssync.shtml?phone="+phone+"&optid="+id,
-				 type:'post',
-			     contentType: "application/json; charset=utf-8",
-				 dataType:'json',
-				 success:function(data){
-					 layer.closeAll();
-					 if(data.success){	
-						 reloadTable();
-					 }else{
-						  layer.alert(data.msg);
-					 }
-				 },
-				 error:function(){
-					 layer.closeAll();
-					 layer.alert("系统出现问题啦，快叫技术人员处理");
-				 }
-			 });
-		  
-		});
+	$.ajax({
+		 url:"${wmsUrl}/admin/system/staffMng/sync2B.shtml?optid="+id,
+		 type:'post',
+	     contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 layer.closeAll();
+			 if(data.success){	
+				 reloadTable();
+			 }else{
+				  layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.closeAll();
+			 layer.alert("系统出现问题啦，快叫技术人员处理");
+		 }
+	 });
 }
 
 
