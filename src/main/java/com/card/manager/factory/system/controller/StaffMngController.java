@@ -176,4 +176,21 @@ public class StaffMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
+	@RequestMapping(value = "/sync2B", method = RequestMethod.POST)
+	public void sync2B(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			StaffEntity opt = SessionUtils.getOperator(req);
+			int optId = Integer.parseInt(req.getParameter(OPT_ID));
+
+			staffMngService.sync2B(opt,optId);
+
+		} catch (Exception e) {
+			sysLogger.error(LoggerConstants.LOGIN_LOGGER, e.getMessage() + "同步失败.");
+			sendFailureMessage(resp, "同步失败，请重试.");
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
 }

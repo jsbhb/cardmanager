@@ -101,5 +101,10 @@
 		update auth_operator set password=#{password}
 		where badge = #{userName}
 	</update>
+    
+    <update id="update2BFlg" parameterType="object">
+		update auth_operator set updatetime = now(),2BFlg = '1'
+		where optid = #{optid}
+    </update>
 	
 </mapper>

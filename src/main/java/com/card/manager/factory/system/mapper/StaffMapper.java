@@ -116,4 +116,13 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	void insertNextVal(int parseInt);
 
 	void updatePwd(Map<String, String> params);
+
+	/**  
+	 * updateUserCenterId:更新用户中心编号. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param staffeEntity  
+	 * @since JDK 1.7  
+	 */
+	void update2BFlg(T t);
 }

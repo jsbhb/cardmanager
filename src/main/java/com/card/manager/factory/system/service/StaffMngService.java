@@ -91,4 +91,15 @@ public interface StaffMngService {
 	
 	void modifyPwd(String userName, String pwd);
 
+	/**
+	 * 
+	 * sync:权限中心开通账号. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param phone
+	 * @since JDK 1.7
+	 */
+	void sync2B(StaffEntity staff,int optId) throws Exception;
+
 }

@@ -12,6 +12,7 @@
 
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
 <script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 </head>
 
 <body>
@@ -25,7 +26,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分级名称<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
@@ -36,7 +37,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">公司名称<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
@@ -47,7 +48,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">上级机构<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
@@ -74,7 +75,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">负责人<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-phone"></i>
@@ -85,7 +86,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">上级负责人<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
@@ -99,13 +100,156 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">负责人电话<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                  <input type="text" class="form-control" name="phone" placeholder="请输入...">
 				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>注册信息</h4></label>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店名称<font style="color:red">*</font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="storeName">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店联系人<font style="color:red">*</font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="contacts">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">联系人电话<font style="color:red">*</font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="contactsPhone">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group picker-country">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店地区<font style="color:red">*</font> </label>
+							<div class="col-sm-2">
+								<div class="input-group">
+								  <select class="form-control picker-province" name="province" id="province"></select>
+				                </div>
+							</div>
+							<div class="col-sm-2">
+								<div class="input-group">
+								  <select class="form-control picker-city" name="city" id="city"></select>
+				                </div>
+							</div>
+							<div class="col-sm-2">
+								<div class="input-group">
+								  <select class="form-control picker-district" name="district" id="district"></select>
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店地址<font style="color:red">*</font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="address">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店经营者<font style="color:red">*</font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="storeOperator">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">经营者证件号<font style="color:red">*</font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="operatorIDNum">
+				                </div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-xs-3">
+							<div class="sbox-body">
+								<div class="form-group">
+									<img src="" id="img1" width="120px" height="160px" alt="添加证件正面照">
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
+										<input type="file" name="pic1" id="pic1" />
+										<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-xs-3">
+							<div class="sbox-body">
+								<div class="form-group">
+									<img src="" id="img2" width="120px" height="160px" alt="添加营业执照">
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<input type="hidden" class="form-control" name="picPath2" id="picPath2"> 
+										<input type="file" name="pic2" id="pic2" />
+										<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-xs-3">
+							<div class="sbox-body">
+								<div class="form-group">
+									<img src="" id="img3" width="120px" height="160px" alt="添加门店照片">
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<input type="hidden" class="form-control" name="picPath3" id="picPath3"> 
+										<input type="file" name="pic3" id="pic3" />
+										<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-xs-3">
+							<div class="sbox-body">
+								<div class="form-group">
+									<img src="" id="img4" width="120px" height="160px" alt="添加供销货架图片">
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<input type="hidden" class="form-control" name="picPath4" id="picPath4"> 
+										<input type="file" name="pic4" id="pic4" />
+										<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="col-md-offset-3 col-md-9">
@@ -120,7 +264,26 @@
 		</div>
 	</section>
 	<%@ include file="../../footer.jsp"%>
+	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
+	$(".picker-country").picker();
+	
+	function uploadFile(id) {
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic"+id,
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					$("#picPath"+id).val(data.msg);
+					$("#img"+id).attr("src",data.msg);
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	}
 	
 	 $("#submitBtn").click(function(){
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
@@ -163,10 +326,10 @@
       },
       fields: {
     	  gradeName: {
-              message: '名字不正确',
+              message: '分级名称不正确',
               validators: {
                   notEmpty: {
-                      message: '用户名不能为空！'
+                      message: '分级名称不能为空'
                   },
                   stringLength: {
                       min: 4,
@@ -175,7 +338,7 @@
                   },
               }
       	  },
-      	 personInCharge: {
+      	  personInCharge: {
 	          message: '负责人不能为空',
 	          validators: {
 	              notEmpty: {
@@ -183,35 +346,107 @@
 	              }
 	          }
 	  	  },
-	      address: {
-	          message: '地址不能为空',
+	  	  gradePersonInCharge: {
+	          message: '上级负责人不能为空',
 	          validators: {
 	              notEmpty: {
-	                  message: '地址不能为空！'
+	                  message: '上级负责人不能为空！'
 	              }
 	          }
 	  	  },
-	  	gradePersonInCharge: {
-	          message: '负责人不能为空',
+	  	  phone: {
+	          message: '负责人电话不能为空',
 	          validators: {
 	              notEmpty: {
-	                  message: '负责人不能为空！'
+	                  message: '负责人电话不能为空！'
 	              }
 	          }
 	  	  },
-	  	phone: {
-	          message: '电话不能为空',
-	          validators: {
-	              notEmpty: {
-	                  message: '电话不能为空！'
-	              }
-	          }
-	  	  },
-	  	company: {
+	  	  company: {
 	          message: '公司不能为空',
 	          validators: {
 	              notEmpty: {
 	                  message: '公司不能为空！'
+	              }
+	          }
+	  	  },
+	  	  storeName: {
+	          message: '门店名称不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店名称不能为空！'
+	              }
+	          }
+	  	  },
+	  	  contacts: {
+	          message: '门店联系人不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店联系人不能为空！'
+	              }
+	          }
+	  	  },
+	  	  contactsPhone: {
+	          message: '门店联系人电话不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店联系人电话不能为空！'
+	              }
+	          }
+	  	  },
+	      address: {
+	          message: '门店地址不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店地址不能为空！'
+	              }
+	          }
+	  	  },
+	  	  storeOperator: {
+	          message: '门店经营者不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店经营者不能为空！'
+	              }
+	          }
+	  	  },
+	  	  operatorIDNum: {
+	          message: '门店经营者证件号不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店经营者证件号不能为空！'
+	              }
+	          }
+	  	  },
+	  	  picPath1: {
+	          message: '门店经营者证件照不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店经营者证件照不能为空！'
+	              }
+	          }
+	  	  },
+	  	  picPath2: {
+	          message: '门店营业执照不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店营业执照不能为空！'
+	              }
+	          }
+	  	  },
+	  	  picPath3: {
+	          message: '门店照片不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '门店照片不能为空！'
+	              }
+	          }
+	  	  },
+	  	  picPath4: {
+	          message: '供销货架图片不能为空',
+	          validators: {
+	              notEmpty: {
+	                  message: '供销货架图片不能为空！'
 	              }
 	          }
 	  	  }

@@ -39,6 +39,7 @@ public class StaffEntity {
 	private int roleId;
 	private String roleName;
 	private String tbFlg;
+	private int platform;
 
 	public String getTbFlg() {
 		return tbFlg;
@@ -246,6 +247,14 @@ public class StaffEntity {
 
 	public void setGradeLevel(int gradeLevel) {
 		this.gradeLevel = gradeLevel;
+	}
+
+	public int getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(int platform) {
+		this.platform = platform;
 	}
 
 }
