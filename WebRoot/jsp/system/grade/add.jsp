@@ -199,12 +199,12 @@
 						<div class="col-lg-3 col-xs-3">
 							<div class="sbox-body">
 								<div class="form-group">
-									<img src="" id="img1" width="120px" height="160px" alt="添加证件正面照">
+									<img id="img1" width="120px" height="160px" alt="添加证件正面照">
 								</div>
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
-										<input type="file" name="pic1" id="pic1" />
+										<input type="file" name="pic" id="pic1" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
 									</div>
 								</div>
@@ -213,12 +213,12 @@
 						<div class="col-lg-3 col-xs-3">
 							<div class="sbox-body">
 								<div class="form-group">
-									<img src="" id="img2" width="120px" height="160px" alt="添加营业执照">
+									<img id="img2" width="120px" height="160px" alt="添加营业执照">
 								</div>
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath2" id="picPath2"> 
-										<input type="file" name="pic2" id="pic2" />
+										<input type="file" name="pic" id="pic2" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
 									</div>
 								</div>
@@ -227,12 +227,12 @@
 						<div class="col-lg-3 col-xs-3">
 							<div class="sbox-body">
 								<div class="form-group">
-									<img src="" id="img3" width="120px" height="160px" alt="添加门店照片">
+									<img id="img3" width="120px" height="160px" alt="添加门店照片">
 								</div>
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath3" id="picPath3"> 
-										<input type="file" name="pic3" id="pic3" />
+										<input type="file" name="pic" id="pic3" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
 									</div>
 								</div>
@@ -241,12 +241,12 @@
 						<div class="col-lg-3 col-xs-3">
 							<div class="sbox-body">
 								<div class="form-group">
-									<img src="" id="img4" width="120px" height="160px" alt="添加供销货架图片">
+									<img id="img4" width="120px" height="160px" alt="添加供销货架图片">
 								</div>
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath4" id="picPath4"> 
-										<input type="file" name="pic4" id="pic4" />
+										<input type="file" name="pic" id="pic4" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
 									</div>
 								</div>
@@ -287,6 +287,26 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
+			 var tmpPath1 = $('#picPath1').val();
+			 if (tmpPath1 == "") {
+				 alert("门店经营者证件照不能为空！");
+				 return;
+			 }
+			 var tmpPath2 = $('#picPath2').val();
+			 if (tmpPath2 == "") {
+				 alert("门店营业执照不能为空！");
+				 return;
+			 }
+			 var tmpPath3 = $('#picPath3').val();
+			 if (tmpPath3 == "") {
+				 alert("门店照片不能为空！");
+				 return;
+			 }
+			 var tmpPath4 = $('#picPath4').val();
+			 if (tmpPath4 == "") {
+				 alert("供销货架图片不能为空！");
+				 return;
+			 }
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeMng/addGrade.shtml",
 				 type:'post',
