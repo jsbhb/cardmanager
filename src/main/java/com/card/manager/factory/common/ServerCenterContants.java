@@ -178,6 +178,16 @@ public class ServerCenterContants {
 			+ "/goods/upShelves";
 	public static final String GOODS_CENTER_ITEM_PUT_OFF = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/downShelves";
+	public static final String GOODS_CENTER_PURCHASE_ITEM_SYNC = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/itemSync/-1";
+	public static final String GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryPurchaseItemForPage?centerId={centerId}";
+	public static final String GOODS_CENTER_PURCHASE_ITEM_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryPurchaseItem";
+	public static final String GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_EDIT = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryPurchaseItemForEdit";
+	public static final String GOODS_CENTER_PURCHASE_ITEM_EDIT = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/editPurchaseItem";
 	
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")

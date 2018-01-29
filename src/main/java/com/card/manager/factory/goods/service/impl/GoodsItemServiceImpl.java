@@ -283,4 +283,50 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		}
 	}
 
+	@Override
+	public void TBSyncGoods(String itemId, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		List<String> list = new ArrayList<String>();
+		list.add(itemId);
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
+				+ ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_SYNC,
+				staffEntity.getToken(), true, list, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public GoodsPrice queryPriceById(String id, StaffEntity staffEntity) {
+		GoodsItemEntity entity = new GoodsItemEntity();
+		entity.setItemId(id);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_EDIT, 
+				staffEntity.getToken(), true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsPrice.class);
+	}
+
+	@Override
+	public void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
+				+ ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_EDIT,
+				staffEntity.getToken(), true, price, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("保存失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
 }
