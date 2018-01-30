@@ -214,30 +214,28 @@ function rebuildTable(data){
 		}else{
 		str += "</td><td>无";
 		}
+		var itemId = list[i].centerItemId;
 		var status = list[i].centerStatus;
-		
-		switch(status){
-			case 0:str += "</td><td>未同步";break;
-			case 1:str += "</td><td>已上架";break;
-			case 2:str += "</td><td>已同步";break;
+		if (itemId == 0 || itemId == null) {
+			str += "</td><td>未同步";
+		} else {
+			switch(status){
+				case 0:str += "</td><td>已同步";break;
+				case 1:str += "</td><td>已上架";break;
+			}
 		}
 		str += "</td><td>" + list[i].updateTime;
-		if (true) {
-			str += "<td align='left'>";
-			if(status == 0){
-				str += "<button type='button' class='btn btn-warning'  onclick='syncGoods("+list[i].itemId+")'>同步</button>";
-			}else if(status == 1){
-				str += "<button type='button' class='btn btn-primary' >已上架</button>";
-			}else if(status == 2){
-				str += "<button type='button' class='btn btn-primary' >已同步</button>";
+		str += "</td><td align='left'>";
+		if (itemId == 0 || itemId == null) {
+			str += "<button type='button' class='btn btn-warning'  onclick='syncGoods("+list[i].itemId+")'>同步</button>";
+		} else {
+			switch(status){
+				case 0:str += "<button type='button' class='btn btn-primary' >已同步</button>";break;
+				case 1:str += "<button type='button' class='btn btn-primary' >已上架</button>";break;
 			}
-			str += "</td>";
 		}
-		
 		str += "</td></tr>";
 	}
-		
-
 	$("#itemTable tbody").html(str);
 }
 	

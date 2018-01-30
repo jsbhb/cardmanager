@@ -208,20 +208,25 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].goodsPrice.min;
 		str += "</td><td>" + list[i].goodsPrice.max;
 		var status = list[i].status;
-		
 		if(status == 0){
 			str += "</td><td>已同步";
 		}else if(status == 1){
 			str += "</td><td>已上架";
 		}
-		
 		str += "</td><td>";
+
+		var goodsPriceRetail = list[i].goodsPrice.retailPrice;
+		var goodsPriceMin = list[i].goodsPrice.min;
+		var goodsPriceMax = list[i].goodsPrice.max;
 		if(status == 0){
-			str += "<button type='button' class='btn btn-warning'  onclick='puton("+list[i].itemId+")'>上架</button>";
+			if (goodsPriceRetail == 0 || goodsPriceMin == 0 || goodsPriceMax == 0 || goodsPriceMax == null) {
+				str += "<button type='button' class='btn btn-danger'  onclick='toEdit("+list[i].itemId+")'>编辑</button>";
+			} else {
+				str += "<button type='button' class='btn btn-warning'  onclick='puton("+list[i].itemId+")'>上架</button>";
+			}
 		}else if(status == 1){
 			str += "<button type='button' class='btn btn-primary'  onclick='putoff("+list[i].itemId+")'>下架</button>";
 		}
-		
 		str += "</td></tr>";
 	}
 
