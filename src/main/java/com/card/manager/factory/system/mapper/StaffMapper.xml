@@ -55,7 +55,7 @@
 	</select>
 	
 	<select id="selectByOptId" resultMap="operator">
-		select * from auth_operator where optid = #{optId}
+		select * from auth_operator where userCenterId = #{optId}
 	</select>
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">

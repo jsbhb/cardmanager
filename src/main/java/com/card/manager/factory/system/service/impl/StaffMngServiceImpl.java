@@ -177,7 +177,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 
 		try {
 			result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.AUTH_CENTER_PLATFORM_REGISTER,
-					staff.getToken(), true, null, HttpMethod.POST, params);
+					staff.getToken(), false, null, HttpMethod.POST, params);
 			
 			if (result == null)
 				throw new Exception("没有返回信息");

@@ -192,7 +192,7 @@ function rebuildTable(data){
 				//账号状态是已同步
 				if(status == 1){
 					str += "</td><td>待开通" ;
-					str += "<a href='#' onclick='sync2B("+list[i].optid+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
+					str += "<a href='#' onclick='sync2B("+list[i].userCenterId+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
 				} else {
 					str += "</td><td>待开通" ;
 				}
