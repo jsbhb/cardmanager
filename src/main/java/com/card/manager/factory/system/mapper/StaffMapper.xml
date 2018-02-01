@@ -27,6 +27,20 @@
 		<result column="shopId" property="shopId" />
 		<result column="2BFlg" property="tbFlg" />
 	</resultMap>
+	
+	<resultMap id="queryOperator" type="com.card.manager.factory.order.model.OperatorEntity">
+		<result column="optid" property="optid" />
+		<result column="badge" property="badge" />
+		<result column="optName" property="optName" />
+		<result column="password" property="password" />
+		<result column="status" property="status" />
+		<result column="gradeId" property="gradeId" />
+		<result column="shopId" property="shopId" />
+		<result column="gradeLevel" property="gradeLevel" />
+		<result column="userCenterId" property="userCenterId" />
+		<result column="gradeName" property="gradeName" />
+		<result column="parentGradeId" property="parentGradeId" />
+	</resultMap>
 
 	<!-- 获取角色菜单 -->
 	<select id="selectByLoginInfo" resultMap="operator">
@@ -106,5 +120,22 @@
 		update auth_operator set updatetime = now(),2BFlg = '1'
 		where optid = #{optid}
     </update>
-	
+
+	<select id="selectOperatorInfoByOpt" parameterType="object" resultMap="queryOperator">
+		SELECT * FROM auth_operator where 1=1
+		and 2BFlg = '1'
+		<if test="parentGradeId == 0 or parentGradeId == null">
+			and ifnull(parentGradeId,0) != '0'
+		</if> 
+		<if test="parentGradeId !=0 and parentGradeId != null">
+			<if test="gradeLevel ==2">
+				and ifnull(parentGradeId,0) != '0'
+				and (gradeid = #{gradeId} or parentGradeId = #{gradeId})
+			</if>
+			<if test="gradeLevel ==3">
+				and ifnull(parentGradeId,0) != '0'
+				and (gradeid = #{gradeId} and parentGradeId = #{parentGradeId} and shopid = #{shopId})
+			</if>
+		</if> 
+	</select>
 </mapper>

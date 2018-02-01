@@ -7,8 +7,12 @@
  */
 package com.card.manager.factory.order.service;
 
+import java.util.List;
+
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.system.model.StaffEntity;
 
 /**
  * ClassName: OrderService <br/>
@@ -32,5 +36,5 @@ public interface OrderService extends ServerCenterService {
 	 */
 	OrderInfo queryByOrderId(String orderId, String token);
 
-
+	List<OperatorEntity> queryOperatorInfoByOpt(StaffEntity staff);
 }

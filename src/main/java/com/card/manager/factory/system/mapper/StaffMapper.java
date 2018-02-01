@@ -7,9 +7,11 @@
  */
 package com.card.manager.factory.system.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.base.BaseMapper;
+import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.github.pagehelper.Page;
 
@@ -125,4 +127,15 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7  
 	 */
 	void update2BFlg(T t);
+	
+	/**
+	 * 
+	 * selectByLoginInfo:查询登陆信息. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param params
+	 * @return  
+	 * @since JDK 1.7
+	 */
+	List<OperatorEntity> selectOperatorInfoByOpt(StaffEntity staff);
 }

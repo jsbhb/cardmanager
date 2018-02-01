@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.order.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpMethod;
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
@@ -51,6 +55,11 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), OrderInfo.class);
+	}
+
+	@Override
+	public List<OperatorEntity> queryOperatorInfoByOpt(StaffEntity staff) {
+		return staffMapper.selectOperatorInfoByOpt(staff);
 	}
 
 }
