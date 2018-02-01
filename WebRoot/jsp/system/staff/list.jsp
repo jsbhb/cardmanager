@@ -90,6 +90,7 @@
 										<th>分级机构</th>
 										<th>用户中心编号</th>
 										<th>角色</th>
+										<th>订货账号状态</th>
 										<th>订货账号</th>
 										<th>创建时间</th>
 										<th>更新时间</th>
@@ -202,7 +203,8 @@ function rebuildTable(data){
 		}else if(tbFlg == 1){
 			str += "</td><td>已开通" ;
 		}
-		
+
+		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 
 		

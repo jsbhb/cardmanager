@@ -105,7 +105,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="phone" placeholder="请输入...">
+				                  <input type="text" class="form-control" name="phone" id="phone" placeholder="请输入...">
 				                </div>
 							</div>
 						</div>
@@ -287,24 +287,30 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
+			 var reg = /^1(3|4|5|7|8)\d{9}$/;
+			 if(!reg.test($("#phone").val())) 
+			 { 
+				 layer.alert("请输入有效的负责人手机号码！");
+			     return false; 
+			 }
 			 var tmpPath1 = $('#picPath1').val();
 			 if (tmpPath1 == "") {
-				 alert("门店经营者证件照不能为空！");
+				 layer.alert("门店经营者证件照不能为空！");
 				 return;
 			 }
 			 var tmpPath2 = $('#picPath2').val();
 			 if (tmpPath2 == "") {
-				 alert("门店营业执照不能为空！");
+				 layer.alert("门店营业执照不能为空！");
 				 return;
 			 }
 			 var tmpPath3 = $('#picPath3').val();
 			 if (tmpPath3 == "") {
-				 alert("门店照片不能为空！");
+				 layer.alert("门店照片不能为空！");
 				 return;
 			 }
 			 var tmpPath4 = $('#picPath4').val();
 			 if (tmpPath4 == "") {
-				 alert("供销货架图片不能为空！");
+				 layer.alert("供销货架图片不能为空！");
 				 return;
 			 }
 			 $.ajax({

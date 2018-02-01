@@ -106,7 +106,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-phone"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="phone" value="${grade.phone}">
+				                  <input type="text" class="form-control" name="phone" id="phone" value="${grade.phone}">
 				                </div>
 							</div>
 						</div>
@@ -337,6 +337,12 @@
 	$("#submitBtn").click(function(){
 		 $('#gradeForm').data("bootstrapValidator").validate();
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
+			 var reg = /^1(3|4|5|7|8)\d{9}$/;
+			 if(!reg.test($("#phone").val())) 
+			 { 
+				 layer.alert("请输入有效的负责人手机号码！");
+			     return false; 
+			 }
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeMng/update.shtml",
 				 type:'post',

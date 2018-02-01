@@ -26,6 +26,7 @@
 		<result column="gradeLevel" property="gradeLevel" />
 		<result column="shopId" property="shopId" />
 		<result column="2BFlg" property="tbFlg" />
+		<result column="phone" property="phone" />
 	</resultMap>
 	
 	<resultMap id="queryOperator" type="com.card.manager.factory.order.model.OperatorEntity">
@@ -74,8 +75,8 @@
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">
          INSERT INTO auth_operator (
-              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel)
-       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel})
+              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel,phone)
+       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel},#{phone})
     </insert>
     
     <insert id="insertRoleOpt" parameterType="object">

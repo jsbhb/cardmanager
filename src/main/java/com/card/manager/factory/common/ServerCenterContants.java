@@ -69,6 +69,8 @@ public class ServerCenterContants {
 			+ "/grade/update";
 	public static final String USER_CENTER_GRADE_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/query";
+	public static final String USER_CENTER_PHONE_CHECK = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/userNameVerify";
 
 	/**
 	 * 商品中心url

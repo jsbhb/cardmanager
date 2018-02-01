@@ -174,3 +174,4 @@ INSERT INTO `t_sequence` VALUES ('1',1),('brand',1),('first',1),('goods',1),('go
 UNLOCK TABLES;
 
 alter table auth_operator add column `2BFlg` char(1) DEFAULT '0' COMMENT '订货平台标记';
+alter table auth_operator add column `phone` VARCHAR(15) DEFAULT NULL COMMENT '订货平台账号';

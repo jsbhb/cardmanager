@@ -88,6 +88,16 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	public void saveGrade(GradeEntity gradeInfo, StaffEntity staff)  throws Exception{
 		RestCommonHelper helper = new RestCommonHelper();
 
+		// 确认当前分级负责人电话是否已经存在
+		ResponseEntity<String> phonecheck_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_PHONE_CHECK+"?account="+gradeInfo.getPhone(), staff.getToken(), true,
+				null, HttpMethod.GET);
+		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
+
+		if (!pcjson.getBoolean("success")) {
+			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
+		}
+		
 		// 用户中心注册
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_SAVE, staff.getToken(), true,
@@ -114,6 +124,8 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffEntity.setOptName(gradeInfo.getPersonInCharge());
 		staffEntity.setGradeId(gradeId);
 		staffEntity.setUserCenterId(userId);
+		//订货平台账号
+		staffEntity.setPhone(gradeInfo.getPhone());
 
 		// 权限中心注册
 		registerAuthCenter(staffEntity,true);
@@ -181,6 +193,15 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	@Override
 	public void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
+		// 确认当前分级负责人电话是否已经存在
+		ResponseEntity<String> phonecheck_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_PHONE_CHECK+"?account="+gradeInfo.getPhone(), staffEntity.getToken(), true,
+				null, HttpMethod.GET);
+		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
+
+		if (!pcjson.getBoolean("success")) {
+			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
+		}
 
 		ResponseEntity<String> goodscenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_UPDATE, staffEntity.getToken(), true, gradeInfo,
