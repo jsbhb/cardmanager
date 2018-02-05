@@ -56,6 +56,8 @@ public class GradeEntity extends Pagination{
 
 	private String redirectUrl;
 	
+	private String mobileUrl;//手机端域名
+	
 	//新添加审核资料字段
 
 	private String storeName;
@@ -358,6 +360,14 @@ public class GradeEntity extends Pagination{
 
 	public void setRedirectUrl(String redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+
+	public String getMobileUrl() {
+		return mobileUrl;
+	}
+
+	public void setMobileUrl(String mobileUrl) {
+		this.mobileUrl = mobileUrl;
 	}
 
 }
