@@ -106,7 +106,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-phone"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="phone" id="phone" value="${grade.phone}">
+				                  <input type="text" class="form-control" name="phone" id="phone" readonly="readonly" value="${grade.phone}">
 				                </div>
 							</div>
 						</div>
