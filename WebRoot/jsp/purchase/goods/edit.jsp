@@ -25,6 +25,17 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"><h4>商品订购信息</h4></label>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品名称</label>
+							<div class="col-sm-5">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+		                  			<input type="text" class="form-control" name="goodsName" id="goodsName" readonly="readonly" value="${goodsItem.goodsName}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">订货价</label>
 							<div class="col-sm-5">
 								<div class="input-group">
@@ -76,8 +87,8 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#purchaseGoodsEditForm').data("bootstrapValidator").isValid()){
-			 var tmpMin = $("#min").val();
-			 var tmpMax = $("#max").val();
+			 var tmpMin = Number($("#min").val());
+			 var tmpMax = Number($("#max").val());
 			 if (tmpMin > tmpMax) {
 				 layer.alert("填写的最小起批量大于最大起批量，请修改！");
 				 return;

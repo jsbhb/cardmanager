@@ -35,7 +35,7 @@ import com.card.manager.factory.util.StringUtil;
 
 @Controller
 @RequestMapping("/admin/label/goodsQRMng")
-public class GoodsQRMngMngController extends BaseController {
+public class GoodsQRMngController extends BaseController {
 	
 	@Resource
 	GoodsItemService goodsItemService;

@@ -195,7 +195,7 @@ function rebuildTable(data){
 			str += "";
 		} else {
 			str += "<button type='button' class='btn btn-primary' onclick='downLoadFile(\"";
-			str += list[i].goodsId + "\",\"" + list[i].detailPath
+			str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
 			str += "\")'>下载</button>";
 		}
 		str += "</td></tr>";
