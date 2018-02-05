@@ -111,10 +111,10 @@
 							<table id="itemTable" class="table table-hover">
 								<thead>
 									<tr>
+										<th>商品编码</th>
 										<th>商品名称</th>
 <!-- 										<th>sku</th> -->
 <!-- 										<th>itemCode</th> -->
-										<th>商品编号</th>
 <!-- 										<th>明细编号</th> -->
 <!-- 										<th>供应商</th> -->
 										<th>商品链接</th>
@@ -183,10 +183,10 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
+		str += "</td><td>" + list[i].goodsId;
 		str += "</td><td>" + list[i].goodsName;
 // 		str += "</td><td>" + list[i].sku;
 // 		str += "</td><td>" + list[i].itemCode;
-		str += "</td><td>" + list[i].goodsId;
 // 		str += "</td><td>" + list[i].itemId;
 // 		str += "</td><td>" + list[i].supplierName;
 		str += "</td><td>" + list[i].detailPath;
