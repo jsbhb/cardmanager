@@ -149,6 +149,17 @@ public interface GoodsItemService extends ServerCenterService {
 	GoodsPrice queryPriceById(String id, StaffEntity staffEntity);
 
 	/**
+	 * queryById:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	GoodsPrice queryCheckGoodsPriceById(String id, StaffEntity staffEntity);
+
+	/**
 	 * puton:(这里用一句话描述这个方法的作用). <br/>
 	 * 
 	 * @author hebin

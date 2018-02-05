@@ -53,6 +53,8 @@ public class GradeEntity extends Pagination{
 	private String company;
 	
 	private Integer gradeLevel;
+
+	private String redirectUrl;
 	
 	//新添加审核资料字段
 
@@ -348,6 +350,14 @@ public class GradeEntity extends Pagination{
 
 	public void setPicPath4(String picPath4) {
 		this.picPath4 = picPath4;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 }

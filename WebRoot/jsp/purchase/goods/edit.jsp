@@ -35,6 +35,7 @@
 		                  	      <input type="text" class="form-control" name="retailPrice" value="${price.retailPrice}">
 				                </div>
 							</div>
+							<label class="control-label no-padding-left" for="form-field-1">总部分销价：${chkGoodsPrice.fxPrice}</label>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">最小起批量</label>
@@ -43,9 +44,10 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="min" value="${price.min}">
+		                  			<input type="text" class="form-control" name="min" id="min" value="${price.min}">
 				                </div>
 							</div>
+							<label class="control-label no-padding-left" for="form-field-1">总部最小起批量：${chkGoodsPrice.min}</label>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">最大起批量</label>
@@ -54,9 +56,10 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="max" value="${price.max}">
+		                  			<input type="text" class="form-control" name="max" id="max" value="${price.max}">
 				                </div>
 							</div>
+							<label class="control-label no-padding-left" for="form-field-1">总部最大起批量：${chkGoodsPrice.max}</label>
 						</div>
 						<div class="col-md-offset-3 col-md-9">
 							<div class="form-group">
@@ -73,6 +76,12 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#purchaseGoodsEditForm').data("bootstrapValidator").isValid()){
+			 var tmpMin = $("#min").val();
+			 var tmpMax = $("#max").val();
+			 if (tmpMin > tmpMax) {
+				 layer.alert("填写的最小起批量大于最大起批量，请修改！");
+				 return;
+			 }
 			 $.ajax({
 				 url:"${wmsUrl}/admin/purchase/goodsMng/editGoodsPrice.shtml",
 				 type:'post',

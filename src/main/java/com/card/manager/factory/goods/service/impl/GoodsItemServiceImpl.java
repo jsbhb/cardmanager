@@ -315,6 +315,20 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
+	public GoodsPrice queryCheckGoodsPriceById(String id, StaffEntity staffEntity) {
+		GoodsItemEntity entity = new GoodsItemEntity();
+		entity.setItemId(id);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_CHECK, 
+				staffEntity.getToken(), true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsPrice.class);
+	}
+
+	@Override
 	public void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		

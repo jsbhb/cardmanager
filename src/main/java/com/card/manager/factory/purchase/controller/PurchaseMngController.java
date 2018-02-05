@@ -222,7 +222,9 @@ public class PurchaseMngController extends BaseController {
 
 		try {
 			GoodsPrice price = goodsItemService.queryPriceById(id, opt);
+			GoodsPrice chkGoodsprice = goodsItemService.queryCheckGoodsPriceById(id, opt);
 			context.put("price", price);
+			context.put("chkGoodsPrice", chkGoodsprice);
 			
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());

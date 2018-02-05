@@ -188,8 +188,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/queryPurchaseItem";
 	public static final String GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_EDIT = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/queryPurchaseItemForEdit";
+	public static final String GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_CHECK = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryPurchaseItemForCheck";
 	public static final String GOODS_CENTER_PURCHASE_ITEM_EDIT = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/editPurchaseItem";
+	public static final String GOODS_CENTER_ITEM_QUERY_FOR_PAGE_DOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryForPageDownload?centerId={centerId}&gradeLevel={gradeLevel}";
 	
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
