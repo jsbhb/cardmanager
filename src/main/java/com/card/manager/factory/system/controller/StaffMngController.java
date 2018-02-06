@@ -75,11 +75,12 @@ public class StaffMngController extends BaseController {
 			Page<StaffEntity> page = null;
 			Map<String, Object> params = new HashMap<String, Object>();
 
-			if (id != null && !"".equals(id)) {
-				params.put("gradeId", Integer.parseInt(id));
-			} else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
-				params.put("gradeId", entity.getGradeId());
-			}
+			//暂时不做数据拦截，只要能进入员工管理就能查看所有用户记录
+//			if (id != null && !"".equals(id)) {
+//				params.put("gradeId", Integer.parseInt(id));
+//			} else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
+//				params.put("gradeId", entity.getGradeId());
+//			}
 
 			page = staffMngService.dataList(pagination, params);
 
