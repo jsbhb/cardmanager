@@ -138,4 +138,13 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7
 	 */
 	List<OperatorEntity> selectOperatorInfoByOpt(StaffEntity staff);
+
+	/**  
+	 * updateUserCenterId:更新用户中心编号. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param staffeEntity  
+	 * @since JDK 1.7  
+	 */
+	void update2SFlg(T t);
 }

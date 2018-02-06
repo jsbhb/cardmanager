@@ -33,6 +33,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 public class QrCodeUtil {
 
 	private static String imgPath = "label/goods/";
+	private static String imgPath2 = "label/shop/";
      /**
       * 生成包含字符串信息的二维码图片
       * @param outputStream 文件输出流路径
@@ -109,6 +110,28 @@ public class QrCodeUtil {
     	}
     	return fileName;
     }
+    
+   public static String checkOrCreateShop (String account, String goodsPath) throws IOException, WriterException {
+   	
+   		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+		ServletContext servletContext = webApplicationContext.getServletContext();
+
+		File obj = null;
+   	
+		String filePath = servletContext.getRealPath("/") + imgPath2 + account;
+		obj = new File(filePath);
+		if (!obj.exists()) {
+			obj.mkdirs();
+		}
+		String fileName = filePath + "/" + account + ".jpg";
+		obj = new File(fileName);
+   	
+	   	//如果不存在则创建对应文件
+	   	if (!obj.exists()) {
+	   		createQrCode(new FileOutputStream(new File(fileName)),goodsPath,900,"JPEG");
+	   	}
+	   	return fileName;
+   }
 
 //	public static void main(String[] args) throws IOException, WriterException {
 //		// TODO Auto-generated method stub

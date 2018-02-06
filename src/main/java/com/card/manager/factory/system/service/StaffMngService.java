@@ -102,4 +102,15 @@ public interface StaffMngService {
 	 */
 	void sync2B(StaffEntity staff,int optId) throws Exception;
 
+	/**
+	 * 
+	 * sync:权限中心开通账号. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param phone
+	 * @since JDK 1.7
+	 */
+	void sync2S(StaffEntity staff,int optId) throws Exception;
+
 }

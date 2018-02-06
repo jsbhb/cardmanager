@@ -27,6 +27,7 @@
 		<result column="shopId" property="shopId" />
 		<result column="2BFlg" property="tbFlg" />
 		<result column="phone" property="phone" />
+		<result column="2SFlg" property="tsFlg" />
 	</resultMap>
 	
 	<resultMap id="queryOperator" type="com.card.manager.factory.order.model.OperatorEntity">
@@ -139,4 +140,9 @@
 			</if>
 		</if> 
 	</select>
+    
+    <update id="update2SFlg" parameterType="object">
+		update auth_operator set updatetime = now(),2SFlg = '1'
+		where optid = #{optid}
+    </update>
 </mapper>

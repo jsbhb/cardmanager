@@ -110,6 +110,31 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>区域中心域名信息</h4></label>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">电脑商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="redirectUrl">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">手机商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="mobileUrl">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>注册信息</h4></label>
 						</div>
 						<div class="form-group">

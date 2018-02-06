@@ -111,6 +111,31 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>区域中心域名信息</h4></label>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">电脑商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="redirectUrl" value="${grade.redirectUrl}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">手机商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="mobileUrl" value="${grade.mobileUrl}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>注册信息</h4></label>
 						</div>
 						<div class="form-group">
@@ -204,7 +229,7 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
+										<input type="hidden" class="form-control" name="picPath1" id="picPath1" value="${grade.picPath1}"> 
 										<input type="file" name="pic1" id="pic1" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
 									</div>
@@ -218,7 +243,7 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath2" id="picPath2"> 
+										<input type="hidden" class="form-control" name="picPath2" id="picPath2" value="${grade.picPath2}"> 
 										<input type="file" name="pic2" id="pic2" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
 									</div>
@@ -232,7 +257,7 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath3" id="picPath3"> 
+										<input type="hidden" class="form-control" name="picPath3" id="picPath3" value="${grade.picPath3}"> 
 										<input type="file" name="pic3" id="pic3" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
 									</div>
@@ -246,7 +271,7 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath4" id="picPath4"> 
+										<input type="hidden" class="form-control" name="picPath4" id="picPath4" value="${grade.picPath4}"> 
 										<input type="file" name="pic4" id="pic4" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
 									</div>

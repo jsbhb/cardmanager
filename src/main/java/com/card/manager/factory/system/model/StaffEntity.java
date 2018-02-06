@@ -40,6 +40,15 @@ public class StaffEntity {
 	private String roleName;
 	private String tbFlg;
 	private int platform;
+	private String tsFlg;
+
+	public String getTsFlg() {
+		return tsFlg;
+	}
+
+	public void setTsFlg(String tsFlg) {
+		this.tsFlg = tsFlg;
+	}
 
 	public String getTbFlg() {
 		return tbFlg;

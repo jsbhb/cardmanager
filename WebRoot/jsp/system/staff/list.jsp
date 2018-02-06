@@ -90,8 +90,8 @@
 										<th>分级机构</th>
 										<th>用户中心编号</th>
 										<th>角色</th>
-										<th>订货账号状态</th>
-										<th>订货账号</th>
+<!-- 										<th>订货账号状态</th> -->
+<!-- 										<th>订货账号</th> -->
 										<th>创建时间</th>
 										<th>更新时间</th>
 									</tr>
@@ -184,27 +184,27 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].userCenterId;
 		str += "</td><td>" + list[i].roleName;
 		
-		var tbFlg = list[i].tbFlg;
-		var roleId = list[i].roleId;
-		//未开通订货账号
-		if(tbFlg == 0){
-			//分级是区域中心管理员或门店管理员
-			if (roleId == 2 || roleId == 3) {
-				//账号状态是已同步
-				if(status == 1){
-					str += "</td><td>待开通" ;
-					str += "<a href='#' onclick='sync2B("+list[i].userCenterId+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
-				} else {
-					str += "</td><td>待开通" ;
-				}
-			} else {
-				str += "</td><td>待开通" ;
-			}
-		}else if(tbFlg == 1){
-			str += "</td><td>已开通" ;
-		}
+// 		var tbFlg = list[i].tbFlg;
+// 		var roleId = list[i].roleId;
+// 		//未开通订货账号
+// 		if(tbFlg == 0){
+// 			//分级是区域中心管理员或门店管理员
+// 			if (roleId == 2 || roleId == 3) {
+// 				//账号状态是已同步
+// 				if(status == 1){
+// 					str += "</td><td>待开通" ;
+// 					str += "<a href='#' onclick='sync2B("+list[i].userCenterId+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
+// 				} else {
+// 					str += "</td><td>待开通" ;
+// 				}
+// 			} else {
+// 				str += "</td><td>待开通" ;
+// 			}
+// 		}else if(tbFlg == 1){
+// 			str += "</td><td>已开通" ;
+// 		}
 
-		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
+// 		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 
 		

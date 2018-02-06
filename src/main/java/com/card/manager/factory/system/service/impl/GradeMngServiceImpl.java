@@ -19,6 +19,7 @@ import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -194,17 +195,47 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	public void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		// 确认当前分级负责人电话是否已经存在
-		ResponseEntity<String> phonecheck_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_PHONE_CHECK+"?account="+gradeInfo.getPhone(), staffEntity.getToken(), true,
-				null, HttpMethod.GET);
-		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
-
-		if (!pcjson.getBoolean("success")) {
-			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
-		}
+//		ResponseEntity<String> phonecheck_result = helper.request(
+//				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_PHONE_CHECK+"?account="+gradeInfo.getPhone(), staffEntity.getToken(), true,
+//				null, HttpMethod.GET);
+//		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
+//
+//		if (!pcjson.getBoolean("success")) {
+//			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
+//		}
 
 		ResponseEntity<String> goodscenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_UPDATE, staffEntity.getToken(), true, gradeInfo,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+	
+	@Override
+	public ShopEntity queryByGradeId(String gradeId,String token) {
+		ShopEntity entity = new ShopEntity();
+		entity.setGradeId(Integer.parseInt(gradeId));
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_QUERY, token, true, entity,
+				HttpMethod.POST);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ShopEntity.class);
+	}
+	
+
+	@Override
+	public void updateShop(ShopEntity shopInfo, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> goodscenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_UPDATE, staffEntity.getToken(), true, shopInfo,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());

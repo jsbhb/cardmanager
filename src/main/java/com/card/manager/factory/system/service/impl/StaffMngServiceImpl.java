@@ -25,6 +25,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.system.exception.OperatorSaveException;
 import com.card.manager.factory.system.exception.SyncUserCenterException;
 import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.PushUser;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.servercenter.UserCenterEntity;
 import com.card.manager.factory.system.service.StaffMngService;
@@ -188,6 +189,62 @@ public class StaffMngServiceImpl implements StaffMngService {
 				throw new Exception("开通订货平台账号失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 			}
 			staffMapper.update2BFlg(staffeEntity);
+		} catch (Exception e) {
+			throw new Exception("更新账号状态失败！" + e.getMessage());
+		}
+	}
+
+	@Override
+	public void sync2S(StaffEntity staff,int optId) throws Exception {
+		//根据id进行查询
+		StaffEntity staffeEntity = staffMapper.selectByOptId(optId);
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", optId);
+		//设置platform为推手平台（7）
+		params.put("platUserType", 7);
+		Map<String, Object> params2 = new HashMap<String, Object>();
+		params2.put("code", "erp");
+
+		try {
+			//开通推手账号时，需要先创建推手信息
+			PushUser pushUser = new PushUser();
+			pushUser.setUserId(staffeEntity.getUserCenterId());
+			pushUser.setGradeId(staffeEntity.getGradeId());
+			pushUser.setStatus(2);
+			pushUser.setType(1);
+			pushUser.setPhone(staffeEntity.getPhone());
+			pushUser.setName(staffeEntity.getOptName());
+			pushUser.setInviter("");
+			pushUser.setSpecialtyChannel("");
+			
+			result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_PUSHUSER_REGISER,
+					staff.getToken(), true, pushUser, HttpMethod.POST, params2);
+			if (result == null)
+				throw new Exception("创建推手没有返回信息");
+			
+			JSONObject json2 = JSONObject.fromObject(result.getBody());
+	
+			if (!json2.getBoolean("success")) {
+				throw new Exception("创建推手信息失败:" + json2.getString("errorCode") + "-" + json2.getString("errorMsg"));
+			}
+			
+			result = null;
+			
+			result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.AUTH_CENTER_PLATFORM_REGISTER,
+					staff.getToken(), false, null, HttpMethod.POST, params);
+			
+			if (result == null)
+				throw new Exception("开通推手平台账号没有返回信息");
+			
+			JSONObject json = JSONObject.fromObject(result.getBody());
+	
+			if (!json.getBoolean("success")) {
+				throw new Exception("开通推手平台账号失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			}
+			staffMapper.update2SFlg(staffeEntity);
 		} catch (Exception e) {
 			throw new Exception("更新账号状态失败！" + e.getMessage());
 		}

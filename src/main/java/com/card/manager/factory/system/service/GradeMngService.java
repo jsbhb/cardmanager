@@ -8,6 +8,7 @@
 package com.card.manager.factory.system.service;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 
@@ -74,5 +75,9 @@ public interface GradeMngService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception;
+	
+	ShopEntity queryByGradeId(String gradeId, String token);
+	
+	void updateShop(ShopEntity shopInfo, StaffEntity staffEntity) throws Exception;
 
 }
