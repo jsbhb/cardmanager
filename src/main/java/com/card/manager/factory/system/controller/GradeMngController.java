@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
@@ -24,6 +25,7 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.SessionUtils;
+import com.github.pagehelper.Page;
 
 @Controller
 @RequestMapping("/admin/system/gradeMng")
@@ -169,4 +171,36 @@ public class GradeMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
+
+	@RequestMapping(value = "/dataListForGrade")
+	@ResponseBody
+	public PageCallBack dataListForGrade(Pagination pagination, HttpServletRequest req, HttpServletResponse resp) {
+		PageCallBack pcb = new PageCallBack();
+
+		try {
+			String id = req.getParameter("gradeId");
+			StaffEntity entity = SessionUtils.getOperator(req);
+			Page<StaffEntity> page = null;
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			if (id != null && !"".equals(id)) {
+				params.put("gradeId", Integer.parseInt(id));
+			} else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
+				params.put("gradeId", entity.getGradeId());
+			}
+
+			page = staffMngService.dataList(pagination, params);
+
+			pcb.setObj(page);
+			pcb.setSuccess(true);
+			pcb.setPagination(webPageConverter(page));
+		} catch (Exception e) {
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return pcb;
+		}
+
+		return pcb;
+	}
 }

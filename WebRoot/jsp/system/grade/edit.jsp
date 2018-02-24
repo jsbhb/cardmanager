@@ -346,7 +346,7 @@
 	 */
 	var options = {
 				queryForm : ".query",
-				url :  "${wmsUrl}/admin/system/staffMng/dataList.shtml?gradeId="+${grade.id},
+				url :  "${wmsUrl}/admin/system/gradeMng/dataListForGrade.shtml?gradeId="+${grade.id},
 				numPerPage:"20",
 				currentPage:"",
 				index:"1",
