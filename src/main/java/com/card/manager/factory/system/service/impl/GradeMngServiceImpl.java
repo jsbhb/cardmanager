@@ -241,7 +241,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("编辑失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
 	}
 }

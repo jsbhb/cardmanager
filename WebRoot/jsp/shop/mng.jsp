@@ -27,9 +27,9 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="shopId" value="${opt.shopId}">
-		                  			<input type="hidden" class="form-control" name="id" value="${shop.id}">
-		                  			<input type="hidden" class="form-control" name="gradeId" value="${shop.gradeId}">
+<%-- 		                  			<input type="text" readonly class="form-control" name="shopId" value="${opt.shopId}"> --%>
+		                  			<input type="hidden" class="form-control" name="id" id="id" value="${shop.id}">
+		                  			<input type="text" readonly class="form-control" name="gradeId" id="gradeId" value="${opt.shopId}">
 				                </div>
 							</div>
 						</div>
@@ -40,7 +40,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="name" value="${shop.name}">
+				                  <input type="text" class="form-control" name="name" id="name" value="${shop.name}">
 				                </div>
 							</div>
 						</div>
@@ -51,14 +51,14 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="aboutUs" value="${shop.aboutUs}">
+				                  <input type="text" class="form-control" name="aboutUs" id="aboutUs" value="${shop.aboutUs}">
 				                </div>
 							</div>
 						</div>
-						<div class="col-lg-3 col-xs-3">
+						<div class="col-md-offset-3 col-md-9">
 							<div class="sbox-body">
 								<div class="form-group">
-									<img src="${shop.headImg}" id="img1" width="120px" height="160px" alt="添加证件正面照">
+									<img src="${shop.headImg}" id="img1" width="120px" height="160px" alt="上传微店头像">
 								</div>
 								<div class="form-group">
 									<div class="input-group">

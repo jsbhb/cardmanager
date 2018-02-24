@@ -32,7 +32,7 @@ public class ShopMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
 		//未开通跳转提示页面
-		if (opt.getTsFlg() != "1") {
+		if (!"1".equals(opt.getTsFlg())) {
 			return forword("shop/notice", context);
 		}
 		

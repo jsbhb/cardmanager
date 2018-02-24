@@ -421,7 +421,7 @@ public class LoginController extends BaseController {
 
 	@RequestMapping(value = "/uploadFileForShop", method = RequestMethod.POST)
 	@Auth(verifyLogin = false, verifyURL = false)
-	public void uploadFileForShop(@RequestParam("pic") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
+	public void uploadFileForShop(@RequestParam("pic1") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		ReadIniInfo iniInfo = new ReadIniInfo();

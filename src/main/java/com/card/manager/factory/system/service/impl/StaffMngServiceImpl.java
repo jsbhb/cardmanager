@@ -221,7 +221,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 			pushUser.setSpecialtyChannel("");
 			
 			result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_PUSHUSER_REGISER,
-					staff.getToken(), true, pushUser, HttpMethod.POST, params2);
+					staff.getToken(), false, pushUser, HttpMethod.POST, params2);
 			if (result == null)
 				throw new Exception("创建推手没有返回信息");
 			
