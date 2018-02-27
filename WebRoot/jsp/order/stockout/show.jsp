@@ -184,6 +184,17 @@
 				                </div>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">交易流水号</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+								 	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                  	</div>
+		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payNo}">
+				                </div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
