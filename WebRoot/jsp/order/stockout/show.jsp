@@ -107,6 +107,15 @@
 				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerId}">
 				                </div>
 							</div>
+							<label class="col-sm-1 control-label no-padding-right">推手编号</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+			                    	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                	</div>
+				                  	<input type="text" class="form-control" name="pushUserId" readonly value="${order.pushUserId}">
+				                </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -227,7 +236,7 @@
 					                  <div class="input-group-addon">
 					                    <i class="fa fa-pencil"></i>
 					                  </div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressKey}">
+			                  			<input type="text" class="form-control" readonly  value="${express.expressId}">
 					                </div>
 								</div>
 						</div>

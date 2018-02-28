@@ -103,6 +103,7 @@
 										<th>消费者</th>
 										<th>所属区域</th>
 										<th>所属店铺</th>
+										<th>推手编号</th>
 										<th>交易时间</th>
 										<th>操作</th>
 									</tr>
@@ -203,6 +204,7 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].userId;
 		str += "</td><td>" + list[i].centerId;
 		str += "</td><td>" + (list[i].shopId == null ? "" : list[i].shopId);
+		str += "</td><td>" + (list[i].pushUserId == null ? "" : list[i].pushUserId);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		if (true) {
 			str += "<td align='left'>";
