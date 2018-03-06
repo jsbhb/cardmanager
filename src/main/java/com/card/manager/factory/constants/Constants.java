@@ -257,5 +257,6 @@ public class Constants {
 	public static final String ST_CONFIRM = "2";
 	public static final String ST_REFUSE = "3";
 	public static final String ST_CANCEL = "4";
-	
+
+	public static final Double FIRST_VERSION = 1.0;
 }

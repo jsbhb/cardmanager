@@ -241,4 +241,11 @@ public class ServerCenterContants {
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/queryDataAll";
 
+	/**
+	 * 日志中心url
+	 */
+	public static final String LOG_CENTER_EXCEPTION_LOG = (TOKEN_NOT_NEED ? "/" : "/logcenter/")
+			+ SERVER_CENTER_EDITION + "/exception/log";
+	public static final String LOG_CENTER_LOGINFO_LOG = (TOKEN_NOT_NEED ? "/" : "/logcenter/")
+			+ SERVER_CENTER_EDITION + "/logInfo/log";
 }

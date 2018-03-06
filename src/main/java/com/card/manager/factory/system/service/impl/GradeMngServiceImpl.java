@@ -27,6 +27,7 @@ import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
+import com.card.manager.factory.annotation.Log;
 
 import net.sf.json.JSONObject;
 
@@ -231,6 +232,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	
 
 	@Override
+	@Log(content = "更新微店信息", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateShop(ShopEntity shopInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -238,7 +240,8 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_UPDATE, staffEntity.getToken(), true, shopInfo,
 				HttpMethod.POST);
 
-		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+		//JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+		JSONObject json = JSONObject.fromObject(goodscenter_result);
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("编辑失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
