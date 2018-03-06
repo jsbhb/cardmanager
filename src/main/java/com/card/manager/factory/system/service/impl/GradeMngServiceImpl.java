@@ -240,8 +240,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_UPDATE, staffEntity.getToken(), true, shopInfo,
 				HttpMethod.POST);
 
-		//JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
-		JSONObject json = JSONObject.fromObject(goodscenter_result);
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("编辑失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
