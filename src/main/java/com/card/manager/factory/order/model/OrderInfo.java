@@ -22,8 +22,12 @@ public class OrderInfo extends Pagination{
 
 	// 区域中心ID
 	private Integer centerId;
+	
+	private String centerName;
 
 	private Integer shopId;
+	
+	private String shopName;
 
 	private Integer guideId;
 
@@ -64,6 +68,14 @@ public class OrderInfo extends Pagination{
 	private Integer pushUserId;
 
 	private Integer createType;// 0:普通订单；1：活动订单；2：优惠券订单；3：活动+优惠券
+
+	private String customerName;
+
+	private String pushUserName;
+	
+	private String itemId;
+	
+	private String itemCode;
 
 	public boolean check() {
 		if (orderDetail == null || orderGoodsList == null || orderFlag == null || createType == null || userId == null
@@ -295,6 +307,54 @@ public class OrderInfo extends Pagination{
 
 	public void setSupplierName(String supplierName) {
 		this.supplierName = supplierName;
+	}
+
+	public String getCenterName() {
+		return centerName;
+	}
+
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
+	}
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getPushUserName() {
+		return pushUserName;
+	}
+
+	public void setPushUserName(String pushUserName) {
+		this.pushUserName = pushUserName;
+	}
+
+	public String getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+
+	public String getItemCode() {
+		return itemCode;
+	}
+
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
 	}
 
 	@Override

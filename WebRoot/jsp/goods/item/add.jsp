@@ -107,7 +107,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" name="exciseFax">
+		                  			<input type="text" class="form-control" name="exciseFax" id="exciseFax">
 				                </div>
 							</div>
 						</div>
@@ -163,7 +163,11 @@
 	 
 	 $("#submitBtn").click(function(){
 		 if($('#itemForm').data("bootstrapValidator").isValid()){
-			 
+			 var tmpExciseFax = $("#exciseFax").val();
+			 if(tmpExciseFax >= 1){
+				 layer.alert("消费税填写有误，请重新填写！");
+				 return;
+			 }
 			 var url = "${wmsUrl}/admin/goods/itemMng/save.shtml";
 			 
 			 var formData = sy.serializeObject($('#itemForm'));

@@ -92,7 +92,19 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                   <input type="text" class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}">
+				                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
+				                   	  <c:forEach var="charge" items="${charges}">
+				                   	  	<c:choose>
+										   <c:when test="${charge.userCenterId==grade.gradePersonInCharge}">
+				                   	  			<option value="${charge.userCenterId}" selected="selected" >${charge.optName}</option>
+										   </c:when>
+										   <c:otherwise>
+				                   	  			<option value="${charge.userCenterId}">${charge.optName}</option>
+										   </c:otherwise>
+										</c:choose> 
+				                   	  </c:forEach>
+					              </select>
+<%-- 				                   <input type="text" class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}"> --%>
 				                </div>
 							</div>
 						</div>

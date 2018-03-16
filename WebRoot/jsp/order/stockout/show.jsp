@@ -93,7 +93,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" class="form-control"  readonly value="${order.shopId}">
+				                  <input type="text" class="form-control"  readonly value="${order.shopName}">
 				                </div>
 							</div>
 						</div>
@@ -104,7 +104,7 @@
 			                    	<div class="input-group-addon">
 				                    	<i class="fa fa-pencil"></i>
 				                	</div>
-				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerId}">
+				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">推手编号</label>

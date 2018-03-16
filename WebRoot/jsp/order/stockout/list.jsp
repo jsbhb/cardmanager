@@ -40,10 +40,30 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">item_id</label>
+							<div class="col-sm-8">
+								<div class="input-group">
+		                  			<input type="text" class="form-control" name="itemId">
+				                </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">item_code</label>
+							<div class="col-sm-8">
+								<div class="input-group">
+		                  			<input type="text" class="form-control" name="itemCode">
+				                </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商<font style="color:red">*</font> </label>
 							<div class="col-sm-8">
 								<div class="input-group">
-				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
+				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 150px;">
 				                   	  <option selected="selected" value="">未选择</option>
 				                   	  <c:forEach var="supplier" items="${supplierId}">
 				                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
@@ -58,7 +78,7 @@
 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">状态<font style="color:red">*</font> </label>
 							<div class="col-sm-8">
 								<div class="input-group">
-				                  <select class="form-control" name="status" id="status" style="width: 100%;">
+				                  <select class="form-control" name="status" id="status" style="width: 150px;">
 				                   	  <option selected="selected" value="">全部</option>
 				                   	  <option value="0">待处理</option>
 				                   	  <option value="1">已付款</option>
@@ -76,6 +96,66 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">区域中心</label>
+							<div class="col-sm-8">
+								<div class="input-group">
+									<select class="form-control" name="centerId" id="centerId" style="width: 160px;">
+				                   	  <option selected="selected" value="">未选择</option>
+				                   	  <c:forEach var="center" items="${centerId}">
+		                   	  			<option value="${center.gradeId}">${center.gradeName}</option>
+				                   	  </c:forEach>
+					              	</select>
+				                </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">门店</label>
+							<div class="col-sm-8">
+								<div class="input-group">
+									<select class="form-control" name="shopId" id="shopId" style="width: 150px;">
+				                   	  <option selected="selected" value="">未选择</option>
+				                   	  <c:forEach var="shop" items="${shopId}">
+		                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
+				                   	  </c:forEach>
+					              	</select>
+				                </div>
+							</div>
+						</div>
+					</div>
+<!-- 					<div class="col-xs-4" style="display: none"> -->
+<!-- 						<div class="form-group"> -->
+<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">推手</label> -->
+<!-- 							<div class="col-sm-8"> -->
+<!-- 								<div class="input-group"> -->
+<!-- 									<select class="form-control" name="pushUserId" id="pushUserId" style="width: 150px;"> -->
+<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
+<%-- 				                   	  <c:forEach var="pushUser" items="${pushUserId}"> --%>
+<%-- 		                   	  			<option value="${pushUser.userId}">${pushUser.name}</option> --%>
+<%-- 				                   	  </c:forEach> --%>
+<!-- 					              	</select> -->
+<!-- 				                </div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					<div class="col-xs-4" style="display: none"> -->
+<!-- 						<div class="form-group"> -->
+<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">消费者</label> -->
+<!-- 							<div class="col-sm-8"> -->
+<!-- 								<div class="input-group"> -->
+<!-- 									<select class="form-control" name="customerId" id="customerId" style="width: 150px;"> -->
+<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
+<%-- 				                   	  <c:forEach var="customer" items="${customerId}"> --%>
+<%-- 		                   	  			<option value="${customer.userId}">${customer.name}</option> --%>
+<%-- 				                   	  </c:forEach> --%>
+<!-- 					              	</select> -->
+<!-- 				                </div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="col-md-offset-10 col-md-12">
 						<div class="form-group">
                                 <button type="button" class="btn btn-primary" id="querybtns">提交</button>
@@ -103,7 +183,7 @@
 										<th>消费者</th>
 										<th>所属区域</th>
 										<th>所属店铺</th>
-										<th>推手编号</th>
+										<th>推手</th>
 										<th>交易时间</th>
 										<th>操作</th>
 									</tr>
@@ -201,10 +281,33 @@ function rebuildTable(data){
 		str += "</td><td>" + expressId;
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
-		str += "</td><td>" + list[i].userId;
-		str += "</td><td>" + list[i].centerId;
-		str += "</td><td>" + (list[i].shopId == null ? "" : list[i].shopId);
-		str += "</td><td>" + (list[i].pushUserId == null ? "" : list[i].pushUserId);
+		str += "</td><td>" + list[i].customerName;
+		var tmpCenterId = list[i].centerId;
+		var tmpCenterName = "";
+		if (tmpCenterId == -1) {
+			tmpCenterName = "订货平台";
+		}
+		var centerSelect = document.getElementById("centerId");
+		var options = centerSelect.options;
+		for(var j=0;j<options.length;j++){
+			if (tmpCenterId==options[j].value) {
+				tmpCenterName = options[j].text;
+				break;
+			}
+		}
+		str += "</td><td>" + (tmpCenterName == "" ? "" : tmpCenterName);
+		var tmpShopId = list[i].shopId;
+		var tmpShopName = "";
+		var shopSelect = document.getElementById("shopId");
+		var soptions = shopSelect.options;
+		for(var j=0;j<soptions.length;j++){
+			if (tmpShopId==soptions[j].value) {
+				tmpShopName = soptions[j].text;
+				break;
+			}
+		}
+		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
+		str += "</td><td>" + (list[i].pushUserName == null ? (list[i].pushUserId == null ? "" : list[i].pushUserId) : list[i].pushUserName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		if (true) {
 			str += "<td align='left'>";

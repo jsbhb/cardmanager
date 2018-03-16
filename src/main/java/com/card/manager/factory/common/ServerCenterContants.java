@@ -77,6 +77,10 @@ public class ServerCenterContants {
 			+ "/shop/query";
 	public static final String USER_CENTER_MICRO_SHOP_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/shop/update";
+	public static final String USER_CENTER_ALL_PUSH_USER = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/pushuser/listAllPushUser";
+	public static final String USER_CENTER_ALL_CUSTOMER = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/customer";
 	/**
 	 * 商品中心url
 	 */
@@ -133,6 +137,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/modifyThird";
 	public static final String GOODS_CENTER_CATALOG_DELETE_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/catalog/delete?id={id}&type={type}";
+	public static final String GOODS_CENTER_CATALOG_QUERY_SECOND_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/querySecondAll";
+	public static final String GOODS_CENTER_CATALOG_QUERY_THIRD_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_CENTER_BASE_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")

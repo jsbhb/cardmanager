@@ -8,6 +8,7 @@
 package com.card.manager.factory.system.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -248,5 +249,10 @@ public class StaffMngServiceImpl implements StaffMngService {
 		} catch (Exception e) {
 			throw new Exception("更新账号状态失败！" + e.getMessage());
 		}
+	}
+
+	@Override
+	public List<StaffEntity> queryByParam(Map<String, String> params) {
+		return staffMapper.selectByParam(params);
 	}
 }

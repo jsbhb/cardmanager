@@ -1,6 +1,8 @@
 package com.card.manager.factory.system.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -49,6 +52,14 @@ public class GradeMngController extends BaseController {
 	public ModelAndView add(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
+		List<StaffEntity> GradeCharge = CachePoolComponent.getGradePersoninCharge(opt.getToken());
+		if (opt.getGradeLevel() == 1) {
+			context.put("charges", GradeCharge);
+		} else {
+			GradeCharge.clear();
+			GradeCharge.add(opt);
+			context.put("charges", GradeCharge);
+		}
 		context.put("opt", opt);
 		return forword("system/grade/add", context);
 	}
@@ -120,8 +131,21 @@ public class GradeMngController extends BaseController {
 	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
+		List<StaffEntity> GradeCharge = CachePoolComponent.getGradePersoninCharge(opt.getToken());
 		String gradeId = req.getParameter("gradeId");
+		if (opt.getGradeLevel() == 1) {
+			context.put("charges", GradeCharge);
+		} else {
+			if (gradeId.equals(opt.getGradeId()+"")) {
+				context.put("charges", GradeCharge);
+			} else {
+				List<StaffEntity> tmpGradeCharge = new ArrayList<StaffEntity>();
+				tmpGradeCharge.clear();
+				tmpGradeCharge.add(opt);
+				context.put("charges", tmpGradeCharge);
+			}
+		}
+		context.put("opt", opt);
 
 		try {
 			GradeEntity entity = gradeMngService.queryById(gradeId, opt.getToken());

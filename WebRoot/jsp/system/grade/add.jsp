@@ -91,7 +91,13 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                   <input type="text" class="form-control" name="gradePersonInCharge" placeholder="请选择">
+				                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
+<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
+				                   	  <c:forEach var="charge" items="${charges}">
+				                   	  	<option value="${charge.userCenterId}">${charge.optName}</option>
+				                   	  </c:forEach>
+					              </select>
+<!-- 				                   <input type="text" class="form-control" name="gradePersonInCharge" placeholder="请选择"> -->
 				                </div>
 							</div>
 						</div>
