@@ -171,6 +171,12 @@ public class ServerCenterContants {
 			+ "/goods/goods/remove";
 	public static final String GOODS_CENTER_SAVE_DETAIL_PATH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/saveDetailPath";
+	public static final String GOODS_CENTER_GOODS_REBATE_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsRebate/queryAllGoods";
+	public static final String GOODS_CENTER_GOODS_REBATE_QUERY_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsRebate/queryById";
+	public static final String GOODS_CENTER_GOODS_REBATE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsRebate/updateRebate";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";
