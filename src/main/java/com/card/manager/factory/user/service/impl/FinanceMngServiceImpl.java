@@ -5,9 +5,10 @@
  * Date:Oct 29, 20178:31:28 PM  
  *  
  */
-package com.card.manager.factory.system.service.impl;
+package com.card.manager.factory.user.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.common.AuthCommon;
@@ -27,11 +29,12 @@ import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
-import com.card.manager.factory.system.service.GradeMngService;
+import com.card.manager.factory.user.model.CardEntity;
+import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
-import com.card.manager.factory.annotation.Log;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import net.sf.json.JSONObject;
 
@@ -45,7 +48,7 @@ import net.sf.json.JSONObject;
  * @since JDK 1.7
  */
 @Service
-public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implements GradeMngService {
+public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService implements FinanceMngService {
 
 	@Resource
 	StaffMapper<StaffEntity> staffMapper;
@@ -136,24 +139,6 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		// 权限中心注册
 		registerAuthCenter(staffEntity,true);
 
-		//区域中心时开通资金池
-		if(gradeInfo.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("centerId", gradeId);
-			ResponseEntity<String> finance_result = helper.requestWithParams(
-					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER, staff.getToken(), true, null,
-					HttpMethod.POST, params);
-
-			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-
-			String success = finance_json.getString("success");
-
-			// 如果失败，提示
-			if ("true".equals(success)) {
-			}else{
-				throw new Exception("开通资金池失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
-			}
-		}
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
 	}
@@ -238,25 +223,6 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		if (!json.getBoolean("success")) {
 			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
-		
-		//区域中心时开通资金池
-		if(gradeInfo.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("centerId", gradeInfo.getId());
-			ResponseEntity<String> finance_result = helper.requestWithParams(
-					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER, staffEntity.getToken(), true, null,
-					HttpMethod.POST, params);
-
-			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-
-			String success = finance_json.getString("success");
-
-			// 如果失败，提示
-			if ("true".equals(success)) {
-			}else{
-				throw new Exception("开通资金池失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
-			}
-		}
 
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
@@ -275,21 +241,75 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ShopEntity.class);
 	}
-	
 
 	@Override
-	@Log(content = "更新微店信息", source = Log.BACK_PLAT, type = Log.MODIFY)
-	public void updateShop(ShopEntity shopInfo, StaffEntity staffEntity) throws Exception {
+	@Log(content = "更新账号绑定银行卡信息", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void updateCard(CardEntity cardInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
 		ResponseEntity<String> goodscenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_UPDATE, staffEntity.getToken(), true, shopInfo,
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_UPDATE, staffEntity.getToken(), true, cardInfo,
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("编辑失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public List<CardEntity> queryInfoByEntity(StaffEntity staffEntity) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		String operId = "";
+		String operType = "";
+		if (staffEntity.getGradeLevel() == 1) {
+			operId = staffEntity.getUserCenterId()+"";
+			operType = "2";
+		} else if (staffEntity.getGradeLevel() == 2) {
+			operId = staffEntity.getGradeId()+"";
+			operType = "0";
+		} else if (staffEntity.getGradeLevel() == 3) {
+			operId = staffEntity.getShopId()+"";
+			operType = "1";
+		}
+		params.put("id", operId);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_QUERY_CARDINFO+"?type="+operType, staffEntity.getToken(), true, staffEntity,
+				HttpMethod.GET, params);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+//		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CardEntity.class);
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), new TypeReference<List<CardEntity>>() {});
+		 
+	}
+	
+	@Override
+	public String checkCardNo(String cardNo, String token) {
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDNO_CHECK+"?cardNo="+cardNo, token, true, null,
+				HttpMethod.GET);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return json.getJSONObject("obj").toString();
+	}
+
+	@Override
+	@Log(content = "新增账号绑定银行卡信息", source = Log.BACK_PLAT, type = Log.ADD)
+	public void insertCard(CardEntity cardInfo, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> goodscenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_INSERT, staffEntity.getToken(), true, cardInfo,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("绑定银行卡失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
 	}
 }

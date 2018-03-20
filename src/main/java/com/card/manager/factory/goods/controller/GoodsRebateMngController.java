@@ -55,7 +55,7 @@ public class GoodsRebateMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/goodsRebate/list", context);
 	}
 

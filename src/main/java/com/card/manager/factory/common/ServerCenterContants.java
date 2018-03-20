@@ -262,4 +262,22 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/exception/log";
 	public static final String LOG_CENTER_LOGINFO_LOG = (TOKEN_NOT_NEED ? "/" : "/logcenter/")
 			+ SERVER_CENTER_EDITION + "/logInfo/log";
+	
+	/**
+	 * 财务中心url
+	 */
+	public static final String FINANCE_CENTER_QUERY_CARDINFO = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/queryForPage";
+	public static final String FINANCE_CENTER_CARDINFO_INSERT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card";
+	public static final String FINANCE_CENTER_CARDINFO_UPDATE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/modify/card";
+	public static final String FINANCE_CENTER_CARDNO_CHECK = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/check";
+	public static final String FINANCE_CENTER_CAPITALPOOL_REGISTER = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/register/{centerId}";
+	public static final String FINANCE_CENTER_QUERY_CAPITALPOOL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/listcalCapitalPool";
+	public static final String FINANCE_CENTER_CENTER_CHARGE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/recharge/{centerId}";
 }
