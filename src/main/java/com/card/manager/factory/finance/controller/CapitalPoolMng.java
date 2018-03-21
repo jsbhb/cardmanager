@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
@@ -27,10 +28,12 @@ import com.card.manager.factory.finance.model.CapitalPool;
 import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.service.FinanceMngService;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.URLUtils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -62,24 +65,56 @@ public class CapitalPoolMng extends BaseController {
 				entity.setCenterId(Integer.parseInt(centerId));
 			}
 
-			pcb = financeMngService.dataList(entity, params, staffEntity.getToken(),
-					ServerCenterContants.FINANCE_CENTER_QUERY_CAPITALPOOL, CapitalPool.class);
+//			pcb = financeMngService.dataList(entity, params, staffEntity.getToken(),
+//					ServerCenterContants.FINANCE_CENTER_QUERY_CAPITALPOOL, CapitalPool.class);
 			
-			if (pcb != null) {
-				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
-				List<Object> list = (ArrayList<Object>)pcb.getObj();
-				CapitalPool capitalPool = null;
-				for(Object info : list){
-					capitalPool = (CapitalPool) info;
-					for(UserDetail ud : user) {
-						if (capitalPool.getOpt().equals(ud.getUserId().toString())) {
-							capitalPool.setOpt(ud.getName());
-							break;
-						}
-					}
-				}
-				pcb.setObj(list);
+			// 调用权限中心 验证是否可以登录
+			Pagination pagination = new Pagination();
+			RestCommonHelper helper = new RestCommonHelper(pagination);
+
+			ResponseEntity<String> result = helper.request(URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_QUERY_CAPITALPOOL, staffEntity.getToken(), true, entity,
+					HttpMethod.POST);
+
+			JSONObject json = JSONObject.fromObject(result.getBody());
+//			JSONObject pJson = json.getJSONObject("pagination");
+//			pagination = new Pagination(pJson);
+
+			JSONArray obj = json.getJSONArray("obj");
+			int index = obj.size();
+			if (index == 0) {
+				throw new ServerCenterNullDataException("没有查询到相关数据！");
 			}
+
+			List<Object> list = new ArrayList<Object>();
+			for (int i = 0; i < index; i++) {
+				JSONObject jObj = obj.getJSONObject(i);
+//				Constructor<?> cons = entityClass.getDeclaredConstructor(JSONObject.class);
+//				list.add(cons.newInstance(jObj));
+				list.add(JSONUtilNew.parse(jObj.toString(), CapitalPool.class));
+			}
+			pcb = new PageCallBack();
+			pcb.setObj(list);
+			pcb.setPagination(pagination);
+			pcb.setSuccess(true);
+			
+//			if (pcb != null) {
+//				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
+//				List<Object> list2 = (ArrayList<Object>)pcb.getObj();
+//				CapitalPool capitalPool = null;
+//				for(Object info : list2){
+//					capitalPool = (CapitalPool) info;
+//					for(UserDetail ud : user) {
+//						if (capitalPool.getOpt() == null) {
+//							break;
+//						}
+//						if (capitalPool.getOpt().equals(ud.getUserId().toString())) {
+//							capitalPool.setOpt(ud.getName());
+//							break;
+//						}
+//					}
+//				}
+//				pcb.setObj(list2);
+//			}
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -133,7 +168,7 @@ public class CapitalPoolMng extends BaseController {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("centerId", centerId);
 				ResponseEntity<String> result = helper.requestWithParams(
-						URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_CHARGE+"?money="+money+"&payNo"+payNo, staffEntity.getToken(), true,
+						URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_CHARGE+"?money="+money+"&payNo="+payNo, staffEntity.getToken(), true,
 						null, HttpMethod.POST,params);
 				JSONObject json = JSONObject.fromObject(result.getBody());
 

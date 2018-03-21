@@ -35,6 +35,7 @@
 				                  </div>
 		                  			<input type="text" class="form-control" name="gradeName" value="${grade.gradeName}">
 		                  			<input type="hidden" class="form-control" name="id" value="${grade.id}">
+		                  			<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
 				                </div>
 							</div>
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">公司名称</label>

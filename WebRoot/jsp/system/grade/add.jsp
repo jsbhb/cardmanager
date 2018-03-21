@@ -94,7 +94,14 @@
 				                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
 <!-- 				                   	  <option selected="selected" value="">未选择</option> -->
 				                   	  <c:forEach var="charge" items="${charges}">
-				                   	  	<option value="${charge.userCenterId}">${charge.optName}</option>
+					                   	  	<c:choose>
+									           <c:when test="${charge.userCenterId=='8001'}">
+				                   	  		   	<option value="${charge.userCenterId}" selected>${charge.optName}</option>
+									           </c:when>
+									           <c:otherwise>
+				                   	  			<option value="${charge.userCenterId}">${charge.optName}</option>
+									           </c:otherwise>
+									        </c:choose> 
 				                   	  </c:forEach>
 					              </select>
 <!-- 				                   <input type="text" class="form-control" name="gradePersonInCharge" placeholder="请选择"> -->
@@ -400,14 +407,6 @@
 	          validators: {
 	              notEmpty: {
 	                  message: '负责人不能为空！'
-	              }
-	          }
-	  	  },
-	  	  gradePersonInCharge: {
-	          message: '上级负责人不能为空',
-	          validators: {
-	              notEmpty: {
-	                  message: '上级负责人不能为空！'
 	              }
 	          }
 	  	  },

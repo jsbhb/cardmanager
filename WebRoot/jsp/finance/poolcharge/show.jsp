@@ -30,8 +30,8 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="centerName"  value="${centerName}">
-				                  	<input type="hidden" readonly class="form-control" name="centerId" value="${centerId}">
+		                  			<input type="text" readonly class="form-control" name="centerName" id="centerName" value="${centerName}">
+				                  	<input type="hidden" readonly class="form-control" name="centerId" id="centerId" value="${centerId}">
 				                </div>
 							</div>
 						</div>
@@ -42,7 +42,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="money">
+				                  <input type="text" class="form-control" name="money" id="money">
 				                </div>
 							</div>
 						</div>
@@ -53,7 +53,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="payNo">
+				                  <input type="text" class="form-control" name="payNo" id="payNo">
 				                </div>
 							</div>
 						</div>
@@ -76,8 +76,13 @@
 			 $.ajax({
 				 url:"${wmsUrl}/admin/finance/capitalPoolMng/charge.shtml",
 				 type:'post',
-				 data:JSON.stringify(sy.serializeObject($('#gradeForm'))),
-				 contentType: "application/json; charset=utf-8",
+// 				 data:JSON.stringify(sy.serializeObject($('#gradeForm'))),
+				 data:{
+					 centerId : $("#centerId").val(),
+					 money : $("#money").val(),
+					 payNo : $("#payNo").val()
+					 },
+// 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	

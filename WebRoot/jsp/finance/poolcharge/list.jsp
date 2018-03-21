@@ -71,16 +71,16 @@
 										<th>累计产生金额</th>
 										<th>累计产生优惠</th>
 										<th>区域中心状态</th>
-										<th>最后操作时间</th>
-										<th>最后操作者</th>
+<!-- 										<th>最后操作时间</th> -->
+<!-- 										<th>最后操作者</th> -->
 									</tr>
 								</thead>
 								<tbody>
 								</tbody>
 							</table>
 							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
+<!-- 								<ul id="pagination" class="pagination"> -->
+<!-- 								</ul> -->
 							</div>
 						</div>
 					</div>
@@ -162,8 +162,8 @@ function rebuildTable(data){
 			case 1:str += "</td><td>启用";break;
 			default:str += "</td><td>停用";
 		}
-		str += "</td><td>" + (list[i].updateTime == null ? "" : list[i].updateTime);
-		str += "</td><td>" + list[i].opt;
+// 		str += "</td><td>" + (list[i].updateTime == null ? "" : list[i].updateTime);
+// 		str += "</td><td>" + (list[i].opt == null ? "" : list[i].opt);
 		str += "</td><td align='left'>";
 		str += "<button type='button' class='btn btn-danger' onclick='toShow(\""+list[i].centerId+"\")' >充值</button>";
 		str += "</td></tr>";
@@ -178,8 +178,7 @@ function toShow(centerId){
 	var index = layer.open({
 		  title:"资金池充值",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/finance/capitalPoolMng/toShow.shtml?centerId='+centerId,
-		  maxmin: true
+		  content: '${wmsUrl}/admin/finance/capitalPoolMng/toShow.shtml?centerId='+centerId
 		});
 		layer.full(index);
 }
