@@ -69,6 +69,23 @@ public class GradeMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			//判断域名是否以/结尾  如果是去掉/
+			String tmpUrl = "";
+			String tmpLastStr = "";
+			if (gradeInfo.getRedirectUrl() != null) {
+				tmpUrl = gradeInfo.getRedirectUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setRedirectUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
+			if (gradeInfo.getMobileUrl() != null) {
+				tmpUrl = gradeInfo.getMobileUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
 			gradeMngService.saveGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -163,6 +180,23 @@ public class GradeMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			//判断域名是否以/结尾  如果是去掉/
+			String tmpUrl = "";
+			String tmpLastStr = "";
+			if (gradeInfo.getRedirectUrl() != null) {
+				tmpUrl = gradeInfo.getRedirectUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setRedirectUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
+			if (gradeInfo.getMobileUrl() != null) {
+				tmpUrl = gradeInfo.getMobileUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
 			gradeMngService.updateGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());

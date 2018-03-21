@@ -14,6 +14,8 @@ import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
+import com.card.manager.factory.user.model.CenterRebate;
+import com.card.manager.factory.user.model.ShopRebate;
 
 /**
  * ClassName: FinanceMngService <br/>
@@ -88,5 +90,9 @@ public interface FinanceMngService extends ServerCenterService {
 	String checkCardNo(String cardNo, String token);
 	
 	void insertCard(CardEntity cardInfo, StaffEntity staffEntity) throws Exception;
+	
+	CenterRebate queryCenterRebate(String id, String type, String token);
+	
+	ShopRebate queryShopRebate(String id, String type, String token);
 
 }

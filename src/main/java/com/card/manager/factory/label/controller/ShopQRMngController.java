@@ -53,7 +53,7 @@ public class ShopQRMngController extends BaseController {
 		String strLink = "";
 		if (entity != null) {
 			if (opt.getGradeLevel() == 3) {
-				strLink = entity.getMobileUrl() + "goodsDetail.html?shopId=" + opt.getShopId();
+				strLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + opt.getShopId();
 			}
 		}
 		context.put("strLink", strLink);

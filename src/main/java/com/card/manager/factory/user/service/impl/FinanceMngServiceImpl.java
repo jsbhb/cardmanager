@@ -30,6 +30,8 @@ import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
+import com.card.manager.factory.user.model.CenterRebate;
+import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
@@ -311,5 +313,33 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		if (!json.getBoolean("success")) {
 			throw new Exception("绑定银行卡失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
+	}
+	
+	@Override
+	public CenterRebate queryCenterRebate(String id, String type, String token) {
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY+"?type="+type, token, true, null,
+				HttpMethod.GET, params);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CenterRebate.class);
+	}
+	
+	@Override
+	public ShopRebate queryShopRebate(String id, String type, String token) {
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY+"?type="+type, token, true, null,
+				HttpMethod.GET, params);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ShopRebate.class);
 	}
 }

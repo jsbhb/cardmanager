@@ -280,4 +280,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/listcalCapitalPool";
 	public static final String FINANCE_CENTER_CENTER_CHARGE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/recharge/{centerId}";
+	public static final String FINANCE_CENTER_REBATE_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/{id}";
+	public static final String FINANCE_CENTER_REBATE_DETAIL_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/detail";
 }
