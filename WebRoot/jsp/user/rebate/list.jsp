@@ -56,17 +56,17 @@
 				                  <input type="text" readonly class="form-control" name=alreadyPresented value="${info.alreadyPresented}">
 				                </div>
 							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">待到账金额</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="stayToAccount" value="${info.stayToAccount}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
+<!-- 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">待到账金额</label> -->
+<!-- 							<div class="col-sm-3"> -->
+<!-- 								<div class="input-group"> -->
+<!-- 				                  <div class="input-group-addon"> -->
+<!-- 				                    <i class="fa fa-address-book"></i> -->
+<!-- 				                  </div> -->
+<%-- 				                  <input type="text" readonly class="form-control" name="stayToAccount" value="${info.stayToAccount}"> --%>
+<!-- 				                </div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="form-group"> -->
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">已返充金额</label>
 							<div class="col-sm-3">
 								<div class="input-group">
@@ -155,8 +155,8 @@
 			str += "<tr>";
 			str += "<td>" + list[i].orderId;
 			str += "</td><td>" + list[i].centerRebateMoney;
-			str += "</td><td>" + list[i].shopRebateMoney;
-			str += "</td><td>" + list[i].userRebateMoney;
+			str += "</td><td>" + (list[i].shopRebateMoney == null ? "":list[i].shopRebateMoney);
+			str += "</td><td>" + (list[i].userRebateMoney == null ? "":list[i].userRebateMoney);
 			str += "</td><td>" + list[i].createTime;
 			str += "</td></tr>";
 		}

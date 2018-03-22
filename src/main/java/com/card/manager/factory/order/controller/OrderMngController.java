@@ -213,6 +213,9 @@ public class OrderMngController extends BaseController {
 			context.put("order", entity);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for(SupplierEntity sup : supplier) {
+				if (entity.getSupplierId() == null) {
+					break;
+				}
 				if (sup.getId() == entity.getSupplierId()) {
 					entity.setSupplierName(sup.getSupplierName());
 					break;
@@ -220,6 +223,9 @@ public class OrderMngController extends BaseController {
 			}
 			List<StaffEntity> center = CachePoolComponent.getCenter(opt.getToken());
 			for(StaffEntity cen : center) {
+				if (entity.getCenterId() == null) {
+					break;
+				}
 				if (cen.getGradeId() == entity.getCenterId()) {
 					entity.setCenterName(cen.getGradeName());
 					break;
@@ -227,6 +233,9 @@ public class OrderMngController extends BaseController {
 			}
 			List<StaffEntity> shop = CachePoolComponent.getShop(opt.getToken());
 			for(StaffEntity sh : shop) {
+				if (entity.getShopId() == null) {
+					break;
+				}
 				if (sh.getShopId() == entity.getShopId()) {
 					entity.setShopName(sh.getGradeName());
 					break;
