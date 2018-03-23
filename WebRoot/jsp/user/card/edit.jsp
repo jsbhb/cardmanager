@@ -27,8 +27,8 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="cardNo" id="cardNo" onblur="checkCardNo()">
-				                  <input type="hidden" class="form-control" name="id" id="id">
+				                  <input type="text" class="form-control" name="cardNo" id="cardNo" onblur="checkCardNo()" value="${card.cardNo}">
+				                  <input type="hidden" class="form-control" name="id" id="id" value="${card.id}">
 				                </div>
 							</div>
 						</div>
@@ -39,7 +39,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="cardBank" id="cardBank">
+		                  			<input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
 				                </div>
 							</div>
 						</div>
@@ -50,7 +50,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="cardName" id="cardName">
+				                  <input type="text" class="form-control" name="cardName" id="cardName" value="${card.cardName}">
 				                </div>
 							</div>
 						</div>
@@ -61,7 +61,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="cardMobile" id="cardMobile">
+				                  <input type="text" class="form-control" name="cardMobile" id="cardMobile" value="${card.cardMobile}">
 				                </div>
 							</div>
 						</div>
@@ -105,7 +105,7 @@
 	
 	$("#submitBtn").click(function(){
 		 $.ajax({
-			 url:"${wmsUrl}/admin/user/userCardMng/insert.shtml",
+			 url:"${wmsUrl}/admin/user/userCardMng/update.shtml",
 			 type:'post',
 			 data:JSON.stringify(sy.serializeObject($('#userBindCardForm'))),
 			 contentType: "application/json; charset=utf-8",

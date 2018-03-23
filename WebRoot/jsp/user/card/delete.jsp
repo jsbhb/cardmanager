@@ -27,8 +27,8 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="cardNo" id="cardNo" onblur="checkCardNo()">
-				                  <input type="hidden" class="form-control" name="id" id="id">
+				                  <input type="text" readonly class="form-control" name="cardNo" id="cardNo" value="${card.cardNo}">
+				                  <input type="hidden" class="form-control" name="id" id="id" value="${card.id}">
 				                </div>
 							</div>
 						</div>
@@ -39,7 +39,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="cardBank" id="cardBank">
+		                  			<input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
 				                </div>
 							</div>
 						</div>
@@ -50,7 +50,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="cardName" id="cardName">
+				                  <input type="text" readonly class="form-control" name="cardName" id="cardName" value="${card.cardName}">
 				                </div>
 							</div>
 						</div>
@@ -61,13 +61,13 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="cardMobile" id="cardMobile">
+				                  <input type="text" readonly class="form-control" name="cardMobile" id="cardMobile" value="${card.cardMobile}">
 				                </div>
 							</div>
 						</div>
 						<div class="col-md-offset-3 col-md-9">
 							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
+	                            <button type="button" class="btn btn-primary" id="submitBtn">解绑</button>
 	                        </div>
                        </div>
 					</form>
@@ -77,42 +77,16 @@
 	</section>
 	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript">	
-	
-	function checkCardNo(){
-		var str = $("#cardNo").val();
-		str = $.trim(str);
-		if (str == "") {
-			return;
-		}
-		$.ajax({
-			 url:"${wmsUrl}/admin/user/userCardMng/checkCard.shtml?cardNo="+str,
-			 type:'post',
-// 			 data:{cardNo : str},
-// 			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 success:function(data){
-				 if(data.success){
-					 $("#cardBank").val(data.msg);
-				 }else{
-					 layer.alert(data.msg);
-				 }
-			 },
-			 error:function(){
-				 layer.alert("查询失败，请重试");
-			 }
-		 });
-	}
-	
 	$("#submitBtn").click(function(){
 		 $.ajax({
-			 url:"${wmsUrl}/admin/user/userCardMng/insert.shtml",
+			 url:"${wmsUrl}/admin/user/userCardMng/delete.shtml",
 			 type:'post',
 			 data:JSON.stringify(sy.serializeObject($('#userBindCardForm'))),
 			 contentType: "application/json; charset=utf-8",
 			 dataType:'json',
 			 success:function(data){
 				 if(data.success){	
-					 layer.alert("保存成功");
+					 layer.alert("解绑成功");
 					 parent.layer.closeAll();
 					 parent.reloadTable();
 				 }else{
@@ -120,7 +94,7 @@
 				 }
 			 },
 			 error:function(){
-				 layer.alert("提交失败，请联系客服处理");
+				 layer.alert("解绑失败，请联系客服处理");
 			 }
 		 });
 	 });

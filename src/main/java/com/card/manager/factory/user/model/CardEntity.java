@@ -25,7 +25,7 @@ public class CardEntity extends Pagination {
 	private String cardBank;
 	private String cardNo;
 	private String cardName;
-	private String cardPhone;
+	private String cardMobile;
 	private String remark;
 	private String createTime;
 	private String updateTime;
@@ -67,11 +67,11 @@ public class CardEntity extends Pagination {
 	public void setCardName(String cardName) {
 		this.cardName = cardName;
 	}
-	public String getCardPhone() {
-		return cardPhone;
+	public String getCardMobile() {
+		return cardMobile;
 	}
-	public void setCardPhone(String cardPhone) {
-		this.cardPhone = cardPhone;
+	public void setCardMobile(String cardMobile) {
+		this.cardMobile = cardMobile;
 	}
 	public String getRemark() {
 		return remark;

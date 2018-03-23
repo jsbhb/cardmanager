@@ -39,7 +39,8 @@
 										<th>银行名称</th>
 										<th>持卡人姓名</th>
 										<th>预留电话</th>
-										<th>操作</th>
+										<th>修改</th>
+										<th>解绑</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -108,9 +109,11 @@ function rebuildTable(data){
 		str += "<td>" + list[i].cardNo;
 		str += "</td><td>" + list[i].cardBank;
 		str += "</td><td>" + list[i].cardName;
-		str += "</td><td>" + list[i].cardPhone;
-		str += "</td><td>编辑" ;
-		str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
+		str += "</td><td>" + list[i].cardMobile;
+		str += "</td><td>" ;
+		str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa  fa-pencil' style='font-size:20px;margin-left:5px'></i></a>";
+		str += "</td><td>" ;
+		str += "<button type='button' class='btn btn-danger' onclick='toDelete(\""+list[i].id+"\")' >解绑</button>";
 		str += "</td></tr>";
 	}
 
@@ -136,7 +139,22 @@ function toEdit(id){
 	
 	var index = layer.open({
 		  type: 2,
-		  content: '${wmsUrl}/admin/system/staffMng/toEdit.shtml?optId='+id,
+		  content: '${wmsUrl}/admin/user/userCardMng/toEdit.shtml?cardId='+id,
+		  area: ['320px', '195px'],
+		  maxmin: true
+		});
+		layer.full(index);
+}
+	
+function toDelete(id){
+	if(id == 0 || id == null){
+		layer.alert("信息不全，请联系技术人员！");
+		return;
+	}
+	
+	var index = layer.open({
+		  type: 2,
+		  content: '${wmsUrl}/admin/user/userCardMng/toDelete.shtml?cardId='+id,
 		  area: ['320px', '195px'],
 		  maxmin: true
 		});

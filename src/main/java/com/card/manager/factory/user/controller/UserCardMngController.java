@@ -121,12 +121,8 @@ public class UserCardMngController extends BaseController {
 				operId = staffEntity.getShopId();
 				operType = 1;
 			}
-			if (cardInfo.getTypeId() == 0 || cardInfo.getTypeId() == null) {
-				cardInfo.setTypeId(operId);
-			}
-			if (cardInfo.getType() == 0 || cardInfo.getType() == null) {
-				cardInfo.setType(operType);
-			}
+			cardInfo.setTypeId(operId);
+			cardInfo.setType(operType);
 			financeMngService.insertCard(cardInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "绑卡失败：" + e.getMessage());
@@ -141,12 +137,21 @@ public class UserCardMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("user/card/add", context);
+		try {
+			String cardId = req.getParameter("cardId");
+			CardEntity cardEntity = new CardEntity();
+			cardEntity.setId(Integer.parseInt(cardId));
+			CardEntity card = financeMngService.queryInfoByCardId(cardEntity, opt);
+			context.put("card", card);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+		return forword("user/card/edit", context);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public void update(HttpServletRequest req, HttpServletResponse resp, @RequestBody CardEntity cardInfo) {
-
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			financeMngService.updateCard(cardInfo, staffEntity);
@@ -154,7 +159,36 @@ public class UserCardMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
+		sendSuccessMessage(resp, null);
+	}
 
+	@RequestMapping(value = "/toDelete")
+	public ModelAndView toDelete(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put("opt", opt);
+		try {
+			String cardId = req.getParameter("cardId");
+			CardEntity cardEntity = new CardEntity();
+			cardEntity.setId(Integer.parseInt(cardId));
+			CardEntity card = financeMngService.queryInfoByCardId(cardEntity, opt);
+			context.put("card", card);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+		return forword("user/card/delete", context);
+	}
+	
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public void delete(HttpServletRequest req, HttpServletResponse resp, @RequestBody CardEntity cardInfo) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			financeMngService.deleteCard(cardInfo, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
 		sendSuccessMessage(resp, null);
 	}
 }

@@ -292,4 +292,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/withdrawal/audit";
 	public static final String FINANCE_CENTER_WITHDRAWALS_ADMIN_CHECK = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/rebate/list";
+	public static final String FINANCE_CENTER_QUERY_CARD_BY_CARDID = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/queryByCardId";
+	public static final String FINANCE_CENTER_CARDINFO_DELETE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
 }
