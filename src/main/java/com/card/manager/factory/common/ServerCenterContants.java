@@ -284,4 +284,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/rebate/{id}";
 	public static final String FINANCE_CENTER_REBATE_DETAIL_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/rebate/detail";
+	public static final String FINANCE_CENTER_WITHDRAWALS_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/queryForPage";
+	public static final String FINANCE_CENTER_WITHDRAWALS_DETAIL_ID = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/detailById/{id}";
+	public static final String FINANCE_CENTER_WITHDRAWALS_AUDIT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/audit";
 }

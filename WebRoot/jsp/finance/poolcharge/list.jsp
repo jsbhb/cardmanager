@@ -136,7 +136,11 @@ function rebuildTable(data){
 
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
-		str += "<tr>";
+		if (list[i].money < 1000) {
+			str += "<tr style='color: #FF0000'>";
+		} else {
+			str += "<tr>";
+		}
 		var tmpCenterId = list[i].centerId;
 		var tmpCenterName = "";
 		var centerSelect = document.getElementById("centerId");
