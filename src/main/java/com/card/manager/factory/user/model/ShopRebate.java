@@ -11,6 +11,7 @@ public class ShopRebate {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private String shopName;
 	public Integer getShopId() {
 		return shopId;
 	}
@@ -64,6 +65,12 @@ public class ShopRebate {
 	}
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+	public String getShopName() {
+		return shopName;
+	}
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 	
 }

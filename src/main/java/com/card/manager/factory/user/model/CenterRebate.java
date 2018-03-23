@@ -12,6 +12,7 @@ public class CenterRebate {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private String centerName;
 	public Integer getId() {
 		return id;
 	}
@@ -71,6 +72,12 @@ public class CenterRebate {
 	}
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+	public String getCenterName() {
+		return centerName;
+	}
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
 	}
 	
 }

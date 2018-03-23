@@ -154,5 +154,8 @@
 		<if test="gradelevel ==1">
 			and ifnull(gradelevel,0) in ('1','2')
 		</if>
+		<if test="parentGradeId !=all">
+			and parentGradeId = #{parentGradeId}
+		</if>
 	</select>
 </mapper>
