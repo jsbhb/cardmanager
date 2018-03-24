@@ -376,7 +376,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("资金池充值失败，请联系技术人员！");
+			throw new Exception("资金池清算失败，请联系技术人员！");
 		}
 	}
 }

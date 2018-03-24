@@ -94,7 +94,7 @@
 										<th>店铺返佣比例</th>
 										<th>推手返佣比例</th>
 										<th>供应商</th>
-										<th>商品状态</th>
+<!-- 										<th>商品状态</th> -->
 										<th>编辑</th>
 									</tr>
 								</thead>
@@ -168,13 +168,13 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].second == null ? "" : list[i].second);
 		str += "</td><td>" + (list[i].third == null ? "" : list[i].third);
 		str += "</td><td>" + list[i].supplierName;
-		var status = list[i].status;
-		switch(status){
-			case '0':str += "</td><td>初始化";break;
-			case '1':str += "</td><td>可用";break;
-			case '2':str += "</td><td>可分销";break;
-			default:str += "</td><td>"+status;
-		}
+// 		var status = list[i].status;
+// 		switch(status){
+// 			case '0':str += "</td><td>初始化";break;
+// 			case '1':str += "</td><td>可用";break;
+// 			case '2':str += "</td><td>可分销";break;
+// 			default:str += "</td><td>"+status;
+// 		}
 		str += "</td><td align='left'>";
 		str += "<button type='button' class='btn btn-danger' onclick='toShow("+list[i].goodsId+")' id='resetBtn'>设置比例</button>";
 		str += "</td>";

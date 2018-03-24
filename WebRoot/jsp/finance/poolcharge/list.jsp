@@ -190,7 +190,7 @@ function toShow(centerId){
 
 function toDelete(centerId){
 	var index = layer.open({
-		  title:"资金池充值",		
+		  title:"资金池清算",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/finance/capitalPoolMng/toDelete.shtml?centerId='+centerId
 		});
