@@ -317,7 +317,7 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		if (true) {
 			str += "<td align='left'>";
-			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")' >详情</button>";
+			str += "<button type='button' class='btn btn-danger' onclick='toShow(\""+list[i].orderId+"\")' >退款处理</button>";
 			str += "</td>";
 		}
 		
@@ -333,7 +333,7 @@ function toShow(orderId){
 	var index = layer.open({
 		  title:"查看订单详情",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/order/stockOutMng/toShow.shtml?orderId='+orderId,
+		  content: '${wmsUrl}/admin/order/orderBackMng/toShow.shtml?orderId='+orderId,
 		  maxmin: true
 		});
 		layer.full(index);

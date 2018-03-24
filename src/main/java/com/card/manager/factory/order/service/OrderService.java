@@ -37,4 +37,8 @@ public interface OrderService extends ServerCenterService {
 	OrderInfo queryByOrderId(String orderId, String token);
 
 	List<OperatorEntity> queryOperatorInfoByOpt(StaffEntity staff);
+
+	void applyOrderBack(String orderId, StaffEntity staff) throws Exception;
+
+	void auditOrderBack(String orderId, String payNo, StaffEntity staff) throws Exception;
 }

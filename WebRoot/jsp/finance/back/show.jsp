@@ -37,7 +37,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderId}">
+		                  			<input type="text" class="form-control" readonly id="orderId" value="${order.orderId}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">供应商</label>
@@ -314,11 +314,6 @@
 				<div class="box-body">
 					<div class="row">
 						<div class="col-md-12">
-							<c:if test="${goods.templateId > 0}">
-								<button type="button" class="btn btn-primary" onclick="addItem()">新增明细</button>
-							</c:if>
-						</div>
-						<div class="col-md-12">
 							<div class="panel panel-default">
 								<table id="goodsTable" class="table table-hover">
 									<thead>
@@ -354,7 +349,7 @@
 	 */
 	var options = {
 				queryForm : ".query",
-				url :  "${wmsUrl}/admin/order/stockOutMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
+				url :  "${wmsUrl}/admin/finance/orderBackMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
 				numPerPage:"20",
 				currentPage:"",
 				index:"1",

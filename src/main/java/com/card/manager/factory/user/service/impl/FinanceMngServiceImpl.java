@@ -7,6 +7,7 @@
  */
 package com.card.manager.factory.user.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.finance.model.AuditModel;
+import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -32,6 +34,7 @@ import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -224,6 +227,119 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_WITHDRAWALS_AUDIT, staffEntity.getToken(), true,
+				entity, HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("提现审核失败，请联系技术人员！");
+		}
+	}
+
+	@Override
+	public List<CardEntity> queryInfoByUser(StaffEntity staffEntity) {
+		List<CardEntity> retList = new ArrayList<CardEntity>();
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		String operId = "";
+		String operType = "";
+		if (staffEntity.getGradeLevel() == 1) {
+			operId = staffEntity.getUserCenterId()+"";
+			operType = "2";
+		} else if (staffEntity.getGradeLevel() == 2) {
+			operId = staffEntity.getGradeId()+"";
+			operType = "0";
+		} else if (staffEntity.getGradeLevel() == 3) {
+			operId = staffEntity.getShopId()+"";
+			operType = "1";
+		}
+		params.put("id", operId);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_LIST+"?type="+operType, staffEntity.getToken(), true, staffEntity,
+				HttpMethod.GET, params);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		if (!json.getBoolean("success")) {
+			return retList;
+		}
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		if (index == 0) {
+			return retList;
+		}
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			retList.add(JSONUtilNew.parse(jObj.toString(), CardEntity.class));
+		}
+		return retList;
+	}
+
+	@Override
+	@Log(content = "发起提现申请", source = Log.BACK_PLAT, type = Log.ADD)
+	public void applyWithdrawals(Withdrawals entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> goodscenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_USER_APPLY_WITHDRAWALS, staffEntity.getToken(), true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("发起提现申请失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	@Log(content = "发起返充申请", source = Log.BACK_PLAT, type = Log.ADD)
+	public void applyRefilling(Refilling entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("centerId", staffEntity.getGradeId());
+		ResponseEntity<String> goodscenter_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_USER_APPLY_REFILLING, staffEntity.getToken(), true, entity,
+				HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("发起返充申请失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public Refilling queryRefillingDetailById(String id, StaffEntity staffEntity) {
+		Refilling Detail = null;
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REFILLING_DETAIL_ID, staffEntity.getToken(), true,
+				null, HttpMethod.POST,params);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (json.getBoolean("success")) {
+//			JSONObject tjson = JSONObject.fromObject(json.getJSONObject("obj").toString());
+//			Detail = JSONUtilNew.parse(tjson.getJSONObject("obj").toString(), Refilling.class);
+			Detail = JSONUtilNew.parse(json.getJSONObject("obj").toString(), Refilling.class);
+		}
+		if (Detail != null) {
+			List<StaffEntity> center = CachePoolComponent.getCenter(staffEntity.getToken());
+			for(StaffEntity ce : center) {
+				if (Detail.getCenterId() == ce.getGradeId()) {
+					Detail.setOperatorName(ce.getGradeName());
+					break;
+				}
+			}
+		}
+		return Detail;
+	}
+
+	@Override
+	@Log(content = "审核返充信息", source = Log.BACK_PLAT, type = Log.ADD)
+	public void auditRefilling(AuditModel entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REFILLING_AUDIT, staffEntity.getToken(), true,
 				entity, HttpMethod.POST);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 

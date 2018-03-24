@@ -79,21 +79,8 @@
 							<div class="col-sm-8">
 								<div class="input-group">
 				                  <select class="form-control" name="status" id="status" style="width: 150px;">
-				                   	  <option selected="selected" value="">全部</option>
-				                   	  <option value="0">待处理</option>
-				                   	  <option value="1">已付款</option>
-				                   	  <option value="2">支付单报关</option>
-				                   	  <option value="3">已发仓库</option>
-				                   	  <option value="4">已报海关</option>
-				                   	  <option value="5">单证放行</option>
-				                   	  <option value="6">已发货</option>
-				                   	  <option value="7">已收货</option>
-				                   	  <option value="8">退单</option>
-				                   	  <option value="9">超时取消</option>
-				                   	  <option value="11">资金池不足</option>
-				                   	  <option value="12">资金池已扣款</option>
-				                   	  <option value="21">退款中</option>
-				                   	  <option value="99">异常状态</option>
+				                   	  <option value="8">已退款</option>
+				                   	  <option selected="selected" value="21">退款中</option>
 					                </select>
 				                </div>
 							</div>
@@ -129,36 +116,6 @@
 							</div>
 						</div>
 					</div>
-<!-- 					<div class="col-xs-4" style="display: none"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">推手</label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<select class="form-control" name="pushUserId" id="pushUserId" style="width: 150px;"> -->
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 				                   	  <c:forEach var="pushUser" items="${pushUserId}"> --%>
-<%-- 		                   	  			<option value="${pushUser.userId}">${pushUser.name}</option> --%>
-<%-- 				                   	  </c:forEach> --%>
-<!-- 					              	</select> -->
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="col-xs-4" style="display: none"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">消费者</label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<select class="form-control" name="customerId" id="customerId" style="width: 150px;"> -->
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 				                   	  <c:forEach var="customer" items="${customerId}"> --%>
-<%-- 		                   	  			<option value="${customer.userId}">${customer.name}</option> --%>
-<%-- 				                   	  </c:forEach> --%>
-<!-- 					              	</select> -->
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
 					<div class="col-md-offset-10 col-md-12">
 						<div class="form-group">
                                 <button type="button" class="btn btn-primary" id="querybtns">提交</button>
@@ -317,7 +274,8 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		if (true) {
 			str += "<td align='left'>";
-			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")' >详情</button>";
+			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")'>订单详情</button>";
+			str += "<button type='button' class='btn btn-danger' onclick='toAudit(\""+list[i].orderId+"\")' >审核处理</button>";
 			str += "</td>";
 		}
 		
@@ -333,7 +291,17 @@ function toShow(orderId){
 	var index = layer.open({
 		  title:"查看订单详情",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/order/stockOutMng/toShow.shtml?orderId='+orderId,
+		  content: '${wmsUrl}/admin/finance/orderBackMng/toShow.shtml?orderId='+orderId,
+		  maxmin: true
+		});
+		layer.full(index);
+}
+
+function toAudit(orderId){
+	var index = layer.open({
+		  title:"审核订单退款",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/finance/orderBackMng/toAudit.shtml?orderId='+orderId,
 		  maxmin: true
 		});
 		layer.full(index);

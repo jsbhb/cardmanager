@@ -221,6 +221,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryForPageForGoods?orderId={orderId}";
 	public static final String ORDER_CENTER_QUERY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
 			+ "/order/stockOut/query";
+	public static final String ORDER_CENTER_APPLY_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/refunds/{orderId}";
+	public static final String ORDER_CENTER_AUDIT_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/backcancel/{orderId}";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";
@@ -296,4 +300,16 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/card/queryByCardId";
 	public static final String FINANCE_CENTER_CARDINFO_DELETE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
+	public static final String FINANCE_CENTER_CARDINFO_LIST = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
+	public static final String FINANCE_CENTER_USER_APPLY_WITHDRAWALS = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/apply";
+	public static final String FINANCE_CENTER_REFILLING_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capital/recharge/queryForPage";
+	public static final String FINANCE_CENTER_USER_APPLY_REFILLING = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capital/recharge/apply/{centerId}";
+	public static final String FINANCE_CENTER_REFILLING_DETAIL_ID = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/refilling/detailById/{id}";
+	public static final String FINANCE_CENTER_REFILLING_AUDIT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/recharge/audit";
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.finance.model.AuditModel;
+import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
@@ -47,5 +48,15 @@ public interface FinanceMngService extends ServerCenterService {
 	Withdrawals checkWithdrawalsById(String id, StaffEntity staffEntity);
 	
 	void auditWithdrawals(AuditModel entity, StaffEntity staffEntity) throws Exception;
+	
+	List<CardEntity> queryInfoByUser(StaffEntity staffEntity);
+	
+	void applyWithdrawals(Withdrawals entity, StaffEntity staffEntity) throws Exception;
+	
+	void applyRefilling(Refilling entity, StaffEntity staffEntity) throws Exception;
+	
+	Refilling queryRefillingDetailById(String id, StaffEntity staffEntity);
+	
+	void auditRefilling(AuditModel entity, StaffEntity staffEntity) throws Exception;
 
 }

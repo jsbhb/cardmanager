@@ -30,21 +30,6 @@
 			<div class="row form-horizontal query">
 					<div class="col-xs-4">
 						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">角色类型</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="operatorType" id="operatorType" style="width: 160px;">
-		                   	  			<option value="0">区域中心</option>
-		                   	  			<option value="1">门店</option>
-		                   	  			<option value="2">推手</option>
-				                   	    <option selected="selected" value="">未选择</option>
-					              	</select>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">提现金额</label>
 							<div class="col-sm-8">
 								<div class="input-group">
@@ -58,7 +43,7 @@
 							<div class="col-sm-8">
 								<div class="input-group">
 									<select class="form-control" name="status" id="status" style="width: 160px;">
-				                   		<option value="">未选择</option>
+				                   		<option value="">全部</option>
 		                   	  			<option selected="selected" value="1">待处理</option>
 		                   	  			<option value="2">已同意</option>
 		                   	  			<option value="3">已拒绝</option>
@@ -122,11 +107,15 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">
+								<button type="button" onclick="toAdd()" class="btn btn-primary">新增提现申请</button>
+								</h3>
+							</div>
 							<table id="orderTable" class="table table-hover">
 								<thead>
 									<tr>
 										<th>角色名称</th>
-										<th>角色类型</th>
 										<th>提现时余额</th>
 										<th>提现金额</th>
 										<th>申请状态</th>
@@ -134,7 +123,6 @@
 										<th>银行卡号</th>
 										<th>持卡人姓名</th>
 										<th>转账流水号</th>
-										<th>操作</th>
 <!-- 										<th>最后操作时间</th> -->
 <!-- 										<th>最后操作者</th> -->
 									</tr>
@@ -163,7 +151,7 @@
  */
 var options = {
 			queryForm : ".query",
-			url :  "${wmsUrl}/admin/finance/withdrawalsMng/dataList.shtml",
+			url :  "${wmsUrl}/admin/user/userWithdrawalsMng/dataList.shtml",
 			numPerPage:"20",
 			currentPage:"",
 			index:"1",
@@ -207,10 +195,10 @@ function rebuildTable(data){
 		if (tmpType == 0) {
 			var tmpCenterName = "";
 			var centerSelect = document.getElementById("centerId");
-			var centerOptions = centerSelect.options;
-			for(var j=0;j<centerOptions.length;j++){
-				if (tmpId==centerOptions[j].value) {
-					tmpCenterName = centerOptions[j].text;
+			var options = centerSelect.options;
+			for(var j=0;j<options.length;j++){
+				if (tmpId==options[j].value) {
+					tmpCenterName = options[j].text;
 					break;
 				}
 			}
@@ -218,10 +206,10 @@ function rebuildTable(data){
 		} else if (tmpType == 1) {
 			var tmpShopName = "";
 			var shopSelect = document.getElementById("shopId");
-			var shooOptions = shopSelect.options;
-			for(var j=0;j<shooOptions.length;j++){
-				if (tmpId==shooOptions[j].value) {
-					tmpShopName = shooOptions[j].text;
+			var soptions = shopSelect.options;
+			for(var j=0;j<soptions.length;j++){
+				if (tmpId==soptions[j].value) {
+					tmpShopName = soptions[j].text;
 					break;
 				}
 			}
@@ -229,17 +217,6 @@ function rebuildTable(data){
 		} else if (tmpType == 2) {
 			str += "<td>" + (list[i].operatorName == null ? "" : list[i].operatorName);
 		}
-		
-		var tmpOperatorName = "";
-		var typeSelect = document.getElementById("operatorType");
-		var typeOptions = typeSelect.options;
-		for(var j=0;j<typeOptions.length;j++){
-			if (tmpType==typeOptions[j].value) {
-				tmpOperatorName = typeOptions[j].text;
-				break;
-			}
-		}
-		str += "</td><td>" + tmpOperatorName;
 		str += "</td><td>" + list[i].startMoney;
 		str += "</td><td>" + list[i].outMoney;
 
@@ -256,27 +233,22 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].payNo == null ? "" : list[i].payNo);
 // 		str += "</td><td>" + (list[i].updateTime == null ? "" : list[i].updateTime);
 // 		str += "</td><td>" + (list[i].opt == null ? "" : list[i].opt);
-		str += "</td><td align='left'>";
-		if (status == 1) {
-			str += "<button type='button' class='btn btn-danger' onclick='toShow(\""+list[i].id+"\")' >审核处理</button>";
-		}
 		str += "</td></tr>";
 	}
-		
-
 	$("#orderTable tbody").html(str);
 }
-	
 
-function toShow(id){
+
+function toAdd(){
+	
 	var index = layer.open({
-		  title:"提现审批",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/finance/withdrawalsMng/toShow.shtml?id='+id
+		  content: '${wmsUrl}/admin/user/userWithdrawalsMng/toAdd.shtml',
+		  area: ['320px', '195px'],
+		  maxmin: true
 		});
 		layer.full(index);
 }
-
 </script>
 </body>
 </html>

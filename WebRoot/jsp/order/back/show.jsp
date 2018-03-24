@@ -19,6 +19,11 @@
 <body>
 	<section class="content-wrapper">
         <div class="content">
+        <div class="panel-heading">
+			<h3 class="panel-title">
+                	<button type="button" class="btn btn-danger" id="orderBackBtn">发起订单退款</button>
+			</h3>
+		</div>
         	<div class="box box-info">
 				<div class="box-header with-border">
 					<div class="box-header with-border">
@@ -37,7 +42,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderId}">
+		                  			<input type="text" class="form-control" readonly id="orderId" value="${order.orderId}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">供应商</label>
@@ -314,11 +319,6 @@
 				<div class="box-body">
 					<div class="row">
 						<div class="col-md-12">
-							<c:if test="${goods.templateId > 0}">
-								<button type="button" class="btn btn-primary" onclick="addItem()">新增明细</button>
-							</c:if>
-						</div>
-						<div class="col-md-12">
 							<div class="panel panel-default">
 								<table id="goodsTable" class="table table-hover">
 									<thead>
@@ -354,7 +354,7 @@
 	 */
 	var options = {
 				queryForm : ".query",
-				url :  "${wmsUrl}/admin/order/stockOutMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
+				url :  "${wmsUrl}/admin/order/orderBackMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
 				numPerPage:"20",
 				currentPage:"",
 				index:"1",
@@ -403,6 +403,39 @@
 
 		$("#goodsTable tbody").html(str);
 	}
+	
+	$("#orderBackBtn").click(function(){
+		layer.confirm('确定要发起订单退款处理吗？', {
+			  btn: ['取消','确定']
+		}, function(){
+			layer.closeAll();
+		}, function(){
+			var orderId = $("#orderId").val();
+			if (orderId == "") {
+				layer.alert("信息不全，请联系客服！");
+				return;
+			}
+			$.ajax({
+				 url:"${wmsUrl}/admin/order/orderBackMng/orderBack.shtml?orderId="+orderId,
+				 type:'post',
+// 				 data:JSON.stringify(sy.serializeObject($('#goodsForm'))),
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){	
+						 layer.alert("申请提交成功");
+						 parent.layer.closeAll();
+						 parent.location.reload();
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("申请提交失败，请联系客服处理");
+				 }
+			 });
+		});
+	 });
 	</script>
 </body>
 </html>
