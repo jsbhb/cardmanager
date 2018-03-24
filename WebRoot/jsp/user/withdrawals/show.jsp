@@ -62,13 +62,25 @@
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>银行卡信息</h4></label>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行卡列表</label>
+							<div class="col-sm-8">
+								<div class="input-group">
+									<select class="form-control" name="cardId" id="cardId" style="width: 160px;">
+				                   	  <c:forEach var="card" items="${cards}">
+		                   	  			<option value="${card.cardNo}#${card.cardName}#${card.cardBank}">${card.cardBank}</option>
+				                   	  </c:forEach>
+					              	</select>
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行名称</label>
 							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="cardBank" value="${card.cardBank}">
+				                  <input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
 				                </div>
 							</div>
 						</div>
@@ -79,7 +91,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="cardNo" value="${card.cardNo}">
+				                  <input type="text" readonly class="form-control" name="cardNo" id="cardNo" value="${card.cardNo}">
 				                </div>
 							</div>
 						</div>
@@ -90,7 +102,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="cardName" value="${card.cardName}">
+				                  <input type="text" readonly class="form-control" name="cardName" id="cardName" value="${card.cardName}">
 				                </div>
 							</div>
 						</div>
@@ -106,6 +118,16 @@
 	</section>
 	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript">
+	
+	$("#cardId").change(function(){
+		var cardInfo = $("#cardId").val().split("#");
+		var cardNo = cardInfo[0];
+		var cardName = cardInfo[1];
+		var cardBank = cardInfo[2];
+		$("#cardNo").val(cardNo);
+		$("#cardName").val(cardName);
+		$("#cardBank").val(cardBank);
+	});
 	
 	 $("#submitBtn").click(function(){
 		 var tmpStartMoney = $("#startMoney").val();

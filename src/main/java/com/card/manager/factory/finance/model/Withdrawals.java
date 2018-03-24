@@ -18,6 +18,7 @@ public class Withdrawals  extends Pagination{
 	private String updateTime;
 	private String opt;
 	private String operatorName;
+	private String cardId;
 	public Integer getId() {
 		return id;
 	}
@@ -101,6 +102,12 @@ public class Withdrawals  extends Pagination{
 	}
 	public void setOperatorName(String operatorName) {
 		this.operatorName = operatorName;
+	}
+	public String getCardId() {
+		return cardId;
+	}
+	public void setCardId(String cardId) {
+		this.cardId = cardId;
 	}
 	
 }

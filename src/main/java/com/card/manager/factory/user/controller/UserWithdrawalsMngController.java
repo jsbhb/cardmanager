@@ -115,6 +115,7 @@ public class UserWithdrawalsMngController extends BaseController {
 			return forword("user/withdrawals/notice2", context);
 		}
 		context.put("card", cards.get(0));
+		context.put("cards", cards);
 		
 		String typeId = "";
 		String type = "";

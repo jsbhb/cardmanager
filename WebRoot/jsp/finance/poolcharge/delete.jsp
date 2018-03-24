@@ -36,24 +36,13 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">充值金额<font style="color:red">*</font> </label>
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">清算金额<font style="color:red">*</font> </label>
 							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                  <input type="text" class="form-control" name="money" id="money">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">交易流水号<font style="color:red">*</font> </label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="payNo" id="payNo">
 				                </div>
 							</div>
 						</div>
@@ -74,23 +63,22 @@
 	 $("#submitBtn").click(function(){
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
 			 if ($("#money").val() <= 0) {
-				 layer.alert("充值不正确，请重新填写充值金额");
+				 layer.alert("清算不正确，请重新填写清算金额");
 				 return;
 			 }
 			 $.ajax({
-				 url:"${wmsUrl}/admin/finance/capitalPoolMng/charge.shtml",
+				 url:"${wmsUrl}/admin/finance/capitalPoolMng/liquidation.shtml",
 				 type:'post',
 // 				 data:JSON.stringify(sy.serializeObject($('#gradeForm'))),
 				 data:{
 					 centerId : $("#centerId").val(),
-					 money : $("#money").val(),
-					 payNo : $("#payNo").val()
+					 money : $("#money").val()
 					 },
 // 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	
-						 layer.alert("充值成功");
+						 layer.alert("清算成功");
 						 parent.layer.closeAll();
 						 parent.reloadTable();
 					 }else{
@@ -99,7 +87,7 @@
 					 }
 				 },
 				 error:function(){
-					 layer.alert("充值失败，请重试");
+					 layer.alert("清算失败，请重试");
 				 }
 			 });
 		 }else{
@@ -121,29 +109,16 @@
       },
       fields: {
     	  money: {
-              message: '充值金额不正确',
+              message: '清算金额不正确',
               validators: {
                   notEmpty: {
-                      message: '充值金额不能为空'
+                      message: '清算金额不能为空'
                   },
                   numeric: {
-                      message: '充值金额只能输入数字'
+                      message: '清算金额只能输入数字'
                   },
               }
-      	  },
-      	  payNo: {
-	      		message: '转账流水号不正确',
-	            validators: {
-	                notEmpty: {
-	                    message: '转账流水号不能为空'
-	                },
-	                stringLength: {
-	                    min: 8,
-	                    max: 30,
-	                    message: '转账流水号必须在8-30位字符'
-	                },
-	            }
-	  	  }
+      	  }
       }
   });
 	

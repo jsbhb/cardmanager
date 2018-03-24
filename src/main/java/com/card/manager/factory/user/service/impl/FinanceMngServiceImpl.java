@@ -347,4 +347,36 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 			throw new Exception("提现审核失败，请联系技术人员！");
 		}
 	}
+
+	@Override
+	@Log(content = "资金池充值", source = Log.BACK_PLAT, type = Log.ADD)
+	public void poolCharge(String centerId, String money, String payNo, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("centerId", centerId);
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_CHARGE+"?money="+money+"&payNo="+payNo, staffEntity.getToken(), true,
+				null, HttpMethod.POST,params);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("资金池充值失败，请联系技术人员！");
+		}
+	}
+
+	@Override
+	@Log(content = "资金池清算", source = Log.BACK_PLAT, type = Log.ADD)
+	public void poolLiquidation(String centerId, String money, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("centerId", centerId);
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_LIQUIDATION+"?money="+money, staffEntity.getToken(), true,
+				null, HttpMethod.POST,params);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("资金池充值失败，请联系技术人员！");
+		}
+	}
 }

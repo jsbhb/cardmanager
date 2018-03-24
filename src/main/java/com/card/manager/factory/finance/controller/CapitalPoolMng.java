@@ -1,7 +1,6 @@
 package com.card.manager.factory.finance.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,7 +101,6 @@ public class CapitalPoolMng extends BaseController {
 			pcb.setSuccess(false);
 			return pcb;
 		}
-
 		return pcb;
 	}
 
@@ -136,23 +134,50 @@ public class CapitalPoolMng extends BaseController {
 			String money = req.getParameter("money");
 			String payNo = req.getParameter("payNo");
 			if (!StringUtil.isEmpty(centerId)&&!StringUtil.isEmpty(money)&&!StringUtil.isEmpty(payNo)) {
-				RestCommonHelper helper = new RestCommonHelper();
-				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("centerId", centerId);
-				ResponseEntity<String> result = helper.requestWithParams(
-						URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_CHARGE+"?money="+money+"&payNo="+payNo, staffEntity.getToken(), true,
-						null, HttpMethod.POST,params);
-				JSONObject json = JSONObject.fromObject(result.getBody());
-
-				if (!json.getBoolean("success")) {
-					throw new Exception("资金池充值失败，请联系技术人员！");
-				}
+				financeMngService.poolCharge(centerId, money, payNo, staffEntity);
 			}
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
+		sendSuccessMessage(resp, null);
+	}
 
+	@RequestMapping(value = "/toDelete")
+	public ModelAndView toDelete(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String centerId = req.getParameter("centerId");
+			context.put("centerId", centerId);
+			List<StaffEntity> center = CachePoolComponent.getCenter(opt.getToken());
+			for(StaffEntity cen : center) {
+				if (cen.getGradeId() == Integer.parseInt(centerId)) {
+					context.put("centerName", cen.getGradeName());
+					break;
+				}
+			}
+			return forword("finance/poolcharge/delete", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/liquidation", method = RequestMethod.POST)
+	public void liquidation(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String centerId = req.getParameter("centerId");
+			String money = req.getParameter("money");
+			if (!StringUtil.isEmpty(centerId)&&!StringUtil.isEmpty(money)) {
+				financeMngService.poolLiquidation(centerId, money, staffEntity);
+			}
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
 		sendSuccessMessage(resp, null);
 	}
 }

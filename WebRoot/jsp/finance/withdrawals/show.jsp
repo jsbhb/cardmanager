@@ -94,7 +94,7 @@
 	
 	 $("#submitBtn").click(function(){
 		 var pass=$('input:radio[name="pass"]:checked').val();
-		 if (pass) {
+		 if (pass == true) {
 			 if ($("#payNo").val() == "") {
 				 layer.alert("请填写转账流水号！");
 				 return;

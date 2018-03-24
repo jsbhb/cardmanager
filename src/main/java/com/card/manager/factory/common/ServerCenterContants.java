@@ -312,4 +312,6 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/refilling/detailById/{id}";
 	public static final String FINANCE_CENTER_REFILLING_AUDIT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/rebate/recharge/audit";
+	public static final String FINANCE_CENTER_CENTER_LIQUIDATION = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/liquidation/{centerId}";
 }

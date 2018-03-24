@@ -58,5 +58,9 @@ public interface FinanceMngService extends ServerCenterService {
 	Refilling queryRefillingDetailById(String id, StaffEntity staffEntity);
 	
 	void auditRefilling(AuditModel entity, StaffEntity staffEntity) throws Exception;
+	
+	void poolCharge(String centerId, String money, String payNo, StaffEntity staffEntity) throws Exception;
+	
+	void poolLiquidation(String centerId, String money, StaffEntity staffEntity) throws Exception;
 
 }
