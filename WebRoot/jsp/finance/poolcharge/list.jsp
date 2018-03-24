@@ -63,7 +63,7 @@
 									<tr>
 										<th>区域中心名称</th>
 										<th>账户可用金额</th>
-										<th>冻结可用金额</th>
+<!-- 										<th>冻结可用金额</th> -->
 										<th>可用优惠金额</th>
 										<th>冻结优惠金额</th>
 										<th>账户使用金额</th>
@@ -153,7 +153,7 @@ function rebuildTable(data){
 		}
 		str += "<td>" + (tmpCenterName == "" ? "" : tmpCenterName);
 		str += "</td><td>" + list[i].money;
-		str += "</td><td>" + list[i].frozenMoney;
+// 		str += "</td><td>" + list[i].frozenMoney;
 		str += "</td><td>" + list[i].preferential;
 		str += "</td><td>" + list[i].frozenPreferential;
 		str += "</td><td>" + list[i].useMoney;

@@ -81,6 +81,10 @@
 	 $("#submitBtn").click(function(){
 		 var tmpStartMoney = $("#startMoney").val();
 		 var tmpMoney = $("#money").val();
+		 if (tmpMoney <= 0) {
+			 layer.alert("返充金额不正确，请重新填写返充金额");
+			 return;
+		 }
 		 if (tmpMoney - tmpStartMoney > 0) {
 			 layer.alert("返充金额超出可使用金额，请重新填写返充金额");
 			 return;

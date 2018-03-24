@@ -93,7 +93,8 @@
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
-		 if ($("#pass").val()) {
+		 var pass=$('input:radio[name="pass"]:checked').val();
+		 if (pass) {
 			 if ($("#payNo").val() == "") {
 				 layer.alert("请填写转账流水号！");
 				 return;

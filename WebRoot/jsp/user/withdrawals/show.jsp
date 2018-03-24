@@ -110,6 +110,10 @@
 	 $("#submitBtn").click(function(){
 		 var tmpStartMoney = $("#startMoney").val();
 		 var tmpOutMoney = $("#outMoney").val();
+		 if (tmpOutMoney <= 0) {
+			 layer.alert("提现金额不正确，请重新填写提现金额");
+			 return;
+		 }
 		 if (tmpOutMoney - tmpStartMoney > 0) {
 			 layer.alert("提现金额超出可提现金额，请重新填写提现金额");
 			 return;
