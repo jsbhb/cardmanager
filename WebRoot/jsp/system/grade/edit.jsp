@@ -243,7 +243,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath1" id="picPath1" value="${grade.picPath1}"> 
-										<input type="file" name="pic1" id="pic1" />
+										<input type="file" name="pic" id="pic1" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
 									</div>
 								</div>
@@ -257,7 +257,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath2" id="picPath2" value="${grade.picPath2}"> 
-										<input type="file" name="pic2" id="pic2" />
+										<input type="file" name="pic" id="pic2" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
 									</div>
 								</div>
@@ -271,7 +271,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath3" id="picPath3" value="${grade.picPath3}"> 
-										<input type="file" name="pic3" id="pic3" />
+										<input type="file" name="pic" id="pic3" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
 									</div>
 								</div>
@@ -285,7 +285,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<input type="hidden" class="form-control" name="picPath4" id="picPath4" value="${grade.picPath4}"> 
-										<input type="file" name="pic4" id="pic4" />
+										<input type="file" name="pic" id="pic4" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
 									</div>
 								</div>
@@ -375,7 +375,7 @@
 	$("#submitBtn").click(function(){
 		 $('#gradeForm').data("bootstrapValidator").validate();
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
-			 var reg = /^1(3|4|5|7|8)\d{9}$/;
+			 var reg = /^1(3|1|4|5|7|8)\d{9}$/;
 			 if(!reg.test($("#phone").val())) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");

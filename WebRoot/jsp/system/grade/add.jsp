@@ -325,7 +325,7 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
-			 var reg = /^1(3|4|5|7|8)\d{9}$/;
+			 var reg = /^1(3|1|4|5|7|8)\d{9}$/;
 			 if(!reg.test($("#phone").val())) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");
