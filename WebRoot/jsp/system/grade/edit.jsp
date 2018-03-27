@@ -55,7 +55,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.gradeName}">
+				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.parentGradeName}">
 				                </div>
 							</div>
 						</div>
