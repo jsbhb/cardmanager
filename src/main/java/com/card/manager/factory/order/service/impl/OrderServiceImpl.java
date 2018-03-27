@@ -7,6 +7,7 @@
  */
 package com.card.manager.factory.order.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +24,14 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -95,6 +98,30 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("审核订单退款操作失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public List<ThirdOrderInfo> queryThirdOrderInfoByOrderId(String orderId, String token) {
+		OrderInfo entity = new OrderInfo();
+		entity.setOrderId(orderId);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_QUERY_THIRD_INFO, token, true, entity,
+				HttpMethod.POST);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<ThirdOrderInfo> list = new ArrayList<ThirdOrderInfo>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), ThirdOrderInfo.class));
+		}
+		
+		return list;
 	}
 
 }

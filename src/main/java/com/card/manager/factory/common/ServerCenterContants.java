@@ -225,6 +225,8 @@ public class ServerCenterContants {
 			+ "/order/refunds/{orderId}";
 	public static final String ORDER_CENTER_AUDIT_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
 			+ "/order/backcancel/{orderId}";
+	public static final String ORDER_CENTER_QUERY_THIRD_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/stockOut/queryThirdInfo";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";

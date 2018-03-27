@@ -221,28 +221,28 @@
 				</div>
 				<div class="box-body">
 					<div class="row form-horizontal">
-						<c:if test="${order.orderExpressList!=null}">
-							<c:forEach var="express" items="${order.orderExpressList}">
+						<c:if test="${orderExpressList!=null}">
+							<c:forEach var="express" items="${orderExpressList}">
 								<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">快递公司</label>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<div class="input-group-addon">
-					                    	<i class="fa fa-pencil"></i>
-					                  	</div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressName}">
-					                </div>
+									<label class="col-sm-2 control-label no-padding-right">快递公司</label>
+									<div class="col-sm-4">
+										<div class="input-group">
+											<div class="input-group-addon">
+						                    	<i class="fa fa-pencil"></i>
+						                  	</div>
+				                  			<input type="text" class="form-control" readonly  value="${express.expressName}">
+						                </div>
+									</div>
+									<label class="col-sm-1 control-label no-padding-right">快递单号</label>
+									<div class="col-sm-4">
+										<div class="input-group">
+						                  <div class="input-group-addon">
+						                    <i class="fa fa-pencil"></i>
+						                  </div>
+				                  			<input type="text" class="form-control" readonly  value="${express.expressId}">
+						                </div>
+									</div>
 								</div>
-								<label class="col-sm-1 control-label no-padding-right">快递单号</label>
-								<div class="col-sm-4">
-									<div class="input-group">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-pencil"></i>
-					                  </div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressId}">
-					                </div>
-								</div>
-						</div>
 							</c:forEach>
 						</c:if>
 					</div>
