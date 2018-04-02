@@ -43,6 +43,7 @@ public class GoodsItemEntity extends Pagination {
 	private int centerStatus;
 	private GoodsEntity goodsEntity;
 	private GoodsBaseEntity baseEntity;
+	private GoodsTagBindEntity tagBindEntity;
 
 	public int getId() {
 		return id;
@@ -235,4 +236,13 @@ public class GoodsItemEntity extends Pagination {
 	public void setBaseEntity(GoodsBaseEntity baseEntity) {
 		this.baseEntity = baseEntity;
 	}
+
+	public GoodsTagBindEntity getTagBindEntity() {
+		return tagBindEntity;
+	}
+
+	public void setTagBindEntity(GoodsTagBindEntity tagBindEntity) {
+		this.tagBindEntity = tagBindEntity;
+	}
+	
 }

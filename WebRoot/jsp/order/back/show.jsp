@@ -68,7 +68,7 @@
 							<label class="col-sm-1 control-label no-padding-right">状态</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <c:if test="${order.status==0}">待处理</c:if>
+				                  <c:if test="${order.status==0}">待支付</c:if>
 				                  <c:if test="${order.status==1}">已付款</c:if>
 				                  <c:if test="${order.status==2}">支付单报关</c:if>
 				                  <c:if test="${order.status==3}">已发仓库</c:if>
@@ -79,7 +79,7 @@
 				                  <c:if test="${order.status==8}">退单</c:if>
 				                  <c:if test="${order.status==9}">超时取消</c:if>
 				                  <c:if test="${order.status==11}">资金池不足</c:if>
-				                  <c:if test="${order.status==12}">资金池已扣款</c:if>
+				                  <c:if test="${order.status==12}">已支付</c:if>
 				                  <c:if test="${order.status==21}">退款中</c:if>
 				                  <c:if test="${order.status==99}">异常状态</c:if>
 				                </div>

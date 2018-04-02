@@ -272,12 +272,21 @@ function rebuildTable(data){
 		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
 		str += "</td><td>" + (list[i].pushUserName == null ? (list[i].pushUserId == null ? "" : list[i].pushUserId) : list[i].pushUserName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
-		if (true) {
-			str += "<td align='left'>";
-			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")'>订单详情</button>";
+		var arr = [21];
+		var index = $.inArray(status,arr);
+		str += "<td align='left'>";
+		str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")'>订单详情</button>";
+		if(index >= 0){
 			str += "<button type='button' class='btn btn-danger' onclick='toAudit(\""+list[i].orderId+"\")' >审核处理</button>";
-			str += "</td>";
 		}
+		str += "</td>";
+		
+// 		if (true) {
+// 			str += "<td align='left'>";
+// 			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")'>订单详情</button>";
+// 			str += "<button type='button' class='btn btn-danger' onclick='toAudit(\""+list[i].orderId+"\")' >审核处理</button>";
+// 			str += "</td>";
+// 		}
 		
 		str += "</td></tr>";
 	}

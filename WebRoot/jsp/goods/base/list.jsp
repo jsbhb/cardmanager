@@ -8,10 +8,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
 
 </head>
 <body>
@@ -25,6 +21,9 @@
 	      </ol>
     </section>	
 	<section class="content">
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5)">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
 		<div class="box box-info">
 			<div class="box-header with-border">
 				<div class="box-header with-border">
@@ -121,6 +120,7 @@
 	</section>
 </section>
 	
+	<%@include file="../../resource.jsp"%>
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 

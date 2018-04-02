@@ -76,6 +76,8 @@ public class OrderInfo extends Pagination{
 	private String itemId;
 	
 	private String itemCode;
+	
+	private Integer tagFun;
 
 	public boolean check() {
 		if (orderDetail == null || orderGoodsList == null || orderFlag == null || createType == null || userId == null
@@ -355,6 +357,14 @@ public class OrderInfo extends Pagination{
 
 	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;
+	}	
+
+	public Integer getTagFun() {
+		return tagFun;
+	}
+
+	public void setTagFun(Integer tagFun) {
+		this.tagFun = tagFun;
 	}
 
 	@Override

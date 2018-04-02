@@ -22,8 +22,10 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.service.GoodsItemService;
+import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
@@ -38,6 +40,9 @@ public class GoodsItemMngController extends BaseController {
 
 	@Resource
 	SpecsService specsService;
+	
+	@Resource
+	GoodsService goodsService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -183,6 +188,8 @@ public class GoodsItemMngController extends BaseController {
 		}
 		try {
 			context.put("item", goodsItemService.queryById(id,opt.getToken()));
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+			context.put("tags", tags);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
@@ -202,6 +209,8 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			context.put("goodsId", goodsId);
 			context.put("template", specsService.queryById(templateId, opt.getToken()));
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+			context.put("tags", tags);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);

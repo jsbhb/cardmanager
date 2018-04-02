@@ -16,7 +16,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.jsoup.Jsoup;
-import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +24,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.baidu.ueditor.PathFormat;
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
@@ -36,6 +36,8 @@ import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
+import com.card.manager.factory.goods.model.GoodsTagBindEntity;
+import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
@@ -95,7 +97,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setProxyPrice(entity.getProxyPrice());
-		goodsPrice.setFxPrice(entity.getProxyPrice());
+		goodsPrice.setFxPrice(entity.getFxPrice());
 		goodsPrice.setMax(entity.getMax());
 		goodsPrice.setMin(entity.getMin());
 		goodsPrice.setItemId(goodsItem.getItemId());
@@ -144,6 +146,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 
 		goods.setGoodsItem(goodsItem);
+		
+		//新增商品时判断是否添加商品标签
+		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
+			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
+			goodsTagBindEntity.setItemId(goodsItem.getItemId());
+			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
+			goods.setGoodsTagBind(goodsTagBindEntity);
+		}
 
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SAVE + "?type=" + entity.getType(), token,
@@ -324,6 +334,95 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public GoodsTagEntity queryGoodsTag(String tagId, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		GoodsTagEntity goodsTag = new GoodsTagEntity();
+		goodsTag.setId(Integer.parseInt(tagId));
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_TAG_INFO, token, true, goodsTag,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsTagEntity.class);
+	}
+
+	@Override
+	public List<GoodsTagEntity> queryGoodsTags(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_TAG_LIST_INFO, token, true, null,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<GoodsTagEntity> list = new ArrayList<GoodsTagEntity>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), GoodsTagEntity.class));
+		}
+		return list;
+	}
+	
+	@Override
+	@Log(content = "商品标签新增操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void addGoodsTag(GoodsTagEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_TAG_SAVE, token,
+				true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("商品标签新增失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	@Log(content = "商品标签更新操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void updateGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_TAG_UPDATE, token, true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("商品标签更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public GoodsTagBindEntity queryGoodsTagBind(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_TAG_INFO, token, true, null,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsTagBindEntity.class);
+	}
+
+	@Override
+	@Log(content = "商品标签删除操作", source = Log.BACK_PLAT, type = Log.DELETE)
+	public void deleteGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_TAG_REMOVE, token, true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("商品标签删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
 		}
 
 	}

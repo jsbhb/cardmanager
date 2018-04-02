@@ -53,4 +53,6 @@ public interface OrderService extends ServerCenterService {
 	 * @since JDK 1.7  
 	 */
 	List<ThirdOrderInfo> queryThirdOrderInfoByOrderId(String orderId, String token);
+
+	void cancleTagFuncOrder(List<String> orderIds, StaffEntity staff) throws Exception;
 }

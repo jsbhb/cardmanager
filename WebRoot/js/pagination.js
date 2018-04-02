@@ -108,6 +108,9 @@ $.page = {
 			$("#pagination").append(li);
 		}
 
+		if (totalRows == null) {
+			totalRows = 0;
+		}
 		var a = $('<a/>').html(
 				"<span aria-hidden='true'>" + "共" + totalPages + "页--"+totalRows+"条"
 						+ "</span>");
@@ -169,6 +172,14 @@ $.page = {
 			data : data,
 			type : "post",
 			dataType : 'json',
+			timeout : 30000,
+			beforeSend : function() {
+				$("#image").css({
+					display : "block",
+					position : "fixed",
+					zIndex : 99,
+				});
+			},
 			success : function(data) {
 				if (!data.success) {
 					layer.alert(data.errTrace);
@@ -182,6 +193,9 @@ $.page = {
 			},
 			error:function(){
 				layer.alert("分页查询失败，请联系客服！");
+			},
+			complete : function(data) {
+				$("#image").hide();
 			}
 		});
 	}

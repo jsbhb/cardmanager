@@ -41,6 +41,7 @@ public class GoodsPojo {
 	private int min;
 	private String picPath;
 	private String itemId;
+	private String tagId;
 
 	public int getBaseId() {
 		return baseId;
@@ -224,6 +225,14 @@ public class GoodsPojo {
 
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
+	}
+
+	public String getTagId() {
+		return tagId;
+	}
+
+	public void setTagId(String tagId) {
+		this.tagId = tagId;
 	}
 
 }

@@ -213,6 +213,23 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/editPurchaseItem";
 	public static final String GOODS_CENTER_ITEM_QUERY_FOR_PAGE_DOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/queryForPageDownload?centerId={centerId}&gradeLevel={gradeLevel}";
+	/*------------------------商品标签管理-----------------------*/
+	public static final String GOODS_CENTER_TAG_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/goodsTag/queryForPage";
+	public static final String GOODS_CENTER_TAG_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsTag/saveTag";
+	public static final String GOODS_CENTER_QUERY_TAG_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsTag/queryTagInfo";
+	public static final String GOODS_CENTER_QUERY_TAG_LIST_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsTag/queryTagListInfo";
+	public static final String GOODS_CENTER_TAG_UPDATE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsTag/modifyTag";
+	public static final String GOODS_CENTER_TAG_REMOVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsTag/removeTag";
+	public static final String GOODS_CENTER_TAG_FUNC_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/goodsTag/tagFunc";
+	public static final String ORDER_CENTER_PRESELL_CANCLEFUNC = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/presell/pass";
 	
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
@@ -230,6 +247,9 @@ public class ServerCenterContants {
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";
+	/*------------------------预售订单管理-----------------------*/
+	public static final String ORDER_CENTER_QUERY_PRESELL_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/presell/queryForPage";
 	
 	
 	/*------------------------商城管理-----------------------*/

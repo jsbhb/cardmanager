@@ -132,6 +132,29 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">商品标签</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+				                  <select class="form-control" name="tagId" id="tagId" style="width: 170px;">
+				                   	  <option selected="selected" value="0">普通</option>
+				                   	  <c:forEach var="tag" items="${tags}">
+				                   	  	<c:choose>
+				                   	  		<c:when test="${item.tagBindEntity.tagId==tag.id}">
+				                   	  			<option value="${tag.id}" selected="selected">${tag.tagName}</option>
+								            </c:when>
+								            <c:otherwise>
+				                   	  			<option value="${tag.id}">${tag.tagName}</option>
+								            </c:otherwise>
+				                   	  	</c:choose>
+				                   	  </c:forEach>
+					                </select>
+				                </div>
+							</div>
+							<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a>
+							<div class="col-sm-2">
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right">规格内容</label>
 							<div class="col-sm-2">
 								<div class="input-group">
@@ -206,16 +229,20 @@
 		               }
 		           }
 		   	  },
-		   	 weight: {
-			        message: '重量不正确',
+			  itemCode: {
+		           message: '商家编码不正确',
+		           validators: {
+		               notEmpty: {
+		                   message: '商家编码不能为空！'
+		               }
+		           }
+		   	  },
+		   	  sku: {
+			        message: '货号不能为空！',
 			        validators: {
 			            notEmpty: {
-			                message: '重量不能为空！'
-			            },
-					   regexp: {
-		                   regexp: /^\d+(\.\d+)?$/,
-		                   message: '消费税格式有误'
-		               }
+			                message: '货号不能为空！'
+			            }
 			        }
 		   		},
 			   proxyPrice:{
@@ -271,6 +298,50 @@
 			   }
 		}});
 		
+
+		function toTag(){
+			var index = layer.open({
+				  title:"新增标签",	
+				  area: ['70%', '40%'],	
+				  type: 2,
+				  content: '${wmsUrl}/admin/goods/goodsMng/toAddTag.shtml',
+				  maxmin: true
+				});
+		}
+		
+		function refreshTag(){
+			var tagSelect = $("#tagId");
+			tagSelect.empty();
+			$.ajax({
+				 url:"${wmsUrl}/admin/goods/goodsMng/refreshTag.shtml",
+				 type:'post',
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){
+						 if (data == null || data.length == 0) {
+								return;
+							}
+							
+							var list = data.data;
+							
+							if (list == null || list.length == 0) {
+								return;
+							}
+							var str = "";
+							tagSelect.append("<option value=''>普通</option>")
+							for (var i = 0; i < list.length; i++) {
+								tagSelect.append("<option value='"+list[i].id+"'>"+list[i].tagName+"</option>")
+							}
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("刷新标签内容失败，请联系客服处理");
+				 }
+			 });
+	 	}
 	</script>
 </body>
 </html>

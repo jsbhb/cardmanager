@@ -24,6 +24,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.TagFuncEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.UserDetail;
@@ -59,6 +60,7 @@ public class CachePoolComponent {
 	private static List<FirstCatalogEntity> FIRSTCATALOG = new ArrayList<FirstCatalogEntity>();
 	private static List<SecondCatalogEntity> SECONDCATALOG = new ArrayList<SecondCatalogEntity>();
 	private static List<ThirdCatalogEntity> THIRDCATALOG = new ArrayList<ThirdCatalogEntity>();
+	private static List<TagFuncEntity> TAGFUNC = new ArrayList<TagFuncEntity>();
 
 	private static String HEAD = "1";
 	private static String CENTER = "2";
@@ -536,6 +538,50 @@ public class CachePoolComponent {
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
 			THIRDCATALOG.add(JSONUtilNew.parse(jObj.toString(), ThirdCatalogEntity.class));
+		}
+	}
+	
+	/**
+	 * 
+	 * getBrands:获取全局品牌信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	public static List<TagFuncEntity> getTagFuncs(String token) {
+
+		syncTagFunc(token);
+		return TAGFUNC;
+	}
+
+	/**
+	 * syncBrand:服务中心同步品牌信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	public static void syncTagFunc(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_TAG_FUNC_QUERY_ALL, token, true, null,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		
+		if (index == 0) {
+			return;
+		}
+		
+		TAGFUNC.clear();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			TAGFUNC.add(JSONUtilNew.parse(jObj.toString(), TagFuncEntity.class));
 		}
 	}
 }

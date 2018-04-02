@@ -132,6 +132,22 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">商品标签</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									<select class="form-control" name="tagId" id="tagId" style="width: 170px;">
+				                   	  <option selected="selected" value="">普通</option>
+				                   	  <c:forEach var="tag" items="${tags}">
+				                   	  	<option value="${tag.id}">${tag.tagName}</option>
+				                   	  </c:forEach>
+					                </select>
+				                </div>
+							</div>
+							<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a>
+							<div class="col-sm-2">
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>规格选择</h4></label>
 						</div>
 						<c:forEach var="spec" items="${template.specs}">
@@ -316,6 +332,49 @@
 		function toList(){
 				$("#list",window.parent.document).trigger("click");
 		}
+		function toTag(){
+			var index = layer.open({
+				  title:"新增标签",	
+				  area: ['70%', '40%'],	
+				  type: 2,
+				  content: '${wmsUrl}/admin/goods/goodsMng/toAddTag.shtml',
+				  maxmin: true
+				});
+		}
+		
+		function refreshTag(){
+			var tagSelect = $("#tagId");
+			tagSelect.empty();
+			$.ajax({
+				 url:"${wmsUrl}/admin/goods/goodsMng/refreshTag.shtml",
+				 type:'post',
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.success){
+						 if (data == null || data.length == 0) {
+								return;
+							}
+							
+							var list = data.data;
+							
+							if (list == null || list.length == 0) {
+								return;
+							}
+							var str = "";
+							tagSelect.append("<option value=''>普通</option>")
+							for (var i = 0; i < list.length; i++) {
+								tagSelect.append("<option value='"+list[i].id+"'>"+list[i].tagName+"</option>")
+							}
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("刷新标签内容失败，请联系客服处理");
+				 }
+			 });
+	 	}
 	</script>
 </body>
 </html>

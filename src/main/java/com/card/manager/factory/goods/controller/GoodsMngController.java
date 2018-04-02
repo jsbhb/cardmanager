@@ -24,6 +24,7 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
+import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.service.GoodsService;
@@ -254,6 +255,9 @@ public class GoodsMngController extends BaseController {
 				// List<FirstCatalogEntity> catalogs =
 				// catalogService.queryFirstCatalogs(opt.getToken());
 				// context.put("firsts", catalogs);
+				
+				List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+				context.put("tags", tags);
 			} else {
 				context.put(ERROR, "没有新增类型，请联系管理员！");
 				return forword(ERROR, context);
@@ -275,6 +279,8 @@ public class GoodsMngController extends BaseController {
 			String id = req.getParameter("id");
 			GoodsEntity entity = goodsService.queryById(id, opt.getToken());
 			context.put("goods", entity);
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+			context.put("tags", tags);
 			return forword("goods/goods/show", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -315,6 +321,19 @@ public class GoodsMngController extends BaseController {
 			}
 			entity.setFiles(fileList);
 			entity.setGoodsName(goodsEntity.getGoodsName());
+			//判断是否需要更新商品标签
+//			if (!"".equals(goodsEntity.getTagId())) {
+//				GoodsTagBindEntity newTag = new GoodsTagBindEntity();
+//				newTag.setItemId(goodsEntity.getGoodsItem().getItemId());
+//				newTag.setTagId(Integer.parseInt(goodsEntity.getTagId()));
+//				entity.setGoodsTagBind(newTag);
+//			} else {
+//				if (goodsEntity.getGoodsTagBind() != null) {
+//					GoodsTagBindEntity newTag = goodsEntity.getGoodsTagBind();
+//					newTag.setTagId(Integer.parseInt(goodsEntity.getTagId()));
+//					entity.setGoodsTagBind(newTag);
+//				}
+//			}
 			goodsService.updEntity(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -360,6 +379,57 @@ public class GoodsMngController extends BaseController {
 			return;
 		}
 
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/toTag")
+	public ModelAndView toTag(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			return forword("goods/goods/addTag", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/toAddTag")
+	public ModelAndView toAddTag(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			return forword("goods/goods/addTag2", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/refreshTag", method = RequestMethod.POST)
+	public void refreshTag(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			sendSuccessObject(resp, tags);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+	}
+
+	@RequestMapping(value = "/saveTag", method = RequestMethod.POST)
+	public void saveTag(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsTagEntity goodsTag) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			goodsTag.setPriority(1);
+			goodsService.addGoodsTag(goodsTag, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
 		sendSuccessMessage(resp, null);
 	}
 }

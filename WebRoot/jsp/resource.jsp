@@ -17,6 +17,7 @@
 <script src="${wmsUrl}/js/syExtJquery.js"></script>
 <script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>
+<script src="${wmsUrl}/js/pagination.js"></script>
 
 <script>
 $(function(){

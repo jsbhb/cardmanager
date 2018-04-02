@@ -26,6 +26,8 @@
 	              	</div>
 	            </div>
 			</div>
+			
+			<form class="form-horizontal" role="form" id="orderForm" >
 		    <div class="box-body">
 			<div class="row form-horizontal query">
 				<div class="col-xs-4">
@@ -60,7 +62,7 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商<font style="color:red">*</font> </label>
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商</label>
 							<div class="col-sm-8">
 								<div class="input-group">
 				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 150px;">
@@ -75,25 +77,13 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">状态<font style="color:red">*</font> </label>
+							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">功能<font style="color:red">*</font> </label>
 							<div class="col-sm-8">
 								<div class="input-group">
-				                  <select class="form-control" name="status" id="status" style="width: 150px;">
-				                   	  <option selected="selected" value="">全部</option>
-				                   	  <option value="0">待支付</option>
-				                   	  <option value="1">已付款</option>
-				                   	  <option value="2">支付单报关</option>
-				                   	  <option value="3">已发仓库</option>
-				                   	  <option value="4">已报海关</option>
-				                   	  <option value="5">单证放行</option>
-				                   	  <option value="6">已发货</option>
-				                   	  <option value="7">已收货</option>
-				                   	  <option value="8">退单</option>
-				                   	  <option value="9">超时取消</option>
-				                   	  <option value="11">资金池不足</option>
-				                   	  <option value="12">已支付</option>
-				                   	  <option value="21">退款中</option>
-				                   	  <option value="99">异常状态</option>
+				                  <select class="form-control" name="tagfunc" id="tagfunc" style="width: 150px;">
+				                   	  <c:forEach var="tagFun" items="${tagFuncId}">
+				                   	  	<option value="${tagFun.id}">${tagFun.funcName}</option>
+				                   	  </c:forEach>
 					                </select>
 				                </div>
 							</div>
@@ -129,43 +119,16 @@
 							</div>
 						</div>
 					</div>
-<!-- 					<div class="col-xs-4" style="display: none"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">推手</label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<select class="form-control" name="pushUserId" id="pushUserId" style="width: 150px;"> -->
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 				                   	  <c:forEach var="pushUser" items="${pushUserId}"> --%>
-<%-- 		                   	  			<option value="${pushUser.userId}">${pushUser.name}</option> --%>
-<%-- 				                   	  </c:forEach> --%>
-<!-- 					              	</select> -->
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="col-xs-4" style="display: none"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">消费者</label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<select class="form-control" name="customerId" id="customerId" style="width: 150px;"> -->
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 				                   	  <c:forEach var="customer" items="${customerId}"> --%>
-<%-- 		                   	  			<option value="${customer.userId}">${customer.name}</option> --%>
-<%-- 				                   	  </c:forEach> --%>
-<!-- 					              	</select> -->
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					<div class="col-md-offset-10 col-md-12">
+					<div class="col-md-offset-9 col-md-12">
 						<div class="form-group">
                                 <button type="button" class="btn btn-primary" id="querybtns">提交</button>
+                                <button type="button" class="btn btn-danger" id="cancleFunc">全部推送</button>
+                                <button type="button" class="btn btn-warning" onclick = "partCancleFunc()">部分推送</button>
                         </div>
                      </div>
 				</div>
 			</div>
+			</form>
 		</div>
 		
 	
@@ -177,6 +140,7 @@
 							<table id="orderTable" class="table table-hover">
 								<thead>
 									<tr>
+										<th>选择</th>
 										<th>订单编号</th>
 										<th>状态</th>
 										<th>快递公司</th>
@@ -215,7 +179,7 @@
  */
 var options = {
 			queryForm : ".query",
-			url :  "${wmsUrl}/admin/order/stockOutMng/dataList.shtml",
+			url :  "${wmsUrl}/admin/order/preSellMng/dataList.shtml",
 			numPerPage:"20",
 			currentPage:"",
 			index:"1",
@@ -255,6 +219,12 @@ function rebuildTable(data){
 		str += "<tr>";
 		
 		var status = list[i].status;
+		var tagFun = list[i].tagFun;
+		if (tagFun == 1) {
+			str += "<td>";
+		} else {
+			str += "<td><input type='checkbox' name='check' value='" + list[i].orderId + "' />";
+		}
 		str += "</td><td>" + list[i].orderId;
 		switch(status){
 			case 0:str += "</td><td>待支付";break;
@@ -281,6 +251,7 @@ function rebuildTable(data){
 			for(var j=0;j<express.length;j++){
 				expressName += (express[j].expressName == null ? "" : express[j].expressName);
 				expressId += (express[j].expressId == null ? "" : express[j].expressId);
+				break;
 			}
 		}
 		str += "</td><td>" + expressName;
@@ -315,13 +286,11 @@ function rebuildTable(data){
 		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
 		str += "</td><td>" + (list[i].pushUserName == null ? (list[i].pushUserId == null ? "" : list[i].pushUserId) : list[i].pushUserName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
-		var arr = [1,2,3,4,5,6,7,11,12,99];
-		var index = $.inArray(status,arr);
-		str += "<td align='left'>";
-		if(index >= 0){
-			str += "<button type='button' class='btn btn-danger' onclick='toShow(\""+list[i].orderId+"\")' >退款处理</button>";
+		if (true) {
+			str += "<td align='left'>";
+			str += "<button type='button' class='btn btn-warning' onclick='toShow(\""+list[i].orderId+"\")' >详情</button>";
+			str += "</td>";
 		}
-		str += "</td>";
 		
 		str += "</td></tr>";
 	}
@@ -335,12 +304,62 @@ function toShow(orderId){
 	var index = layer.open({
 		  title:"查看订单详情",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/order/orderBackMng/toShow.shtml?orderId='+orderId,
+		  content: '${wmsUrl}/admin/order/stockOutMng/toShow.shtml?orderId='+orderId,
 		  maxmin: true
 		});
 		layer.full(index);
 }
 
+$("#cancleFunc").click(function(){
+	$.ajax({
+		 url:"${wmsUrl}/admin/order/preSellMng/cancleOrderList.shtml?tagfunc="+$("#tagfunc").val(),
+		 type:"post",
+// 		 data:JSON.stringify(sy.serializeObject($('#orderForm'))),
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){
+				 layer.alert("开始执行取消功能操作，请稍后查看结果");
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("取消功能失败，请联系客服处理");
+		 }
+	 });
+});
+
+function partCancleFunc(){
+	var valArr = new Array; 
+	var orderIds;
+    $("[name='check']:checked").each(function(i){ 
+        valArr[i] = $(this).val(); 
+    }); 
+    if(valArr.length==0){
+    	layer.alert("请勾选要取消功能的订单数据");
+    	return;
+    }
+    orderIds = valArr.join(',');//转换为逗号隔开的字符串 
+	$.ajax({
+		 url:"${wmsUrl}/admin/order/preSellMng/partCancle.shtml?orderId="+orderIds,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("开始执行部分取消功能操作，请稍后查看结果");
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
+}
 </script>
 </body>
 </html>

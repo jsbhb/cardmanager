@@ -21,6 +21,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
+import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
@@ -100,6 +101,15 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 			JSONArray json = JSONArray.fromObject(specsPojos);
 			goodsItem.setInfo(json.toString());
+		}
+		
+
+		//新增商品时判断是否添加商品标签
+		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
+			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
+			goodsTagBindEntity.setItemId(goodsItem.getItemId());
+			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
+			goodsItem.setTagBindEntity(goodsTagBindEntity);
 		}
 
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -271,6 +281,11 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		goodsItem.setGoodsPrice(goodsPrice);
 		goodsItem.setOpt(pojo.getOpt());
+		
+		GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
+		goodsTagBindEntity.setItemId(pojo.getItemId());
+		goodsTagBindEntity.setTagId(Integer.parseInt(pojo.getTagId()));
+		goodsItem.setTagBindEntity(goodsTagBindEntity);
 
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_UPDATE, token, true, goodsItem,

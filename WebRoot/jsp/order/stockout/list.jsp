@@ -80,7 +80,7 @@
 								<div class="input-group">
 				                  <select class="form-control" name="status" id="status" style="width: 150px;">
 				                   	  <option selected="selected" value="">全部</option>
-				                   	  <option value="0">待处理</option>
+				                   	  <option value="0">待支付</option>
 				                   	  <option value="1">已付款</option>
 				                   	  <option value="2">支付单报关</option>
 				                   	  <option value="3">已发仓库</option>
@@ -91,7 +91,7 @@
 				                   	  <option value="8">退单</option>
 				                   	  <option value="9">超时取消</option>
 				                   	  <option value="11">资金池不足</option>
-				                   	  <option value="12">资金池已扣款</option>
+				                   	  <option value="12">已支付</option>
 				                   	  <option value="21">退款中</option>
 				                   	  <option value="99">异常状态</option>
 					                </select>
@@ -257,7 +257,7 @@ function rebuildTable(data){
 		var status = list[i].status;
 		str += "</td><td>" + list[i].orderId;
 		switch(status){
-			case 0:str += "</td><td>待处理";break;
+			case 0:str += "</td><td>待支付";break;
 			case 1:str += "</td><td>已付款";break;
 			case 2:str += "</td><td>支付单报关";break;
 			case 3:str += "</td><td>已发仓库";break;
@@ -268,7 +268,7 @@ function rebuildTable(data){
 			case 8:str += "</td><td>退单";break;
 			case 9:str += "</td><td>超时取消";break;
 			case 11:str += "</td><td>资金池不足";break;
-			case 12:str += "</td><td>资金池已扣款";break;
+			case 12:str += "</td><td>已支付";break;
 			case 21:str += "</td><td>退款中";break;
 			case 99:str += "</td><td>异常状态";break;
 			default:str += "</td><td>未知状态";

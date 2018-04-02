@@ -7,9 +7,13 @@
  */
 package com.card.manager.factory.goods.service;
 
+import java.util.List;
+
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
+import com.card.manager.factory.goods.model.GoodsTagBindEntity;
+import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -116,5 +120,68 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void updGoodsRebateEntity(GoodsRebateEntity entity, String token) throws Exception;
+
+	/**
+	 * queryGoodsTag:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	GoodsTagEntity queryGoodsTag(String tagId, String token);
+
+	/**
+	 * queryGoodsTag:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	List<GoodsTagEntity> queryGoodsTags(String token);
+
+	/**
+	 * addEntity:新增商品标签. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void addGoodsTag(GoodsTagEntity entity, String token) throws Exception;
+
+	/**
+	 * queryGoodsTag:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	GoodsTagBindEntity queryGoodsTagBind(String token);
+
+	/**
+	 * addEntity:新增商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void updateGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception;
+
+	/**
+	 * addEntity:新增商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void deleteGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception;
 
 }

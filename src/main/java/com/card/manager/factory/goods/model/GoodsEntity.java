@@ -53,6 +53,8 @@ public class GoodsEntity extends Pagination{
 	private String picPath2;
 	private String picPath3;
 	private String picPath4;
+	private GoodsTagBindEntity goodsTagBind;
+	private String tagId;
 
 	public GoodsEntity() {
 	}
@@ -305,6 +307,22 @@ public class GoodsEntity extends Pagination{
 
 	public void setPicPath4(String picPath4) {
 		this.picPath4 = picPath4;
+	}
+
+	public GoodsTagBindEntity getGoodsTagBind() {
+		return goodsTagBind;
+	}
+
+	public void setGoodsTagBind(GoodsTagBindEntity goodsTagBind) {
+		this.goodsTagBind = goodsTagBind;
+	}
+
+	public String getTagId() {
+		return tagId;
+	}
+
+	public void setTagId(String tagId) {
+		this.tagId = tagId;
 	}
 
 }

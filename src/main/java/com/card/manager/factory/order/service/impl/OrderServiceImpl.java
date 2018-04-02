@@ -124,4 +124,17 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		return list;
 	}
 
+	@Override
+	@Log(content = "发起订单取消功能操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void cancleTagFuncOrder(List<String> orderIds, StaffEntity staff) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_PRESELL_CANCLEFUNC, staff.getToken(), true, orderIds,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new Exception("发起订单取消功能操作失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+		}
+	}
 }
