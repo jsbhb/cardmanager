@@ -102,7 +102,7 @@
 			                   	  <option selected="selected" value="">未选择</option>
 			                   	  <option value="0">初始化</option>
 			                   	  <option value="1">可用</option>
-			                   	  <option value="1">可分销</option>
+			                   	  <option value="2">可分销</option>
 				                </select>
 			                </div>
 						</div>
@@ -111,6 +111,7 @@
 				<div class="col-md-offset-10 col-md-12">
 					<div class="form-group">
                          <button type="button" class="btn btn-primary" id="querybtns" name="signup">提交</button>
+                         <button type="button" class="btn btn-warning" onclick = "noBeFx('')">批量不可分销</button>
                     </div>
                 </div>
 			</div>
@@ -126,6 +127,7 @@
 							<table id="itemTable" class="table table-hover">
 								<thead>
 									<tr>
+										<th>全选<input type="checkbox" id = selectAll onclick="selectAll(this);"></th>
 										<th>编辑</th>
 										<th>商品名称</th>
 										<th>sku</th>
@@ -204,6 +206,7 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
+		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "' /></td>";
 		if (true) {
 			str += "<td align='left'>";
 			str += "<a href='#' onclick='toShow("+list[i].id+")'><i class='fa fa-pencil'></i></a>";
@@ -307,9 +310,25 @@ function beFx(id){
 		 }
 	 });
 }
+
+
 function noBeFx(id){
+	if(id == ""){
+		var valArr = new Array; 
+		var itemIds;
+	    $("[name='check']:checked").each(function(i){ 
+	        valArr[i] = $(this).val(); 
+	    }); 
+	    if(valArr.length==0){
+	    	layer.alert("请选择数据");
+	    	return;
+	    }
+	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+	} else {
+		itemIds = id;
+	}
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/noBeFx.shtml?itemId="+id,
+		 url:"${wmsUrl}/admin/goods/itemMng/noBeFx.shtml?itemId="+itemIds,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
@@ -363,6 +382,14 @@ function syncStock(id){
 			 layer.alert("提交失败，请联系客服处理");
 		 }
 	 });
+}
+
+function selectAll(obj){
+	if($("#selectAll").prop("checked")){
+		 $("input[type='checkbox'][name='check']").prop("checked",true);//全选
+	} else {
+		 $("input[type='checkbox'][name='check']").prop("checked",false);//
+	}
 }
 
 </script>
