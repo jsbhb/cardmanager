@@ -35,6 +35,7 @@
 				                  </div>
 		                  			<input type="text" class="form-control" name="gradeName" value="${grade.gradeName}">
 		                  			<input type="hidden" class="form-control" name="id" value="${grade.id}">
+		                  			<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
 				                </div>
 							</div>
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">公司名称</label>
@@ -54,7 +55,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.gradeName}">
+				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.parentGradeName}">
 				                </div>
 							</div>
 						</div>
@@ -92,7 +93,19 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                   <input type="text" class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}">
+				                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
+				                   	  <c:forEach var="charge" items="${charges}">
+				                   	  	<c:choose>
+										   <c:when test="${charge.userCenterId==grade.gradePersonInCharge}">
+				                   	  			<option value="${charge.userCenterId}" selected="selected" >${charge.optName}</option>
+										   </c:when>
+										   <c:otherwise>
+				                   	  			<option value="${charge.userCenterId}">${charge.optName}</option>
+										   </c:otherwise>
+										</c:choose> 
+				                   	  </c:forEach>
+					              </select>
+<%-- 				                   <input type="text" class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}"> --%>
 				                </div>
 							</div>
 						</div>
@@ -106,7 +119,32 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-phone"></i>
 				                  </div>
-				                  <input type="text" class="form-control" name="phone" id="phone" readonly="readonly" value="${grade.phone}">
+				                  <input type="text" class="form-control" readonly name="phone" id="phone" value="${grade.phone}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>区域中心域名信息</h4></label>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">电脑商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="redirectUrl" value="${grade.redirectUrl}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">手机商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="mobileUrl" value="${grade.mobileUrl}">
 				                </div>
 							</div>
 						</div>
@@ -204,8 +242,8 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
-										<input type="file" name="pic1" id="pic1" />
+										<input type="hidden" class="form-control" name="picPath1" id="picPath1" value="${grade.picPath1}"> 
+										<input type="file" name="pic" id="pic1" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
 									</div>
 								</div>
@@ -218,8 +256,8 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath2" id="picPath2"> 
-										<input type="file" name="pic2" id="pic2" />
+										<input type="hidden" class="form-control" name="picPath2" id="picPath2" value="${grade.picPath2}"> 
+										<input type="file" name="pic" id="pic2" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
 									</div>
 								</div>
@@ -232,8 +270,8 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath3" id="picPath3"> 
-										<input type="file" name="pic3" id="pic3" />
+										<input type="hidden" class="form-control" name="picPath3" id="picPath3" value="${grade.picPath3}"> 
+										<input type="file" name="pic" id="pic3" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
 									</div>
 								</div>
@@ -246,8 +284,8 @@
 								</div>
 								<div class="form-group">
 									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath4" id="picPath4"> 
-										<input type="file" name="pic4" id="pic4" />
+										<input type="hidden" class="form-control" name="picPath4" id="picPath4" value="${grade.picPath4}"> 
+										<input type="file" name="pic" id="pic4" />
 										<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
 									</div>
 								</div>
@@ -321,7 +359,7 @@
 	 */
 	var options = {
 				queryForm : ".query",
-				url :  "${wmsUrl}/admin/system/staffMng/dataList.shtml?gradeId="+${grade.id},
+				url :  "${wmsUrl}/admin/system/gradeMng/dataListForGrade.shtml?gradeId="+${grade.id},
 				numPerPage:"20",
 				currentPage:"",
 				index:"1",
@@ -337,7 +375,7 @@
 	$("#submitBtn").click(function(){
 		 $('#gradeForm').data("bootstrapValidator").validate();
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
-			 var reg = /^1(3|4|5|7|8)\d{9}$/;
+			 var reg = /^1[3|4|5|8][0-9]\d{4,8}$/;
 			 if(!reg.test($("#phone").val())) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");

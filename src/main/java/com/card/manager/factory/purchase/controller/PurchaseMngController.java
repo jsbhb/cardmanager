@@ -1,6 +1,7 @@
 package com.card.manager.factory.purchase.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -213,6 +214,7 @@ public class PurchaseMngController extends BaseController {
 		return pcb;
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/toEdit")
 	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -225,6 +227,17 @@ public class PurchaseMngController extends BaseController {
 			GoodsPrice chkGoodsprice = goodsItemService.queryCheckGoodsPriceById(id, opt);
 			context.put("price", price);
 			context.put("chkGoodsPrice", chkGoodsprice);
+
+			//为了带出商品名称暂时处理
+			Map<String, Object> params = new HashMap<String, Object>();
+			GoodsItemEntity item = new GoodsItemEntity();
+			item.setItemId(id);
+			item.setNumPerPage(1);
+			item.setTotalPages(20);
+			PageCallBack pcb = goodsItemService.dataList(item, params, opt.getToken(),
+					ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY, GoodsItemEntity.class);
+			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+			context.put("goodsItem", list.get(0));
 			
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());

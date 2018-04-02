@@ -12,6 +12,7 @@ import java.util.List;
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.system.model.StaffEntity;
 
 /**
@@ -37,4 +38,19 @@ public interface OrderService extends ServerCenterService {
 	OrderInfo queryByOrderId(String orderId, String token);
 
 	List<OperatorEntity> queryOperatorInfoByOpt(StaffEntity staff);
+
+	void applyOrderBack(String orderId, StaffEntity staff) throws Exception;
+
+	void auditOrderBack(String orderId, String payNo, StaffEntity staff) throws Exception;
+
+	/**  
+	 * queryByOrderId:根据编号查询订单信息. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param orderId
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<ThirdOrderInfo> queryThirdOrderInfoByOrderId(String orderId, String token);
 }

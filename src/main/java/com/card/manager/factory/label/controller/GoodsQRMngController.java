@@ -35,7 +35,7 @@ import com.card.manager.factory.util.StringUtil;
 
 @Controller
 @RequestMapping("/admin/label/goodsQRMng")
-public class GoodsQRMngMngController extends BaseController {
+public class GoodsQRMngController extends BaseController {
 	
 	@Resource
 	GoodsItemService goodsItemService;
@@ -123,10 +123,10 @@ public class GoodsQRMngMngController extends BaseController {
 				//内容格式：域名+商品明细地址+centerId+shopId+goodsId
 				//http://shop1.cncoopbuy.com/goodsDetail.html?centerId=13&shopId=15&goodsId=1002
 				if (staffEntity.getGradeLevel() == 2) {
-					tmpLink = entity.getMobileUrl() + "goodsDetail.html?goodsId=";
+					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=";
 //					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=";
 				} else if (staffEntity.getGradeLevel() == 3) {
-					tmpLink = entity.getMobileUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
+					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
 //					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
 				}
 			}

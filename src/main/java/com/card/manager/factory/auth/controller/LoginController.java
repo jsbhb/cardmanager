@@ -418,4 +418,69 @@ public class LoginController extends BaseController {
 		}
 
 	}
+
+	@RequestMapping(value = "/uploadFileForShop", method = RequestMethod.POST)
+	@Auth(verifyLogin = false, verifyURL = false)
+	public void uploadFileForShop(@RequestParam("pic1") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		ReadIniInfo iniInfo = new ReadIniInfo();
+
+		try {
+			sftpService.login(iniInfo);
+		} catch (Exception e2) {
+			sendFailureMessage(resp, "操作失败：无法连接sftp：" + iniInfo.getFtpServer() + ":" + iniInfo.getFtpPort());
+			return;
+		}
+
+		try {
+			if (pic != null) {
+				String fileName = pic.getOriginalFilename();
+				// 当前上传文件的文件后缀
+				String suffix = fileName.indexOf(".") != -1
+						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
+
+				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
+						&& !".jpeg".equalsIgnoreCase(suffix)) {
+					sendFailureMessage(resp, "文件格式有误！");
+					return;
+				}
+
+				// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
+				if (!StringUtils.isBlank(fileName)) {
+					// 重命名上传后的文件名
+					String saveFileName = UUID.randomUUID().toString() + suffix;
+					// 定义上传路径
+					// 当前上传文件信息
+
+					String descPath = "";
+					String remotePath = "";
+					String invitePath = "";
+
+					remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.MSHOP + "/";
+
+					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), iniInfo, descPath);
+					sftpService.logout();
+
+					invitePath = URLUtils.get("static") + "/" + ResourceContants.MSHOP + "/" + saveFileName;
+
+					sendSuccessMessage(resp, invitePath);
+				} else {
+					sendFailureMessage(resp, "操作失败：没有文件信息");
+				}
+
+			}
+
+		} catch (Exception e) {
+			try {
+				sftpService.logout();
+			} catch (Exception e1) {
+				sendFailureMessage(resp, "操作失败：" + e1.getMessage());
+				return;
+			}
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+	}
 }

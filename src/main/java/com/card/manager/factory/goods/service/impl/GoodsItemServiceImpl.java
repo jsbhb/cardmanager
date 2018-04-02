@@ -263,7 +263,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setProxyPrice(pojo.getProxyPrice());
 		goodsPrice.setRetailPrice(pojo.getRetailPrice());
-		goodsPrice.setFxPrice(pojo.getProxyPrice());
+		goodsPrice.setFxPrice(pojo.getFxPrice());
 		goodsPrice.setMax(pojo.getMax());
 		goodsPrice.setMin(pojo.getMin());
 		goodsPrice.setItemId(goodsItem.getItemId());

@@ -1,5 +1,6 @@
 package com.card.manager.factory.goods.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsBaseService;
+import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.order.model.PushUser;
+import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
@@ -113,6 +117,35 @@ public class GoodsBaseMngController extends BaseController {
 		try {
 			pcb = goodsBaseService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BASE_QUERY_FOR_PAGE, GoodsBaseEntity.class);
+			if (pcb != null) {
+				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+				List<Object> list = (ArrayList<Object>)pcb.getObj();
+				GoodsBaseEntity goodsInfo = null;
+				for(Object info : list){
+					goodsInfo = (GoodsBaseEntity) info;
+					for(FirstCatalogEntity fce : first) {
+						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
+							goodsInfo.setFirstCatalogId(fce.getName());
+							break;
+						}
+					}
+					for(SecondCatalogEntity sce : second) {
+						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
+							goodsInfo.setSecondCatalogId(sce.getName());
+							break;
+						}
+					}
+					for(ThirdCatalogEntity tce : third) {
+						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
+							goodsInfo.setThirdCatalogId(tce.getName());
+							break;
+						}
+					}
+				}
+				pcb.setObj(list);
+			}
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();

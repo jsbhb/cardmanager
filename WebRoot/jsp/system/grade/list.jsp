@@ -17,10 +17,10 @@
 <body>
 <section class="content-wrapper">
 	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>功能管理</h1>
+	      <h1><i class="fa fa-street-view"></i>分级管理</h1>
 	      <ol class="breadcrumb">
 	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-	        <li class="active">功能管理</li>
+	        <li class="active">分级管理</li>
 	      </ol>
     </section>	
 	<section class="content">

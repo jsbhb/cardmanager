@@ -7,6 +7,7 @@
  */
 package com.card.manager.factory.system.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.base.Pagination;
@@ -102,4 +103,26 @@ public interface StaffMngService {
 	 */
 	void sync2B(StaffEntity staff,int optId) throws Exception;
 
+	/**
+	 * 
+	 * sync:权限中心开通账号. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param phone
+	 * @since JDK 1.7
+	 */
+	void sync2S(StaffEntity staff,int optId) throws Exception;
+	
+	/**
+	 * 
+	 * queryByParam<br/>
+	 * 
+	 * @author hebin
+	 * @param userName
+	 * @param pwd
+	 * @return
+	 * @since JDK 1.7
+	 */
+	List<StaffEntity> queryByParam(Map<String, String> params);
 }

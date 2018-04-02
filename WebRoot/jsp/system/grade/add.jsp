@@ -91,7 +91,20 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                   <input type="text" class="form-control" name="gradePersonInCharge" placeholder="请选择">
+				                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
+<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
+				                   	  <c:forEach var="charge" items="${charges}">
+					                   	  	<c:choose>
+									           <c:when test="${charge.userCenterId=='8001'}">
+				                   	  		   	<option value="${charge.userCenterId}" selected>${charge.optName}</option>
+									           </c:when>
+									           <c:otherwise>
+				                   	  			<option value="${charge.userCenterId}">${charge.optName}</option>
+									           </c:otherwise>
+									        </c:choose> 
+				                   	  </c:forEach>
+					              </select>
+<!-- 				                   <input type="text" class="form-control" name="gradePersonInCharge" placeholder="请选择"> -->
 				                </div>
 							</div>
 						</div>
@@ -106,6 +119,31 @@
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
 				                  <input type="text" class="form-control" name="phone" id="phone" placeholder="请输入...">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>区域中心域名信息</h4></label>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">电脑商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="redirectUrl">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">手机商城域名<font style="color:red"></font> </label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+				                  <input type="text" class="form-control" name="mobileUrl">
 				                </div>
 							</div>
 						</div>
@@ -287,7 +325,7 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
-			 var reg = /^1(3|4|5|7|8)\d{9}$/;
+			 var reg = /^1[3|4|5|8][0-9]\d{4,8}$/;
 			 if(!reg.test($("#phone").val())) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");
@@ -369,14 +407,6 @@
 	          validators: {
 	              notEmpty: {
 	                  message: '负责人不能为空！'
-	              }
-	          }
-	  	  },
-	  	  gradePersonInCharge: {
-	          message: '上级负责人不能为空',
-	          validators: {
-	              notEmpty: {
-	                  message: '上级负责人不能为空！'
 	              }
 	          }
 	  	  },

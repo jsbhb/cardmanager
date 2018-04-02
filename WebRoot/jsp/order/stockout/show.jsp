@@ -73,6 +73,9 @@
 				                  <c:if test="${order.status==7}">已收货</c:if>
 				                  <c:if test="${order.status==8}">退单</c:if>
 				                  <c:if test="${order.status==9}">超时取消</c:if>
+				                  <c:if test="${order.status==11}">资金池不足</c:if>
+				                  <c:if test="${order.status==12}">资金池已扣款</c:if>
+				                  <c:if test="${order.status==21}">退款中</c:if>
 				                  <c:if test="${order.status==99}">异常状态</c:if>
 				                </div>
 							</div>
@@ -93,7 +96,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-				                  <input type="text" class="form-control"  readonly value="${order.shopId}">
+				                  <input type="text" class="form-control"  readonly value="${order.shopName}">
 				                </div>
 							</div>
 						</div>
@@ -104,7 +107,16 @@
 			                    	<div class="input-group-addon">
 				                    	<i class="fa fa-pencil"></i>
 				                	</div>
-				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerId}">
+				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
+				                </div>
+							</div>
+							<label class="col-sm-1 control-label no-padding-right">推手编号</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+			                    	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                	</div>
+				                  	<input type="text" class="form-control" name="pushUserId" readonly value="${order.pushUserId}">
 				                </div>
 							</div>
 						</div>
@@ -184,6 +196,17 @@
 				                </div>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">交易流水号</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+								 	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                  	</div>
+		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payNo}">
+				                </div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -198,28 +221,28 @@
 				</div>
 				<div class="box-body">
 					<div class="row form-horizontal">
-						<c:if test="${order.orderExpressList!=null}">
-							<c:forEach var="express" items="${order.orderExpressList}">
+						<c:if test="${orderExpressList!=null}">
+							<c:forEach var="express" items="${orderExpressList}">
 								<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">快递公司</label>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<div class="input-group-addon">
-					                    	<i class="fa fa-pencil"></i>
-					                  	</div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressName}">
-					                </div>
+									<label class="col-sm-2 control-label no-padding-right">快递公司</label>
+									<div class="col-sm-4">
+										<div class="input-group">
+											<div class="input-group-addon">
+						                    	<i class="fa fa-pencil"></i>
+						                  	</div>
+				                  			<input type="text" class="form-control" readonly  value="${express.expressName}">
+						                </div>
+									</div>
+									<label class="col-sm-1 control-label no-padding-right">快递单号</label>
+									<div class="col-sm-4">
+										<div class="input-group">
+						                  <div class="input-group-addon">
+						                    <i class="fa fa-pencil"></i>
+						                  </div>
+				                  			<input type="text" class="form-control" readonly  value="${express.expressId}">
+						                </div>
+									</div>
 								</div>
-								<label class="col-sm-1 control-label no-padding-right">快递单号</label>
-								<div class="col-sm-4">
-									<div class="input-group">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-pencil"></i>
-					                  </div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressKey}">
-					                </div>
-								</div>
-						</div>
 							</c:forEach>
 						</c:if>
 					</div>
@@ -301,7 +324,7 @@
 									<thead>
 										<tr>
 											<th>明细编号</th>
-											<th>itemCode</th>
+											<th>商品编码</th>
 											<th>sku</th>
 											<th>商品名称</th>
 											<th>商品价格</th>

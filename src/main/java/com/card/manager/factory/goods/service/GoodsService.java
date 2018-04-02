@@ -9,6 +9,7 @@ package com.card.manager.factory.goods.service;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.GoodsEntity;
+import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -95,5 +96,25 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * queryById:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	GoodsRebateEntity queryGoodsRebateById(String id, String token);
+
+	/**
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void updGoodsRebateEntity(GoodsRebateEntity entity, String token) throws Exception;
 
 }

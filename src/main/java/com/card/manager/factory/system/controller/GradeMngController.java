@@ -1,6 +1,8 @@
 package com.card.manager.factory.system.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,14 +18,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.SessionUtils;
+import com.github.pagehelper.Page;
 
 @Controller
 @RequestMapping("/admin/system/gradeMng")
@@ -47,6 +52,14 @@ public class GradeMngController extends BaseController {
 	public ModelAndView add(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
+		List<StaffEntity> GradeCharge = CachePoolComponent.getGradePersoninCharge(opt.getToken());
+		if (opt.getGradeLevel() == 1) {
+			context.put("charges", GradeCharge);
+		} else {
+			GradeCharge.clear();
+			GradeCharge.add(opt);
+			context.put("charges", GradeCharge);
+		}
 		context.put("opt", opt);
 		return forword("system/grade/add", context);
 	}
@@ -56,6 +69,23 @@ public class GradeMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			//判断域名是否以/结尾  如果是去掉/
+			String tmpUrl = "";
+			String tmpLastStr = "";
+			if (gradeInfo.getRedirectUrl() != null) {
+				tmpUrl = gradeInfo.getRedirectUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setRedirectUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
+			if (gradeInfo.getMobileUrl() != null) {
+				tmpUrl = gradeInfo.getMobileUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
 			gradeMngService.saveGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -118,8 +148,21 @@ public class GradeMngController extends BaseController {
 	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
+		List<StaffEntity> GradeCharge = CachePoolComponent.getGradePersoninCharge(opt.getToken());
 		String gradeId = req.getParameter("gradeId");
+		if (opt.getGradeLevel() == 1) {
+			context.put("charges", GradeCharge);
+		} else {
+			if (gradeId.equals(opt.getGradeId()+"")) {
+				context.put("charges", GradeCharge);
+			} else {
+				List<StaffEntity> tmpGradeCharge = new ArrayList<StaffEntity>();
+				tmpGradeCharge.clear();
+				tmpGradeCharge.add(opt);
+				context.put("charges", tmpGradeCharge);
+			}
+		}
+		context.put("opt", opt);
 
 		try {
 			GradeEntity entity = gradeMngService.queryById(gradeId, opt.getToken());
@@ -137,6 +180,23 @@ public class GradeMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			//判断域名是否以/结尾  如果是去掉/
+			String tmpUrl = "";
+			String tmpLastStr = "";
+			if (gradeInfo.getRedirectUrl() != null) {
+				tmpUrl = gradeInfo.getRedirectUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setRedirectUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
+			if (gradeInfo.getMobileUrl() != null) {
+				tmpUrl = gradeInfo.getMobileUrl();
+				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				if (tmpLastStr.equals("/")) {
+					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+				}
+			}
 			gradeMngService.updateGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -169,4 +229,36 @@ public class GradeMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
+
+	@RequestMapping(value = "/dataListForGrade")
+	@ResponseBody
+	public PageCallBack dataListForGrade(Pagination pagination, HttpServletRequest req, HttpServletResponse resp) {
+		PageCallBack pcb = new PageCallBack();
+
+		try {
+			String id = req.getParameter("gradeId");
+			StaffEntity entity = SessionUtils.getOperator(req);
+			Page<StaffEntity> page = null;
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			if (id != null && !"".equals(id)) {
+				params.put("gradeId", Integer.parseInt(id));
+			} else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
+				params.put("gradeId", entity.getGradeId());
+			}
+
+			page = staffMngService.dataList(pagination, params);
+
+			pcb.setObj(page);
+			pcb.setSuccess(true);
+			pcb.setPagination(webPageConverter(page));
+		} catch (Exception e) {
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return pcb;
+		}
+
+		return pcb;
+	}
 }

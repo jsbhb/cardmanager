@@ -71,7 +71,16 @@ public class ServerCenterContants {
 			+ "/grade/query";
 	public static final String USER_CENTER_PHONE_CHECK = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/user/userNameVerify";
-
+	public static final String USER_CENTER_PUSHUSER_REGISER = (TOKEN_NOT_NEED ? "/" : "/usercenter/auth/") + SERVER_CENTER_EDITION
+			+ "/pushuser/register/{code}";
+	public static final String USER_CENTER_MICRO_SHOP_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/shop/query";
+	public static final String USER_CENTER_MICRO_SHOP_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/shop/update";
+	public static final String USER_CENTER_ALL_PUSH_USER = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/pushuser/listAllPushUser";
+	public static final String USER_CENTER_ALL_CUSTOMER = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/customer";
 	/**
 	 * 商品中心url
 	 */
@@ -128,6 +137,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/modifyThird";
 	public static final String GOODS_CENTER_CATALOG_DELETE_CATALOG = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/catalog/delete?id={id}&type={type}";
+	public static final String GOODS_CENTER_CATALOG_QUERY_SECOND_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/querySecondAll";
+	public static final String GOODS_CENTER_CATALOG_QUERY_THIRD_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_CENTER_BASE_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -158,6 +171,12 @@ public class ServerCenterContants {
 			+ "/goods/goods/remove";
 	public static final String GOODS_CENTER_SAVE_DETAIL_PATH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/saveDetailPath";
+	public static final String GOODS_CENTER_GOODS_REBATE_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsRebate/queryAllGoods";
+	public static final String GOODS_CENTER_GOODS_REBATE_QUERY_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsRebate/queryById";
+	public static final String GOODS_CENTER_GOODS_REBATE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goodsRebate/updateRebate";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";
@@ -202,6 +221,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryForPageForGoods?orderId={orderId}";
 	public static final String ORDER_CENTER_QUERY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
 			+ "/order/stockOut/query";
+	public static final String ORDER_CENTER_APPLY_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/refunds/{orderId}";
+	public static final String ORDER_CENTER_AUDIT_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/backcancel/{orderId}";
+	public static final String ORDER_CENTER_QUERY_THIRD_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/order/stockOut/queryThirdInfo";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";
@@ -236,4 +261,59 @@ public class ServerCenterContants {
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/queryDataAll";
 
+	/**
+	 * 日志中心url
+	 */
+	public static final String LOG_CENTER_EXCEPTION_LOG = (TOKEN_NOT_NEED ? "/" : "/logcenter/")
+			+ SERVER_CENTER_EDITION + "/exception/log";
+	public static final String LOG_CENTER_LOGINFO_LOG = (TOKEN_NOT_NEED ? "/" : "/logcenter/")
+			+ SERVER_CENTER_EDITION + "/logInfo/log";
+	
+	/**
+	 * 财务中心url
+	 */
+	public static final String FINANCE_CENTER_QUERY_CARDINFO = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/queryForPage";
+	public static final String FINANCE_CENTER_CARDINFO_INSERT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card";
+	public static final String FINANCE_CENTER_CARDINFO_UPDATE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/modify/card";
+	public static final String FINANCE_CENTER_CARDNO_CHECK = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/check";
+	public static final String FINANCE_CENTER_CAPITALPOOL_REGISTER = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/register/{centerId}";
+	public static final String FINANCE_CENTER_QUERY_CAPITALPOOL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/listcalCapitalPool";
+	public static final String FINANCE_CENTER_CENTER_CHARGE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/recharge/{centerId}";
+	public static final String FINANCE_CENTER_REBATE_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/{id}";
+	public static final String FINANCE_CENTER_REBATE_DETAIL_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/detail";
+	public static final String FINANCE_CENTER_WITHDRAWALS_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/queryForPage";
+	public static final String FINANCE_CENTER_WITHDRAWALS_DETAIL_ID = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/detailById/{id}";
+	public static final String FINANCE_CENTER_WITHDRAWALS_AUDIT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/audit";
+	public static final String FINANCE_CENTER_WITHDRAWALS_ADMIN_CHECK = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/list";
+	public static final String FINANCE_CENTER_QUERY_CARD_BY_CARDID = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/queryByCardId";
+	public static final String FINANCE_CENTER_CARDINFO_DELETE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
+	public static final String FINANCE_CENTER_CARDINFO_LIST = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
+	public static final String FINANCE_CENTER_USER_APPLY_WITHDRAWALS = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/withdrawal/apply";
+	public static final String FINANCE_CENTER_REFILLING_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capital/recharge/queryForPage";
+	public static final String FINANCE_CENTER_USER_APPLY_REFILLING = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capital/recharge/apply/{centerId}";
+	public static final String FINANCE_CENTER_REFILLING_DETAIL_ID = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/refilling/detailById/{id}";
+	public static final String FINANCE_CENTER_REFILLING_AUDIT = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/rebate/recharge/audit";
+	public static final String FINANCE_CENTER_CENTER_LIQUIDATION = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/liquidation/{centerId}";
 }
