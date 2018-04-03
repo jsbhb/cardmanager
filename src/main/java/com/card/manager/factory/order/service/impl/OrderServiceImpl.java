@@ -80,7 +80,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(result.getBody());
 		if (!json.getBoolean("success")) {
-			throw new Exception("发起订单退款操作失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("发起订单退款操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -96,7 +96,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(result.getBody());
 		if (!json.getBoolean("success")) {
-			throw new Exception("审核订单退款操作失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("审核订单退款操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -134,7 +134,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(result.getBody());
 		if (!json.getBoolean("success")) {
-			throw new Exception("发起订单取消功能操作失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("发起订单取消功能操作失败:" + json.getString("errorMsg"));
 		}
 	}
 }

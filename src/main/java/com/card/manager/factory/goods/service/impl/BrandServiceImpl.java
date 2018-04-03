@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -44,6 +45,7 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 	StaffMapper staffMapper;
 
 	@Override
+	@Log(content = "新增品牌信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addBrand(BrandEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -57,7 +59,7 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增品牌信息操作失败:" + json.getString("errorMsg"));
 		}
 
 		CachePoolComponent.syncBrand(token);
@@ -79,6 +81,7 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
+	@Log(content = "删除品牌信息操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void delete(String brandId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
@@ -94,13 +97,14 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除品牌信息操作失败:" + json.getString("errorMsg"));
 		}
 		
 		CachePoolComponent.syncBrand(staffEntity.getToken());
 	}
 
 	@Override
+	@Log(content = "更新品牌信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void modify(BrandEntity entity, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -111,7 +115,7 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新品牌信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 

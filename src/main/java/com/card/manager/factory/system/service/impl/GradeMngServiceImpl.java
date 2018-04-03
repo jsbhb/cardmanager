@@ -91,6 +91,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 //	}
 
 	@Override
+	@Log(content = "新增分级信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void saveGrade(GradeEntity gradeInfo, StaffEntity staff)  throws Exception{
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -151,7 +152,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			// 如果失败，提示
 			if ("true".equals(success)) {
 			}else{
-				throw new Exception("开通资金池失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+				throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
 			}
 		}
 		CachePoolComponent.syncCenter(staffEntity.getToken());
@@ -159,6 +160,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	}
 
 	@Override
+	@Log(content = "注册权限中心信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void registerAuthCenter(StaffEntity staffEntity,boolean hasUserId) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		UserInfo userInfo = new UserInfo(PlatUserType.CROSS_BORDER.getIndex(), 4, staffEntity.getGradeId());
@@ -217,6 +219,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	}
 
 	@Override
+	@Log(content = "更新分级信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		// 确认当前分级负责人电话是否已经存在
@@ -236,7 +239,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新分级信息失败:" + json.getString("errorMsg"));
 		}
 		
 		//区域中心时开通资金池
@@ -254,7 +257,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			// 如果失败，提示
 			if ("true".equals(success)) {
 			}else{
-				throw new Exception("开通资金池失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+				throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
 			}
 		}
 
@@ -289,7 +292,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("编辑失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新微店信息失败:" + json.getString("errorMsg"));
 		}
 	}
 }

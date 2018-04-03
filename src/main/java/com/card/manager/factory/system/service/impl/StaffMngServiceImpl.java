@@ -187,7 +187,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 			JSONObject json = JSONObject.fromObject(result.getBody());
 	
 			if (!json.getBoolean("success")) {
-				throw new Exception("开通订货平台账号失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+				throw new Exception("开通订货平台账号失败:" + json.getString("errorMsg"));
 			}
 			staffMapper.update2BFlg(staffeEntity);
 		} catch (Exception e) {
@@ -229,7 +229,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 			JSONObject json2 = JSONObject.fromObject(result.getBody());
 	
 			if (!json2.getBoolean("success")) {
-				throw new Exception("创建推手信息失败:" + json2.getString("errorCode") + "-" + json2.getString("errorMsg"));
+				throw new Exception("创建推手信息失败:" + json2.getString("errorMsg"));
 			}
 			
 			result = null;
@@ -243,7 +243,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 			JSONObject json = JSONObject.fromObject(result.getBody());
 	
 			if (!json.getBoolean("success")) {
-				throw new Exception("开通推手平台账号失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+				throw new Exception("开通推手平台账号失败:" + json.getString("errorMsg"));
 			}
 			staffMapper.update2SFlg(staffeEntity);
 		} catch (Exception e) {

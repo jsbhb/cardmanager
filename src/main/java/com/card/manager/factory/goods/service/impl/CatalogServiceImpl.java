@@ -18,6 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.goods.model.CatalogModel;
@@ -82,6 +83,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
+	@Log(content = "新增商品分类信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void add(CatalogModel model, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
@@ -133,12 +135,13 @@ public class CatalogServiceImpl implements CatalogService {
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
 	
 	@Override
+	@Log(content = "更新商品分类信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void modify(CatalogModel model, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
@@ -177,7 +180,7 @@ public class CatalogServiceImpl implements CatalogService {
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -283,6 +286,7 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
+	@Log(content = "删除商品分类信息操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void delete(String id, String type, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
@@ -300,7 +304,7 @@ public class CatalogServiceImpl implements CatalogService {
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}

@@ -58,7 +58,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 		if (!json.getBoolean("success")) {
-			throw new Exception("更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新账号绑定银行卡信息失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -99,7 +99,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		if (!json.getBoolean("success")) {
-			throw new Exception("绑定银行卡失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("校验银行卡信息失败:" + json.getString("errorMsg"));
 		}
 //		return json.getJSONObject("errorMsg").toString();
 		return json.getString("errorMsg");
@@ -117,7 +117,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("绑定银行卡失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增账号绑定银行卡信息失败:" + json.getString("errorMsg"));
 		}
 	}
 	
@@ -172,7 +172,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 		if (!json.getBoolean("success")) {
-			throw new Exception("解绑失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除账号绑定银行卡信息失败:" + json.getString("errorMsg"));
 		}
 	}
 	
@@ -285,7 +285,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("发起提现申请失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("发起提现申请失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -302,7 +302,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("发起返充申请失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("发起返充申请失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -344,7 +344,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("提现审核失败，请联系技术人员！");
+			throw new Exception("返充审核失败，请联系技术人员！");
 		}
 	}
 
