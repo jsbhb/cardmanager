@@ -22,6 +22,7 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.service.GoodsItemService;
@@ -58,6 +59,8 @@ public class GoodsItemMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+		context.put("tags", tags);
 		return forword("goods/item/list", context);
 	}
 
@@ -142,6 +145,12 @@ public class GoodsItemMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
+			}
+			String tagId = req.getParameter("tagId");
+			if (!StringUtil.isEmpty(tagId)) {
+				GoodsTagBindEntity tagBindEntity = new GoodsTagBindEntity();
+				tagBindEntity.setTagId(Integer.parseInt(tagId));
+				item.setTagBindEntity(tagBindEntity);
 			}
 
 			params.put("centerId", staffEntity.getGradeId());

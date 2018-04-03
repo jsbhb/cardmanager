@@ -33,7 +33,7 @@
 						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商</label>
 						<div class="col-sm-8">
 							<div class="input-group">
-			                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
+			                  <select class="form-control" name="supplierId" id="supplierId" style="width: 160px;">
 		                   	  <option selected="selected" value="">未选择</option>
 		                   	  <c:forEach var="supplier" items="${suppliers}">
 		                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
@@ -98,11 +98,26 @@
 						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">状态</label>
 						<div class="col-sm-8">
 							<div class="input-group">
-			                 <select class="form-control" name="status" id="status" style="width: 100%;">
+			                 <select class="form-control" name="status" id="status" style="width: 160px;">
 			                   	  <option selected="selected" value="">未选择</option>
 			                   	  <option value="0">初始化</option>
 			                   	  <option value="1">可用</option>
 			                   	  <option value="2">可分销</option>
+				                </select>
+			                </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<div class="form-group">
+						<label class="col-sm-4 control-label no-padding-right">商品标签</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<select class="form-control" name="tagId" id="tagId" style="width: 160px;">
+			                   	  <option selected="selected" value="">普通</option>
+			                   	  <c:forEach var="tag" items="${tags}">
+			                   	  	<option value="${tag.id}">${tag.tagName}</option>
+			                   	  </c:forEach>
 				                </select>
 			                </div>
 						</div>
