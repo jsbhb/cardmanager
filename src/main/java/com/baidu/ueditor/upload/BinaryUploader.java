@@ -1,8 +1,6 @@
 package com.baidu.ueditor.upload;
 
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +19,6 @@ import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.FileType;
 import com.baidu.ueditor.define.State;
 import com.card.manager.factory.common.ResourceContants;
-import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.util.URLUtils;
 
@@ -55,14 +52,12 @@ public class BinaryUploader {
 			if (fileStream == null) {
 				return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
 			}
-			
 
 			String savePath = (String) conf.get("savePath");
 			String invitePath = URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/{yyyy}{mm}{dd}/";
 			String originFileName = fileStream.getName();
 			String suffix = FileType.getSuffixByFilename(originFileName);
 			String saveFileName = UUID.randomUUID().toString() + suffix;
-			ReadIniInfo iniInfo = new ReadIniInfo();
 
 			// long maxSize = ((Long) conf.get("maxSize")).longValue();
 			//
@@ -78,9 +73,13 @@ public class BinaryUploader {
 			InputStream is = fileStream.openStream();
 
 			WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-			SftpService service = (SftpService)wac.getBean("sftpService");
-			service.login(iniInfo);
-			service.uploadFile(savePath, saveFileName, is, iniInfo, "");
+			SftpService service = (SftpService) wac.getBean("sftpService");
+
+			try {
+				service.uploadFile(savePath, saveFileName, is, "");
+			} catch (Exception e) {
+				return new BaseState(false, AppInfo.PARSE_REQUEST_ERROR);
+			}
 
 			// State storageState = StorageManager.saveFileByInputStream(is,
 			// physicalPath, maxSize);
@@ -96,12 +95,11 @@ public class BinaryUploader {
 		} catch (Exception e) {
 			return new BaseState(false, AppInfo.PARSE_REQUEST_ERROR);
 		}
-		// return new BaseState(false, AppInfo.IO_ERROR);
 	}
 
-	private static boolean validType(String type, String[] allowTypes) {
-		List<String> list = Arrays.asList(allowTypes);
-
-		return list.contains(type);
-	}
+	// private static boolean validType(String type, String[] allowTypes) {
+	// List<String> list = Arrays.asList(allowTypes);
+	//
+	// return list.contains(type);
+	// }
 }

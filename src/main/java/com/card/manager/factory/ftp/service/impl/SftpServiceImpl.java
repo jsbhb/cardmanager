@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.card.manager.factory.ftp.common.ReadIniInfo;
+import com.card.manager.factory.ftp.common.SFtpContants;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -37,26 +37,33 @@ public class SftpServiceImpl implements SftpService {
 
 	Logger logger = LoggerFactory.getLogger(SftpServiceImpl.class);
 
-	private ChannelSftp sftp;
+	private ChannelSftp sftp = null;
 
-	private Session session;
+	private Session session = null;
+
+	private Boolean isLogin = false;
 
 	@Override
-	public void login(ReadIniInfo iniInfo) throws Exception {
-
-		ReadIniInfo info = new ReadIniInfo();
+	public void login() throws Exception {
 
 		JSch jsch = new JSch();
-		logger.info("sftp connect by host:{} username:{}", info.getFtpServer(), info.getFtpUser());
 
-		session = jsch.getSession(info.getFtpUser(), info.getFtpServer(), Integer.parseInt(info.getFtpPort()));
+		logger.info("start sftp connect by host:{} username:{}", SFtpContants.getInstance().getServer(),
+				SFtpContants.getInstance().getUser());
+
+		logger.info("start create session by host:{} username:{}", SFtpContants.getInstance().getServer(),
+				SFtpContants.getInstance().getUser());
+		session = jsch.getSession(SFtpContants.getInstance().getUser(), SFtpContants.getInstance().getServer(),
+				Integer.parseInt(SFtpContants.getInstance().getPort()));
 		logger.info("Session is build");
-		if (info.getFtpPwd() != null) {
-			session.setPassword(info.getFtpPwd());
+		if (SFtpContants.getInstance().getPwd() != null) {
+			session.setPassword(SFtpContants.getInstance().getPwd());
 		}
+
+		logger.info("start connect session by host:{} username:{}", SFtpContants.getInstance().getServer(),
+				SFtpContants.getInstance().getUser());
 		Properties config = new Properties();
 		config.put("StrictHostKeyChecking", "no");
-
 		session.setConfig(config);
 		session.connect();
 		logger.info("Session is connected");
@@ -66,8 +73,10 @@ public class SftpServiceImpl implements SftpService {
 		logger.info("channel is connected");
 
 		sftp = (ChannelSftp) channel;
-		logger.info(String.format("sftp server host:[%s] port:[%s] is connect successfull", info.getFtpServer(),
-				Integer.parseInt(info.getFtpPort())));
+		logger.info(String.format("sftp server host:[%s] port:[%s] is connect successfull",
+				SFtpContants.getInstance().getServer(), SFtpContants.getInstance().getUser()));
+		isLogin = true;
+
 	}
 
 	@Override
@@ -87,9 +96,12 @@ public class SftpServiceImpl implements SftpService {
 	}
 
 	@Override
-	public void uploadFile(String remotePath, String sftpFileName, InputStream inputStream, ReadIniInfo iniInfo,
+	public synchronized void uploadFile(String remotePath, String sftpFileName, InputStream inputStream,
 			String pathContants) throws Exception {
 		try {
+			if (!isLogin) {
+				login();
+			}
 			sftp.cd(remotePath + pathContants);
 		} catch (SftpException e) {
 			logger.warn("directory is not exist");

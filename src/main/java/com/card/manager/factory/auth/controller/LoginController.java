@@ -35,11 +35,7 @@ import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
-import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
-import com.card.manager.factory.goods.model.FirstCatalogEntity;
-import com.card.manager.factory.goods.model.GoodsBaseEntity;
-import com.card.manager.factory.goods.model.PopularizeDict;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
@@ -48,8 +44,6 @@ import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.URLUtils;
 
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -183,14 +177,6 @@ public class LoginController extends BaseController {
 	public void uploadFile(@RequestParam("pic") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		ReadIniInfo iniInfo = new ReadIniInfo();
-
-		try {
-			sftpService.login(iniInfo);
-		} catch (Exception e2) {
-			sendFailureMessage(resp, "操作失败：无法连接sftp：" + iniInfo.getFtpServer() + ":" + iniInfo.getFtpPort());
-			return;
-		}
 
 		try {
 			if (pic != null) {
@@ -225,8 +211,7 @@ public class LoginController extends BaseController {
 						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
 					}
 
-					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), iniInfo, descPath);
-					sftpService.logout();
+					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), descPath);
 
 					if (gradeLevel != 1) {
 						invitePath = URLUtils.get("static") + "/" + ResourceContants.CMS + "/"
@@ -243,12 +228,6 @@ public class LoginController extends BaseController {
 			}
 
 		} catch (Exception e) {
-			try {
-				sftpService.logout();
-			} catch (Exception e1) {
-				sendFailureMessage(resp, "操作失败：" + e1.getMessage());
-				return;
-			}
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
@@ -308,7 +287,7 @@ public class LoginController extends BaseController {
 
 		return menuAuth;
 	}
-	
+
 	@RequestMapping("/modifyPwd")
 	@Auth(verifyLogin = false, verifyURL = false)
 	public ModelAndView modifyPwd(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
@@ -320,32 +299,33 @@ public class LoginController extends BaseController {
 		}
 		return forword("modify", context);
 	}
-	
+
 	@RequestMapping(value = "/chkModifyPwd", method = RequestMethod.POST)
 	@Auth(verifyLogin = false, verifyURL = false)
-	public void chkModifyPwd(HttpServletRequest req, HttpServletResponse resp, HttpSession session, @RequestBody String param) {
+	public void chkModifyPwd(HttpServletRequest req, HttpServletResponse resp, HttpSession session,
+			@RequestBody String param) {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		try {
-			JSONObject jsonObj  = JSONObject.fromObject(param);
-			
+			JSONObject jsonObj = JSONObject.fromObject(param);
+
 			String oldPwd = jsonObj.get("oldPwd").toString();
 			String newPwd = jsonObj.get("newPwd").toString();
 
 			StaffEntity operator = staffMngService.queryByLoginInfo(opt.getBadge(), MethodUtil.MD5(oldPwd));
 			if (operator == null) {
-				//验证登录失败
+				// 验证登录失败
 				sendFailureMessage(resp, "账号或者密码输入错误.");
 				return;
 			}
 			if (Constants.ACCOUNT_LOCKED.equals(operator.getLocked())) {
-				//验证账号是否被锁定
+				// 验证账号是否被锁定
 				sendFailureMessage(resp, "该账号已被锁定，请联系管理员.");
 				return;
 			}
-			
-			//进行更新密码操作
+
+			// 进行更新密码操作
 			staffMngService.modifyPwd(opt.getBadge(), MethodUtil.MD5(newPwd));
-			
+
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
@@ -356,17 +336,8 @@ public class LoginController extends BaseController {
 
 	@RequestMapping(value = "/uploadFileForGrade", method = RequestMethod.POST)
 	@Auth(verifyLogin = false, verifyURL = false)
-	public void uploadFileForGrade(@RequestParam("pic") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
-
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		ReadIniInfo iniInfo = new ReadIniInfo();
-
-		try {
-			sftpService.login(iniInfo);
-		} catch (Exception e2) {
-			sendFailureMessage(resp, "操作失败：无法连接sftp：" + iniInfo.getFtpServer() + ":" + iniInfo.getFtpPort());
-			return;
-		}
+	public void uploadFileForGrade(@RequestParam("pic") MultipartFile pic, HttpServletRequest req,
+			HttpServletResponse resp) {
 
 		try {
 			if (pic != null) {
@@ -394,8 +365,7 @@ public class LoginController extends BaseController {
 
 					remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GRADE + "/";
 
-					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), iniInfo, descPath);
-					sftpService.logout();
+					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), descPath);
 
 					invitePath = URLUtils.get("static") + "/" + ResourceContants.GRADE + "/" + saveFileName;
 
@@ -421,17 +391,8 @@ public class LoginController extends BaseController {
 
 	@RequestMapping(value = "/uploadFileForShop", method = RequestMethod.POST)
 	@Auth(verifyLogin = false, verifyURL = false)
-	public void uploadFileForShop(@RequestParam("pic1") MultipartFile pic, HttpServletRequest req, HttpServletResponse resp) {
-
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		ReadIniInfo iniInfo = new ReadIniInfo();
-
-		try {
-			sftpService.login(iniInfo);
-		} catch (Exception e2) {
-			sendFailureMessage(resp, "操作失败：无法连接sftp：" + iniInfo.getFtpServer() + ":" + iniInfo.getFtpPort());
-			return;
-		}
+	public void uploadFileForShop(@RequestParam("pic1") MultipartFile pic, HttpServletRequest req,
+			HttpServletResponse resp) {
 
 		try {
 			if (pic != null) {
@@ -459,8 +420,7 @@ public class LoginController extends BaseController {
 
 					remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.MSHOP + "/";
 
-					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), iniInfo, descPath);
-					sftpService.logout();
+					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), descPath);
 
 					invitePath = URLUtils.get("static") + "/" + ResourceContants.MSHOP + "/" + saveFileName;
 
@@ -472,12 +432,6 @@ public class LoginController extends BaseController {
 			}
 
 		} catch (Exception e) {
-			try {
-				sftpService.logout();
-			} catch (Exception e1) {
-				sendFailureMessage(resp, "操作失败：" + e1.getMessage());
-				return;
-			}
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}

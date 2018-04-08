@@ -69,6 +69,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	StaffMapper<?> staffMapper;
 
 	@Override
+	@Log(content = "新增商品明细信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addEntity(GoodsPojo entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -162,7 +163,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品明细信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -202,6 +203,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
+	@Log(content = "更新商品明细信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updEntity(GoodsEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -210,12 +212,13 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品明细信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
 
 	@Override
+	@Log(content = "删除商品明细信息操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void delEntity(GoodsEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -225,7 +228,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除商品明细信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -257,6 +260,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
+	@Log(content = "保存商品详情信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception {
 
 		String savePath;
@@ -273,7 +277,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					+ "	/";
 
 		}
-		ReadIniInfo iniInfo = new ReadIniInfo();
+		ReadIniInfo.getInstance();
 
 		// long maxSize = ((Long) conf.get("maxSize")).longValue();
 		//
@@ -290,8 +294,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
 		SftpService service = (SftpService) wac.getBean("sftpService");
-		service.login(iniInfo);
-		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, iniInfo, "");
+		service.login();
+		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, "");
 
 		GoodsEntity entity = new GoodsEntity();
 		entity.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
@@ -305,7 +309,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("保存商品详情信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -324,6 +328,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
+	@Log(content = "更新商品返佣信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updGoodsRebateEntity(GoodsRebateEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = helper.request(
@@ -333,7 +338,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品返佣信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -371,7 +376,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 	
 	@Override
-	@Log(content = "商品标签新增操作", source = Log.BACK_PLAT, type = Log.ADD)
+	@Log(content = "新增商品标签操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addGoodsTag(GoodsTagEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = helper.request(
@@ -381,13 +386,13 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("商品标签新增失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("行政商品标签操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
 
 	@Override
-	@Log(content = "商品标签更新操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	@Log(content = "更新商品标签操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -396,7 +401,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("商品标签更新失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品标签操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -413,7 +418,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
-	@Log(content = "商品标签删除操作", source = Log.BACK_PLAT, type = Log.DELETE)
+	@Log(content = "删除商品标签操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void deleteGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -422,7 +427,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("商品标签删除失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除商品标签失败:" + json.getString("errorMsg"));
 		}
 
 	}

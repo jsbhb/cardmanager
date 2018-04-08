@@ -11,8 +11,6 @@ import java.io.InputStream;
 
 import org.apache.commons.net.ftp.FTPClient;
 
-import com.card.manager.factory.ftp.common.ReadIniInfo;
-
 /**
  * ClassName: FtpService <br/>
  * Function: TODO ADD FUNCTION. <br/>
@@ -27,7 +25,7 @@ public interface SftpService {
 	/**
 	 * 登陆FTP服务器
 	 */
-	public void login(ReadIniInfo iniInfo) throws Exception;
+	public void login() throws Exception;
 
 	/**
 	 * 断开服务器链接
@@ -37,8 +35,8 @@ public interface SftpService {
 	/**
 	 * 上传本地文件
 	 */
-	public void uploadFile(String remotePath, String fileNewName, InputStream inputStream, ReadIniInfo iniInfo,
-			String pathContants) throws Exception;
+	public void uploadFile(String remotePath, String fileNewName, InputStream inputStream, String pathContants)
+			throws Exception;
 
 	/**
 	 * 下载远程文件
