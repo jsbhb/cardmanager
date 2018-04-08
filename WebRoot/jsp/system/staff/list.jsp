@@ -22,6 +22,7 @@
 	      <div class="search">
 	      	<input type="text" name="name" placeholder="输入员工名称" >
 	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
     </section>
     <section class="content">

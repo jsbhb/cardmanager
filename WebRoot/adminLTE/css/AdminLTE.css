@@ -148,7 +148,6 @@ body.hold-transition .main-header .logo {
   padding: 15px;
   margin: 0 10px;
   background: #fff;
-  overflow: hidden;
 }
 .content > .moreSearchContent{
 	background: #f9f9f9;
@@ -337,7 +336,7 @@ body.hold-transition .main-header .logo {
 .content-iframe > form > .list-item > .item-right > select,
 .content-iframe > form > .list-item > .item-right > input{
 	height: 31px;
-	width: 480px;
+	width: 420px;
 	float: left;
 	font-size: 12px;
 }
@@ -347,20 +346,105 @@ body.hold-transition .main-header .logo {
     line-height: 31px;
     margin-left: 20px;
 }
+.content-iframe > form > .list-item > .item-right > div.right-item,
 .content-iframe > form > .list-item > .item-right > div.right-items{
 	padding: 0;
 	float:left;
 }
 .content-iframe > form > .list-item > .item-right > div.right-items > input,
 .content-iframe > form > .list-item > .item-right > div.right-items > select{
-	width: 150px;
+	width: 130px;
 	height: 31px;
 	margin-right: 15px;
 	font-size: 12px;
 }
+.content-iframe > form > .list-item > .item-right > div.right-item > input,
+.content-iframe > form > .list-item > .item-right > div.right-item > select{
+	width: 200px;
+	height: 31px;
+	margin-right: 20px;
+	font-size: 12px;
+}
 .content-iframe > form > .list-item > .item-right > div.last-items > input,
-.content-iframe > form > .list-item > .item-right > div.last-items > select{
+.content-iframe > form > .list-item > .item-right > div.last-items > select,
+.content-iframe > form > .list-item > .item-right > div.last-item > input,
+.content-iframe > form > .list-item > .item-right > div.last-item > select{
 	margin-right: 0;
+}
+.content-iframe > form > .list-item > .item-right > .label-content{
+	overflow: hidden;
+	float: left;
+}
+.content-iframe > form > .list-item > .item-right > .label-content > li{
+	float: left;
+	display: inline-block;
+    line-height: 20px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 2px;
+    border: 1px solid #e9e9e9;
+    background: #f7f7f7;
+    font-size: 12px;
+    opacity: 1;
+    margin: 4px 8px 4px 0;
+    cursor: pointer;
+}
+.content-iframe > form > .list-item > .item-right > .label-content > li.active{
+	background-color: #5491de;
+	border-color: #5491de;
+	color: #fff;
+}
+.content-iframe > form > .list-item > .item-right > .addBtn{
+	line-height: 31px;
+    margin-left: 10px;
+}
+.content-iframe > form > .list-item > .item-right > .item-img{
+	float: left;
+	width: 62px;
+	height: 62px;
+	line-height: 62px;
+	text-align: center;
+	border: 1px dashed #d9d9d9;
+	margin-right: 5px;
+	position: relative;
+}
+.content-iframe > form > .list-item > .item-right > .choose{
+	border: 1px solid #d9d9d9;
+}
+.content-iframe > form > .list-item > .item-right > .item-img > .bgColor{
+	position: absolute;
+    background: rgba(0,0,0,.5);
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+.content-iframe > form > .list-item > .item-right > .item-img > .bgColor > i{
+	font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+}
+.content-iframe > form > .list-item > .item-right > .item-img > input[type=file]{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width:62px;
+	height:62px;
+	opacity: 0;
+}
+.content-iframe > form > .list-item > .item-right > .item-img:hover{
+	border-color: #5491de;
+	color: #5491de;
+}
+.content-iframe > form > .list-item > .item-right > .choose:hover{
+	border-color: #d9d9d9;
+}
+.content-iframe > form > .list-item > .item-right > .choose:hover > .bgColor{
+	display: block;
+}
+.content-iframe > form > .list-item > .item-right > .item-img > img{
+	float: left;
+	width: 100%;
+	height: 100%;
 }
 .content-iframe > form > .title{
 	margin: 15px 20px 24px 20px;
