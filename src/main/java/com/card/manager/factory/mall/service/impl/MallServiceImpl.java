@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -70,6 +71,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 	}
 
 	@Override
+	@Log(content = "删除楼层商品操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void delateData(String id, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -80,11 +82,12 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除楼层商品操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "新增楼层信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addDict(FloorDictPojo pojo, String token) throws Exception {
 
 		PopularizeDict dict = new PopularizeDict();
@@ -122,11 +125,12 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增楼层信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "新增楼层商品操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addData(DictData data, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -137,11 +141,12 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增楼层商品操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "删除楼层信息操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void delateDict(String id, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -152,11 +157,12 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("删除楼层信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "初始化楼层信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void initDict(PopularizeDict dict, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -167,7 +173,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("初始化楼层信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -204,6 +210,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 	}
 
 	@Override
+	@Log(content = "更新楼层商品信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateData(DictData data, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -214,11 +221,12 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新楼层商品信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "更新楼层信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateDict(PopularizeDict dict, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -229,7 +237,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新楼层信息操作失败:" + json.getString("errorMsg"));
 		}
 		
 	}

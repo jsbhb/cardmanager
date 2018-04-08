@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -36,6 +37,7 @@ import net.sf.json.JSONObject;
 public class SpecsServiceImpl extends AbstractServcerCenterBaseService implements SpecsService {
 
 	@Override
+	@Log(content = "新增商品规格模板信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void add(SpecsTemplateEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -46,7 +48,7 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品规格模板信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -67,6 +69,7 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
+	@Log(content = "新增商品规格信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addSpecsValue(SpecsValueEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -77,11 +80,12 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品规格信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "新增商品规格操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addSpecs(SpecsEntity specsEntity, String token) throws Exception{
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -92,7 +96,7 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品规格操作失败:" + json.getString("errorMsg"));
 		}
 	}
 

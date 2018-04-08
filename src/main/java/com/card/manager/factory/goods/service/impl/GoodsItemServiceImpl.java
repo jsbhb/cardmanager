@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -52,6 +53,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	StaffMapper<?> staffMapper;
 
 	@Override
+	@Log(content = "新增商品明细信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addEntity(GoodsPojo entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -119,7 +121,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品明细信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -139,6 +141,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
+	@Log(content = "商品明细状态改为可用操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void beUse(String itemId, String token, String optId) throws Exception {
 		GoodsItemEntity entity = new GoodsItemEntity();
 		entity.setItemId(itemId);
@@ -151,11 +154,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("商品明细状态改为可用操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "商品明细状态改为不可分销操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void noBeFx(String itemId, String token, String optId) throws Exception {
 		GoodsItemEntity entity = new GoodsItemEntity();
 		entity.setItemId(itemId);
@@ -168,11 +172,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("商品明细状态改为不可分销操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "商品明细状态改为可分销操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void beFx(String itemId, String token, String optId) throws Exception {
 		GoodsItemEntity entity = new GoodsItemEntity();
 		entity.setItemId(itemId);
@@ -186,7 +191,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("商品明细状态改为可分销操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -205,11 +210,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("插入失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "商品明细上架操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void puton(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -222,11 +228,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("商品明细上架失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "商品明细下架操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void putoff(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -238,11 +245,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("商品明细下架操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "商品明细同步库存操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void syncStock(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -256,11 +264,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("商品明细同步库存操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "更新商品明细信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateEntity(GoodsPojo pojo, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		GoodsItemEntity goodsItem = new GoodsItemEntity();
@@ -294,11 +303,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品明细信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "订货平台同步商品信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void TBSyncGoods(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -311,7 +321,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("订货平台同步商品信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -344,6 +354,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
+	@Log(content = "更新商品明细价格信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		
@@ -354,7 +365,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("保存失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品明细价格信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 

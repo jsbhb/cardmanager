@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -34,6 +35,7 @@ import net.sf.json.JSONObject;
 public class SupplierServiceImpl extends AbstractServcerCenterBaseService implements SupplierService {
 
 	@Override
+	@Log(content = "新增供应商信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addSupplier(SupplierEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -43,7 +45,7 @@ public class SupplierServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增供应商信息操作失败:" + json.getString("errorMsg"));
 		}
 
 		CachePoolComponent.syncSupplier(token);

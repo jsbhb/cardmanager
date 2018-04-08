@@ -57,11 +57,11 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <!-- <a href="modifyPwd()" class="btn btn-default btn-flat">修改密码</a> -->
-                  <button type="button" onclick="modifyPwd()" class="btn btn-primary">修改密码</button>
+                  <!-- <a href="modifyPwd()" class="btn btn-default btn-flat">Modify pwd</a> -->
+                  <button type="button" onclick="modifyPwd()" class="btn btn-primary">Modify pwd</button>
                 </div>
                 <div class="pull-right">
-                  <a href="${wmsUrl}/admin/logout.shtml" class="btn btn-default btn-flat">退出登录</a>
+                  <a href="${wmsUrl}/admin/logout.shtml" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -73,15 +73,15 @@
   <aside class="main-sidebar">
     <section class="sidebar">
       <!-- Sidebar user panel -->
-<!--       <div class="user-panel"> -->
-<!--         <div class="pull-left image"> -->
-<%--           <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image"> --%>
-<!--         </div> -->
-<!--         <div class="pull-left info"> -->
-<%--           <p>${operator.optName}</p> --%>
-<!--           <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
-<!--         </div> -->
-<!--       </div> -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          <p>${operator.optName}</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
       <!-- search form -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -91,7 +91,7 @@
           <a href="#">
             <i class="fa ${item.tag}"></i> <span>${item.name}</span>
             <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">

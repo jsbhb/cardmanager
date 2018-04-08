@@ -3,10 +3,12 @@
  * ----------
  */
 .skin-blue .main-header .navbar {
-  background-color: #3c8dbc;
+  background-color: #ffffff;
+  border-bottom:1px solid #efefef;
+  height:68px;
 }
 .skin-blue .main-header .navbar .nav > li > a {
-  color: #ffffff;
+  color: #999;
 }
 .skin-blue .main-header .navbar .nav > li > a:hover,
 .skin-blue .main-header .navbar .nav > li > a:active,
@@ -15,21 +17,30 @@
 .skin-blue .main-header .navbar .nav .open > a:hover,
 .skin-blue .main-header .navbar .nav .open > a:focus,
 .skin-blue .main-header .navbar .nav > .active > a {
-  background: rgba(0, 0, 0, 0.1);
-  color: #f6f6f6;
+  background:#f9f9f9;
+  color: #5491de;
+}
+.skin-blue .main-header .navbar .dropdown-toggle{
+	height:68px;
+	line-height:37px;
 }
 .skin-blue .main-header .navbar .sidebar-toggle {
   color: #ffffff;
 }
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
-  color: #f6f6f6;
+  color: #5491de;
   background: rgba(0, 0, 0, 0.1);
 }
 .skin-blue .main-header .navbar .sidebar-toggle {
-  color: #fff;
+  color: #999;
+  font-size: 24px;
+  height: 68px;
+  line-height: 38px;
+  width:54px;
+  text-align:center;
 }
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
-  background-color: #367fa9;
+  background-color: #f9f9f9;
 }
 @media (max-width: 767px) {
   .skin-blue .main-header .navbar .dropdown-menu li.divider {
@@ -43,15 +54,15 @@
   }
 }
 .skin-blue .main-header .logo {
-  background-color: #367fa9;
+  background-color: #262930;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
-.skin-blue .main-header .logo:hover {
-  background-color: #357ca5;
-}
+/* .skin-blue .main-header .logo:hover { */
+/*   background-color: #357ca5; */
+/* } */
 .skin-blue .main-header li.user-header {
-  background-color: #3c8dbc;
+  background-color: #fff;
 }
 .skin-blue .content-header {
   background: transparent;
@@ -59,11 +70,28 @@
 .skin-blue .wrapper,
 .skin-blue .main-sidebar,
 .skin-blue .left-side {
-  background-color: #222d32;
+  background-color: #323641;
 }
 .skin-blue .user-panel > .info,
 .skin-blue .user-panel > .info > a {
   color: #fff;
+}
+.skin-blue .sidebar-menu > li.treeview{
+	background:#3a3e4b;
+	margin-bottom:2px;
+}
+.skin-blue .sidebar-menu > li.treeview > a{
+	padding:14px 0 14px 15px;
+	font-size:14px;
+}
+.skin-blue.sidebar-collapse .sidebar-menu > li.treeview > a > span{
+	background:#3a3e4b;
+}
+.skin-blue.sidebar-collapse .sidebar-menu > li.treeview > ul{
+	background: #fff;
+	color:rgb(44, 59, 65);
+	border:1px solid #eee;
+	border-top:none;
 }
 .skin-blue .sidebar-menu > li.header {
   color: #4b646f;
@@ -74,26 +102,29 @@
 }
 .skin-blue .sidebar-menu > li:hover > a,
 .skin-blue .sidebar-menu > li.active > a {
-  color: #ffffff;
-  background: #1e282c;
-  border-left-color: #3c8dbc;
+  color: #5491de;
+  border-left-color: #5491de;
 }
 .skin-blue .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
-  background: #2c3b41;
+  background: #303b40;
 }
 .skin-blue .sidebar a {
-  color: #b8c7ce;
+  color: #fff;
 }
 .skin-blue .sidebar a:hover {
   text-decoration: none;
 }
 .skin-blue .treeview-menu > li > a {
-  color: #8aa4af;
+  color: #999;
 }
 .skin-blue .treeview-menu > li.active > a,
 .skin-blue .treeview-menu > li > a:hover {
-  color: #ffffff;
+  color: #fff;
+}
+.skin-blue.sidebar-collapse .treeview-menu > li.active > a,
+.skin-blue.sidebar-collapse .treeview-menu > li > a:hover {
+  color: #3c8dbc;
 }
 .skin-blue .sidebar-form {
   border-radius: 3px;
@@ -398,7 +429,6 @@
 .skin-black .sidebar-menu > li:hover > a,
 .skin-black .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
   border-left-color: #ffffff;
 }
 .skin-black .sidebar-menu > li > .treeview-menu {
@@ -709,7 +739,6 @@
 .skin-green .sidebar-menu > li:hover > a,
 .skin-green .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
   border-left-color: #00a65a;
 }
 .skin-green .sidebar-menu > li > .treeview-menu {
@@ -993,7 +1022,6 @@
 .skin-red .sidebar-menu > li:hover > a,
 .skin-red .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
   border-left-color: #dd4b39;
 }
 .skin-red .sidebar-menu > li > .treeview-menu {
@@ -1277,7 +1305,6 @@
 .skin-yellow .sidebar-menu > li:hover > a,
 .skin-yellow .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
   border-left-color: #f39c12;
 }
 .skin-yellow .sidebar-menu > li > .treeview-menu {
@@ -1561,7 +1588,6 @@
 .skin-purple .sidebar-menu > li:hover > a,
 .skin-purple .sidebar-menu > li.active > a {
   color: #ffffff;
-  background: #1e282c;
   border-left-color: #605ca8;
 }
 .skin-purple .sidebar-menu > li > .treeview-menu {

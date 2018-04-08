@@ -375,7 +375,7 @@
 	$("#submitBtn").click(function(){
 		 $('#gradeForm').data("bootstrapValidator").validate();
 		 if($('#gradeForm').data("bootstrapValidator").isValid()){
-			 var reg = /^1[3|4|5|8][0-9]\d{4,8}$/;
+			 var reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
 			 if(!reg.test($("#phone").val())) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");

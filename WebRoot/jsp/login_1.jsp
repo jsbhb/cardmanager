@@ -43,11 +43,11 @@
 			                    <form action="" class="login-form">
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username">Username</label>
-			                        	<input type="text" name="form-username" placeholder="请输入员工号" class="form-username form-control" id="form-username">
+			                        	<input type="text" name="form-username" placeholder="Badge..." class="form-username form-control" id="form-username">
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password">Password</label>
-			                        	<input type="password" name="form-password" placeholder="请输入密码" class="form-password form-control" id="form-password">
+			                        	<input type="password" name="form-password" placeholder="Password..." class="form-password form-control" id="form-password">
 			                        </div>
 			                    	<button id="submitBtn" type="button" class="btn">登录</button>
 			                    </form>
@@ -114,44 +114,6 @@
 	    		       	 }
     				}
     			)
-	    });
-	    
-		$(document).keyup(function(e) {
-			
-			if(e.keyCode == 13){
-				var userName = $("#form-username").val();
-		    	var pwd = $("#form-password").val();
-		    	
-		    	if(userName==""){
-		    		$("#form-username").addClass('input-error');
-		    		return;
-		    	}
-		    	
-		    	if(pwd==""){
-		    		$("#form-password").addClass('input-error');
-		    		return;
-		    	}
-		    	
-	    		$.ajax(
-	    				{
-	    		            type:"post",  //提交方式  
-	    		            dataType:"json", //数据类型  
-	    		            url:encodeURI("${wmsUrl}/admin/login.shtml"), //请求url  
-	    		            data:{'userName':userName,'pwd':pwd},
-	    		            success:function(data){ //提交成功的回调函数  
-	    		            	if(data.success){
-	    		            		window.location.href = "${wmsUrl}/admin/main.shtml";
-	    		            	}else{
-	    		            		alert(data.msg);
-	    			            	$(".login_err").html(data.msg);	
-	    		            	}
-		    		         } ,
-		    		         error : function(data) {   
-		    		            	$(".login_err").html("网络异常，请稍后登录");	
-		    		       	 }
-	    				}
-	    			)
-			}
 	    });
 	});
 	</script>

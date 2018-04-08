@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -42,6 +43,7 @@ public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService imple
 	StaffMapper staffMapper;
 
 	@Override
+	@Log(content = "新增商品基础信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addEntity(GoodsBaseEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -52,7 +54,7 @@ public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("新增商品基础信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -72,6 +74,7 @@ public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
+	@Log(content = "更新商品基础信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updEntity(GoodsBaseEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -82,7 +85,7 @@ public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("插入失败:" + json.getString("errorCode") + "-" + json.getString("errorMsg"));
+			throw new Exception("更新商品基础信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
