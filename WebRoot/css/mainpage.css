@@ -15,7 +15,7 @@ a, a:hover, a:active, a:visited {
     transition-duration: 0.3s, 0.3s;
     transition-timing-function: ease-in-out, ease-in-out;
     transition-delay: 0s, 0s;
-	margin-left: 230px !important;
+	margin-left: 136px !important;
 	z-index:820;
 }
 

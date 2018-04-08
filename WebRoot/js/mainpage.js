@@ -6,7 +6,7 @@ $(function() {
 	var newIframeObject=document.createElement("IFRAME");
 	
     $(window).bind("load resize", function() {
-        topOffset = 54; 
+        topOffset = 68; 
         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
         if (width < 768) {
             $('div.navbar-collapse').addClass('collapse');
@@ -60,3 +60,65 @@ $(function() {
         return false;
     });
 });
+
+//左侧导航栏超出滚动
+var scrollFunc = function (e) {  
+	var offsetHeight = $('.sidebar-menu').height();
+    var height = $(window).height() - 68;
+    e = e || window.event;  
+    $('.sidebar-menu').stop();
+    if(offsetHeight > height){
+    	if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件               
+            if (e.wheelDelta > 0) { //当滑轮向上滚动时  
+            	$('.sidebar-menu').animate({
+            		marginTop: 0
+            	},300);
+            	return false;
+            }  
+            if (e.wheelDelta < 0) { //当滑轮向下滚动时  
+            	$('.sidebar-menu').animate({
+            		marginTop: height - offsetHeight
+            	},300);
+            	return false;
+            }  
+        } else if (e.detail) {  //Firefox滑轮事件  
+            if (e.detail < 0) { //当滑轮向上滚动时  
+            	$('.sidebar-menu').animate({
+            		marginTop: 0
+            	},300);
+            	return false;
+            }  
+            if (e.detail > 0) { //当滑轮向下滚动时  
+            	$('.sidebar-menu').animate({
+            		marginTop: height - offsetHeight
+            	},300);
+            	return false;
+            }  
+        }  
+    }
+}  
+//给页面绑定滑轮滚动事件  
+if (document.addEventListener) {  
+    document.addEventListener('DOMMouseScroll', scrollFunc, false);  
+}  
+//滚动滑轮触发scrollFunc方法  
+window.onmousewheel = document.onmousewheel = scrollFunc; 	
+
+$('.sidebar-menu').on('click','.treeview',function(){
+//	  var offsetHeight = $('.sidebar-menu').height();
+//    var height = $(window).height() - 68;
+	$('.sidebar-menu').stop();
+	$('.sidebar-menu').animate({
+		marginTop: 0
+	},300);
+//    if(offsetHeight > height){
+//    	$('.sidebar-menu').animate({
+//    		marginTop: height - offsetHeight
+//    	},300);
+//    }else if(offsetHeight <= height){
+//    	$('.sidebar-menu').animate({
+//    		marginTop: 0
+//    	},300);
+//    }
+	
+})

@@ -15,141 +15,125 @@
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="goodsBaseForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>基本信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">品牌<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									 <select class="form-control" name="brandId" id="brandId" style="width: 100%;" disabled="disabled">
-				                   	  <option selected="selected" value="${brand.brandId}">${brand.brand}</option>
-				                   	  <!-- <option selected="selected" value="-1">未选择</option>
-				                   	  <c:forEach var="brand" items="${brands}">
-				                   	  	<option value="${brand.brandId}">${brand.brand}</option>
-				                   	  </c:forEach> -->
-					                </select>
-					               <input type="hidden" class="form-control" name="id" id="id" value="${brand.id}"/>
-					               <input type="hidden" class="form-control" name="brand" id="brand" value="${brand.brand}"/>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">一级分类<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									 <select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;" disabled="disabled">
-				                   	  <option selected="selected" value="${firstId}">${firstName}</option>
-				                   	  <!-- <option selected="selected" value="-1">未选择</option>
-				                   	  <c:forEach var="first" items="${firsts}">
-				                   	  	<option value="${first.firstId}">${first.name}</option>
-				                   	  </c:forEach> -->
-					                </select>
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">二级分类<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									<select class="form-control" name="secondCatalogId" id="secondCatalogId" style="width: 100%;" disabled="disabled">
-									 <option selected="selected" value="${secondId}">${secondName}</option>
-					                </select>
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">三级分类<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" style="width: 100%;" disabled="disabled">
-									<option selected="selected" value="${thirdId}">${thirdName}</option>
-					                </select>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品名称<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="goodsName" value="${brand.goodsName}">
-				                </div>
-							</div>
-						</div>
-						<!-- <div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品条码<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="encode" value="${brand.encode}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">单位<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="unit" value="${brand.unit}">
-				                </div>
-							</div>
-						</div> -->
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-field-1"><h4>海关信息(*跨境商品必填)</h4></label>
-						</div>
-						<!-- <div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="hscode" value="${brand.hscode}">
-				                </div>
-							</div>
-						</div> -->
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">增值税</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="incrementTax" value="${brand.incrementTax}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">关税</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="tariff" value="${brand.tariff}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-	                            <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-iframe">
+       	<form class="form-horizontal" role="form" id="goodsBaseForm" >
+        	<div class="title">
+        		<h1>基本信息</h1>
+        	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left" for="form-field-1">品牌<font style="color:red">*</font> </div>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="brandId" id="brandId" disabled="disabled">
+			            <option selected="selected" value="${brand.brandId}">${brand.brand}</option>
+			                 	  <!-- <option selected="selected" value="-1">未选择</option>
+			                 	  <c:forEach var="brand" items="${brands}">
+			                 	  	<option value="${brand.brandId}">${brand.brand}</option>
+			                 	  </c:forEach> -->
+			        </select>
+		            <input type="hidden" class="form-control" name="id" id="id" value="${brand.id}"/>
+		            <input type="hidden" class="form-control" name="brand" id="brand" value="${brand.brand}"/>
+	             	<div class="item-content">
+	             		这里填写一些注释
+	             	</div>
+	             </div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left" for="form-field-1">分类<font style="color:red">*</font> </div>
+				<div class="col-sm-9 item-right">
+					<div class="right-items">
+						<select class="form-control" name="firstCatalogId" id="firstCatalogId" disabled="disabled">
+	                  	  <option selected="selected" value="${firstId}">${firstName}</option>
+	                  	  <!-- <option selected="selected" value="-1">未选择</option>
+	                  	  <c:forEach var="first" items="${firsts}">
+	                  	  	<option value="${first.firstId}">${first.name}</option>
+	                  	  </c:forEach> -->
+	                	</select>	
+					</div>
+					<div class="right-items">
+						<select class="form-control" name="secondCatalogId" id="secondCatalogId" disabled="disabled">
+						 <option selected="selected" value="${secondId}">${secondName}</option>
+		                </select>
+	                </div>
+	                <div class="right-items last-items">
+						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" disabled="disabled">
+						<option selected="selected" value="${thirdId}">${thirdName}</option>
+		                </select>
+	                </div>
+	                <div class="item-content">
+	             		这里填写一些注释
+	             	</div>
 				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left" for="form-field-1">商品名称<font style="color:red">*</font> </div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="goodsName" value="${brand.goodsName}">
+					<div class="item-content">
+	             		这里填写一些注释
+	             	</div>
+				</div>
+			</div>
+			<!-- <div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品条码<font style="color:red">*</font> </label>
+				<div class="col-sm-5">
+					<div class="input-group">
+	                  <div class="input-group-addon">
+	                    <i class="fa fa-pencil"></i>
+	                  </div>
+                 			<input type="text" class="form-control" name="encode" value="${brand.encode}">
+	                </div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">单位<font style="color:red">*</font> </label>
+				<div class="col-sm-5">
+					<div class="input-group">
+	                  <div class="input-group-addon">
+	                    <i class="fa fa-pencil"></i>
+	                  </div>
+                 			<input type="text" class="form-control" name="unit" value="${brand.unit}">
+	                </div>
+				</div>
+			</div> -->
+			<div class="title">
+        		<h1>海关信息(*跨境商品必填)</h1>
+        	</div>
+			<!-- <div class="form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
+				<div class="col-sm-5">
+					<div class="input-group">
+	                  <div class="input-group-addon">
+	                    <i class="fa fa-pencil"></i>
+	                  </div>
+                 			<input type="text" class="form-control" name="hscode" value="${brand.hscode}">
+	                </div>
+				</div>
+			</div> -->
+			<div class="list-item">
+				<div class="col-sm-3 item-left" for="form-field-1">增值税</div>
+				<div class="col-sm-9 item-right">
+                 	<input type="text" class="form-control" name="incrementTax" value="${brand.incrementTax}">
+	            	<div class="item-content">
+	             		这里填写一些注释
+	             	</div>
+	            </div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left" for="form-field-1">关税</div>
+				<div class="col-sm-9 item-right">
+                	<input type="text" class="form-control" name="tariff" value="${brand.tariff}">
+	            	<div class="item-content">
+	             		这里填写一些注释
+	             	</div>
+	            </div>
+			</div>
+			<div class="submit-btn">
+            	<button type="button" id="submitBtn">提交</button>
+                <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->
+             </div>
+		</form>
 	</section>
-	<%@ include file="../../footer.jsp"%>
+<%-- 	<%@ include file="../../footer.jsp"%> --%>
 	<script type="text/javascript">
 	
 	/*$("#brandId").change(function(){
