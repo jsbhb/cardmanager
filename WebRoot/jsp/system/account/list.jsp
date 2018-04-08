@@ -14,53 +14,54 @@
 </head>
 <body>
 <section class="content-wrapper">
-	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>账号管理</h1>
+    <section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="#"><i class="fa fa-dashboard"></i>系统管理</a></li>
 	        <li class="active">账号管理</li>
 	      </ol>
-    </section>	
-	<section class="content">
-		<div class="box box-warning">
-			<div class="box-header">
-				<div class="row form-horizontal">
-				</div>
+	      <div class="search">
+	      	<input type="text" name="name" placeholder="输入账号名称" >
+	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+		  </div>
+    </section>
+    <section class="content">
+			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 			</div>
-			<div class="box-body">
+			
+			<div class="list-content">
 				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="staffTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>badge</th>
-										<th>名称</th>
-										<th>分级机构</th>
-										<th>登录账号</th>
-										<th>订货平台状态</th>
-										<th>微店平台状态</th>
-										<th>创建时间</th>
-										<th>更新时间</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+					<div class="col-md-10 list-btns">
+						<button type="button" onclick="toAdd()">新增账号</button>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table id="baseTable" class="table table-hover myClass">
+							<thead>
+								<tr>
+									<th>badge</th>
+									<th>名称</th>
+									<th>分级机构</th>
+									<th>登录账号</th>
+									<th>订货平台状态</th>
+									<th>微店平台状态</th>
+									<th>创建时间</th>
+									<th>更新时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+							<ul id="pagination" class="pagination">
+							</ul>
+						</div>
+					</div>
+				</div>	
 			</div>
-		</div>	
+		</section>
 	</section>
-	</section>
-	
-	<%@ include file="../../footer.jsp"%>
-	
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
@@ -70,7 +71,7 @@
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/system/accountMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -91,7 +92,7 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
-	$("#staffTable tbody").html("");
+	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
 		return;
@@ -167,7 +168,7 @@ function rebuildTable(data){
 		str += "</td></tr>";
 	}
 
-	$("#staffTable tbody").html(str);
+	$("#baseTable tbody").html(str);
 }
 
 function sync2S(id){

@@ -148,6 +148,7 @@ body.hold-transition .main-header .logo {
   padding: 15px;
   margin: 0 10px;
   background: #fff;
+  overflow: hidden;
 }
 .content > .moreSearchContent{
 	background: #f9f9f9;

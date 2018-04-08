@@ -19,98 +19,49 @@ i {font-size:10px;}
 <body>
 	<section class="content-wrapper">
 		<section class="content-header">
-		      <h1><i class="fa fa-street-view"></i>角色管理</h1>
 		      <ol class="breadcrumb">
-		        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+		        <li><a href="javascript:void(0);">系统管理</a></li>
 		        <li class="active">角色管理</li>
 		      </ol>
+		      <div class="search">
+		      	<input type="text" name="name" placeholder="输入角色名称" >
+		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+			  </div>
 	    </section>
 		<section class="content">
-			 <div class="box box-warning">
-				<div class="box-header query"><!-- 
-				<div class="row form-horizontal">
-						<div class="col-xs-4">
-							<div class="form-group">
-								<label class="col-sm-4 control-label no-padding-right" for="form-field-1">角色编号</label>
-								<div class="col-sm-8">
-									<div class="input-group">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-user-o"></i>
-					                  </div>
-			                  			<input type="text" class="form-control" name="roleId">
-					                </div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-4">
-							<div class="form-group">
-								<label class="col-sm-4 control-label no-padding-right" for="form-field-1">角色名称</label>
-								<div class="col-sm-8">
-									<div class="input-group">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-phone"></i>
-					                  </div>
-					                  <input type="text" class="form-control" name="roleName">
-					                </div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xs-4">
-							<div class="form-group">
-								<label class="col-sm-4 control-label no-padding-right" for="form-field-1">启用状态 </label>
-								<div class="col-sm-8">
-									<div class="input-group">
-										<select class="form-control">
-											<option value="-1">全部</option>
-											<option value="1">启用</option>
-											<option value="0">未启用</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-offset-10 col-md-12">
-							<div class="form-group">
-	                                <button type="button" class="btn btn-danger" id="querybtns">提交</button>
-	                        </div>
-	                     </div>
-					</div> -->
+			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 			</div>
-	       
-				<div class="box-body">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">
-									<button type="button" onclick="toAdd()" class="btn btn-primary">新增角色</button>
-									</h3>
-								</div>
-								<div class="panel-body">
-									<table id="roleTable" class="table table-hover">
-									<thead>
-										<tr>
-											<th>操作</th>
-											<th>角色编号</th>
-											<th>角色名称</th>
-											<th>启用状态</th>
-											<th>角色状态</th>
-											<th>创建时间</th>
-											<th>更新时间</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<div class="pagination-nav">
-									<ul id="pagination" class="pagination">
-									</ul>
-								</div>
-								</div>
-							</div>
-						</div>
-					</div>	
+			
+			<div class="list-content">
+				<div class="row">
+					<div class="col-md-10 list-btns">
+						<button type="button" onclick="toAdd()">新增角色</button>
+					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table id="baseTable" class="table table-hover myClass">
+							<thead>
+								<tr>
+									<th>角色编号</th>
+									<th>角色名称</th>
+									<th>启用状态</th>
+									<th>角色状态</th>
+									<th>创建时间</th>
+									<th>更新时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+							<ul id="pagination" class="pagination">
+							</ul>
+						</div>
+					</div>
+				</div>	
 			</div>
 		</section>
 	</section>
@@ -123,7 +74,7 @@ i {font-size:10px;}
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/system/roleMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -132,6 +83,9 @@ var options = {
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
+	 $('.breadcrumb').on('click','a',function(){
+			top.location.reload();
+		});
 })
 
 
@@ -144,7 +98,7 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
-	$("#roleTable tbody").html("");
+	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
 		return;
@@ -161,11 +115,6 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		//if ("${privilege>=2}") {
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='#' onclick='toEdit("+list[i].roleId+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-			str += "</td>";
-		}
 		str += "<td>" + list[i].roleId;
 		str += "</td><td>" + list[i].roleName;
 		
@@ -188,10 +137,15 @@ function rebuildTable(data){
 		}else{
 			str += "</td><td>" + list[i].updateTime;
 		}
+		if (true) {
+			str += "<td align='left'>";
+			str += "<a href='#' onclick='toEdit("+list[i].roleId+")'>编辑</a>";
+			str += "</td>";
+		}
 		str += "</td></tr>";
 	}
 
-	$("#roleTable tbody").html(str);
+	$("#baseTable tbody").html(str);
 }
 	
 function toAdd(){

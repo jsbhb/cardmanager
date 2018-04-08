@@ -16,104 +16,52 @@
 </head>
 <body>
 <section class="content-wrapper">
-	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>分级管理</h1>
-	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-	        <li class="active">分级管理</li>
-	      </ol>
-    </section>	
+    <section class="content-header">
+		      <ol class="breadcrumb">
+		        <li><a href="javascript:void(0);">系统管理</a></li>
+		        <li class="active">角色管理</li>
+		      </ol>
+		      <div class="search">
+		      	<input type="text" name="name" placeholder="输入分级名称" >
+		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+			  </div>
+	    </section>
 	<section class="content">
-		<div class="box box-warning">
-			<div class="box-header">
-				<div class="row form-horizontal"><!--
-				<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级编号<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="id">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="gradeName">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">公司名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="company">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-offset-10 col-md-12">
-						<div class="form-group">
-                                <button type="button" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
-                                <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-                        </div>
-                     </div>-->
-				</div> 
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-10 list-btns">
+					<button type="button" onclick="toAdd()">新增分级</button>
+				</div>
 			</div>
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-								<button type="button" onclick="toAdd()" class="btn btn-primary">新增分级</button>
-								</h3>
-							</div>
-							<table id="gradeTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>操作</th>
-										<th>等级编号</th>
-										<th>名称</th>
-										<th>上级机构</th>
-										<th>类型</th>
-										<th>公司</th>
-										<th>负责人</th>
-										<th>电话</th>
-										<th>创建时间</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+				<div class="col-md-12 ">
+					<table id="baseTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th>等级编号</th>
+								<th>名称</th>
+								<th>上级机构</th>
+								<th>类型</th>
+								<th>公司</th>
+								<th>负责人</th>
+								<th>电话</th>
+								<th>创建时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
 			</div>
-		</div>	
 	</section>
 	</section>
-	
-	<%@ include file="../../footer.jsp"%>
-	
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
@@ -124,7 +72,7 @@
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/system/gradeMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -145,7 +93,7 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
-	$("#gradeTable tbody").html("");
+	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
 		return;
@@ -162,11 +110,7 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		//if ("${privilege>=2}") {
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-			str += "</td>";
-		}
+		
 		str += "<td>" + list[i].id;
 		str += "</td><td>" + (list[i].gradeName == null ? "" : list[i].gradeName);
 		
@@ -194,11 +138,15 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].personInCharge == null ? "" : list[i].personInCharge);
 		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
-		
+		if (true) {
+			str += "<td align='left'>";
+			str += "<a href='#' onclick='toEdit("+list[i].id+")'>编辑</a>";
+			str += "</td>";
+		}
 		str += "</td></tr>";
 	}
 
-	$("#gradeTable tbody").html(str);
+	$("#baseTable tbody").html(str);
 }
 	
 function toEdit(id){
