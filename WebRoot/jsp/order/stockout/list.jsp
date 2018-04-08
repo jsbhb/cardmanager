@@ -36,7 +36,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
-	                   	  <option selected="selected" value="">未选择</option>
+	                   	  <option selected="selected" value="">供应商</option>
 	                   	  <c:forEach var="supplier" items="${supplierId}">
 	                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
 	                   	  </c:forEach>
@@ -46,7 +46,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="status" id="status">
-	                   	  <option selected="selected" value="">全部</option>
+	                   	  <option selected="selected" value="">订单状态</option>
 	                   	  <option value="0">待支付</option>
 	                   	  <option value="1">已付款</option>
 	                   	  <option value="2">支付单报关</option>
@@ -67,7 +67,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="centerId" id="centerId" >
-	                   	  <option selected="selected" value="">未选择</option>
+	                   	  <option selected="selected" value="">区域选择</option>
 	                   	  <c:forEach var="center" items="${centerId}">
                   	  			<option value="${center.gradeId}">${center.gradeName}</option>
 	                   	  </c:forEach>
@@ -77,7 +77,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="shopId" id="shopId" style="width: 150px;">
-	                   	  <option selected="selected" value="">未选择</option>
+	                   	  <option selected="selected" value="">店铺选择</option>
 	                   	  <c:forEach var="shop" items="${shopId}">
                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
 	                   	  </c:forEach>
@@ -165,6 +165,7 @@ var options = {
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
+	 var top = getTopWindow();
 	 $('.breadcrumb').on('click','a',function(){
 			top.location.reload();
 		});

@@ -16,189 +16,131 @@
 </head>
 <body>
 <section class="content-wrapper">
+	<section class="content-header">
+	      <ol class="breadcrumb">
+	        <li><a href="#"><i class="fa fa-dashboard"></i>订单管理</a></li>
+	        <li class="active">退款订单</li>
+	      </ol>
+	      <div class="search">
+	      	<input type="text" name="orderId" placeholder="输入订单编号" >
+	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+	      	<div class="moreSearchBtn">高级搜索</div>
+		  </div>
+    </section>
 	<section class="content">
-		<div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">搜索</h5>
-	            	<div class="box-tools pull-right">
-	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
-			</div>
-		    <div class="box-body">
-			<div class="row form-horizontal query">
-				<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">订单号</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-		                  			<input type="text" class="form-control" name="orderId">
-				                </div>
-							</div>
-						</div>
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
+		<div class="moreSearchContent">
+			<div class="row form-horizontal">
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="supplierId" id="supplierId">
+	                   	  <option selected="selected" value="">供应商</option>
+	                   	  <c:forEach var="supplier" items="${supplierId}">
+	                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+	                   	  </c:forEach>
+		                </select>
 					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">商品编号</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-		                  			<input type="text" class="form-control" name="itemId">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">商品编码</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-		                  			<input type="text" class="form-control" name="itemCode">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <select class="form-control" name="supplierId" id="supplierId" style="width: 150px;">
-				                   	  <option selected="selected" value="">未选择</option>
-				                   	  <c:forEach var="supplier" items="${supplierId}">
-				                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
-				                   	  </c:forEach>
-					                </select>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">状态<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <select class="form-control" name="status" id="status" style="width: 150px;">
-				                   	  <option selected="selected" value="">全部</option>
-				                   	  <option value="0">待支付</option>
-				                   	  <option value="1">已付款</option>
-				                   	  <option value="2">支付单报关</option>
-				                   	  <option value="3">已发仓库</option>
-				                   	  <option value="4">已报海关</option>
-				                   	  <option value="5">单证放行</option>
-				                   	  <option value="6">已发货</option>
-				                   	  <option value="7">已收货</option>
-				                   	  <option value="8">退单</option>
-				                   	  <option value="9">超时取消</option>
-				                   	  <option value="11">资金池不足</option>
-				                   	  <option value="12">已支付</option>
-				                   	  <option value="21">退款中</option>
-				                   	  <option value="99">异常状态</option>
-					                </select>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">区域中心</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="centerId" id="centerId" style="width: 160px;">
-				                   	  <option selected="selected" value="">未选择</option>
-				                   	  <c:forEach var="center" items="${centerId}">
-		                   	  			<option value="${center.gradeId}">${center.gradeName}</option>
-				                   	  </c:forEach>
-					              	</select>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">门店</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="shopId" id="shopId" style="width: 150px;">
-				                   	  <option selected="selected" value="">未选择</option>
-				                   	  <c:forEach var="shop" items="${shopId}">
-		                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
-				                   	  </c:forEach>
-					              	</select>
-				                </div>
-							</div>
-						</div>
-					</div>
-<!-- 					<div class="col-xs-4" style="display: none"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">推手</label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<select class="form-control" name="pushUserId" id="pushUserId" style="width: 150px;"> -->
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 				                   	  <c:forEach var="pushUser" items="${pushUserId}"> --%>
-<%-- 		                   	  			<option value="${pushUser.userId}">${pushUser.name}</option> --%>
-<%-- 				                   	  </c:forEach> --%>
-<!-- 					              	</select> -->
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div class="col-xs-4" style="display: none"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">消费者</label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<select class="form-control" name="customerId" id="customerId" style="width: 150px;"> -->
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 				                   	  <c:forEach var="customer" items="${customerId}"> --%>
-<%-- 		                   	  			<option value="${customer.userId}">${customer.name}</option> --%>
-<%-- 				                   	  </c:forEach> --%>
-<!-- 					              	</select> -->
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					<div class="col-md-offset-10 col-md-12">
-						<div class="form-group">
-                                <button type="button" class="btn btn-primary" id="querybtns">提交</button>
-                        </div>
-                     </div>
 				</div>
-			</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="status" id="status">
+	                   	  <option selected="selected" value="">订单状态</option>
+	                   	  <option value="0">待支付</option>
+	                   	  <option value="1">已付款</option>
+	                   	  <option value="2">支付单报关</option>
+	                   	  <option value="3">已发仓库</option>
+	                   	  <option value="4">已报海关</option>
+	                   	  <option value="5">单证放行</option>
+	                   	  <option value="6">已发货</option>
+	                   	  <option value="7">已收货</option>
+	                   	  <option value="8">退单</option>
+	                   	  <option value="9">超时取消</option>
+	                   	  <option value="11">资金池不足</option>
+	                   	  <option value="12">已支付</option>
+	                   	  <option value="21">退款中</option>
+	                   	  <option value="99">异常状态</option>
+		                </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="centerId" id="centerId" >
+	                   	  <option selected="selected" value="">区域选择</option>
+	                   	  <c:forEach var="center" items="${centerId}">
+                  	  			<option value="${center.gradeId}">${center.gradeName}</option>
+	                   	  </c:forEach>
+		              	</select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="shopId" id="shopId">
+	                   	  <option selected="selected" value="">店铺选择</option>
+	                   	  <c:forEach var="shop" items="${shopId}">
+                  	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
+	                   	  </c:forEach>
+		              	</select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="form-control" name="orderId" placeholder="请输入商品编码">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="form-control" name="itemCode" placeholder="请输入商家商品编码">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchBtns">
+						 <div class="lessSearchBtn">简易搜索</div>
+                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+                         <button type="button" class="clear">清除选项</button>
+                    </div>
+                </div>
+            </div>
 		</div>
 		
 	
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="orderTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>订单编号</th>
-										<th>状态</th>
-										<th>快递公司</th>
-										<th>物流单号</th>
-										<th>供应商</th>
-										<th>支付总金额</th>
-										<th>消费者</th>
-										<th>所属区域</th>
-										<th>所属店铺</th>
-										<th>推手</th>
-										<th>交易时间</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-12 list-btns">
+					<button type="button" onclick="">订单导出</button>
+					<button type="button" onclick="">订单导出</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table id="baseTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th>订单编号</th>
+								<th>状态</th>
+								<th>快递公司</th>
+								<th>物流单号</th>
+								<th>供应商</th>
+								<th>支付总金额</th>
+								<th>消费者</th>
+								<th>所属区域</th>
+								<th>所属店铺</th>
+								<th>交易时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -216,7 +158,7 @@
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/order/stockOutMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -225,7 +167,23 @@ var options = {
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
+	 var top = getTopWindow();
+	 $('.breadcrumb').on('click','a',function(){
+			top.location.reload();
+		});
 })
+
+//搜索类型切换
+$('.moreSearchBtn').click(function(){
+	$('.moreSearchContent').slideDown(300);
+	$('.search').hide();
+});
+$('.lessSearchBtn').click(function(){
+	$('.moreSearchContent').slideUp(300);
+	setTimeout(function(){
+		$('.search').show();
+	},300);
+});
 
 
 function reloadTable(){
@@ -237,7 +195,7 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
-	$("#orderTable tbody").html("");
+	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
 		return;
@@ -313,13 +271,12 @@ function rebuildTable(data){
 			}
 		}
 		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
-		str += "</td><td>" + (list[i].pushUserName == null ? (list[i].pushUserId == null ? "" : list[i].pushUserId) : list[i].pushUserName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		var arr = [1,2,3,4,5,6,7,11,12,99];
 		var index = $.inArray(status,arr);
 		str += "<td align='left'>";
 		if(index >= 0){
-			str += "<button type='button' class='btn btn-danger' onclick='toShow(\""+list[i].orderId+"\")' >退款处理</button>";
+			str += "<a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>退款处理</a>";
 		}
 		str += "</td>";
 		
@@ -327,7 +284,7 @@ function rebuildTable(data){
 	}
 		
 
-	$("#orderTable tbody").html(str);
+	$("#baseTable tbody").html(str);
 }
 	
 

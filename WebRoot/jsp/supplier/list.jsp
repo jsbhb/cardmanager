@@ -17,102 +17,56 @@
 <body>
 <section class="content-wrapper">
 	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>供应商管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-	        <li class="active">供应商管理</li>
+	        <li><a href="#"><i class="fa fa-dashboard"></i>供应商管理</a></li>
+	        <li class="active">供应商列表</li>
 	      </ol>
-    </section>	
+	      <div class="search">
+	      	<input type="text" name="name" placeholder="输入供应商名称" >
+	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+		  </div>
+    </section>
 	<section class="content">
-		<div class="box box-warning">
-			<div class="box-header">
-				<div class="row form-horizontal"><!--
-				<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级编号<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="id">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="supplierName">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">公司名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="company">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-offset-10 col-md-12">
-						<div class="form-group">
-                                <button type="button" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
-                                <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-                        </div>
-                     </div>-->
-				</div> 
+		<section class="content">
+			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 			</div>
-			<div class="box-body">
+			
+			<div class="list-content">
 				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-								<button type="button" onclick="toAdd()" class="btn btn-primary">新增供应商</button>
-								</h3>
-							</div>
-							<table id="supplierTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>操作</th>
-										<th>供应商名称</th>
-										<th>国家省市</th>
-										<th>地址</th>
-										<th>负责人</th>
-										<th>电话</th>
-										<th>邮箱</th>
-										<th>传真</th>
-										<th>创建时间</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+					<div class="col-md-10 list-btns">
+						<button type="button" onclick="toAdd()">新增员工</button>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table id="baseTable" class="table table-hover myClass">
+							<thead>
+								<tr>
+									<th>操作</th>
+									<th>供应商名称</th>
+									<th>国家省市</th>
+									<th>地址</th>
+									<th>负责人</th>
+									<th>电话</th>
+									<th>邮箱</th>
+									<th>传真</th>
+									<th>创建时间</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+							<ul id="pagination" class="pagination">
+							</ul>
+						</div>
+					</div>
+				</div>	
 			</div>
-		</div>	
+		</section>
 	</section>
 	</section>
-	
-	<%@ include file="../footer.jsp"%>
 	
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
@@ -124,7 +78,7 @@
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/supplier/supplierMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -133,6 +87,10 @@ var options = {
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
+	 var top = getTopWindow();
+		$('.breadcrumb').on('click','a',function(){
+			top.location.reload();
+		});
 })
 
 
@@ -145,7 +103,7 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
-	$("#supplierTable tbody").html("");
+	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
 		return;
@@ -162,11 +120,7 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		//if ("${privilege>=2}") {
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-			str += "</td>";
-		}
+		
 		str += "</td><td>" + list[i].supplierName;
 		str += "</td><td>" + (list[i].country == null ? "" : list[i].country) +" "+(list[i].province == null ? "" : list[i].province);
 		str += "</td><td>" + (list[i].city == null ? "" : list[i].city)+" "+(list[i].area == null ? "" : list[i].area)+" "+(list[i].address == null ? "" : list[i].address);
@@ -175,12 +129,16 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].email == null ? "" : list[i].email);
 		str += "</td><td>" + (list[i].fax == null ? "" : list[i].fax);
 		str += "</td><td>" + (list[i].enterTime==null ? "" : list[i].enterTime);
-		
+		if (true) {
+			str += "<td align='left'>";
+			str += "<a href='#' onclick='toEdit("+list[i].id+")'>编辑</a>";
+			str += "</td>";
+		}
 		str += "</td></tr>";
 	}
 		
 
-	$("#supplierTable tbody").html(str);
+	$("#baseTable tbody").html(str);
 }
 	
 function toEdit(id){

@@ -83,6 +83,7 @@ var options = {
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
+	 var top = getTopWindow();
 	 $('.breadcrumb').on('click','a',function(){
 			top.location.reload();
 		});
