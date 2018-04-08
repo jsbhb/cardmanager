@@ -15,18 +15,41 @@
 </head>
 
 <body >
-<section class="content-iframe">
-	<form class="form-horizontal" role="form" id="itemForm" style="margin-top:60px;">
-		<div class="list-item">
-			<div class="col-xs-3 item-left">标签名称</div>
-			<div class="col-xs-6 item-right">
-            	<input type="text" class="form-control" style="width:99%;" name="tagName">
+<section class="content-wrapper">
+	<section class="content">
+		<form class="form-horizontal" role="form" id="itemForm" >
+			<div class="col-md-12">
+	        	<div class="box box-info">
+	        		<div class="box-header with-border">
+						<div class="box-header with-border">
+			            	<h5 class="box-title">标签信息</h5>
+			            	<div class="box-tools pull-right">
+			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			              	</div>
+			            </div>
+					</div>
+		            <div class="box-body">
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">标签名称</label>
+							<div class="col-sm-6">
+								<div class="input-group">
+				                  	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                  	</div>
+				                  	<input type="text" class="form-control" name="tagName">
+				                </div>
+							</div>
+							<div class="col-sm-2">
+								<div class="form-group">
+		                     		<button type="button" class="btn btn-primary" id="submitBtn">确定</button>
+		                        </div>
+							</div>
+						</div>
+	            	</div>
+          		</div>
 			</div>
-			<div class="col-xs-3">
-            	<button type="button" class="btn btn-primary" id="submitBtn" style="height:31px;line-height:10px;">确定</button>
-            </div>
-        </div>
-	</form>
+		</form>
+	</section>
 </section>
 	<script type="text/javascript">
 	 
@@ -43,7 +66,8 @@
 					 if(data.success){
 						 layer.alert("保存成功");
 						 parent.layer.closeAll();
-						 parent.refreshTag();
+// 						 parent.refreshTag();
+						 parent.location.reload();
 						 
 					 }else{
 						 layer.alert(data.msg);

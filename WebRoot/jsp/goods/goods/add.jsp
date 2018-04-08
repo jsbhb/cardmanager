@@ -17,364 +17,267 @@
 </head>
 
 <body >
-<section class="content-wrapper" style="height:900px">
-	<section class="content">
-		<form class="form-horizontal" role="form" id="itemForm" >
-			<div class="col-md-6">
-	        	<div class="box box-warning">
-	        		<div class="box-header with-border">
-						<div class="box-header with-border">
-			            	<h5 class="box-title">绑定基础商品<font style="color:red">*</font> <a href="#" onclick="showBaseGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
-			            	<div class="box-tools pull-right">
-			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-			              	</div>
-			            </div>
-					</div>
-					<div class="box-body" id="baseInfo" hidden>
-				            <div class="form-group"  >
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">基础编码</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-			                  			<input type="text" readonly class="form-control" name="baseId" id="baseId">
-					                </div>
-								</div>
-								<label class="col-sm-2 control-label no-padding-right" for="form-field-1">名称</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-			                  			<input type="text" readonly class="form-control" id="baseName">
-					                </div>
-								</div>
-							</div>
-							<div class="form-group" >
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1">品牌</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-			                  			<input type="text" readonly class="form-control" id="brand">
-					                </div>
-								</div>
-								<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分类</label>
-								<div class="col-sm-3">
-									<div class="input-group">
-			                  			<input type="text" readonly class="form-control" id="catalog">
-					                </div>
-								</div>
-							</div>
-			            </div>
-				</div>
+<section class="content-iframe">
+	<form class="form-horizontal" role="form" id="itemForm" >
+		<div class="title">
+       		<h1>新增明细信息</h1>
+       	</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">商家</div>
+			<div class="col-sm-9 item-right">
+				<c:choose>
+					<c:when test="${third!=null}">
+               			<input type="hidden" class="form-control" name="supplierId" value="${third.supplierId}">
+               			<input type="hidden" class="form-control" name="type" value="sync">
+               			<input type="hidden" class="form-control" name="thirdId" value="${third.id}">
+               			<input type="text" readonly class="form-control" name="supplierName" value="${third.supplierName}">
+					</c:when>
+					<c:otherwise>
+						<select class="form-control" name="supplierId" id="supplierId">
+	                   	  <option selected="selected" value="-1">未选择</option>
+	                   	  <c:forEach var="supplier" items="${suppliers}">
+	                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+	                   	  </c:forEach>
+		                </select>
+		               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
+		               <input type="hidden" class="form-control" name="type" value="normal">
+					</c:otherwise>
+				</c:choose>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
 			</div>
-			<div class="col-md-6">
-	        	<div class="box box-primary">
-	        		<div class="box-header with-border">
-						<div class="box-header with-border">
-			            	<h5 class="box-title">规格模板<font style="color:red">(非必需)</font> <a href="#" onclick="showSpaceGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
-			            	<div class="box-tools pull-right">
-			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-			              	</div>
-			            </div>
-					</div>
-					<div class="box-body" id="specsInfo" hidden>
-			            <div class="form-group"  >
-							<label class="col-sm-3 control-label no-padding-right" id="specsName" for="form-field-1"></label>
-							<input type="hidden" readonly class="form-control" id="templateId" name="templateId">
-							<div class="col-sm-6">
-								<div class="input-group" id="specsTemplate">
-				                </div>
-							</div>
-						</div>
-		            </div>
-				</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">商家编码(itemCode)</div>
+			<div class="col-sm-9 item-right">
+            	<c:choose>
+	            	<c:when test="${third != null}">
+                 		<input type="text" class="form-control" name="itemCode" value="${third.itemCode}">
+					</c:when>
+					<c:otherwise>
+                  		<input type="text" class="form-control" name="itemCode">
+					</c:otherwise>
+				</c:choose>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
 			</div>
-			<div class="col-md-12">
-	        	<div class="box box-info">
-	        		<div class="box-header with-border">
-						<div class="box-header with-border">
-			            	<h5 class="box-title">新增明细信息</h5>
-			            	<div class="box-tools pull-right">
-			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-			              	</div>
-			            </div>
-					</div>
-		            <div class="box-body">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">商家</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-									<c:choose>
-										<c:when test="${third!=null}">
-											<div class="input-group-addon">
-							                    <i class="fa fa-pencil"></i>
-							                </div>
-				                  			<input type="hidden" class="form-control" name="supplierId" value="${third.supplierId}">
-				                  			<input type="hidden" class="form-control" name="type" value="sync">
-				                  			<input type="hidden" class="form-control" name="thirdId" value="${third.id}">
-				                  			<input type="text" readonly class="form-control" name="supplierName" value="${third.supplierName}">
-										</c:when>
-										<c:otherwise>
-											<select class="form-control" name="supplierId" id="supplierId" style="width: 100%;">
-						                   	  <option selected="selected" value="-1">未选择</option>
-						                   	  <c:forEach var="supplier" items="${suppliers}">
-						                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
-						                   	  </c:forEach>
-							                </select>
-							               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
-							               <input type="hidden" class="form-control" name="type" value="normal">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">商家编码(itemCode)</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-				                  	<c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="itemCode" value="${third.itemCode}">
-									  	</c:when>
-										<c:otherwise>
-				                  			<input type="text" class="form-control" name="itemCode">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">货号(sku)</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-				                  	<c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="sku" value="${third.sku}">
-									  	</c:when>
-										<c:otherwise>
-			                  				<input type="text" class="form-control" name="sku">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">商品名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-				                  	<c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="name" value="${third.goodsName}">
-									  	</c:when>
-										<c:otherwise>
-			                  				<input type="text" class="form-control" name="name">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">原产国</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-				                  	<c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="origin" value="${third.origin}">
-									  	</c:when>
-										<c:otherwise>
-			                  				<input type="text" class="form-control" name="origin">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">重量</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-				                  	<c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="weight" value="${third.weight}">
-									  	</c:when>
-										<c:otherwise>
-			                  				<input type="text" class="form-control" name="weight">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">成本价格</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="proxyPrice">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">分销价</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="fxPrice">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">消费税</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="exciseFax" id="exciseFax">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">零售价</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="retailPrice">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">最小限购数量</label>
-							<div class="col-sm-2">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="min" value="${third.min}">
-									  	</c:when>
-										<c:otherwise>
-			                  				<input type="text" class="form-control" name="min">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right">最大限购数量</label>
-							<div class="col-sm-2">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<c:choose>
-					                  	<c:when test="${third != null}">
-			                  				<input type="text" class="form-control" name="max" value="${third.max}">
-									  	</c:when>
-										<c:otherwise>
-			                  				<input type="text" class="form-control" name="max">
-										</c:otherwise>
-									</c:choose>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">商品标签</label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									<select class="form-control" name="tagId" id="tagId" style="width: 170px;">
-				                   	  <option selected="selected" value="">普通</option>
-				                   	  <c:forEach var="tag" items="${tags}">
-				                   	  	<option value="${tag.id}">${tag.tagName}</option>
-				                   	  </c:forEach>
-					                </select>
-				                </div>
-							</div>
-							<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a>
-							<div class="col-sm-2">
-							</div>
-						</div>
-	            	</div>
-          		</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">货号(sku)</div>
+			<div class="col-sm-9 item-right">
+                <c:choose>
+                  	<c:when test="${third != null}">
+                		<input type="text" class="form-control" name="sku" value="${third.sku}">
+				  	</c:when>
+					<c:otherwise>
+                		<input type="text" class="form-control" name="sku">
+					</c:otherwise>
+				</c:choose>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
 			</div>
-			<div class="col-md-12">
-				<div class="col-lg-3 col-xs-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img1" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath1"> 
-								<input type="file" name="pic" id="pic1" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-xs-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img2" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath2"> 
-								<input type="file" name="pic" id="pic2" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-xs-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img3" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath3"> 
-								<input type="file" name="pic" id="pic3" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 col-xs-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img4" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath4"> 
-								<input type="file" name="pic" id="pic4" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
+		</div>
+      	<div class="list-item">
+			<div class="col-sm-3 item-left">商品名称</div>
+			<div class="col-sm-9 item-right">
+                <c:choose>
+                  	<c:when test="${third != null}">
+                		<input type="text" class="form-control" name="name" value="${third.goodsName}">
+				  	</c:when>
+					<c:otherwise>
+                		<input type="text" class="form-control" name="name">
+					</c:otherwise>
+				</c:choose>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
 			</div>
-			<div class="col-md-offset-1 col-md-9">
-				<div class="form-group">
-                     <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-                 </div>
+		</div>
+      	<div class="list-item">
+			<div class="col-sm-3 item-left">原产国</div>
+			<div class="col-sm-9 item-right">
+                 <c:choose>
+                  	<c:when test="${third != null}">
+                		<input type="text" class="form-control" name="origin" value="${third.origin}">
+				  	</c:when>
+					<c:otherwise>
+                		<input type="text" class="form-control" name="origin">
+					</c:otherwise>
+				</c:choose>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">重量</div>
+			<div class="col-sm-9 item-right">
+                <c:choose>
+                  	<c:when test="${third != null}">
+                		<input type="text" class="form-control" name="weight" value="${third.weight}">
+				  	</c:when>
+					<c:otherwise>
+                		<input type="text" class="form-control" name="weight">
+					</c:otherwise>
+				</c:choose>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">成本价格</div>
+			<div class="col-sm-9 item-right">
+                <input type="text" class="form-control" name="proxyPrice">
+                <div class="item-content">
+	             	这里填写一些注释
+	            </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">分销价</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" name="fxPrice">
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">消费税</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" name="exciseFax" id="exciseFax">
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
             </div>
-		</form>
-	</section>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">零售价</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" name="retailPrice">
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">限购数量</div>
+			<div class="col-sm-9 item-right">
+				<div class="right-item">
+					<c:choose>
+	                	<c:when test="${third != null}">
+	              			<input type="text" class="form-control" name="min" value="${third.min}" placeholder="请输入最小购买量">
+			  			</c:when>
+						<c:otherwise>
+		              		<input type="text" class="form-control" name="min" placeholder="请输入最小购买量">
+						</c:otherwise>
+					</c:choose>
+				</div>
+            	<div class="right-item last-item">
+					<c:choose>
+		            	<c:when test="${third != null}">
+	                 		<input type="text" class="form-control" name="max" value="${third.max}" placeholder="请输入最大购买量">
+						</c:when>
+						<c:otherwise>
+	                 		<input type="text" class="form-control" name="max" placeholder="请输入最大购买量">
+						</c:otherwise>
+					</c:choose>
+				</div>
+				<div class="item-content">
+	             	这里填写一些注释
+	            </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">商品标签</div>
+			<div class="col-sm-9 item-right">
+				<ul class="label-content">
+					<li>推荐</li>
+					<li>新品</li>
+					<li>促销</li>
+					<li>热门</li>
+					<li>预售</li>
+				</ul>
+				<a class="addBtn" href="javascript:void(0);" onclick="toTag()">+新增标签</a>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-sm-3 item-left">商品主图</div>
+			<div class="col-sm-9 item-right addContent">
+				<div class="item-img">
+					+
+					<input type="file" id="pic1"/>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- <div class="col-md-12">
+			<div class="col-lg-3 col-xs-3">
+				<div class="sbox-body">
+					<div class="form-group">
+						<img src="" id="img1" width="120px" height="160px" alt="添加主图">
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="hidden" class="form-control" name="picPath" id="picPath1"> 
+							<input type="file" name="pic" id="pic1" />
+							<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="sbox-body">
+					<div class="form-group">
+						<img src="" id="img2" width="120px" height="160px" alt="添加主图">
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="hidden" class="form-control" name="picPath" id="picPath2"> 
+							<input type="file" name="pic" id="pic2" />
+							<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="sbox-body">
+					<div class="form-group">
+						<img src="" id="img3" width="120px" height="160px" alt="添加主图">
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="hidden" class="form-control" name="picPath" id="picPath3"> 
+							<input type="file" name="pic" id="pic3" />
+							<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="sbox-body">
+					<div class="form-group">
+						<img src="" id="img4" width="120px" height="160px" alt="添加主图">
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="hidden" class="form-control" name="picPath" id="picPath4"> 
+							<input type="file" name="pic" id="pic4" />
+							<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+        <div class="submit-btn">
+           	<button type="button" id="submitBtn">提交</button>
+       	</div>
+	</form>
 </section>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
@@ -671,9 +574,9 @@
 		function toTag(){
 			var index = layer.open({
 				  title:"新增标签",	
-				  area: ['70%', '40%'],	
+				  area: ['500px', '200px'],	
 				  type: 2,
-				  content: '${wmsUrl}/admin/goods/goodsMng/toAddTag.shtml',
+				  content: '${wmsUrl}/admin/goods/goodsMng/toTag.shtml',
 				  maxmin: true
 				});
 		}
@@ -692,13 +595,13 @@
 								return;
 							}
 							
-							var list = data.data;
+							var list = data.obj;
 							
 							if (list == null || list.length == 0) {
 								return;
 							}
 							var str = "";
-							tagSelect.append("<option value=''>普通</option>")
+							tagSelect.append("<option value=''>未选择</option>")
 							for (var i = 0; i < list.length; i++) {
 								tagSelect.append("<option value='"+list[i].id+"'>"+list[i].tagName+"</option>")
 							}
@@ -711,6 +614,27 @@
 				 }
 			 });
 	 	}
+		//点击标签
+		$('.item-right').on('click','.label-content li:not(active)',function(){
+			$(this).addClass('active').siblings('.active').removeClass('active');
+		});
+		$('.item-right').on('click','.label-content li.active',function(){
+			$(this).removeClass('active');
+		});
+		//点击上传图片
+		$('.item-right').on('change','.item-img input[type=file]',function(){
+			alert(1);
+			var ht = '<div class="item-img">+<input type="file"/></div>';
+			var imgHt = '<img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+			$('.addContent').append(ht);
+			$(this).parent().addClass('choose');
+			$(this).parent().html(imgHt);
+		});
+		//删除主图
+		$('.item-right').on('click','.bgColor i',function(){
+			alert(111);
+			$(this).parent().parent().remove();
+		});
 	</script>
 </body>
 </html>

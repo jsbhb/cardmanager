@@ -92,25 +92,29 @@
 			                </div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right">商品标签</label>
-						<div class="col-sm-4">
-							<div class="input-group">
-			                  <select class="form-control" name="tagId" id="tagId" style="width: 170px;">
-			                   	  <option selected="selected" value="">未选择</option>
-	<%-- 				                   	  <c:forEach var="tag" items="${tags}"> --%>
-	<%-- 				                   	  	<option value="${tag.id}">${tag.tagName}</option> --%>
-	<%-- 				                   	  </c:forEach> --%>
-			                   	  <c:forEach var="supplier" items="${suppliers}">
-			                   	  	<option value="${supplier.id}">${supplier.supplierName}</option>
-			                   	  </c:forEach>
-				                </select>
-			                </div>
-						</div>
-						<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a>
-						<div class="col-sm-2">
-						</div>
-					</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<label class="col-sm-2 control-label no-padding-right">商品标签</label> -->
+<!-- 						<div class="col-sm-4"> -->
+<!-- 							<div class="input-group"> -->
+<!-- 			                  <select class="form-control" name="tagId" id="tagId" style="width: 170px;"> -->
+<!-- 			                   	  <option selected="selected" value="">未选择</option> -->
+<%-- 			                   	  <c:forEach var="tag" items="${tags}"> --%>
+<%-- 			                   	  	<c:choose> --%>
+<%-- 			                   	  		<c:when test="${goods.goodsTagBind.tagId==tag.id}"> --%>
+<%-- 			                   	  			<option value="${tag.id}" selected="selected">${tag.tagName}</option> --%>
+<%-- 							            </c:when> --%>
+<%-- 							            <c:otherwise> --%>
+<%-- 			                   	  			<option value="${tag.id}">${tag.tagName}</option> --%>
+<%-- 							            </c:otherwise> --%>
+<%-- 			                   	  	</c:choose> --%>
+<%-- 			                   	  </c:forEach> --%>
+<!-- 				                </select> -->
+<!-- 			                </div> -->
+<!-- 						</div> -->
+<!-- 						<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a> -->
+<!-- 						<div class="col-sm-2"> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="col-md-12">
 				<div class="col-lg-3 col-xs-3">
 					<div class="sbox-body">

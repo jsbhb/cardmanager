@@ -14,8 +14,9 @@
 <body>
 	<section class="content-wrapper">
 		<section class="content-header">
+	      <h1><i class="fa fa-street-view"></i>商品管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
 	        <li>商品管理</li>
 	        <li class="active">商品管理</li>
 	      </ol>
@@ -40,7 +41,7 @@
 	<script type="text/javascript">
 		$(function(){
 			var width = "100%";
-			var height = window.innerHeight-210;
+			var height = window.innerHeight-139;
 			$("#page-wrapper").empty();
 			var newIframeObject = document.createElement("IFRAME");
 			newIframeObject.src = "${wmsUrl}/admin/goods/goodsMng/list.shtml";
@@ -49,10 +50,6 @@
 			newIframeObject.width = width;
 			newIframeObject.height = height;
 			$("#page-wrapper").append(newIframeObject);
-			var top = getTopWindow();
-			$('.breadcrumb').on('click','a',function(){
-				top.location.reload();
-			});
 		})
 	</script>
 </body>
