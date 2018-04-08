@@ -133,8 +133,7 @@
 		var list = data.obj;
 		
 		if (list == null || list.length == 0) {
-			layer.alert("没有员工信息！");
-			$("#syncStaff").show();
+			layer.alert("没有查到数据");
 			return;
 		}
 
