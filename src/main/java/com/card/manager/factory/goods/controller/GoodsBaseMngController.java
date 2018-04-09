@@ -64,7 +64,7 @@ public class GoodsBaseMngController extends BaseController {
 			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 			context.put("firsts", catalogs);
 
-			return forword("goods/base/add", context);
+			return forword("goods/base/add_1", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
@@ -105,7 +105,7 @@ public class GoodsBaseMngController extends BaseController {
 		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
 		context.put("brands", brands);
 		context.put(OPT, opt);
-		return forword("goods/base/listForAdd", context);
+		return forword("goods/base/listForAdd_1", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)

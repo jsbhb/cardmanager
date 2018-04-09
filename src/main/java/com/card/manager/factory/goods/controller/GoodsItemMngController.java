@@ -21,10 +21,16 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
+import com.card.manager.factory.goods.model.BrandEntity;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
@@ -44,16 +50,20 @@ public class GoodsItemMngController extends BaseController {
 	
 	@Resource
 	GoodsService goodsService;
+	
+	@Resource
+	CatalogService catalogService;
+
+//	@RequestMapping(value = "/mng")
+//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
+//		Map<String, Object> context = getRootMap();
+//		StaffEntity opt = SessionUtils.getOperator(req);
+//		context.put("opt", opt);
+//		return forword("goods/item/mng", context);
+//	}
 
 	@RequestMapping(value = "/mng")
-	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("goods/item/mng", context);
-	}
-
-	@RequestMapping(value = "/list")
+//	@RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
@@ -61,7 +71,11 @@ public class GoodsItemMngController extends BaseController {
 		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 		context.put("tags", tags);
-		return forword("goods/item/list", context);
+		List<FirstCatalogEntity> firsts = catalogService.queryAll(opt.getToken());
+		context.put("firsts", firsts);
+		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
+		context.put("brands", brands);
+		return forword("goods/item/list_1", context);
 	}
 
 	@RequestMapping(value = "/dataListForGoods", method = RequestMethod.POST)
@@ -111,6 +125,79 @@ public class GoodsItemMngController extends BaseController {
 		return pcb;
 	}
 
+//	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
+//	@ResponseBody
+//	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity item) {
+//		PageCallBack pcb = null;
+//		StaffEntity staffEntity = SessionUtils.getOperator(req);
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		try {
+//			String status = req.getParameter("status");
+//			if (!StringUtil.isEmpty(status)) {
+//				item.setStatus(status);
+//			}
+//			String itemCode = req.getParameter("itemCode");
+//			if (!StringUtil.isEmpty(itemCode)) {
+//				item.setItemCode(itemCode);
+//			}
+//			String supplierId = req.getParameter("supplierId");
+//			if (!StringUtil.isEmpty(supplierId)) {
+//				item.setSupplierId(supplierId);
+//			}
+//			String goodsName = req.getParameter("goodsName");
+//			if (!StringUtil.isEmpty(goodsName)) {
+//				item.setGoodsName(goodsName);
+//			}
+//			String sku = req.getParameter("sku");
+//			if (!StringUtil.isEmpty(sku)) {
+//				item.setSku(sku);
+//			}
+//			String goodsId = req.getParameter("goodsId");
+//			if (!StringUtil.isEmpty(goodsId)) {
+//				item.setGoodsId(goodsId);
+//			}
+//			String itemId = req.getParameter("itemId");
+//			if (!StringUtil.isEmpty(itemId)) {
+//				item.setItemId(itemId);
+//			}
+//			String tagId = req.getParameter("tagId");
+//			if (!StringUtil.isEmpty(tagId)) {
+//				GoodsTagBindEntity tagBindEntity = new GoodsTagBindEntity();
+//				tagBindEntity.setTagId(Integer.parseInt(tagId));
+//				item.setTagBindEntity(tagBindEntity);
+//			}
+//
+//			params.put("centerId", staffEntity.getGradeId());
+//			params.put("shopId", staffEntity.getShopId());
+//			params.put("gradeLevel", staffEntity.getGradeLevel());
+//
+//			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
+//					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
+//
+//			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+//			for (GoodsItemEntity entity : list) {
+//				GoodsUtil.changeSpecsInfo(entity);
+//			}
+//
+//		} catch (ServerCenterNullDataException e) {
+//			if (pcb == null) {
+//				pcb = new PageCallBack();
+//			}
+//			pcb.setPagination(item);
+//			pcb.setSuccess(true);
+//			return pcb;
+//		} catch (Exception e) {
+//			if (pcb == null) {
+//				pcb = new PageCallBack();
+//			}
+//			pcb.setErrTrace(e.getMessage());
+//			pcb.setSuccess(false);
+//			return pcb;
+//		}
+//
+//		return pcb;
+//	}
+
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity item) {
@@ -118,39 +205,43 @@ public class GoodsItemMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			String status = req.getParameter("status");
-			if (!StringUtil.isEmpty(status)) {
-				item.setStatus(status);
-			}
-			String itemCode = req.getParameter("itemCode");
-			if (!StringUtil.isEmpty(itemCode)) {
-				item.setItemCode(itemCode);
+			String brandId = req.getParameter("brandId");
+			if (!StringUtil.isEmpty(brandId)) {
+				GoodsBaseEntity baseEntity = item.getBaseEntity();
+				if (baseEntity != null) {
+					baseEntity.setBrandId(brandId);
+					item.setBaseEntity(baseEntity);
+				} else {
+					GoodsBaseEntity newBaseEntity = new GoodsBaseEntity();
+					newBaseEntity.setBrandId(brandId);
+					item.setBaseEntity(newBaseEntity);
+				}
 			}
 			String supplierId = req.getParameter("supplierId");
 			if (!StringUtil.isEmpty(supplierId)) {
 				item.setSupplierId(supplierId);
-			}
-			String goodsName = req.getParameter("goodsName");
-			if (!StringUtil.isEmpty(goodsName)) {
-				item.setGoodsName(goodsName);
-			}
-			String sku = req.getParameter("sku");
-			if (!StringUtil.isEmpty(sku)) {
-				item.setSku(sku);
-			}
-			String goodsId = req.getParameter("goodsId");
-			if (!StringUtil.isEmpty(goodsId)) {
-				item.setGoodsId(goodsId);
-			}
-			String itemId = req.getParameter("itemId");
-			if (!StringUtil.isEmpty(itemId)) {
-				item.setItemId(itemId);
 			}
 			String tagId = req.getParameter("tagId");
 			if (!StringUtil.isEmpty(tagId)) {
 				GoodsTagBindEntity tagBindEntity = new GoodsTagBindEntity();
 				tagBindEntity.setTagId(Integer.parseInt(tagId));
 				item.setTagBindEntity(tagBindEntity);
+			}
+			String status = req.getParameter("status");
+			if (!StringUtil.isEmpty(status)) {
+				item.setStatus(status);
+			}
+			String itemId = req.getParameter("itemId");
+			if (!StringUtil.isEmpty(itemId)) {
+				item.setItemId(itemId);
+			}
+			String itemCode = req.getParameter("itemCode");
+			if (!StringUtil.isEmpty(itemCode)) {
+				item.setItemCode(itemCode);
+			}
+			String goodsName = req.getParameter("goodsName");
+			if (!StringUtil.isEmpty(goodsName)) {
+				item.setGoodsName(goodsName);
 			}
 
 			params.put("centerId", staffEntity.getGradeId());
@@ -163,6 +254,35 @@ public class GoodsItemMngController extends BaseController {
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
+			}
+			
+			if (pcb != null) {
+				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+				GoodsBaseEntity goodsInfo = null;
+				for(GoodsItemEntity info : list){
+					goodsInfo = info.getBaseEntity();
+					for(FirstCatalogEntity fce : first) {
+						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
+							goodsInfo.setFirstCatalogId(fce.getName());
+							break;
+						}
+					}
+					for(SecondCatalogEntity sce : second) {
+						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
+							goodsInfo.setSecondCatalogId(sce.getName());
+							break;
+						}
+					}
+					for(ThirdCatalogEntity tce : third) {
+						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
+							goodsInfo.setThirdCatalogId(tce.getName());
+							break;
+						}
+					}
+				}
+				pcb.setObj(list);
 			}
 
 		} catch (ServerCenterNullDataException e) {

@@ -45,7 +45,7 @@ public class BrandMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("goods/brand/add", context);
+		return forword("goods/brand/add_1", context);
 	}
 
 	@RequestMapping(value = "/addBrand", method = RequestMethod.POST)

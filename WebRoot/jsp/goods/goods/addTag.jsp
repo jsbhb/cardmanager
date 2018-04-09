@@ -16,15 +16,18 @@
 
 <body >
 <section class="content-iframe">
-	<form class="form-horizontal" role="form" id="itemForm" style="margin-top:60px;">
+	<form class="form-horizontal" role="form" id="itemForm" style="margin-top:20px;">
 		<div class="list-item">
-			<div class="col-xs-3 item-left">标签名称</div>
-			<div class="col-xs-6 item-right">
-            	<input type="text" class="form-control" style="width:99%;" name="tagName">
+			<div class="col-xs-3 item-left" for="form-field-1">标签名称</div>
+			<div class="col-xs-7 item-right">
+            	<input type="text" class="form-control" name="tagName" style="width:100%;">
+            	<div class="item-content">
+             		（请输入数字、英文和汉字，限1-10字）
+             	</div>
 			</div>
-			<div class="col-xs-3">
-            	<button type="button" class="btn btn-primary" id="submitBtn" style="height:31px;line-height:10px;">确定</button>
-            </div>
+        </div>
+		<div class="submit-btn">
+            <button type="button" class="btn btn-primary" id="submitBtn">确定</button>
         </div>
 	</form>
 </section>

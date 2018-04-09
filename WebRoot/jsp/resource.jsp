@@ -18,6 +18,7 @@
 <script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>
 <script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/js/commond.js"></script>
 
 <script>
 $(function(){

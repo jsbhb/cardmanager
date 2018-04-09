@@ -8,8 +8,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
 
 
 
@@ -18,7 +16,7 @@
 <section class="content-wrapper query">
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i>订单管理</a></li>
+	        <li><a href="javascript:void(0);">订单管理</a></li>
 	        <li class="active">销售订单</li>
 	      </ol>
 	      <div class="search">
@@ -32,7 +30,7 @@
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
 		<div class="moreSearchContent">
-			<div class="row form-horizontal">
+			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
@@ -76,7 +74,7 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-			            <select class="form-control" name="shopId" id="shopId" style="width: 150px;">
+			            <select class="form-control" name="shopId" id="shopId">
 	                   	  <option selected="selected" value="">店铺选择</option>
 	                   	  <c:forEach var="shop" items="${shopId}">
                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
@@ -136,16 +134,18 @@
 						<tbody>
 						</tbody>
 					</table>
-					<div class="pagination-nav" style="float:right;margin-bottom:15px;">
-						<ul id="pagination" class="pagination">
-						</ul>
-					</div>
 				</div>
 			</div>
 		</div>	
+		<div class="pagination-nav">
+			<ul id="pagination" class="pagination">
+			</ul>
+		</div>
 	</section>
 	</section>
 	
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/js/pagination.js"></script>
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 

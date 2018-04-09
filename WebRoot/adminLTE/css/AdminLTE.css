@@ -144,22 +144,26 @@ body.hold-transition .main-header .logo {
 }
 /* Content */
 .content {
-  min-height: 400px;
+  min-height: 500px;
   padding: 15px;
   margin: 0 10px;
   background: #fff;
+  overflow: hidden;
+  padding-bottom: 50px;
 }
 .content > .moreSearchContent{
 	background: #f9f9f9;
 	display: none;
 	margin-bottom: 10px;
 }
-.content > .moreSearchContent > .query{
-	height: 57px;
+.content > .moreSearchContent.active{
+	display:block;
+}
+.content > .moreSearchContent > .list-content{
     padding: 16px 0 3px 0;
 }
-.content > .moreSearchContent > .query > div > .searchItem > input,
-.content > .moreSearchContent > .query > div > .searchItem > select{
+.content > .moreSearchContent > .list-content > div > .searchItem > input,
+.content > .moreSearchContent > .list-content > div > .searchItem > select{
 	outline: none;
 	font-size:12px;
 	border: 1px solid #d9d9d9;
@@ -167,29 +171,39 @@ body.hold-transition .main-header .logo {
 	width: 85%;
 	margin-left: 10%;
 	padding: 0 0 0 10px;
+	margin-bottom: 10px;
 }
-.content > .moreSearchContent > .query > div > .searchBtns > div{
+.content > .moreSearchContent > .list-content > div > .searchBtns > div{
 	float: left;
     color: #76a7e5;
     font-size: 12px;
-    margin: 6px 10px 0 20px;
+    margin: 6px 10px 0 30px;
     cursor: pointer;
 }
-.content > .moreSearchContent > .query > div > .searchBtns > button{
+.content > .moreSearchContent > .list-content > div > .searchBtns > button{
 	border-radius: 2px;
     padding: 2.5px 15px;
     outline: none;
 }
-.content > .moreSearchContent > .query > div > .searchBtns > .query{
+.content > .moreSearchContent > .list-content > div > .searchBtns > .query{
 	background: #5491de;
     border: 1px solid #5491de;
     color: #fff;
 }
-.content > .moreSearchContent > .query > div > .searchBtns > .clear{
+.content > .moreSearchContent > .list-content > div > .searchBtns > .clear{
 	background: #f7f7f7;
     border: 1px solid #d9d9d9;
     color: #666;
     margin-left: 5px;
+}
+.content > .moreSearchContent > .list-content > div > .searchBtns > .add{
+	background: #f7f7f7;
+    border: 1px solid #d9d9d9;
+    color: #666;
+    margin-left: 5px;
+}
+.content > .list-content{
+	padding-bottom: 40px;
 }
 .list-tabBar{
 	font-size: 14px;
@@ -266,6 +280,7 @@ body.hold-transition .main-header .logo {
     border: 1px solid #d9d9d9;
     margin-top: 8.5px;
     outline: none;
+    margin-right: 5px;
 }
 .list-content > .content-container > .container-left{
 	background: #f9f9f9;
@@ -298,6 +313,14 @@ body.hold-transition .main-header .logo {
 	padding: 0 0 0 15px;
 	margin-top: 10px;
 }
+.container-right .table-btns{
+	float: left;
+	margin-right: 10px;
+	line-height: 20px;
+}
+.container-right .table-btns:last-child{
+	margin-right: 0;
+}
 .list-content > .content-container > .container-right.active{
 	padding: 0;
 }
@@ -321,6 +344,7 @@ body.hold-transition .main-header .logo {
 .content-iframe{
 	font-size: 12px;
 	color: #666;
+	background: #fff;
 }
 .content-iframe > form > .list-item{
 	overflow: hidden;
@@ -473,6 +497,18 @@ body.hold-transition .main-header .logo {
     color: #fff;
     background: #5491de;
     border: 1px solid transparent;
+}
+.pagination-nav{
+	width: 98.4%;
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+    background: #fff;
+    overflow: hidden;
+}
+.pagination-nav > ul.pagination{
+	float: right;
+    padding-right: 30px;
 }
 /* H1 - H6 font */
 h1,
@@ -641,6 +677,7 @@ a:focus {
 .content-header {
   position: relative;
   overflow: hidden;
+  background: #f9f9f9;
 }
 .content-header > h1 {
   margin: 0;

@@ -42,13 +42,13 @@ public class GoodsMngController extends BaseController {
 	@Resource
 	GoodsService goodsService;
 
-	@RequestMapping(value = "/mng")
-	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("goods/goods/mng", context);
-	}
+//	@RequestMapping(value = "/mng")
+//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
+//		Map<String, Object> context = getRootMap();
+//		StaffEntity opt = SessionUtils.getOperator(req);
+//		context.put("opt", opt);
+//		return forword("goods/goods/mng", context);
+//	}
 
 	@RequestMapping(value = "/ueditor")
 	public ModelAndView ueditor(HttpServletRequest req, HttpServletResponse resp) {
@@ -223,7 +223,8 @@ public class GoodsMngController extends BaseController {
 		return pcb;
 	}
 
-	@RequestMapping(value = "/toAdd")
+//	@RequestMapping(value = "/toAdd")
+	@RequestMapping(value = "/mng")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
@@ -231,37 +232,39 @@ public class GoodsMngController extends BaseController {
 		try {
 			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 			context.put("brands", CachePoolComponent.getBrands(opt.getToken()));
-			String type = req.getParameter("type");
-			if (SYNC.equals(type)) {
-				String id = req.getParameter("id");
-				if (StringUtil.isEmpty(id)) {
-					context.put(ERROR, "没有同步商品编码！");
-					return forword(ERROR, context);
-				}
-				ThirdWarehouseGoods thirdGoods = goodsService.queryThirdById(id, opt.getToken());
-				context.put("third", thirdGoods);
-
-			} else if (NORMAL.equals(type)) {
-				// List<BrandEntity> brands =
-				// CachePoolComponent.getBrands(opt.getToken());
-				// if(brands.size() == 0){
-				// context.put(ERROR,"没有品牌信息,无法查看基础商品！");
-				// context.put(ERROR_CODE,"405！");
-				// return forword("error", context);
-				// }
-				//
-				// context.put("brands", brands);
-				//
-				// List<FirstCatalogEntity> catalogs =
-				// catalogService.queryFirstCatalogs(opt.getToken());
-				// context.put("firsts", catalogs);
-				
-				List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
-				context.put("tags", tags);
-			} else {
-				context.put(ERROR, "没有新增类型，请联系管理员！");
-				return forword(ERROR, context);
-			}
+//			String type = req.getParameter("type");
+//			if (SYNC.equals(type)) {
+//				String id = req.getParameter("id");
+//				if (StringUtil.isEmpty(id)) {
+//					context.put(ERROR, "没有同步商品编码！");
+//					return forword(ERROR, context);
+//				}
+//				ThirdWarehouseGoods thirdGoods = goodsService.queryThirdById(id, opt.getToken());
+//				context.put("third", thirdGoods);
+//
+//			} else if (NORMAL.equals(type)) {
+//				 List<BrandEntity> brands =
+//				 CachePoolComponent.getBrands(opt.getToken());
+//				 if(brands.size() == 0){
+//				 context.put(ERROR,"没有品牌信息,无法查看基础商品！");
+//				 context.put(ERROR_CODE,"405！");
+//				 return forword("error", context);
+//				 }
+//				
+//				 context.put("brands", brands);
+//				
+//				 List<FirstCatalogEntity> catalogs =
+//				 catalogService.queryFirstCatalogs(opt.getToken());
+//				 context.put("firsts", catalogs);
+//				
+//				List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+//				context.put("tags", tags);
+//			} else {
+//				context.put(ERROR, "没有新增类型，请联系管理员！");
+//				return forword(ERROR, context);
+//			}
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+			context.put("tags", tags);
 
 			return forword("goods/goods/add", context);
 		} catch (Exception e) {
