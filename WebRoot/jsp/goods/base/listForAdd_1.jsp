@@ -145,11 +145,11 @@ function sureSup(){
 	
 		$('#baseId', window.parent.document).val(selectTr.children("td").eq(0).text());
 		$('#brand', window.parent.document).val(selectTr.children("td").eq(1).text());
-		$('#baseName', window.parent.document).val(selectTr.children("td").eq(2).text());
+		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(2).text());
 		$('#catalog', window.parent.document).val(selectTr.children("td").eq(3).text());
 		
 		
-		$('#baseInfo', window.parent.document).show();
+// 		$('#baseInfo', window.parent.document).show();
 		
 		
 		parent.layer.closeAll();

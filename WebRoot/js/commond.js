@@ -115,4 +115,13 @@
 	        $("#theadInp").prop("checked", false);
 	    }
 	})
+	
+	//点击分类选中
+	$('.item-right').on('click','.label-content li:not(active)',function(){
+		$(this).addClass('active').siblings('.active').removeClass('active');
+	});
+	//点击分类取消
+	$('.item-right').on('click','.label-content li.active',function(){
+		$(this).removeClass('active');
+	});
 })();

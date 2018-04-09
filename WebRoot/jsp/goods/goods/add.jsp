@@ -8,11 +8,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
 
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+
 
 </head>
 
@@ -41,40 +39,40 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="brand" id="brand" readonly/>
+	                <input type="text" class="form-control" name="brand" id="brand"/>
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品分类</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="catalog" id="catalog" readonly/>
+	                <input type="text" class="form-control" name="catalog" id="catalog"/>
 				</div>
 			</div>
-<!-- 	       	<div class="list-item"> -->
-<!-- 				<div class="col-sm-3 item-left">增值税率</div> -->
-<!-- 				<div class="col-sm-9 item-right"> -->
-<!--                 	<input type="text" class="form-control" name="firstCatalogId" id="firstCatalogId"/> -->
-<!-- 					<div class="item-content"> -->
-<!-- 		             	（请按小数格式输入，例：0.17） -->
-<!-- 		            </div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 	       	<div class="list-item"> -->
-<!-- 				<div class="col-sm-3 item-left">关税税率</div> -->
-<!-- 				<div class="col-sm-9 item-right"> -->
-<!-- 					<input type="text" class="form-control" name="firstCatalogId" id="firstCatalogId"/> -->
-<!-- 					<div class="item-content"> -->
-<!-- 		             	（请按小数格式输入，例：0.17） -->
-<!-- 		            </div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">增值税率</div>
+				<div class="col-sm-9 item-right">
+                	<input type="text" class="form-control" name="firstCatalogId" id="firstCatalogId"/>
+					<div class="item-content">
+		             	（请按小数格式输入，例：0.17）
+		            </div>
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">关税税率</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="firstCatalogId" id="firstCatalogId"/>
+					<div class="item-content">
+		             	（请按小数格式输入，例：0.17）
+		            </div>
+				</div>
+			</div>
 			<div class="title">
 	       		<h1>明细信息</h1>
 	       	</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="baseName" id="baseName">
+               		<input type="text" class="form-control" name="goodsName" id="goodsName">
 				</div>
 			</div>
 	       	<div class="list-item">
@@ -191,71 +189,33 @@
 					</div>
 				</div>
 			</div>
+<!-- 			<div class="title"> -->
+<!-- 	       		<h1>规格信息</h1> -->
+<!-- 	       	</div> -->
+<!-- 	       	<div class="list-item"> -->
+<!-- 				<div class="col-sm-3 item-left">规格模板</div> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<!-- 	                <input type="text" class="form-control" name="specsName" id="specsName" onclick="showSpaceGoods()"/> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="title"> -->
+<!-- 	       		<h1>商品描述</h1> -->
+<!-- 	       	</div> -->
+<!-- 	      	<div class="list-item"> -->
+<!-- 				<div class="col-sm-3 item-left">商品名称</div> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<!--                		<input type="text" class="form-control" name="baseName" id="baseName"> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			
-			
-			<!-- <div class="col-md-12">
-				<div class="col-lg-3 col-xs-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img1" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath1"> 
-								<input type="file" name="pic" id="pic1" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img2" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath2"> 
-								<input type="file" name="pic" id="pic2" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img3" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath3"> 
-								<input type="file" name="pic" id="pic3" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3">
-					<div class="sbox-body">
-						<div class="form-group">
-							<img src="" id="img4" width="120px" height="160px" alt="添加主图">
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<input type="hidden" class="form-control" name="picPath" id="picPath4"> 
-								<input type="file" name="pic" id="pic4" />
-								<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
 	        <div class="submit-btn">
-	           	<button type="button" id="submitBtn">提交</button>
+	           	<button type="button" id="submitBtn">新增商品</button>
 	       	</div>
 		</form>
 	</section>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	 $(function () {
@@ -298,47 +258,46 @@
 				 return;
 			 }
 			 var url = "${wmsUrl}/admin/goods/goodsMng/save.shtml";
-			 var templateId = $("#templateId").val();
+// 			 var templateId = $("#templateId").val();
 			 
 			 var formData = sy.serializeObject($('#itemForm'));
 			 
-			 var newFormData;
-			 if(templateId!= null && templateId!=""){
-				 var key = "";
-				 var value = "";
+// 			 var newFormData;
+// 			 if(templateId!= null && templateId!=""){
+// 				 var key = "";
+// 				 var value = "";
 				 
-				 newFormData={};
-				 for(var json in formData){
-					 if(json.indexOf(":")!=-1){
-						 key +=json+";"
-						 value += formData[json]+";"
-					 }else{
-						 newFormData[json] = formData[json];
-					 }
-				}
+// 				 newFormData={};
+// 				 for(var json in formData){
+// 					 if(json.indexOf(":")!=-1){
+// 						 key +=json+";"
+// 						 value += formData[json]+";"
+// 					 }else{
+// 						 newFormData[json] = formData[json];
+// 					 }
+// 				}
 				 
-				 if(key == ""||value == ""){
-					 layer.alert("没选择规格信息！");
-					 return;
-				 }
+// 				 if(key == ""||value == ""){
+// 					 layer.alert("没选择规格信息！");
+// 					 return;
+// 				 }
 				 
-				 newFormData["keys"] = key;
-				 newFormData["values"] = value;
-			 }else{
-				 newFormData = formData;
-			 }
+// 				 newFormData["keys"] = key;
+// 				 newFormData["values"] = value;
+// 			 }else{
+// 				 newFormData = formData;
+// 			 }
 		
 			 $.ajax({
 				 url:url,
 				 type:'post',
-				 data:JSON.stringify(newFormData),
+				 data:JSON.stringify(formData),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
 						 refresh();
-						 layer.alert("插入成功");
-						 
+						 layer.alert("商品新增成功");
 					 }else{
 						 layer.alert(data.msg);
 					 }
@@ -364,11 +323,11 @@
 		
 		function showSpaceGoods(){
 			var index = layer.open({
-				  title:"查看基础商品",	
+				  title:"查看商品规格",	
 				  area: ['70%', '80%'],
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/specsMng/listForAdd.shtml',
-				  maxmin: true
+				  maxmin: false
 				});
 		}
 		
@@ -427,120 +386,120 @@
 		       validating: 'glyphicon glyphicon-refresh'
 		   },
 		   fields: {
-			   baseId: {
-			 		trigger:"change",
-		          	message: '基础商品未添加',
-		          	validators: {
+			   	  baseId: {
+			 		   trigger:"change",
+		          	   message: '基础商品未添加',
+		          	   validators: {
 			               notEmpty: {
 			                   message: '基础商品未添加！'
 			               }
 			           }
 			   	  },
-		 	  origin: {
-		 		trigger:"change",
-	          	message: '国家不正确',
-	          	validators: {
-		               notEmpty: {
-		                   message: '国家不能为空！'
-		               }
-		           }
-		   	  },
-			  itemCode: {
-				   trigger:"change",
-		           message: '商家编码不正确',
-		           validators: {
-		               notEmpty: {
-		                   message: '商家编码不能为空！'
-		               }
-		           }
-		   	  },
-			  goodsName: {
-				    trigger:"change",
-			        message: '商品名称不正确',
-			        validators: {
-			            notEmpty: {
-			                message: '商品名称不能为空！'
-			            }
-			        }
-			  },
-		   	 weight: {
-		   		trigger:"change",
-		        message: '重量不正确',
-		        validators: {
-		            notEmpty: {
-		                message: '重量不能为空！'
-		            },
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '消费税格式有误'
-	               }
-		        }
-	   		},
-		   proxyPrice:{
-			   trigger:"change",
-			   message:"成本价格有误",
-			   validators: {
-				   notEmpty: {
-                          message: '成本价格不能为空'
-                      },
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '成本价格格式有误'
-	               }
-		   		}
-		   },
-		   fxPrice:{
-			   trigger:"change",
-			   message:"分销价格有误",
-			   validators: {
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '成本价格格式有误'
-	               }
-			   }
-		   },
-		   retailPrice:{
-			   message: '零售价有误',
-			   validators: {
-				   notEmpty: {
-                       message: '零售价不能为空'
-                   },
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '消费税格式有误'
-	               }
-			   }
-		   },
-		   exciseFax:{
-			   message: '消费税有无',
-			   validators: {
-				   notEmpty: {
-                       message: '消费税不能为空'
-                   },
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '消费税格式有误'
-	               }
-			   }
-		   },
-		   min:{
-			   message: '最小限购数量有误',
-			   validators: {
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '最小限购数量格式有误'
-	               }
-			   }
-		   },
-		   max:{
-			   message: '最大限购数量有误',
-			   validators: {
-				   regexp: {
-	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '最大限购数量格式有误'
-	               }
-			   }
-		   }
+				  goodsName: {
+						trigger:"change",
+						message: '商品名称不正确',
+						validators: {
+							notEmpty: {
+								message: '商品名称不能为空！'
+							}
+						}
+				  },
+				  itemCode: {
+					   trigger:"change",
+					   message: '商家编码不正确',
+					   validators: {
+						   notEmpty: {
+							   message: '商家编码不能为空！'
+						   }
+					   }
+				  },
+				  exciseFax:{
+					   message: '消费税有无',
+					   validators: {
+						   notEmpty: {
+							   message: '消费税不能为空'
+						   },
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '消费税格式有误'
+						   }
+					   }
+				  },
+				  origin: {
+					  trigger:"change",
+					  message: '国家不正确',
+					  validators: {
+						   notEmpty: {
+							   message: '国家不能为空！'
+						   }
+					   }
+				  },
+				  weight: {
+						trigger:"change",
+						message: '重量不正确',
+						validators: {
+							notEmpty: {
+								message: '重量不能为空！'
+							},
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '消费税格式有误'
+						   }
+						}
+				   },
+				   proxyPrice:{
+					   trigger:"change",
+					   message:"成本价格有误",
+					   validators: {
+						   notEmpty: {
+								  message: '成本价格不能为空'
+							  },
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '成本价格格式有误'
+						   }
+						}
+				   },
+				   fxPrice:{
+					   trigger:"change",
+					   message:"分销价格有误",
+					   validators: {
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '成本价格格式有误'
+						   }
+					   }
+				   },
+				   retailPrice:{
+					   message: '零售价有误',
+					   validators: {
+						   notEmpty: {
+							   message: '零售价不能为空'
+						   },
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '消费税格式有误'
+						   }
+					   }
+				   },
+				   min:{
+					   message: '最小限购数量有误',
+					   validators: {
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '最小限购数量格式有误'
+						   }
+					   }
+				   },
+				   max:{
+					   message: '最大限购数量有误',
+					   validators: {
+						   regexp: {
+							   regexp: /^\d+(\.\d+)?$/,
+							   message: '最大限购数量格式有误'
+						   }
+					   }
+				   }
 		}});
 		
 		
