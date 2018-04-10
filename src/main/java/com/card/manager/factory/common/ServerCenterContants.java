@@ -180,6 +180,10 @@ public class ServerCenterContants {
 			+ "/goods/goodsRebate/updateRebate";
 	public static final String GOODS_CENTER_SAVE_GOODSINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/saveGoodsInfo";
+	public static final String GOODS_CENTER_QUERY_GOODSINFO_ENTITY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/queryGoodsInfoEntity?itemId={itemId}";
+	public static final String GOODS_CENTER_UPDATE_GOODSINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/updateGoodsInfo";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";

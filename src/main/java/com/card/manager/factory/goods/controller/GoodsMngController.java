@@ -26,8 +26,11 @@ import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
+import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
@@ -399,6 +402,65 @@ public class GoodsMngController extends BaseController {
 		entity.setOpt(staffEntity.getOptid());
 		try {
 			goodsService.addGoodsInfoEntity(entity, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/toEditGoodsInfo")
+	public ModelAndView toEditGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemId = req.getParameter("itemId");
+			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
+			context.put("goodsInfo", goodsInfo);
+			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
+			for(FirstCatalogEntity first : catalogs) {
+				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
+					context.put("firstName", first.getName());
+					for(SecondCatalogEntity second : first.getSeconds()) {
+						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
+							context.put("secondName", second.getName());
+							for(ThirdCatalogEntity third : second.getThirds()) {
+								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
+									context.put("thirdName", third.getName());
+									break;
+								}
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+			
+			//初始化商详信息
+			String detailInfo = "";
+			detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+			context.put("detailInfo", detailInfo);
+			
+			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
+			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			context.put("tags", tags);
+			
+			return forword("goods/goods/edit", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/editGoodsInfo", method = RequestMethod.POST)
+	public void editGoodsInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody CreateGoodsInfoEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptid());
+		try {
+			goodsService.updGoodsInfoEntity(entity, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

@@ -234,7 +234,14 @@ public class GoodsItemMngController extends BaseController {
 //			if (!StringUtil.isEmpty(status)) {
 //				item.setStatus(status);
 //			}
-			item.setStatus("3");
+			String tabId = req.getParameter("hidTabId");
+			if ("first".equals(tabId)) {
+				item.setStatus("3");
+			} else if ("second".equals(tabId)) {
+				item.setStatus("4");
+			} else if ("third".equals(tabId)) {
+				item.setStatus("5");
+			}
 			
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {

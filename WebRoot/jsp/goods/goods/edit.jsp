@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
 <script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/lang/zh-cn/zh-cn.js"></script>
 </head>
 
 <body>
@@ -20,7 +20,7 @@
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">首页</a></li>
 	        <li>商品管理</li>
-	        <li class="active">新增商品</li>
+	        <li class="active">编辑商品</li>
 	      </ol>
     </section>
 	<section class="content-iframe content">
@@ -37,47 +37,45 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
-					<select class="form-control" name="brandId" id="brandId">
-	                	<option selected="selected" value="">--请选择商品品牌--</option>
-		                <c:forEach var="brand" items="${brands}">
-		                <option value="${brand.brandId}">${brand.brand}</option>
-		                </c:forEach>
+					<select class="form-control" name="brandId" id="brandId" disabled>
+	                	<option selected="selected" value="${goodsInfo.goodsBase.brandId}">${goodsInfo.goodsBase.brand}</option>
+<!-- 	                	<option selected="selected" value="">--请选择商品品牌--</option> -->
+<%-- 		                <c:forEach var="brand" items="${brands}"> --%>
+<%-- 		                <option value="${brand.brandId}">${brand.brand}</option> --%>
+<%-- 		                </c:forEach> --%>
 		            </select>
-	                <input type="hidden" class="form-control" name="brand" id="brand"/>
-	                <input type="hidden" class="form-control" name="baseId" id="baseId"/>
-					<a class="addBtn" href="javascript:void(0);" onclick="toBrand()">新增品牌</a>
-					<a class="addBtn" href="javascript:void(0);" onclick="showBaseGoods()">浏览模板</a>
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品分类</div>
 				<div class="col-sm-9 item-right">
-	                <input type="hidden" class="form-control" name="catalog" id="catalog"/>
 	                <div class="right-items">
-						<select class="form-control" name="firstCatalogId" id="firstCatalogId">
-	                  	  <option selected="selected" value="-1">选择分类</option>
-	                  	  <c:forEach var="first" items="${firsts}">
-	                  	  	<option value="${first.firstId}">${first.name}</option>
-	                  	  </c:forEach>
+						<select class="form-control" name="firstCatalogId" id="firstCatalogId" disabled>
+	                  	  <option selected="selected" value="${goodsInfo.goodsBase.firstCatalogId}">${firstName}</option>
+<!-- 	                  	  <option selected="selected" value="-1">选择分类</option> -->
+<%-- 	                  	  <c:forEach var="first" items="${firsts}"> --%>
+<%-- 	                  	  	<option value="${first.firstId}">${first.name}</option> --%>
+<%-- 	                  	  </c:forEach> --%>
 	                	</select>	
 					</div>
 					<div class="right-items">
-						<select class="form-control" name="secondCatalogId" id="secondCatalogId">
-						<option selected="selected" value="-1">选择分类</option>
+						<select class="form-control" name="secondCatalogId" id="secondCatalogId" disabled>
+	                  	  <option selected="selected" value="${goodsInfo.goodsBase.secondCatalogId}">${secondName}</option>
+<!-- 						<option selected="selected" value="-1">选择分类</option> -->
 		                </select>
 	                </div>
 	                <div class="right-items last-items">
-						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId">
-						<option selected="selected" value="-1">选择分类</option>
+						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" disabled>
+	                  	  <option selected="selected" value="${goodsInfo.goodsBase.thirdCatalogId}">${thirdName}</option>
+<!-- 						<option selected="selected" value="-1">选择分类</option> -->
 		                </select>
 	                </div>
-					<a class="addBtn" href="javascript:void(0);" onclick="toCategory()">新增分类</a>
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">增值税率</div>
 				<div class="col-sm-9 item-right">
-                	<input type="text" class="form-control" name="incrementTax" id="incrementTax"/>
+                	<input type="text" class="form-control" name="incrementTax" id="incrementTax" value="${goodsInfo.goodsBase.incrementTax}" readonly/>
 					<div class="item-content">
 		             	（请按小数格式输入，例：0.17）
 		            </div>
@@ -86,7 +84,7 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">海关税率</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="tariff" id="tariff"/>
+					<input type="text" class="form-control" name="tariff" id="tariff" value="${goodsInfo.goodsBase.tariff}" readonly/>
 					<div class="item-content">
 		             	（请按小数格式输入，例：0.17）
 		            </div>
@@ -95,28 +93,39 @@
 			<div class="title">
 	       		<h1>明细信息</h1>
 	       	</div>
+            <input type="hidden" class="form-control" name="baseId" id="baseId" value="${goodsInfo.goodsBase.id}"/>
+            <input type="hidden" class="form-control" name="goodsId" id="goodsId" value="${goodsInfo.goods.goodsId}"/>
+            <input type="hidden" class="form-control" name="goodsDetailPath" id="goodsDetailPath" value="${goodsInfo.goods.detailPath}"/>
+            <input type="hidden" class="form-control" name="itemId" id="itemId" value="${goodsInfo.goods.goodsItem.itemId}"/>
+            <input type="hidden" class="form-control" name="itemStatus" id="itemStatus" value="${goodsInfo.goods.goodsItem.status}"/>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="goodsName" id="goodsName">
+               		<input type="text" class="form-control" name="goodsName" id="goodsName" value="${goodsInfo.goods.goodsName}">
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">供应商</div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="supplierId" id="supplierId">
-                	  <option selected="selected" value="-1">未选择</option>
                    	  <c:forEach var="supplier" items="${suppliers}">
+                   	  	<c:choose>
+						<c:when test="${goodsInfo.goods.supplierId==supplier.id}">
+                   	  	<option value="${supplier.id}" selected="selected">${supplier.supplierName}</option>
+						</c:when>
+						<c:otherwise>
                    	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+						</c:otherwise>
+						</c:choose> 
                    	  </c:forEach>
 	                </select>
-	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
+	               <input type="hidden" class="form-control" name="supplierName" id="supplierName" value="${goodsInfo.goods.supplierName}"/>
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商家编码</div>
 				<div class="col-sm-9 item-right">
-             		<input type="text" class="form-control" name="itemCode">
+             		<input type="text" class="form-control" name="itemCode" value="${goodsInfo.goods.goodsItem.itemCode}">
 					<div class="item-content">
 		             	（货主管理货物的编码）
 		            </div>
@@ -125,7 +134,7 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">海关货号</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="sku">
+               		<input type="text" class="form-control" name="sku" value="${goodsInfo.goods.goodsItem.sku}">
 					<div class="item-content">
 		             	（海关备案货号或商家编码）
 		            </div>
@@ -134,7 +143,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">消费税率</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="exciseFax" id="exciseFax">
+					<input type="text" class="form-control" name="exciseFax" id="exciseFax" value="${goodsInfo.goods.goodsItem.exciseTax}">
 					<div class="item-content">
 		             	（请按小数格式输入，例：0.17）
 		            </div>
@@ -143,13 +152,13 @@
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">原产国</div>
 				<div class="col-sm-9 item-right">
-	                 <input type="text" class="form-control" name="origin">
+	                 <input type="text" class="form-control" name="origin" value="${goodsInfo.goods.origin}">
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品重量</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="weight">
+	                <input type="text" class="form-control" name="weight" value="${goodsInfo.goods.goodsItem.weight}">
 					<div class="item-content">
 						（计量单位：克或毫升。请按整数格式输入，例：2500）
 		            </div>
@@ -158,7 +167,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">成本价</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="proxyPrice">
+	                <input type="text" class="form-control" name="proxyPrice" value="${goodsInfo.goods.goodsItem.goodsPrice.proxyPrice}">
 	                <div class="item-content">
 		             	（请按价格格式输入，例：113.35）
 		            </div>
@@ -167,7 +176,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">分销价</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="fxPrice">
+					<input type="text" class="form-control" name="fxPrice" value="${goodsInfo.goods.goodsItem.goodsPrice.fxPrice}">
 					<div class="item-content">
 		             	（请按价格格式输入，例：113.35）
 		            </div>
@@ -176,7 +185,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">零售价</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="retailPrice">
+					<input type="text" class="form-control" name="retailPrice" value="${goodsInfo.goods.goodsItem.goodsPrice.retailPrice}">
 					<div class="item-content">
 		             	（请按价格格式输入，例：113.35）
 		            </div>
@@ -186,10 +195,10 @@
 				<div class="col-sm-3 item-left">限购数量</div>
 				<div class="col-sm-9 item-right">
 					<div class="right-item">
-	              		<input type="text" class="form-control" name="min" placeholder="请输入最小购买量">
+	              		<input type="text" class="form-control" name="min" placeholder="请输入最小购买量" value="${goodsInfo.goods.goodsItem.goodsPrice.min}">
 					</div>
 	            	<div class="right-item last-item">
-                 		<input type="text" class="form-control" name="max" placeholder="请输入最大购买量">
+                 		<input type="text" class="form-control" name="max" placeholder="请输入最大购买量" value="${goodsInfo.goods.goodsItem.goodsPrice.max}">
 					</div>
 					<div class="item-content">
 		             	（请按整数格式输入，填0表示不限制数量）
@@ -201,7 +210,14 @@
 				<div class="col-sm-9 item-right">
 					<ul class="label-content" id="tagId">
 						<c:forEach var="tag" items="${tags}">
+							<c:choose>
+							<c:when test="${goodsInfo.goods.goodsTagBind.tagId==tag.id}">
+							<li data-id="${tag.id}" class="active">${tag.tagName}</li>
+							</c:when>
+							<c:otherwise>
 							<li data-id="${tag.id}">${tag.tagName}</li>
+							</c:otherwise>
+							</c:choose>
 	             	    </c:forEach>
 					</ul>
 					<a class="addBtn" href="javascript:void(0);" onclick="toTag()">+新增标签</a>
@@ -234,7 +250,7 @@
 			</div>
 	        <div class="submit-btn">
 	           	<button type="button" id="prePageBtn">上一页</button>
-	           	<button type="button" id="submitBtn">新增商品</button>
+	           	<button type="button" id="submitBtn">修改商品信息</button>
 	       	</div>
 		</form>
 	</section>
@@ -243,144 +259,8 @@
 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
-	 $(function () {
-	     CKEDITOR.replace('editor1');
-	     $(".textarea").wysihtml5();
-	 });
-	 
- 	$("#brandId").change(function(){
-		$("#brand").val($("#brandId").find("option:selected").text());
-		//赋值
-		$("#baseId").val("");
-	});
-	 
 	$("#supplierId").change(function(){
 		$("#supplierName").val($("#supplierId").find("option:selected").text());
-	});
-	
- 	//模板选择后
- 	function choiseModel(){
- 		var tmpBaseId = $("#baseId").val();
- 		//品牌
- 		var tmpBrand = $("#brand").val();
- 		var brandSelect = document.getElementById("brandId");
-		var boptions = brandSelect.options;
-		for(var j=0;j<boptions.length;j++){
-			if (tmpBrand==boptions[j].text) {
-				boptions[j].selected = true;
-				break;
-			}
-		}
-		//分类
-		var tmpCatalog = $("#catalog").val();
- 		var firstSelect = document.getElementById("firstCatalogId");
-		var foptions = firstSelect.options;
-		for(var j=0;j<foptions.length;j++){
-			if (tmpCatalog.split("-")[0]==foptions[j].text) {
-				foptions[j].selected = true;
-				break;
-			}
-		}
-		$("#firstCatalogId").change();
- 		var secondSelect = document.getElementById("secondCatalogId");
-		var soptions = secondSelect.options;
-		for(var j=0;j<soptions.length;j++){
-			if (tmpCatalog.split("-")[1]==soptions[j].text) {
-				soptions[j].selected = true;
-				break;
-			}
-		}
-		$("#secondCatalogId").change();
- 		var thirdSelect = document.getElementById("thirdCatalogId");
-		var toptions = thirdSelect.options;
-		for(var j=0;j<toptions.length;j++){
-			if (tmpCatalog.split("-")[2]==toptions[j].text) {
-				toptions[j].selected = true;
-				break;
-			}
-		}
-		//赋值
-		$("#baseId").val(tmpBaseId);
-		$("#catalog").val("");
-	}
-	
-	$("#firstCatalogId").change(function(){
-		$("#baseId").val("");
-		var firstId = $("#firstCatalogId").val();
-		var secondSelect = $("#secondCatalogId");
-		var thirdSelect = $("#thirdCatalogId");
-		secondSelect.empty();
-		secondSelect.append("<option value='-1'>选择分类</option>")
-		$.ajax({
-			 url:"${wmsUrl}/admin/goods/catalogMng/querySecondCatalogByFirstId.shtml?firstId="+firstId,
-			 type:'post',
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 async:false,
-			 success:function(data){
-				 if(data.success){
-					 if (data == null || data.length == 0) {
-							return;
-						}
-						
-						var list = data.obj;
-						
-						if (list == null || list.length == 0) {
-							return;
-						}
-						for (var i = 0; i < list.length; i++) {
-							secondSelect.append("<option value='"+list[i].secondId+"'>"+list[i].name+"</option>")
-						}
-				 }else{
-					 layer.alert(data.msg);
-				 }
-			 },
-			 error:function(){
-				 layer.alert("提交失败，请联系客服处理");
-			 }
-		 });
-	});
-	
-	$("#secondCatalogId").change(function(){
-		$("#baseId").val("");
-		var secondId = $("#secondCatalogId").val();
-		var thirdSelect = $("#thirdCatalogId");
-		thirdSelect.empty();
-		thirdSelect.append("<option value='-1'>选择分类</option>")
-		$.ajax({
-			 url:"${wmsUrl}/admin/goods/catalogMng/queryThirdCatalogBySecondId.shtml?secondId="+secondId,
-			 type:'post',
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 async:false,
-			 success:function(data){
-				 if(data.success){
-					 if (data == null || data.length == 0) {
-							return;
-						}
-						
-						var list = data.obj;
-						
-						if (list == null || list.length == 0) {
-							return;
-						}
-
-						thirdSelect.empty();
-						for (var i = 0; i < list.length; i++) {
-							thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
-						}
-				 }else{
-					 layer.alert(data.msg);
-				 }
-			 },
-			 error:function(){
-				 layer.alert("提交失败，请联系客服处理");
-			 }
-		 });
-	});
-	
-	$("#thirdCatalogId").change(function(){
-		$("#baseId").val("");
 	});
 	 
 	 function uploadFile(id) {
@@ -423,40 +303,13 @@
 				 return;
 			 }
 			 
-			 var url = "${wmsUrl}/admin/goods/goodsMng/createGoodsInfo.shtml";
-// 			 var templateId = $("#templateId").val();
+			 var url = "${wmsUrl}/admin/goods/goodsMng/editGoodsInfo.shtml";
 			 
 			 var formData = sy.serializeObject($('#itemForm'));
 			 var context = ue.getContent();
 			 formData["detailInfo"] = context;
 			 var tagId = $('#tagId li.active').attr('data-id');
 			 formData["tagId"] = tagId;
-			 
-// 			 var newFormData;
-// 			 if(templateId!= null && templateId!=""){
-// 				 var key = "";
-// 				 var value = "";
-				 
-// 				 newFormData={};
-// 				 for(var json in formData){
-// 					 if(json.indexOf(":")!=-1){
-// 						 key +=json+";"
-// 						 value += formData[json]+";"
-// 					 }else{
-// 						 newFormData[json] = formData[json];
-// 					 }
-// 				}
-				 
-// 				 if(key == ""||value == ""){
-// 					 layer.alert("没选择规格信息！");
-// 					 return;
-// 				 }
-				 
-// 				 newFormData["keys"] = key;
-// 				 newFormData["values"] = value;
-// 			 }else{
-// 				 newFormData = formData;
-// 			 }
 		
 			 $.ajax({
 				 url:url,
@@ -466,7 +319,7 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
-						 jump(26);
+						 location.reload();
 					 }else{
 						 layer.alert(data.msg);
 					 }
@@ -479,72 +332,6 @@
 			 layer.alert("信息填写有误");
 		 }
 	 });
-	 
-		function showBaseGoods(){
-			var index = layer.open({
-				  title:"查看基础商品",	
-				  area: ['90%', '90%'],
-				  type: 2,
-				  content: '${wmsUrl}/admin/goods/baseMng/listForAdd.shtml',
-				  maxmin: false
-				});
-		}
-		
-		function showSpaceGoods(){
-			var index = layer.open({
-				  title:"查看商品规格",	
-				  area: ['70%', '80%'],
-				  type: 2,
-				  content: '${wmsUrl}/admin/goods/specsMng/listForAdd.shtml',
-				  maxmin: false
-				});
-		}
-		
-		function createSpecs(id){
-			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/specsMng/queryById.shtml?id="+id,
-				 type:'post',
-				 contentType: "application/json; charset=utf-8",
-				 dataType:'json',
-				 success:function(data){
-					 if(data.id == null){
-						 layer.alert("同步模板失败！");
-					 }else{
-						 $("#specsName").html("");
-						 $("#specsTemplate").html("");
-						 $("#specsName").html(data.name);
-						 var specs = data.specs;
-						 
-						 for(var i = 0 ;i<specs.length;i++){
-							 var spec = specs[i];
-							 var label = $("<label></label");
-							 label.addClass="col-sm-12 control-label no-padding-right";
-							 label.append(spec.name+": ");
-							 $("#specsTemplate").append(label);
-							 $("#templateId").val(data.id);
-							 
-							 var values = spec.values;
-							 var radio;
-							 for(var j =0;j<values.length;j++){
-								 radio = document.createElement("input");
-								 radio.setAttribute("type","radio");
-								 radio.setAttribute("name",spec.id+":"+spec.name);
-								 radio.setAttribute("value", values[j].id+":"+values[j].value);
-								 $("#specsTemplate").append(radio);
-								 $("#specsTemplate").append(values[j].value+" ");
-							 }
-							 $("#specsTemplate").append("<br/>");
-						 }
-						
-						 $("#specsInfo").show();
-					 }
-					 
-				 },
-				 error:function(){
-					 layer.alert("提交失败，请联系客服处理");
-				 }
-			 });
-		}
 		
 		$('#itemForm').bootstrapValidator({
 		//   live: 'disabled',
@@ -555,15 +342,15 @@
 		       validating: 'glyphicon glyphicon-refresh'
 		   },
 		   fields: {
-			   	  baseId: {
-			 		   trigger:"change",
-		          	   message: '基础商品未添加',
-		          	   validators: {
-			               notEmpty: {
-			                   message: '基础商品未添加！'
-			               }
-			           }
-			   	  },
+// 			   	  baseId: {
+// 			 		   trigger:"change",
+// 		          	   message: '基础商品未添加',
+// 		          	   validators: {
+// 			               notEmpty: {
+// 			                   message: '基础商品未添加！'
+// 			               }
+// 			           }
+// 			   	  },
 				  goodsName: {
 						trigger:"change",
 						message: '商品名称不正确',
@@ -652,10 +439,7 @@
 					   trigger:"change",
 					   message:"分销价有误",
 					   validators: {
-						   notEmpty: {
-								  message: '分销价不能为空'
-							  },
-							  numeric: {
+						   numeric: {
 							   message: '分销价只能输入数字'
 						   }
 					   }
@@ -710,7 +494,6 @@
 						 if (data == null || data.length == 0) {
 								return;
 							}
-							
 							var list = data.data;
 							
 							if (list == null || list.length == 0) {
@@ -731,26 +514,6 @@
 				 }
 			 });
 	 	}
-		
-		function toBrand(){
-			var index = layer.open({
-				  title:"新增品牌",	
-				  area: ['50%', '30%'],	
-				  type: 2,
-				  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
-				  maxmin: false
-				});
-		}
-		
-		function toCategory(){
-			var index = layer.open({
-				  title:"新增分类",	
-				  area: ['70%', '40%'],	
-				  type: 2,
-				  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
-				  maxmin: false
-				});
-		}
 		
 		//点击标签选中
 		$('.item-right').on('click','.label-content li:not(active)',function(){
@@ -799,7 +562,7 @@
 		 
 		//实例化编辑器
 	    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-	    var ue = UE.getEditor('editor');
+		var ue = UE.getEditor('editor');
 	    function sleep(numberMillis) { 
 	    	var now = new Date(); 
 	    	var exitTime = now.getTime() + numberMillis; 
@@ -934,6 +697,15 @@
 	        UE.getEditor('editor').execCommand( "clearlocaldata" );
 // 	        alert("已清空草稿箱")
 	    }
+
+	    $(window).load(function(){
+			 UE.getEditor('editor').execCommand('insertHtml', "${detailInfo}");
+	    });
+	    
+// 		 $(function () {
+// 	 	     CKEDITOR.replace('editor1');
+// 	 	     $(".textarea").wysihtml5();
+// 		 });
 	</script>
 </body>
 </html>

@@ -16,6 +16,7 @@ import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
+import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
 
@@ -194,5 +195,26 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void addGoodsInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * queryGoodsTag:根据编号查询商品信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	GoodsInfoEntity queryGoodsInfoEntityByItemId(String itemId, StaffEntity staffEntity);
+
+	/**
+	 * addEntity:更新商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void updGoodsInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception;
 
 }

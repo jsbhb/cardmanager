@@ -26,6 +26,9 @@ public class CreateGoodsInfoEntity {
 	private String thirdCatalogId;
 	private double incrementTax;
 	private double tariff;
+	private int goodsId;
+	private int itemId;
+	private String itemStatus;
 	private int supplierId;
 	private String supplierName;
 	private String goodsName;
@@ -43,6 +46,7 @@ public class CreateGoodsInfoEntity {
 	private String picPath;
 	private String detailInfo;
 	private String opt;
+	private String goodsDetailPath;
 	
 	
 	public int getBaseId() {
@@ -194,6 +198,30 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+	public int getGoodsId() {
+		return goodsId;
+	}
+	public void setGoodsId(int goodsId) {
+		this.goodsId = goodsId;
+	}
+	public int getItemId() {
+		return itemId;
+	}
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
+	public String getItemStatus() {
+		return itemStatus;
+	}
+	public void setItemStatus(String itemStatus) {
+		this.itemStatus = itemStatus;
+	}
+	public String getGoodsDetailPath() {
+		return goodsDetailPath;
+	}
+	public void setGoodsDetailPath(String goodsDetailPath) {
+		this.goodsDetailPath = goodsDetailPath;
 	}
 
 }

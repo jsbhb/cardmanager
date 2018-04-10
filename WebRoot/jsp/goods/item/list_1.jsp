@@ -74,6 +74,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
+               			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -253,7 +254,7 @@ function rebuildTable(data){
 			default:str += "</td><td>状态错误："+status;
 		}
 		str += "</td><td>" + list[i].itemId;
-		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a><a href='javascript:void(0);' class='table-btns'  onclick='toEdit("+list[i].itemId+")' >设价</a>";
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 		if(status == 0){
 			str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
 		}else if(status == 1){
@@ -274,9 +275,9 @@ function rebuildTable(data){
 	
 function toEdit(id){
 	var index = layer.open({
-		  title:"基础商品编辑",		
+		  title:"编辑商品信息",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/goods/baseMng/toEdit.shtml?baseId='+id,
+		  content: '${wmsUrl}/admin/goods/goodsMng/toEditGoodsInfo.shtml?itemId='+id,
 		  maxmin: true
 		});
 		layer.full(index);
@@ -464,16 +465,19 @@ $('.container-left').on('click','i.fa-angle-down',function(){
 $('.container-left').on('click','span:not(.active)',function(){
 	var categoryId = $(this).attr("data-id");
 	var typeId = $(this).attr("data-type");
-	queryDataByLabelTouch(typeId,categoryId,"");
+	var tabId = $('.list-tabBar li.active').attr('data-id');
+	queryDataByLabelTouch(typeId,categoryId,tabId);
 });
 
 $('.container-left').on('click','span.active',function(){
-	queryDataByLabelTouch("","","");
+	var tabId = $('.list-tabBar li.active').attr('data-id');
+	queryDataByLabelTouch("","",tabId);
 });
 
 //切换tabBar
 $('.list-tabBar').on('click','ul li:not(.active)',function(){
 	var tabId = $(this).attr("data-id");
+	$("#hidTabId").val(tabId);
 	queryDataByLabelTouch("","",tabId);
 });
 

@@ -11,7 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -585,4 +587,142 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	}
 
+	@Override
+	public GoodsInfoEntity queryGoodsInfoEntityByItemId(String itemId, StaffEntity staffEntity) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("itemId", itemId);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSINFO_ENTITY, staffEntity.getToken(), true, null,
+				HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsInfoEntity.class);
+	}
+
+	@Override
+	@Log(content = "更新商品信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void updGoodsInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		GoodsEntity goods = new GoodsEntity();
+		goods.setGoodsId(entity.getGoodsId()+"");
+		goods.setSupplierId(entity.getSupplierId());
+		goods.setSupplierName(entity.getSupplierName());
+		goods.setBaseId(entity.getBaseId());
+		//还未涉及规格修改暂时默认0
+		goods.setTemplateId(0);
+		goods.setGoodsName(entity.getGoodsName());
+		goods.setOrigin(entity.getOrigin());
+
+		//-------------------保存商品详情---------------------//
+		String savePath;
+		String invitePath;
+		String pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/")+1);
+		pathId = pathId.substring(0, pathId.lastIndexOf("."));
+		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
+		} else {
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
+					+ staffEntity.getGradeId() + "/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId()
+					+ "	/";
+		}
+		ReadIniInfo.getInstance();
+		savePath = PathFormat.parse(savePath);
+		invitePath = PathFormat.parse(invitePath);
+		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
+		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+		SftpService service = (SftpService) wac.getBean("sftpService");
+		service.login();
+		service.uploadFile(savePath, pathId + ResourceContants.HTML_SUFFIX, is, "");
+		goods.setDetailPath(invitePath + pathId + ResourceContants.HTML_SUFFIX);
+		//-------------------保存商品详情---------------------//
+//		goods.setDetailPath(entity.getDetailInfo());
+
+		GoodsItemEntity goodsItem = new GoodsItemEntity();
+		goodsItem.setGoodsId(goods.getGoodsId());
+		goodsItem.setItemId(entity.getItemId()+"");
+		goodsItem.setItemCode(entity.getItemCode());
+		goodsItem.setSku(entity.getSku());
+		goodsItem.setWeight(entity.getWeight());
+		goodsItem.setExciseTax(entity.getExciseFax());
+		goodsItem.setStatus(entity.getItemStatus());
+
+		GoodsPrice goodsPrice = new GoodsPrice();
+		goodsPrice.setItemId(goodsItem.getItemId());
+		goodsPrice.setMin(entity.getMin());
+		goodsPrice.setMax(entity.getMax());
+		goodsPrice.setProxyPrice(entity.getProxyPrice());
+		goodsPrice.setFxPrice(entity.getFxPrice());
+		goodsPrice.setRetailPrice(entity.getRetailPrice());
+		goodsPrice.setOpt(entity.getOpt());
+		
+		goodsItem.setGoodsPrice(goodsPrice);
+		goodsItem.setOpt(entity.getOpt());
+
+		List<GoodsFile> files = new ArrayList<GoodsFile>();
+		if (entity.getPicPath() != null) {
+			String[] goodsFiles = entity.getPicPath().split(",");
+			for (String file : goodsFiles) {
+				GoodsFile f = new GoodsFile();
+				f.setPath(file);
+				f.setGoodsId(goods.getGoodsId());
+				files.add(f);
+			}
+		}
+
+		goods.setFiles(files);
+		
+		//还未涉及规格修改暂时不调整
+//		String keys = entity.getKeys();
+//		String values = entity.getValues();
+//
+//		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+//		if (keys != null && values != null) {
+//			String[] keyArray = keys.split(";");
+//			String[] valueArray = values.split(";");
+//			for (int i = 0; i < keyArray.length; i++) {
+//				ItemSpecsPojo itemSpecsPojo;
+//				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+//					itemSpecsPojo = new ItemSpecsPojo();
+//					String[] kContesnts = keyArray[i].split(":");
+//					itemSpecsPojo.setSkId(kContesnts[0]);
+//					itemSpecsPojo.setSkV(kContesnts[1]);
+//					String[] vContants = valueArray[i].split(":");
+//					itemSpecsPojo.setSvId(vContants[0]);
+//					itemSpecsPojo.setSvV(vContants[1]);
+//					specsPojos.add(itemSpecsPojo);
+//				}
+//			}
+//
+//			JSONArray json = JSONArray.fromObject(specsPojos);
+//			goodsItem.setInfo(json.toString());
+//		}
+
+		goods.setGoodsItem(goodsItem);
+		
+		//新增商品时判断是否添加商品标签
+		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
+			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
+			goodsTagBindEntity.setItemId(goodsItem.getItemId());
+			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
+			goods.setGoodsTagBind(goodsTagBindEntity);
+		}
+		
+		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
+		goodsInfoEntity.setGoods(goods);
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_UPDATE_GOODSINFO, staffEntity.getToken(),
+				true, goodsInfoEntity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新商品信息操作失败:" + json.getString("errorMsg"));
+		}
+
+	}
 }
