@@ -88,9 +88,9 @@
 	
 		<div class="list-tabBar">
 			<ul>
-				<li class="active">在售中</li>
-				<li>已售罄</li>
-				<li>未分销</li>
+				<li data-id="first" class="active">在售中</li>
+				<li data-id="second">已售罄</li>
+				<li data-id="third">未分销</li>
 			</ul>
 		</div>
 	
@@ -101,7 +101,7 @@
 					<i class="fa fa-list fa-fw"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick="toAdd()">新增商品</button>
+					<button type="button" onclick="jump(40)">新增商品</button>
 					<button type="button" onclick = "beUse('')">批量可用</button>
 					<button type="button" onclick = "beFx('')">批量可分销</button>
 					<button type="button" onclick = "noBeFx('')">批量不可分销</button>
@@ -112,16 +112,16 @@
 					<ul class="first-classfiy">
 						<c:forEach var="first" items="${firsts}">
 						<li>
-							<span data-id="${first.id}">${first.name}</span>
+							<span data-id="${first.firstId}" data-type="first">${first.name}</span>
 							<i class="fa fa-angle-right fa-fw"></i>
 							<ul class="second-classfiy">
 								<c:forEach var="second" items="${first.seconds}">
 								<li>
-									<span data-id="${second.id}">${second.name}</span>
+									<span data-id="${second.secondId}" data-type="second">${second.name}</span>
 									<i class="fa fa-angle-right fa-fw"></i>
 									<ul class="third-classfiy">
 										<c:forEach var="third" items="${second.thirds}">
-										<li><span data-id="${third.id}">${third.name}</span></li>
+										<li><span data-id="${third.thirdId}" data-type="third">${third.name}</span></li>
 										</c:forEach>
 									</ul>
 								</li>
@@ -228,7 +228,7 @@ function rebuildTable(data){
 			var tagSelect = document.getElementById("tagId");
 			var options = tagSelect.options;
 			for(var j=0;j<options.length;j++){
-				if (tempTagId==options[j].value) {
+				if (tmpTagId==options[j].value) {
 					tmpTagName = options[j].text;
 					break;
 				}
@@ -404,17 +404,6 @@ function syncStock(id){
 	 });
 }
 
-
-function toAdd(){
-	var index = layer.open({
-		  title:"新增基础商品",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/baseMng/toAdd.shtml',
-		  maxmin: true
-		});
-		layer.full(index);
-}
-
 //搜索类型切换
 $('.moreSearchBtn').click(function(){
 	$('.moreSearchContent').slideDown(300);
@@ -433,11 +422,6 @@ $('.searchBtns').on('click','.clear',function(){
 	document.getElementById("brandId").options[0].selected="selected";
 	document.getElementById("supplierId").options[0].selected="selected";
 	document.getElementById("tagId").options[0].selected="selected";
-});
-
-//切换tabBar
-$('.list-tabBar').on('click','ul li:not(.active)',function(){
-	$(this).addClass('active').siblings('.active').removeClass('active');
 });
 
 //点击收缩所有分类
@@ -477,13 +461,48 @@ $('.container-left').on('click','i.fa-angle-down',function(){
 });
 
 //点击分类
-$('.container-left').on('click','span',function(){
-	$('.container-left span.active').removeClass('active');
-	$(this).addClass('active');	
-	
-	var tmpId = $(this).attr("data-id");
-	alert(tmpId);
+$('.container-left').on('click','span:not(.active)',function(){
+	var categoryId = $(this).attr("data-id");
+	var typeId = $(this).attr("data-type");
+	queryDataByLabelTouch(typeId,categoryId,"");
 });
+
+$('.container-left').on('click','span.active',function(){
+	queryDataByLabelTouch("","","");
+});
+
+//切换tabBar
+$('.list-tabBar').on('click','ul li:not(.active)',function(){
+	var tabId = $(this).attr("data-id");
+	queryDataByLabelTouch("","",tabId);
+});
+
+//点击分类标签及tab标签时做数据查询动作
+function queryDataByLabelTouch(typeId,categoryId,tabId){
+	var url = "${wmsUrl}/admin/goods/itemMng/dataListByLabel.shtml";	 
+	var formData = {};
+	formData["typeId"] = typeId;
+	formData["categoryId"] = categoryId;
+	formData["tabId"] = tabId;
+	
+	$.ajax({
+		 url:url,
+		 type:'post',
+		 data:JSON.stringify(formData),
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){
+				 rebuildTable(data);
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	});
+}
 
 var timer = null;
 

@@ -25,6 +25,7 @@ import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
@@ -205,6 +206,7 @@ public class GoodsItemMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
+			
 			String brandId = req.getParameter("brandId");
 			if (!StringUtil.isEmpty(brandId)) {
 				GoodsBaseEntity baseEntity = item.getBaseEntity();
@@ -227,10 +229,13 @@ public class GoodsItemMngController extends BaseController {
 				tagBindEntity.setTagId(Integer.parseInt(tagId));
 				item.setTagBindEntity(tagBindEntity);
 			}
-			String status = req.getParameter("status");
-			if (!StringUtil.isEmpty(status)) {
-				item.setStatus(status);
-			}
+			
+//			String status = req.getParameter("status");
+//			if (!StringUtil.isEmpty(status)) {
+//				item.setStatus(status);
+//			}
+			item.setStatus("3");
+			
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
@@ -244,6 +249,111 @@ public class GoodsItemMngController extends BaseController {
 				item.setGoodsName(goodsName);
 			}
 
+			params.put("centerId", staffEntity.getGradeId());
+			params.put("shopId", staffEntity.getShopId());
+			params.put("gradeLevel", staffEntity.getGradeLevel());
+
+			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
+					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
+
+			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+			for (GoodsItemEntity entity : list) {
+				GoodsUtil.changeSpecsInfo(entity);
+			}
+			
+			if (pcb != null) {
+				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+				GoodsBaseEntity goodsInfo = null;
+				for(GoodsItemEntity info : list){
+					goodsInfo = info.getBaseEntity();
+					for(FirstCatalogEntity fce : first) {
+						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
+							goodsInfo.setFirstCatalogId(fce.getName());
+							break;
+						}
+					}
+					for(SecondCatalogEntity sce : second) {
+						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
+							goodsInfo.setSecondCatalogId(sce.getName());
+							break;
+						}
+					}
+					for(ThirdCatalogEntity tce : third) {
+						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
+							goodsInfo.setThirdCatalogId(tce.getName());
+							break;
+						}
+					}
+				}
+				pcb.setObj(list);
+			}
+
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(item);
+			pcb.setSuccess(true);
+			return pcb;
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			return pcb;
+		}
+
+		return pcb;
+	}
+
+	@RequestMapping(value = "/dataListByLabel", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack dataListByLabel(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsItemEntity item) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			item.setCurrentPage(1);
+			item.setNumPerPage(10);
+			
+			String typeId = item.getTypeId();
+			String categoryId = item.getCategoryId();
+			if (!StringUtil.isEmpty(typeId) && !StringUtil.isEmpty(categoryId)) {
+				GoodsBaseEntity baseEntity = item.getBaseEntity();
+				if (baseEntity != null) {
+					if ("first".equals(typeId)) {
+						baseEntity.setFirstCatalogId(categoryId);
+					} else if ("second".equals(typeId)) {
+						baseEntity.setSecondCatalogId(categoryId);
+					} else if ("third".equals(typeId)) {
+						baseEntity.setThirdCatalogId(categoryId);
+					}
+					item.setBaseEntity(baseEntity);
+				} else {
+					GoodsBaseEntity newBaseEntity = new GoodsBaseEntity();
+					if ("first".equals(typeId)) {
+						newBaseEntity.setFirstCatalogId(categoryId);
+					} else if ("second".equals(typeId)) {
+						newBaseEntity.setSecondCatalogId(categoryId);
+					} else if ("third".equals(typeId)) {
+						newBaseEntity.setThirdCatalogId(categoryId);
+					}
+					item.setBaseEntity(newBaseEntity);
+				}
+			}
+			String tabId = item.getTabId();
+			if (!StringUtil.isEmpty(tabId)) {
+				if ("first".equals(tabId)) {
+					item.setStatus("3");
+				} else if ("second".equals(tabId)) {
+					item.setStatus("4");
+				} else if ("third".equals(tabId)) {
+					item.setStatus("5");
+				}
+			}
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());
 			params.put("gradeLevel", staffEntity.getGradeLevel());

@@ -65,11 +65,15 @@
 	});
 
 	//点击分类
-	$('.container-left').on('click','span',function(){
+	$('.container-left').on('click','span:not(.active)',function(){
 		$('.container-left span.active').removeClass('active');
 		$(this).addClass('active');	
 	});
 
+	$('.container-left').on('click','span.active',function(){
+		$(this).removeClass('active');	
+	});
+	
 	var timer = null;
 
 
@@ -123,18 +127,5 @@
 	//点击分类取消
 	$('.item-right').on('click','.label-content li.active',function(){
 		$(this).removeClass('active');
-	});
-	
-	//点击展开
-	$('.first-ul').on('click','li span i:not(active)',function(){
-		$(this).addClass('active');
-		$(this).parent().next().stop();
-		$(this).parent().next().slideDown(300);
-	});
-	//点击收缩
-	$('.first-ul').on('click','li span i.active',function(){
-		$(this).removeClass('active');
-		$(this).parent().next().stop();
-		$(this).parent().next().slideUp(300);
 	});
 })();

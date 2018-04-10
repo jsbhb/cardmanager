@@ -44,6 +44,9 @@ public class GoodsItemEntity extends Pagination {
 	private GoodsEntity goodsEntity;
 	private GoodsBaseEntity baseEntity;
 	private GoodsTagBindEntity tagBindEntity;
+	private String typeId;
+	private String categoryId;
+	private String tabId;
 
 	public int getId() {
 		return id;
@@ -243,6 +246,30 @@ public class GoodsItemEntity extends Pagination {
 
 	public void setTagBindEntity(GoodsTagBindEntity tagBindEntity) {
 		this.tagBindEntity = tagBindEntity;
+	}
+
+	public String getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(String typeId) {
+		this.typeId = typeId;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getTabId() {
+		return tabId;
+	}
+
+	public void setTabId(String tabId) {
+		this.tabId = tabId;
 	}
 	
 }

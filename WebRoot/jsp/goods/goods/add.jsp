@@ -310,6 +310,7 @@
 		var secondSelect = $("#secondCatalogId");
 		var thirdSelect = $("#thirdCatalogId");
 		secondSelect.empty();
+		secondSelect.append("<option value='-1'>选择分类</option>")
 		$.ajax({
 			 url:"${wmsUrl}/admin/goods/catalogMng/querySecondCatalogByFirstId.shtml?firstId="+firstId,
 			 type:'post',
@@ -327,8 +328,6 @@
 						if (list == null || list.length == 0) {
 							return;
 						}
-						var str = "";
-						secondSelect.append("<option value='-1'>选择分类</option>")
 						for (var i = 0; i < list.length; i++) {
 							secondSelect.append("<option value='"+list[i].secondId+"'>"+list[i].name+"</option>")
 						}
@@ -347,6 +346,7 @@
 		var secondId = $("#secondCatalogId").val();
 		var thirdSelect = $("#thirdCatalogId");
 		thirdSelect.empty();
+		thirdSelect.append("<option value='-1'>选择分类</option>")
 		$.ajax({
 			 url:"${wmsUrl}/admin/goods/catalogMng/queryThirdCatalogBySecondId.shtml?secondId="+secondId,
 			 type:'post',
@@ -364,8 +364,8 @@
 						if (list == null || list.length == 0) {
 							return;
 						}
-						
-						var str = "";
+
+						thirdSelect.empty();
 						for (var i = 0; i < list.length; i++) {
 							thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
 						}
@@ -384,24 +384,20 @@
 	});
 	 
 	 function uploadFile(id) {
-			$.ajaxFileUpload({
-				url : '${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
-				secureuri : false,
-				fileElementId : "pic"+id,
-				dataType : 'json',
-				success : function(data) {
-					if (data.success) {
-						$("#picPath"+id).val(data.msg);
-						$("#img"+id).attr("src",data.msg);
-					} else {
-						layer.alert(data.msg);
-					}
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic"+id,
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					$("#picPath"+id).val(data.msg);
+					$("#img"+id).attr("src",data.msg);
+				} else {
+					layer.alert(data.msg);
 				}
-			})
-		}
-	 
-	 function refresh(){
-		parent.location.reload();
+			}
+		})
 	 }
 	 
 	 $("#saveInfoBtn").click(function(){
@@ -470,8 +466,7 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
-						 refresh();
-						 layer.alert("商品新增成功");
+						 jump(26);
 					 }else{
 						 layer.alert(data.msg);
 					 }
@@ -700,11 +695,6 @@
 				   }
 		}});
 		
-		
-		function toList(){
-				$("#list",window.parent.document).trigger("click");
-		}
-		
 		function toTag(){
 			var index = layer.open({
 				  title:"新增标签",	
@@ -761,17 +751,17 @@
 		function toCategory(){
 			var index = layer.open({
 				  title:"新增分类",	
-				  area: ['70%', '60%'],	
+				  area: ['70%', '40%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 				  maxmin: false
 				});
 		}
 		
-		//点击分类选中
+		//点击标签选中
 		$('.item-right').on('click','.label-content li:not(active)',function(){
 		});
-		//点击分类取消
+		//点击标签取消
 		$('.item-right').on('click','.label-content li.active',function(){
 		});
 		//点击上传图片
@@ -825,31 +815,31 @@
 		    	return; 
 	    	} 
 	   	}
-	    function saveHtml(){
-	    	var context = ue.getContent();
-	    	if(context == ''){
-	    		layer.alert("没有内容！");
-	    		return;
-	    	}
+// 	    function saveHtml(){
+// 	    	var context = ue.getContent();
+// 	    	if(context == ''){
+// 	    		layer.alert("没有内容！");
+// 	    		return;
+// 	    	}
 	    	
-	    	$.ajax({
-				 url:"${wmsUrl}/admin/goods/goodsMng/saveHtml.shtml",
-				 type:'post',
-				 data:{"html":context,"goodsId":""},
-				 dataType:'json',
-				 success:function(data){
-					 if(data.success){	
-						 layer.alert("保存成功");
-						 parent.reloadTable();
-					 }else{
-						 layer.alert(data.msg);
-					 }
-				 },
-				 error:function(){
-					 layer.alert("提交失败，请联系客服处理");
-				 }
-			 });
-	    }
+// 	    	$.ajax({
+// 				 url:"${wmsUrl}/admin/goods/goodsMng/saveHtml.shtml",
+// 				 type:'post',
+// 				 data:{"html":context,"goodsId":""},
+// 				 dataType:'json',
+// 				 success:function(data){
+// 					 if(data.success){	
+// 						 layer.alert("保存成功");
+// 						 parent.reloadTable();
+// 					 }else{
+// 						 layer.alert(data.msg);
+// 					 }
+// 				 },
+// 				 error:function(){
+// 					 layer.alert("提交失败，请联系客服处理");
+// 				 }
+// 			 });
+// 	    }
 	    function isFocus(e){
 	        alert(UE.getEditor('editor').isFocus());
 	        UE.dom.domUtils.preventDefault(e)

@@ -205,6 +205,39 @@ body.hold-transition .main-header .logo {
 .content > .list-content{
 	padding-bottom: 40px;
 }
+.choose-content{
+	overflow:hidden;
+	padding: 0 calc(50% - 350px);
+}
+.choose-content > h1{
+	margin-bottom: 35px;
+    font-size: 26px;
+    line-height: 34px;
+    color: #333;
+    text-align: center;
+}
+.choose-content > .choose-content-item{
+	float: left;
+	width: 47%;
+	padding: 40px 35px 40px 60px;
+    margin: 0 10px 30px 10px;
+    height: 122px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #666;
+    border: 1px dashed #e9e9e9;
+    cursor: pointer;
+}
+.choose-content > .choose-content-item > i{
+	color: #5491de;
+    font-size: 40px;
+    float: left;
+    margin-left: 10px;
+}
+.choose-content > .choose-content-item > span{
+	float: left;
+    margin: 11px 0 0 10px;
+}
 .list-tabBar{
 	font-size: 14px;
 	color: #666;	
@@ -410,12 +443,14 @@ body.hold-transition .main-header .logo {
 	width: 420px;
 	padding: 5px 10px;
 	border: 1px solid #d9d9d9;
-	max-height: 200px;
+	max-height: 150px;
 	overflow: auto;
 	background: #fff;    
 	position: absolute;
-    top: 80px;
-    left: 26.05%;
+    top: 30px;
+    left: calc(25% + 15px);
+    z-index: 99;
+    display: none;
 }
 .content-iframe > form > .select-content > input{
 	width: 100%;
