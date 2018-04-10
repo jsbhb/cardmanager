@@ -475,28 +475,28 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setOrigin(entity.getOrigin());
 
 		//-------------------保存商品详情---------------------//
-//		String savePath;
-//		String invitePath;
-//		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
-//			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
-//			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
-//		} else {
-//			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
-//					+ staffEntity.getGradeId() + "/";
-//			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId()
-//					+ "	/";
-//		}
-//		ReadIniInfo.getInstance();
-//		savePath = PathFormat.parse(savePath);
-//		invitePath = PathFormat.parse(invitePath);
-//		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
-//		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-//		SftpService service = (SftpService) wac.getBean("sftpService");
-//		service.login();
-//		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, "");
-//		goods.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
+		String savePath;
+		String invitePath;
+		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
+		} else {
+			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
+					+ staffEntity.getGradeId() + "/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId()
+					+ "	/";
+		}
+		ReadIniInfo.getInstance();
+		savePath = PathFormat.parse(savePath);
+		invitePath = PathFormat.parse(invitePath);
+		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
+		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+		SftpService service = (SftpService) wac.getBean("sftpService");
+		service.login();
+		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, "");
+		goods.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
 		//-------------------保存商品详情---------------------//
-		goods.setDetailPath(entity.getDetailInfo());
+//		goods.setDetailPath(entity.getDetailInfo());
 
 		GoodsItemEntity goodsItem = new GoodsItemEntity();
 		int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);

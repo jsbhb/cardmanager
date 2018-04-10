@@ -263,4 +263,20 @@ public class CatalogMngController extends BaseController {
 		return pcb;
 	}
 
+	@RequestMapping(value = "/createCategoryInfo")
+	public ModelAndView createCategoryInfo(HttpServletRequest req, HttpServletResponse resp) {
+
+		Map<String, Object> context = getRootMap();
+		try {
+			StaffEntity opt = SessionUtils.getOperator(req);
+			context.put("opt", opt);
+			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
+			context.put("firsts", catalogs);
+			return forword("goods/catalog/add_1", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+	}
+
 }

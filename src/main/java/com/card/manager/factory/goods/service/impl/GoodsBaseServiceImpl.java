@@ -17,9 +17,7 @@ import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
-import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
-import com.card.manager.factory.goods.service.BrandService;
 import com.card.manager.factory.goods.service.GoodsBaseService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
@@ -46,6 +44,8 @@ public class GoodsBaseServiceImpl extends AbstractServcerCenterBaseService imple
 	@Log(content = "新增商品基础信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addEntity(GoodsBaseEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
+		int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
+		entity.setId(baseId);
 
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BASE_SAVE, token, true, entity,

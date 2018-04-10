@@ -71,6 +71,7 @@
 						<option selected="selected" value="-1">选择分类</option>
 		                </select>
 	                </div>
+					<a class="addBtn" href="javascript:void(0);" onclick="toCategory()">新增分类</a>
 				</div>
 			</div>
 	       	<div class="list-item">
@@ -410,6 +411,16 @@
 	 $("#submitBtn").click(function(){
 		 $('#itemForm').data("bootstrapValidator").validate();
 		 if($('#itemForm').data("bootstrapValidator").isValid()){
+			 var tmpIncrementTax = $("#incrementTax").val();
+			 if(tmpIncrementTax > 1){
+				 layer.alert("增值税率填写有误，请重新填写！");
+				 return;
+			 }
+			 var tmpTariff = $("#tariff").val();
+			 if(tmpTariff > 1){
+				 layer.alert("海关税率填写有误，请重新填写！");
+				 return;
+			 }
 			 var tmpExciseFax = $("#exciseFax").val();
 			 if(tmpExciseFax > 1){
 				 layer.alert("消费税率填写有误，请重新填写！");
@@ -743,6 +754,16 @@
 				  area: ['50%', '30%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
+				  maxmin: false
+				});
+		}
+		
+		function toCategory(){
+			var index = layer.open({
+				  title:"新增分类",	
+				  area: ['70%', '60%'],	
+				  type: 2,
+				  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 				  maxmin: false
 				});
 		}
