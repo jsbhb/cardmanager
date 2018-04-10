@@ -270,7 +270,7 @@ public class CatalogMngController extends BaseController {
 		try {
 			StaffEntity opt = SessionUtils.getOperator(req);
 			context.put("opt", opt);
-			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
+			List<FirstCatalogEntity> catalogs = catalogService.queryAll(opt.getToken());
 			context.put("firsts", catalogs);
 			return forword("goods/catalog/add_1", context);
 		} catch (Exception e) {
