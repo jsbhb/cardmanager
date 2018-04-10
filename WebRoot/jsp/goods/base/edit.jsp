@@ -127,6 +127,35 @@
 	             	</div>
 	            </div>
 			</div>
+			<div class="select-content">
+           		<input class="select-content-search" placeholder="查询商品分类">
+           		<ul class="first-ul">
+           			<li>
+           				<span><i class="fa fa-caret-right fa-fw active"></i>母婴用品</span>
+           				<ul class="second-ul">
+           					<li><span>奶粉</span></li>
+           					<li><span>纸尿裤</span></li>
+           					<li><span>宝宝用品</span></li>
+           				</ul>
+           			</li>
+           			<li>
+           				<span><i class="fa fa-caret-right fa-fw active"></i>母婴用品</span>
+           				<ul class="second-ul">
+           					<li><span>奶粉</span></li>
+           					<li><span>纸尿裤</span></li>
+           					<li><span>宝宝用品</span></li>
+           				</ul>
+           			</li>
+           			<li>
+           				<span><i class="fa fa-caret-right fa-fw active"></i>母婴用品</span>
+           				<ul class="second-ul">
+           					<li><span>奶粉</span></li>
+           					<li><span>纸尿裤</span></li>
+           					<li><span>宝宝用品</span></li>
+           				</ul>
+           			</li>
+           		</ul>
+           	</div>
 			<div class="submit-btn">
             	<button type="button" id="submitBtn">提交</button>
                 <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->

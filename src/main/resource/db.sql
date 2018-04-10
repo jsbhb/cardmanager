@@ -176,3 +176,8 @@ UNLOCK TABLES;
 alter table auth_operator add column `2BFlg` char(1) DEFAULT '0' COMMENT '订货平台标记';
 alter table auth_operator add column `phone` VARCHAR(15) DEFAULT NULL COMMENT '订货平台账号';
 alter table auth_operator add column `2SFlg` char(1) DEFAULT '0' COMMENT '微店平台标记';
+
+--2018-0-09
+LOCK TABLES `t_sequence` WRITE;
+INSERT INTO `t_sequence` VALUES ('base',401);
+UNLOCK TABLES;

@@ -22,11 +22,14 @@ import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
+import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
@@ -41,6 +44,9 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	GoodsService goodsService;
+	
+	@Resource
+	CatalogService catalogService;
 
 //	@RequestMapping(value = "/mng")
 //	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -232,6 +238,8 @@ public class GoodsMngController extends BaseController {
 		try {
 			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 			context.put("brands", CachePoolComponent.getBrands(opt.getToken()));
+			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
+			context.put("firsts", catalogs);
 //			String type = req.getParameter("type");
 //			if (SYNC.equals(type)) {
 //				String id = req.getParameter("id");
@@ -377,6 +385,20 @@ public class GoodsMngController extends BaseController {
 			}
 
 			goodsService.addEntity(pojo, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/createGoodsInfo", method = RequestMethod.POST)
+	public void createGoodsInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody CreateGoodsInfoEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptid());
+		try {
+			goodsService.addGoodsInfoEntity(entity, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

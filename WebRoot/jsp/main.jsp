@@ -68,6 +68,24 @@
           </li>
         </ul>
       </div>
+      <div class="type-bar">
+	  	<div class="type-bar-item">
+	  		<i class="fa fa-pie-chart fa-fw"></i>
+	  		<p>统计</p>
+	  	</div>
+	  	<div class="type-bar-item">
+	  		<i class="fa fa-file-text-o fa-fw" style="padding:5px 6px;"></i>
+	  		<p>订单</p>
+	  	</div>
+	  	<div class="type-bar-item">
+	  		<i class="fa fa-rmb fa-fw" style="padding:7px 4px;"></i>
+	  		<p>财务</p>
+	  	</div>
+	  	<div class="type-bar-item">
+	  		<i class="fa fa-user fa-fw"></i>
+	  		<p>运营</p>
+	  	</div>
+	  </div>
     </nav>
   </header>
   <aside class="main-sidebar">
@@ -96,10 +114,10 @@
           </a>
           <ul class="treeview-menu">
           	<c:forEach var="node" items="${item.children}">
-          	<li>
+          	<li id="${node.funcId}">
           	<c:choose>
 				<c:when test="${node.url==null}"><i class="fa fa-circle-o"></i>${node.name}</c:when>
-				<c:otherwise> <a href="${wmsUrl}${node.url}?privilege=${node.privilege}"  onclick="navbarCollapseDisplay()"><i class="fa fa-circle-o" style="font-style:initial"></i>${node.name}</a></c:otherwise>
+				<c:otherwise> <a href="${wmsUrl}${node.url}?privilege=${node.privilege}"><i class="fa fa-circle-o" style="font-style:initial"></i>${node.name}</a></c:otherwise>
             </c:choose>
             </li>
             </c:forEach>
@@ -131,7 +149,12 @@
 			  maxmin: true
 			});
 			layer.full(index);
-	}
+  }
+  
+  $('.type-bar').on('click','.type-bar-item',function(){
+	  $('.type-bar .type-bar-item').removeClass('active');
+	  $(this).addClass('active');
+  });
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>

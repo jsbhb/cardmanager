@@ -15,6 +15,7 @@ import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
+import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
 
@@ -183,5 +184,15 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void deleteGoodsTagEntity(GoodsTagEntity entity, String token) throws Exception;
+
+	/**
+	 * addEntity:新增商品. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void addGoodsInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception;
 
 }

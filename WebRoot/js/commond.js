@@ -124,4 +124,17 @@
 	$('.item-right').on('click','.label-content li.active',function(){
 		$(this).removeClass('active');
 	});
+	
+	//点击展开
+	$('.first-ul').on('click','li span i:not(active)',function(){
+		$(this).addClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideDown(300);
+	});
+	//点击收缩
+	$('.first-ul').on('click','li span i.active',function(){
+		$(this).removeClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideUp(300);
+	});
 })();

@@ -143,6 +143,7 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
 
 	/*------------------------基础商品管理-----------------------*/
+	public static final String GOODS_BASE_ID_SEQUENCE = "base";
 	public static final String GOODS_CENTER_BASE_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/base/queryForPage";
 	public static final String GOODS_CENTER_BASE_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
@@ -177,6 +178,8 @@ public class ServerCenterContants {
 			+ "/goods/goodsRebate/queryById";
 	public static final String GOODS_CENTER_GOODS_REBATE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goodsRebate/updateRebate";
+	public static final String GOODS_CENTER_SAVE_GOODSINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/saveGoodsInfo";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";

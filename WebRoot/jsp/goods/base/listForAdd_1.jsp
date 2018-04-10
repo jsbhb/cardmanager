@@ -54,7 +54,9 @@
 							<th width="10%">基础编码</th>
 							<th width="25%">品牌名称</th>
 							<th width="25%">商品名称</th>
-							<th width="40%">商品分类</th>
+							<th width="26%">商品分类</th>
+							<th width="7%">增值税率</th>
+							<th width="7%">海关税率</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -119,6 +121,8 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].brand;
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
+		str += "</td><td>" + list[i].incrementTax;
+		str += "</td><td>" + list[i].tariff;
 // 		str += "</td><td>" + list[i].centerId;
 		
 		str += "</td></tr>";
@@ -147,7 +151,10 @@ function sureSup(){
 		$('#brand', window.parent.document).val(selectTr.children("td").eq(1).text());
 		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(2).text());
 		$('#catalog', window.parent.document).val(selectTr.children("td").eq(3).text());
-		
+		$('#incrementTax', window.parent.document).val(selectTr.children("td").eq(4).text());
+		$('#tariff', window.parent.document).val(selectTr.children("td").eq(5).text());
+
+		 parent.choiseModel();
 		
 // 		$('#baseInfo', window.parent.document).show();
 		

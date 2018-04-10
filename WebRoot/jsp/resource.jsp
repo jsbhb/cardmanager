@@ -19,6 +19,7 @@
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>
 <script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/js/commond.js"></script>
+<script src="${wmsUrl}/js/jump-list.js"></script>
 
 <script>
 $(function(){

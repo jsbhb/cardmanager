@@ -346,6 +346,9 @@ body.hold-transition .main-header .logo {
 	color: #666;
 	background: #fff;
 }
+.content-iframe > form{
+	position: relative;
+}
 .content-iframe > form > .list-item{
 	overflow: hidden;
 	margin-bottom: 10px;
@@ -356,6 +359,39 @@ body.hold-transition .main-header .logo {
 }
 .content-iframe > form > .list-item > .item-right{
 	overflow: hidden;
+}
+.content-iframe > form > .list-item > .item-right > i{
+	top: -2px;
+    left: 400px;
+}
+.content-iframe > form > .list-item > .item-right > i.glyphicon-ok,
+.content-iframe > form > .list-item > .item-right > .right-item > i.glyphicon-ok{
+	color: green;
+}
+.content-iframe > form > .list-item > .item-right > i.glyphicon-remove,
+.content-iframe > form > .list-item > .item-right > .right-item > i.glyphicon-remove{
+	color: red;
+}
+.content-iframe > form > .list-item > .item-right > small{
+    color: red;
+	margin-top: 35px;
+}
+.content-iframe > form > .list-item > .item-right > small[data-bv-validator=regexp]{
+	margin-top: 0;
+}
+.content-iframe > form > .list-item > .label-content > small{
+	float: left;
+    position: relative;
+    left: 15px;
+    width: 200px;
+    margin: 0;
+}
+.content-iframe > form > .list-item > .item-right > .right-item{
+	position: relative;
+}
+.content-iframe > form > .list-item > .item-right > .right-item > i{
+	top: -2px;
+    left: 160px;
 }
 .content-iframe > form > .list-item > .item-right > select,
 .content-iframe > form > .list-item > .item-right > input{
@@ -369,6 +405,48 @@ body.hold-transition .main-header .logo {
 	float: left;
     line-height: 31px;
     margin-left: 20px;
+}
+.content-iframe > form > .select-content{
+	width: 420px;
+	padding: 5px 10px;
+	border: 1px solid #d9d9d9;
+	max-height: 200px;
+	overflow: auto;
+	background: #fff;    
+	position: absolute;
+    top: 80px;
+    left: 26.05%;
+}
+.content-iframe > form > .select-content > input{
+	width: 100%;
+	padding:5px 15px;
+	margin:5px 0;
+	border-radius: 3px;
+	border: 1px solid #d9d9d9;
+	outline: none;
+}
+.content-iframe > form > .select-content > .first-ul > li{
+	margin-bottom:5px;
+}
+.content-iframe > form > .select-content > .first-ul > li > span{
+	cursor:pointer;
+	margin-bottom:5px;
+	display: inline-block;
+}
+.content-iframe > form > .select-content > .first-ul > li > span > i.active{
+	-webkit-transform: rotate(90deg);
+  	-ms-transform: rotate(90deg);
+  	-o-transform: rotate(90deg);
+ 	transform: rotate(90deg);
+}
+.content-iframe > form > .select-content > .first-ul > li > .second-ul{
+	margin-left:30px;
+}
+.content-iframe > form > .select-content > .first-ul > li > .second-ul > li{
+	margin-bottom:5px;
+}
+.content-iframe > form > .select-content > .first-ul > li > .second-ul > li > span{
+	cursor:pointer;
 }
 .content-iframe > form > .list-item > .item-right > div.right-item,
 .content-iframe > form > .list-item > .item-right > div.right-items{
@@ -420,7 +498,7 @@ body.hold-transition .main-header .logo {
 }
 .content-iframe > form > .list-item > .item-right > .addBtn{
 	line-height: 31px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 .content-iframe > form > .list-item > .item-right > .item-img{
 	float: left;
