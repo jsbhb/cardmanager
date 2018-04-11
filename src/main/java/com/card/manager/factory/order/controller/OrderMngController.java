@@ -111,21 +111,25 @@ public class OrderMngController extends BaseController {
 				pagination.setShopId(Integer.parseInt(shopId));
 			}
 
-			int gradeLevel = staffEntity.getGradeLevel();
-			if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
-			} else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
-				pagination.setCenterId(staffEntity.getGradeId());
-				pagination.setShopId(staffEntity.getShopId());
-			} else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
-				pagination.setCenterId(staffEntity.getParentGradeId());
-				pagination.setShopId(staffEntity.getShopId());
-			} else {
-				if (pcb == null) {
-					pcb = new PageCallBack();
-				}
-				pcb.setPagination(pagination);
-				pcb.setSuccess(true);
-				return pcb;
+//			int gradeLevel = staffEntity.getGradeLevel();
+//			if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
+//			} else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
+//				pagination.setCenterId(staffEntity.getGradeId());
+//				pagination.setShopId(staffEntity.getShopId());
+//			} else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
+//				pagination.setCenterId(staffEntity.getParentGradeId());
+//				pagination.setShopId(staffEntity.getShopId());
+//			} else {
+//				if (pcb == null) {
+//					pcb = new PageCallBack();
+//				}
+//				pcb.setPagination(pagination);
+//				pcb.setSuccess(true);
+//				return pcb;
+//			}
+			Integer gradeId = staffEntity.getGradeId();
+			if(gradeId != 0 && gradeId != null){
+				pagination.setShopId(gradeId);
 			}
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
