@@ -19,7 +19,7 @@
 	        <li class="active">商品列表</li>
 	      </ol>
 	      <div class="search">
-	      	<input type="text" name="id" placeholder="请输入商品名称">
+	      	<input type="text" name="goodsName" placeholder="请输入商品名称">
 	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
 	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
@@ -68,7 +68,7 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-			           <input type="text" class="form-control" name="goodsName" placeholder="请输入商品名称">
+			           <input type="text" class="form-control" name="hidGoodsName" placeholder="请输入商品名称">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -99,7 +99,7 @@
 			<div class="row">
 				<div class="col-md-2 goods-classify">
 					<span>商品分类</span>
-					<i class="fa fa-list fa-fw"></i>
+					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
 					<button type="button" onclick="jump(40)">新增商品</button>
@@ -109,7 +109,7 @@
 				</div>
 			</div>
 			<div class="row content-container">
-				<div class="col-md-2 container-left">
+				<div class="col-md-2 container-left hideList" style="display:none;">
 					<ul class="first-classfiy">
 						<c:forEach var="first" items="${firsts}">
 						<li>
@@ -132,7 +132,7 @@
 						</c:forEach>
 					</ul>
 				</div>
-				<div class="col-md-10 container-right">
+				<div class="col-md-12 container-right">
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
@@ -169,20 +169,20 @@
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 //点击搜索按钮
-$('.SearchBtn').on('click',function(){
-	
+$('.searchBtn').on('click',function(){
+	$("#querybtns").click();
 });
 
 /**
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/goods/itemMng/dataList.shtml",
-			numPerPage:"10",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/goods/itemMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 $(function(){
@@ -415,14 +415,6 @@ $('.lessSearchBtn').click(function(){
 	setTimeout(function(){
 		$('.search').show();
 	},300);
-});
-
-//清除筛选内容
-$('.searchBtns').on('click','.clear',function(){
-	$('.searchItem input').val('');
-	document.getElementById("brandId").options[0].selected="selected";
-	document.getElementById("supplierId").options[0].selected="selected";
-	document.getElementById("tagId").options[0].selected="selected";
 });
 
 //点击收缩所有分类

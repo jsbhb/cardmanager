@@ -10,6 +10,8 @@ package com.card.manager.factory.goods.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.card.manager.factory.base.Pagination;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -22,7 +24,7 @@ import net.sf.json.JSONObject;
  * @version
  * @since JDK 1.7
  */
-public class SpecsTemplateEntity {
+public class SpecsTemplateEntity extends Pagination {
 	private int id;
 	private String name;
 	private String createTime;

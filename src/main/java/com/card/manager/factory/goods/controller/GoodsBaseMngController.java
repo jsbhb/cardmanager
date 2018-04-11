@@ -31,6 +31,7 @@ import com.card.manager.factory.goods.service.GoodsBaseService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
 
 @Controller
 @RequestMapping("/admin/goods/baseMng")
@@ -111,6 +112,18 @@ public class GoodsBaseMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
+			String brandId = req.getParameter("brandId");
+			if (!StringUtil.isEmpty(brandId)) {
+				entity.setBrandId(brandId);
+			}
+			String goodsName = req.getParameter("goodsName");
+			if (!StringUtil.isEmpty(goodsName)) {
+				entity.setGoodsName(goodsName);
+			}
+			String hidGoodsName = req.getParameter("hidGoodsName");
+			if (!StringUtil.isEmpty(hidGoodsName)) {
+				entity.setGoodsName(hidGoodsName);
+			}
 			pcb = goodsBaseService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BASE_QUERY_FOR_PAGE, GoodsBaseEntity.class);
 			if (pcb != null) {

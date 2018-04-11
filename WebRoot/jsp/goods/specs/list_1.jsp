@@ -8,6 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 <body>
 <section class="content-wrapper query">
@@ -15,23 +16,28 @@
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">首页</a></li>
 	        <li>商品管理</li>
-	        <li class="active">品牌管理</li>
+	        <li class="active">规格管理</li>
 	      </ol>
 	      <div class="search">
-	      	<input type="text" name="brand" placeholder="请输入品牌名称">
+	      	<input type="text" name="specsName" placeholder="请输入规格名称">
 	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
 	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
-    </section>
-    <section class="content">
+    </section>	
+	<section class="content">
 		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
 		<div class="moreSearchContent">
-			<div class="row form-horizontal query list-content">
+			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="hidBrand" placeholder="请输入品牌名称">
+	                  	<input type="text" class="form-control" name="specsId" placeholder="请输入规格编号">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="hidSpecsName" placeholder="请输入规格名称">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -46,17 +52,17 @@
 	
 		<div class="list-content">
 			<div class="row">
-				<div class="col-md-10 list-btns">
-					<button type="button" onclick="toAdd()">新增品牌</button>
+				<div class="col-md-12 list-btns">
+					<button type="button" onclick="toAdd()">新增商品规格</button>
 				</div>
 			</div>
 			<div class="row content-container">
 				<div class="col-md-12 container-right">
-					<table id="brandTable" class="table table-hover myClass">
+					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th width="25%">品牌编码</th>
-								<th width="25%">品牌名称</th>
+								<th width="25%">规格编号</th>
+								<th width="25%">规格名称</th>
 								<th width="25%">创建时间</th>
 								<th width="25%">操作</th>
 							</tr>
@@ -75,10 +81,8 @@
 </section>
 	
 <%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
-
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
 	$("#querybtns").click();
@@ -88,12 +92,12 @@ $('.searchBtn').on('click',function(){
  * 初始化分页信息
  */
 var options = {
-		queryForm : ".query",
-		url :  "${wmsUrl}/admin/goods/brandMng/dataList.shtml",
-		numPerPage:"10",
-		currentPage:"",
-		index:"1",
-		callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/goods/specsMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 $(function(){
@@ -104,17 +108,15 @@ $(function(){
 	});
 })
 
-
 function reloadTable(){
 	$.page.loadData(options);
 }
-
 
 /**
  * 重构table
  */
 function rebuildTable(data){
-	$("#brandTable tbody").html("");
+	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
 		return;
@@ -130,62 +132,47 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		str += "<td>" + list[i].brandId;
-		str += "</td><td>" + list[i].brand;
+		str += "<td>" + list[i].id;
+		str += "</td><td>" + list[i].name;
 		str += "</td><td>" + list[i].createTime;
-		str += "</td><td>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")'>编辑</a>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='del(\""+list[i].brandId+"\")'>删除</a>";
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].id+")'>编辑</a>";
 		str += "</td></tr>";
 	}
-	$("#brandTable tbody").html(str);
-}
-	
-function del(id){
-	layer.confirm('确定要删除该功能吗？', {
-		  btn: ['确认删除','取消'] //按钮
-		}, function(){
-			$.ajax({
-				 url:"${wmsUrl}/admin/goods/brandMng/delete.shtml?brandId="+id,
-				 type:'post',
-				 dataType:'json',
-				 success:function(data){
-					 if(data.success){	
-						 layer.alert("删除成功");
-						 location.reload();
-					 }else{
-						 layer.alert(data.msg);
-					 }
-				 },
-				 error:function(){
-					 layer.alert("系统出现问题啦，快叫技术人员处理");
-				 }
-			 });
-		}, function(){
-		  layer.close();
-		});
-}
-	
-function toEdit(id){
-	var index = layer.open({
-	  title:"编辑品牌",	
-	  area: ['50%', '30%'],		
-	  type: 2,
-	  content: '${wmsUrl}/admin/goods/brandMng/toEdit.shtml?brandId='+id,
-	  maxmin: false
-	});
+
+	$("#baseTable tbody").html(str);
 }
 
+function toShow(id){
+	var index = layer.open({
+		  title:"规格展示",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/goods/specsMng/toShow.shtml?id='+id,
+		  maxmin: true
+		});
+		layer.full(index);
+}
 
 function toAdd(){
 	var index = layer.open({
-	  title:"新增品牌",	
-	  area: ['50%', '30%'],		
-	  type: 2,
-	  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
-	  maxmin: false
-	});
+		  title:"新增商品规格",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/goods/specsMng/toAdd.shtml',
+		  maxmin: true
+		});
+		layer.full(index);
 }
+
+//搜索类型切换
+$('.moreSearchBtn').click(function(){
+	$('.moreSearchContent').slideDown(300);
+	$('.search').hide();
+});
+$('.lessSearchBtn').click(function(){
+	$('.moreSearchContent').slideUp(300);
+	setTimeout(function(){
+		$('.search').show();
+	},300);
+});
 
 </script>
 </body>

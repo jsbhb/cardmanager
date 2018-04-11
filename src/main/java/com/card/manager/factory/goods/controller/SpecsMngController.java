@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
-import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.SpecsEntity;
@@ -37,13 +36,13 @@ public class SpecsMngController extends BaseController {
 	@Resource
 	SpecsService specsService;
 
-	@RequestMapping(value = "/mng")
-	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("goods/specs/mng", context);
-	}
+//	@RequestMapping(value = "/mng")
+//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
+//		Map<String, Object> context = getRootMap();
+//		StaffEntity opt = SessionUtils.getOperator(req);
+//		context.put("opt", opt);
+//		return forword("goods/specs/mng", context);
+//	}
 
 	@RequestMapping(value = "/toAdd")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
@@ -196,12 +195,13 @@ public class SpecsMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/mng")
+//	@RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		return forword("goods/specs/list", context);
+		return forword("goods/specs/list_1", context);
 	}
 
 	@RequestMapping(value = "/listForAdd")
@@ -214,11 +214,23 @@ public class SpecsMngController extends BaseController {
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, SpecsTemplateEntity pagination) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
+			String specsId = req.getParameter("specsId");
+			if (!StringUtil.isEmpty(specsId)) {
+				pagination.setId(Integer.parseInt(specsId));
+			}
+			String specsName = req.getParameter("specsName");
+			if (!StringUtil.isEmpty(specsName)) {
+				pagination.setName(specsName);
+			}
+			String hidSpecsName = req.getParameter("hidSpecsName");
+			if (!StringUtil.isEmpty(hidSpecsName)) {
+				pagination.setName(hidSpecsName);
+			}
 			pcb = specsService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_SPECS_QUERY_FOR_PAGE, SpecsTemplateEntity.class);
 		} catch (ServerCenterNullDataException e) {
