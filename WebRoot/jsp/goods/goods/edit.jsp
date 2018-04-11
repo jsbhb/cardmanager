@@ -164,6 +164,9 @@
 		            </div>
 				</div>
 			</div>
+			<div class="title">
+	       		<h1>价格信息</h1>
+	       	</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">成本价</div>
 				<div class="col-sm-9 item-right">
@@ -697,9 +700,9 @@
 	        UE.getEditor('editor').execCommand( "clearlocaldata" );
 // 	        alert("已清空草稿箱")
 	    }
-
+	    
 	    $(window).load(function(){
-			 UE.getEditor('editor').execCommand('insertHtml', "${detailInfo}");
+			UE.getEditor('editor').execCommand('insertHtml', '${detailInfo}');
 	    });
 	    
 // 		 $(function () {
