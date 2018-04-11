@@ -11,7 +11,7 @@
 
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
 	<section class="content-header">
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">首页</a></li>
@@ -19,7 +19,7 @@
 	        <li class="active">基础商品</li>
 	      </ol>
 	      <div class="search">
-	      	<input type="text" name="id" placeholder="请输入商品名称">
+	      	<input type="text" name="goodsName" placeholder="请输入商品名称">
 	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
 	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
@@ -42,12 +42,7 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="id" placeholder="请输入商品编码">
-					</div>
-				</div>
-				<div class="col-xs-3">
-					<div class="searchItem">
-			           <input type="text" class="form-control" name="goodsName" placeholder="请输入商品名称">
+			           <input type="text" class="form-control" name="hidGoodsName" placeholder="请输入商品名称">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -97,18 +92,21 @@
 <%@include file="../../resource.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
-
+//点击搜索按钮
+$('.searchBtn').on('click',function(){
+	$("#querybtns").click();
+});
 
 /**
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/goods/baseMng/dataList.shtml",
-			numPerPage:"10",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/goods/baseMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -194,61 +192,6 @@ $('.lessSearchBtn').click(function(){
 		$('.search').show();
 	},300);
 });
-
-//清除筛选内容
-$('.searchBtns').on('click','.clear',function(){
-	$('.searchItem input').val('');
-	document.getElementById("brandId").options[0].selected="selected";
-});
-
-//点击展开分类列表
-$('.container-left').on('click','i.fa-angle-right',function(){
-	$(this).next().stop();
-	$(this).next().slideDown(300);
-	$(this).removeClass('fa-angle-right').addClass('fa-angle-down');
-});
-
-//点击收缩分类列表
-$('.container-left').on('click','i.fa-angle-down',function(){
-	$(this).next().stop();
-	$(this).next().slideUp(300);
-	$(this).removeClass('fa-angle-down').addClass('fa-angle-right');
-	$('.container-left span.active').removeClass('active');
-});
-
-//点击分类
-$('.container-left').on('click','span',function(){
-	$('.container-left span.active').removeClass('active');
-	$(this).addClass('active');	
-});
-
-var timer = null;
-
-$('.container-left').on('mouseenter',function(){
-	if($(this).hasClass('hideList')){
-		clearTimeout(timer);
-	}
-})
-
-$('.container-left').on('mouseleave',function(){
-	if($(this).hasClass('hideList')){
-		$('.container-left').stop();
-	  	$('.container-left').slideUp(300);
-	}
-})
-
-//实现全选反选
-$("#theadInp").on('click', function() {
-    $("tbody input:checkbox").prop("checked", $(this).prop('checked'));
-})
-$("tbody input:checkbox").on('click', function() {
-    //当选中的长度等于checkbox的长度的时候,就让控制全选反选的checkbox设置为选中,否则就为未选中
-    if($("tbody input:checkbox").length === $("tbody input:checked").length) {
-        $("#theadInp").prop("checked", true);
-    } else {
-        $("#theadInp").prop("checked", false);
-    }
-})
 
 </script>
 </body>

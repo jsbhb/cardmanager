@@ -25,7 +25,6 @@ import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
-import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
@@ -254,6 +253,10 @@ public class GoodsItemMngController extends BaseController {
 			String goodsName = req.getParameter("goodsName");
 			if (!StringUtil.isEmpty(goodsName)) {
 				item.setGoodsName(goodsName);
+			}
+			String hidGoodsName = req.getParameter("hidGoodsName");
+			if (!StringUtil.isEmpty(hidGoodsName)) {
+				item.setGoodsName(hidGoodsName);
 			}
 
 			params.put("centerId", staffEntity.getGradeId());
