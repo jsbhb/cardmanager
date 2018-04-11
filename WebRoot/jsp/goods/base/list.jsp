@@ -29,7 +29,7 @@
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
 		<div class="moreSearchContent">
-			<div class="row form-horizontal query">
+			<div class="row form-horizontal query list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="brandId" id="brandId">
@@ -60,111 +60,31 @@
             </div>
 		</div>
 	
-		<div class="list-tabBar">
-			<ul>
-				<li class="active">在售中</li>
-				<li>已售罄</li>
-				<li>已下架</li>
-			</ul>
-		</div>
-	
 		<div class="list-content">
 			<div class="row">
-				<div class="col-md-2 goods-classify">
-					<span>商品分类</span>
-					<i class="fa fa-list fa-fw"></i>
-				</div>
 				<div class="col-md-10 list-btns">
 					<button type="button" onclick="toAdd()">新增基础商品</button>
 				</div>
 			</div>
 			<div class="row content-container">
-				<div class="col-md-2 container-left">
-					<ul class="first-classfiy">
-						<li>
-							<span>母婴用品</span>
-							<i class="fa fa-angle-right fa-fw"></i>
-							<ul class="second-classfiy">
-								<li>
-									<span>纸尿裤湿巾</span>
-									<i class="fa fa-angle-right fa-fw"></i>
-									<ul class="third-classfiy">
-										<li><span>纸尿裤</span></li>
-										<li><span>拉拉裤</span></li>
-										<li><span>婴幼儿湿巾</span></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<span>母婴用品</span>
-							<i class="fa fa-angle-right fa-fw"></i>
-							<ul class="second-classfiy">
-								<li>
-									<span>纸尿裤湿巾</span>
-									<i class="fa fa-angle-right fa-fw"></i>
-									<ul class="third-classfiy">
-										<li><span>纸尿裤</span></li>
-										<li><span>拉拉裤</span></li>
-										<li><span>婴幼儿湿巾</span></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<span>母婴用品</span>
-							<i class="fa fa-angle-right fa-fw"></i>
-							<ul class="second-classfiy">
-								<li>
-									<span>纸尿裤湿巾</span>
-									<i class="fa fa-angle-right fa-fw"></i>
-									<ul class="third-classfiy">
-										<li><span>纸尿裤</span></li>
-										<li><span>拉拉裤</span></li>
-										<li><span>婴幼儿湿巾</span></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<span>母婴用品</span>
-							<i class="fa fa-angle-right fa-fw"></i>
-							<ul class="second-classfiy">
-								<li>
-									<span>纸尿裤湿巾</span>
-									<i class="fa fa-angle-right fa-fw"></i>
-									<ul class="third-classfiy">
-										<li><span>纸尿裤</span></li>
-										<li><span>拉拉裤</span></li>
-										<li><span>婴幼儿湿巾</span></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-				<div class="col-md-10 container-right">
+				<div class="col-md-12 container-right">
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th width="3%"><input type="checkbox" id="theadInp"></th>
-								<th width="23%">商品名称</th>
-								<th width="12%">品牌名称</th>
-								<th width="6%">增值税</th>
-								<th width="6%">关税</th>
-								<!-- <th>单位</th>
-								<th>hscode</th> -->
-								<th width="10%">条码</th>
-								<th width="18%">分类</th>
-								<th width="7%">所属机构</th>
-								<th width="9%">创建时间</th>
-								<th width="8%">操作</th>
+								<th width="25%">商品名称</th>
+								<th width="14%">品牌名称</th>
+								<th width="8%">增值税率</th>
+								<th width="8%">海关税率</th>
+								<th width="10%">商品条码</th>
+								<th width="20%">商品分类</th>
+								<th width="10%">创建时间</th>
+								<th width="10%">操作</th>
 							</tr>
 						</thead>
 						<tbody>
 						</tbody>
 					</table>
-					<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+					<div class="pagination-nav">
 						<ul id="pagination" class="pagination">
 						</ul>
 					</div>
@@ -185,7 +105,7 @@
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/goods/baseMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -226,8 +146,6 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		//if ("${privilege>=2}") {
-		str += "<td><input type='checkbox'/>"
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td>" + list[i].brand;
 		str += "</td><td>" + list[i].incrementTax;
@@ -236,17 +154,11 @@ function rebuildTable(data){
 		//str += "</td><td>" + (list[i].hscode == null ? "" : list[i].hscode);
 		str += "</td><td>" + list[i].encode;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
-		str += "</td><td>" + list[i].centerId;
 		str += "</td><td>" + list[i].createTime;
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='javascript:void(0);' onclick='toEdit("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-			str += "</td>";
-		}
+		str += "</td><td>"
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")'>编辑</a>";
 		str += "</td></tr>";
 	}
-		
-
 	$("#baseTable tbody").html(str);
 }
 	
@@ -289,32 +201,6 @@ $('.searchBtns').on('click','.clear',function(){
 	document.getElementById("brandId").options[0].selected="selected";
 });
 
-//切换tabBar
-$('.list-tabBar').on('click','ul li:not(.active)',function(){
-	$(this).addClass('active').siblings('.active').removeClass('active');
-});
-
-//点击收缩所有分类
-$('.goods-classify').on('click','i:not(.active)',function(){
-	$(this).addClass('active');
-	$('.container-left').stop();
-	$('.container-left').slideUp(300);
-	setTimeout(function(){
-		$('.container-right').removeClass('col-md-10').addClass('col-md-12').addClass('active');
-		$('.container-left').addClass('hideList');
-	},300);
-});
-
-//点击展开所有分类
-$('.goods-classify').on('click','i.active',function(){
-	$('.container-left').removeClass('hideList');
-	$('.container-left').hide();
-	$(this).removeClass('active');
-	$('.container-left').stop();
-	$('.container-right').removeClass('col-md-12').removeClass('active').addClass('col-md-10');
-	$('.container-left').slideDown(300);
-});
-
 //点击展开分类列表
 $('.container-left').on('click','i.fa-angle-right',function(){
 	$(this).next().stop();
@@ -337,24 +223,6 @@ $('.container-left').on('click','span',function(){
 });
 
 var timer = null;
-
-
-//鼠标事件
-$('.goods-classify').on('mouseenter',function(){
-	if($(this).find('i').hasClass('active')){
-		$('.container-left').stop();
-		$('.container-left').slideDown(300);
-	}
-})
-
-$('.goods-classify').on('mouseleave',function(){
-	if($(this).find('i').hasClass('active')){
-		timer = setTimeout(function(){
-	  		$('.container-left').stop();
-	  		$('.container-left').slideUp(300);
-	  	},100);
-	}
-})
 
 $('.container-left').on('mouseenter',function(){
 	if($(this).hasClass('hideList')){

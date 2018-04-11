@@ -21,7 +21,7 @@
         		<h1>基本信息</h1>
         	</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">品牌<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left" for="form-field-1">商品品牌<font style="color:red">*</font> </div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="brandId" id="brandId" disabled="disabled">
 			            <option selected="selected" value="${brand.brandId}">${brand.brand}</option>
@@ -32,13 +32,10 @@
 			        </select>
 		            <input type="hidden" class="form-control" name="id" id="id" value="${brand.id}"/>
 		            <input type="hidden" class="form-control" name="brand" id="brand" value="${brand.brand}"/>
-	             	<div class="item-content">
-	             		这里填写一些注释
-	             	</div>
 	             </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">分类<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left" for="form-field-1">商品分类<font style="color:red">*</font> </div>
 				<div class="col-sm-9 item-right">
 					<div class="right-items">
 						<select class="form-control" name="firstCatalogId" id="firstCatalogId" disabled="disabled">
@@ -59,18 +56,12 @@
 						<option selected="selected" value="${thirdId}">${thirdName}</option>
 		                </select>
 	                </div>
-	                <div class="item-content">
-	             		这里填写一些注释
-	             	</div>
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left" for="form-field-1">商品名称<font style="color:red">*</font> </div>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" name="goodsName" value="${brand.goodsName}">
-					<div class="item-content">
-	             		这里填写一些注释
-	             	</div>
 				</div>
 			</div>
 			<!-- <div class="form-group">
@@ -96,7 +87,7 @@
 				</div>
 			</div> -->
 			<div class="title">
-        		<h1>海关信息(*跨境商品必填)</h1>
+        		<h1>海关信息(跨境商品必填)</h1>
         	</div>
 			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
@@ -110,52 +101,23 @@
 				</div>
 			</div> -->
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">增值税</div>
+				<div class="col-sm-3 item-left" for="form-field-1">增值税率</div>
 				<div class="col-sm-9 item-right">
                  	<input type="text" class="form-control" name="incrementTax" value="${brand.incrementTax}">
 	            	<div class="item-content">
-	             		这里填写一些注释
+	             		（请按小数格式输入，例：0.17）
 	             	</div>
 	            </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">关税</div>
+				<div class="col-sm-3 item-left" for="form-field-1">海关税率</div>
 				<div class="col-sm-9 item-right">
                 	<input type="text" class="form-control" name="tariff" value="${brand.tariff}">
 	            	<div class="item-content">
-	             		这里填写一些注释
+	             		（请按小数格式输入，例：0.17）
 	             	</div>
 	            </div>
 			</div>
-			<div class="select-content">
-           		<input class="select-content-search" placeholder="查询商品分类">
-           		<ul class="first-ul">
-           			<li>
-           				<span><i class="fa fa-caret-right fa-fw active"></i>母婴用品</span>
-           				<ul class="second-ul">
-           					<li><span>奶粉</span></li>
-           					<li><span>纸尿裤</span></li>
-           					<li><span>宝宝用品</span></li>
-           				</ul>
-           			</li>
-           			<li>
-           				<span><i class="fa fa-caret-right fa-fw active"></i>母婴用品</span>
-           				<ul class="second-ul">
-           					<li><span>奶粉</span></li>
-           					<li><span>纸尿裤</span></li>
-           					<li><span>宝宝用品</span></li>
-           				</ul>
-           			</li>
-           			<li>
-           				<span><i class="fa fa-caret-right fa-fw active"></i>母婴用品</span>
-           				<ul class="second-ul">
-           					<li><span>奶粉</span></li>
-           					<li><span>纸尿裤</span></li>
-           					<li><span>宝宝用品</span></li>
-           				</ul>
-           			</li>
-           		</ul>
-           	</div>
 			<div class="submit-btn">
             	<button type="button" id="submitBtn">提交</button>
                 <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->
@@ -299,10 +261,10 @@
               }
       	  },
       	 brandId: {
-             message: '品牌不正确',
+             message: '商品品牌不正确',
              validators: {
                  notEmpty: {
-                     message: '品牌不能为空！'
+                     message: '商品品牌不能为空！'
                  }
              }
      	  },
@@ -315,26 +277,26 @@
 //              }
 //      	  },
      	 tariff:{
-			   message: '关税不正确',
+			   message: '海关税率不正确',
 			   validators: {
 				   notEmpty: {
-                     message: '关税不能为空'
+                     message: '海关税率不能为空'
                  },
 				   regexp: {
 	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '关税为数字类型'
+	                   message: '海关税率为数字类型'
 	               }
 			   }
 		   },
 		   incrementTax:{
-			   message: '增值税不正确',
+			   message: '增值税率不正确',
 			   validators: {
 				   notEmpty: {
-                     message: '增值税不能为空'
+                     message: '增值税率不能为空'
                  },
 				   regexp: {
 	                   regexp: /^\d+(\.\d+)?$/,
-	                   message: '关税为数字类型'
+	                   message: '增值税率为数字类型'
 	               }
 			   }
 		   }

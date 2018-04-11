@@ -30,7 +30,7 @@
                  	  </c:forEach>
 			        </select>
 	                <input type="hidden" class="form-control" name="brand" id="brand"/>
-					<a class="addBtn" href="javascript:void(0);" onclick="toBrand()">+新增品牌</a>
+					<a class="addBtn" href="javascript:void(0);" onclick="toBrand()">新增品牌</a>
 	             </div>
 			</div>
 			<div class="list-item">
@@ -54,6 +54,7 @@
 						<option selected="selected" value="-1">选择分类</option>
 		                </select>
 	                </div>
+					<a class="addBtn" href="javascript:void(0);" onclick="toCategory()">新增分类</a>
 				</div>
 			</div>
 			<div class="list-item">
@@ -317,6 +318,16 @@
 			  area: ['60%', '40%'],	
 			  type: 2,
 			  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
+			  maxmin: false
+			});
+	}
+	
+	function toCategory(){
+		var index = layer.open({
+			  title:"新增分类",	
+			  area: ['70%', '45%'],	
+			  type: 2,
+			  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 			  maxmin: false
 			});
 	}
