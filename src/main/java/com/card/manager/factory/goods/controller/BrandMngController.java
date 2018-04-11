@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
-import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
@@ -68,16 +67,24 @@ public class BrandMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("goods/brand/list", context);
+		return forword("goods/brand/list_1", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, BrandEntity pagination) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
+			String brand = req.getParameter("brand");
+			if (!StringUtil.isEmpty(brand)) {
+				pagination.setBrand(brand);
+			}
+			String hidBrand = req.getParameter("hidBrand");
+			if (!StringUtil.isEmpty(hidBrand)) {
+				pagination.setBrand(hidBrand);
+			}
 			pcb = brandService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_BRAND_QUERY_FOR_PAGE, BrandEntity.class);
 		} catch (ServerCenterNullDataException e) {
@@ -115,7 +122,7 @@ public class BrandMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("goods/brand/edit", context);
+		return forword("goods/brand/edit_1", context);
 	}
 
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
