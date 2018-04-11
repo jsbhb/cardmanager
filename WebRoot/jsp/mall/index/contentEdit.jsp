@@ -172,47 +172,48 @@
                       message: '大图地址不能空！'
                   }
               }
-      	  },
-      	  description: {
-              message: '描述不能空',
-              validators: {
-                  notEmpty: {
-                      message: '描述不能空！'
-                  }
-              }
-      	  },
-      	  price: {
-              message: '价格不能空',
-              validators: {
-                  notEmpty: {
-                      message: '价格不能空！'
-                  }
-              }
-      	  },
-      	  goodsId: {
-              message: '商品编号不能空',
-              validators: {
-                  notEmpty: {
-                      message: '商品编号不能空！'
-                  }
-              }
-      	  },
-      	  origin: {
-              message: '国家不能空',
-              validators: {
-                  notEmpty: {
-                      message: '国家不能空！'
-                  }
-              }
-      	  },
-      	  title: {
-              message: '标题不能空',
-              validators: {
-                  notEmpty: {
-                      message: '标题不能空！'
-                  }
-              }
       	  }
+//       	  ,
+//       	  description: {
+//               message: '描述不能空',
+//               validators: {
+//                   notEmpty: {
+//                       message: '描述不能空！'
+//                   }
+//               }
+//       	  },
+//       	  price: {
+//               message: '价格不能空',
+//               validators: {
+//                   notEmpty: {
+//                       message: '价格不能空！'
+//                   }
+//               }
+//       	  },
+//       	  goodsId: {
+//               message: '商品编号不能空',
+//               validators: {
+//                   notEmpty: {
+//                       message: '商品编号不能空！'
+//                   }
+//               }
+//       	  },
+//       	  origin: {
+//               message: '国家不能空',
+//               validators: {
+//                   notEmpty: {
+//                       message: '国家不能空！'
+//                   }
+//               }
+//       	  },
+//       	  title: {
+//               message: '标题不能空',
+//               validators: {
+//                   notEmpty: {
+//                       message: '标题不能空！'
+//                   }
+//               }
+//       	  }
       }
   });
 	
