@@ -169,7 +169,7 @@ function del(id){
 function toEdit(id){
 	var index = layer.open({
 	  title:"编辑品牌",	
-	  area: ['50%', '30%'],		
+	  area: ['70%', '30%'],		
 	  type: 2,
 	  content: '${wmsUrl}/admin/goods/brandMng/toEdit.shtml?brandId='+id,
 	  maxmin: false
@@ -180,7 +180,7 @@ function toEdit(id){
 function toAdd(){
 	var index = layer.open({
 	  title:"新增品牌",	
-	  area: ['50%', '30%'],		
+	  area: ['70%', '30%'],		
 	  type: 2,
 	  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
 	  maxmin: false

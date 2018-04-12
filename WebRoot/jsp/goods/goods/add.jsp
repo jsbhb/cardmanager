@@ -695,7 +695,7 @@
 		function toTag(){
 			var index = layer.open({
 				  title:"新增标签",	
-				  area: ['40%', '30%'],	
+				  area: ['70%', '30%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/goodsMng/toTag.shtml',
 				  maxmin: false
@@ -738,7 +738,7 @@
 		function toBrand(){
 			var index = layer.open({
 				  title:"新增品牌",	
-				  area: ['50%', '30%'],	
+				  area: ['70%', '30%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
 				  maxmin: false

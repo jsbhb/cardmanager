@@ -413,6 +413,9 @@ body.hold-transition .main-header .logo {
 .content-iframe > form > .list-item > .item-right > small[data-bv-validator=regexp]{
 	margin-top: 0;
 }
+.content-iframe > form > .list-item > .item-right > small[data-bv-validator=numeric]{
+	margin-top: 0;
+}
 .content-iframe > form > .list-item > .label-content > small{
 	float: left;
     position: relative;

@@ -18,9 +18,9 @@
 <section class="content-iframe">
 	<form class="form-horizontal" role="form" id="itemForm" style="margin-top:20px;">
 		<div class="list-item">
-			<div class="col-xs-3 item-left" for="form-field-1">标签名称</div>
-			<div class="col-xs-7 item-right">
-            	<input type="text" class="form-control" name="tagName" style="width:100%;">
+			<div class="col-xs-3 item-left">标签名称</div>
+			<div class="col-xs-9 item-right">
+            	<input type="text" class="form-control" name="tagName">
             	<div class="item-content">
              		（请输入数字、英文和汉字，限1-10字）
              	</div>
