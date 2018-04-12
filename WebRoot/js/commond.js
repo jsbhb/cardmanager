@@ -47,12 +47,18 @@
 		$('.container-left').stop();
 		$('.container-right').removeClass('col-md-12').removeClass('active').addClass('col-md-10');
 		$('.container-left').slideDown(300);
+		$('.container-left').animate({
+			'height': 'auto'
+		},300);
 	});
 
 	//点击展开分类列表
 	$('.container-left').on('click','i.fa-angle-right',function(){
 		$(this).next().stop();
 		$(this).next().slideDown(300);
+		$(this).next().animate({
+			'height': 'auto'
+		},300);
 		$(this).removeClass('fa-angle-right').addClass('fa-angle-down');
 	});
 
@@ -61,7 +67,6 @@
 		$(this).next().stop();
 		$(this).next().slideUp(300);
 		$(this).removeClass('fa-angle-down').addClass('fa-angle-right');
-		$('.container-left span.active').removeClass('active');
 	});
 
 	//点击分类
