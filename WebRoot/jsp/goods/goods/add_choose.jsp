@@ -22,11 +22,11 @@
 	<section class="content-iframe content">
 	    <div class="choose-content">
 	    	<h1>选择上货方式</h1>
-	    	<a class="choose-content-item" href="add.jsp">
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAdd.shtml">
 	    		<i class="fa fa-child fa-fw"></i>
 	    		<span>自助上货</span>
 	    	</a>
-	    	<a class="choose-content-item">
+	    	<a class="choose-content-item" href="javascript:void(0);" onclick="toWaitOpen()">
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量导入</span>
 	    	</a>
@@ -34,6 +34,10 @@
 	</section>
 	<%@include file="../../resource.jsp"%>
 	<script>
+		function toWaitOpen(){
+			layer.alert("功能暂未开放，敬请期待");
+		}
+		
 		function jumpSrc(src){
 			var p = window;
 			while(p != p.parent){

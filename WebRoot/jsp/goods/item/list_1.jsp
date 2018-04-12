@@ -493,6 +493,9 @@ function queryDataByLabelTouch(typeId,categoryId,tabId){
 			 }else{
 				 layer.alert(data.msg);
 			 }
+			 var pagination = data.pagination;
+			 $.page.currentPage = pagination.currentPage + "";
+		 	 $.page.setLine(pagination.totalPages, options,pagination.totalRows);
 		 },
 		 error:function(){
 			 layer.alert("提交失败，请联系客服处理");
