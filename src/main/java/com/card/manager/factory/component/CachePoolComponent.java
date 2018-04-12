@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
@@ -61,6 +62,7 @@ public class CachePoolComponent {
 	private static List<SecondCatalogEntity> SECONDCATALOG = new ArrayList<SecondCatalogEntity>();
 	private static List<ThirdCatalogEntity> THIRDCATALOG = new ArrayList<ThirdCatalogEntity>();
 	private static List<TagFuncEntity> TAGFUNC = new ArrayList<TagFuncEntity>();
+	private static Map<Integer, GradeBO> GRADEMAP = new HashMap<Integer, GradeBO>();
 
 	private static String HEAD = "1";
 	private static String CENTER = "2";
@@ -76,6 +78,49 @@ public class CachePoolComponent {
 		component = this;  
     }
 	
+	/**
+	 * @fun 获取grade信息
+	 * @param token
+	 * @return
+	 */
+	public static Map<Integer, GradeBO> getGrade(String token) {
+		if (GRADEMAP.size() == 0) {
+			syncGrade(token);
+		}
+		return GRADEMAP;
+	}
+	
+	/**
+	 * @fun 获取grade信息
+	 * @param token
+	 */
+	private static void syncGrade(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_ALL_GRADE, token, true, null,
+				HttpMethod.GET);
+
+		JSONArray obj = JSONArray.fromObject(query_result.getBody());
+
+		int index = obj.size();
+		
+		if (index == 0) {
+			return;
+		}
+		GRADEMAP.clear();
+		GradeBO grade = null;
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			grade = JSONUtilNew.parse(jObj.toString(), GradeBO.class);
+			GRADEMAP.put(grade.getId(), grade);
+		}
+		
+	}
+	
+	public static void addGrade(GradeBO grade){
+		GRADEMAP.put(grade.getId(), grade);
+	}
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>

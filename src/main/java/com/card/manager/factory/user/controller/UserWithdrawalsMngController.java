@@ -124,8 +124,8 @@ public class UserWithdrawalsMngController extends BaseController {
 		} else if (opt.getGradeLevel() == 2) {
 			typeId = opt.getGradeId()+"";
 			type = "0";
-			CenterRebate centerRebate = financeMngService.queryCenterRebate(typeId, type, opt.getToken());
-			context.put("info", centerRebate);
+//			CenterRebate centerRebate = financeMngService.queryCenterRebate(typeId, type, opt.getToken());
+//			context.put("info", centerRebate);
 			context.put("typeId", typeId);
 			context.put("type", type);
 			return forword("user/withdrawals/show", context);

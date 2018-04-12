@@ -27,7 +27,7 @@ import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
-import com.card.manager.factory.user.model.CenterRebate;
+import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -122,17 +122,17 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 	}
 	
 	@Override
-	public CenterRebate queryCenterRebate(String id, String type, String token) {
+	public Rebate queryRebate(Integer id, String token) {
 		
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY+"?type="+type, token, true, null,
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY, token, true, null,
 				HttpMethod.GET, params);
 		
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CenterRebate.class);
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), Rebate.class);
 	}
 	
 	@Override

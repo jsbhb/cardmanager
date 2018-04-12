@@ -11,7 +11,15 @@ public class PageCallBack {
 	private String errTrace;
 	private Object obj;
 	private Pagination pagination;
-	private String type;
+	private Object object;
+
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
+	}
 
 	public PageCallBack() {
 	}
@@ -53,12 +61,5 @@ public class PageCallBack {
 		this.pagination = pagination;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 }
