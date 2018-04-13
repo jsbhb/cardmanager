@@ -25,23 +25,23 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper" style="overflow:hidden">
   <header class="main-header">
-    <a href="javascript:void(0);" onclick="location.reload()" class="logo">
+    <a href="#" onclick="location.reload()" class="logo">
 <!--     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>ERP</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>供销贸易后台</span>
+      <span class="logo-lg"><b>供销统一贸易后台</span>
     </a>
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
-      <a href="javascript:void(0);" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <li class="dropdown user user-menu">
-            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">${operator.optName}</span>
             </a>
@@ -69,22 +69,12 @@
         </ul>
       </div>
       <div class="type-bar">
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-pie-chart fa-fw"></i>
-	  		<p>统计</p>
+      	<c:forEach var="item" items="${menuList}">
+	  	<div class="type-bar-item" data-id="${item.funcId}">
+	  		<i class="fa ${item.tag} fa-fw"></i>
+	  		<p>${item.name}</p>
 	  	</div>
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-file-text-o fa-fw" style="padding:5px 6px;"></i>
-	  		<p>订单</p>
-	  	</div>
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-rmb fa-fw" style="padding:7px 4px;"></i>
-	  		<p>财务</p>
-	  	</div>
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-user fa-fw"></i>
-	  		<p>运营</p>
-	  	</div>
+	  	</c:forEach>
 	  </div>
     </nav>
   </header>
@@ -97,16 +87,16 @@
 <!--         </div> -->
 <!--         <div class="pull-left info"> -->
 <%--           <p>${operator.optName}</p> --%>
-<!--           <a href="javascript:void(0);"><i class="fa fa-circle text-success"></i> Online</a> -->
+<!--           <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
 <!--         </div> -->
 <!--       </div> -->
       <!-- search form -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <c:forEach var="item" items="${menuList}">
+        <c:forEach var="item" items="${childList}">
         <li class="treeview">
-          <a href="javascript:void(0);">
+          <a href="#">
             <i class="fa ${item.tag}"></i> <span>${item.name}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
@@ -155,6 +145,27 @@
 	  $('.type-bar .type-bar-item').removeClass('active');
 	  $(this).addClass('active');
   });
+  
+  window.onload = function(){
+	  var id = GetQueryString('id');
+	  $('.type-bar-item[data-id='+id+']').addClass('active');
+  }
+  
+  $('.type-bar').on('click','.type-bar-item',function(){
+	  var id = $(this).attr('data-id');//获取id
+	  var url = window.location.href;
+	  if(url.indexOf('id') != -1){
+		  url = url.split('?id')[0];
+	  }
+	  window.location.href = url + '?id=' + id;
+	  
+  });
+  
+  function GetQueryString(name){
+      var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if(r!=null)return  unescape(r[2]); return null;
+ }
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>

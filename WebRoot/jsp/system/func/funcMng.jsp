@@ -1,175 +1,237 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"  %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>供销贸易后台</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="${wmsUrl}/layer/layer.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="${wmsUrl}/adminLTE/css/AdminLTE.css">
-  <link rel="stylesheet" href="${wmsUrl}/adminLTE/css/skins/_all-skins.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="${wmsUrl}/css/mainpage.css">
-  <link rel="stylesheet" href="${wmsUrl}/css/google-font.css">
-  
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper" style="overflow:hidden">
-  <header class="main-header">
-    <a href="javascript:void(0);" onclick="location.reload()" class="logo">
-<!--     <a href="index2.html" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>ERP</span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>供销贸易后台</span>
-    </a>
-    <nav class="navbar navbar-static-top">
-      <!-- Sidebar toggle button-->
-      <a href="javascript:void(0);" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
-
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <li class="dropdown user user-menu">
-            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">${operator.optName}</span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                <p>
-                  ${operator.optName}
-                </p>
-              </li>
-              <!-- Menu Body -->
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <!-- <a href="modifyPwd()" class="btn btn-default btn-flat">修改密码</a> -->
-                  <button type="button" onclick="modifyPwd()" class="btn btn-primary">修改密码</button>
-                </div>
-                <div class="pull-right">
-                  <a href="${wmsUrl}/admin/logout.shtml" class="btn btn-default btn-flat">退出登录</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="type-bar">
-      <c:forEach var="item" items="${menuList}">
-      	<div class="type-bar-item" data-id="${item.funcId}">
-	  		<i class="fa ${item.tag} fa-fw"></i>
-	  		<p>${item.name}</p>
-	  	</div>
-      </c:forEach>
-    </nav>
-  </header>
-  <aside class="main-sidebar">
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-<!--       <div class="user-panel"> -->
-<!--         <div class="pull-left image"> -->
-<%--           <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image"> --%>
-<!--         </div> -->
-<!--         <div class="pull-left info"> -->
-<%--           <p>${operator.optName}</p> --%>
-<!--           <a href="javascript:void(0);"><i class="fa fa-circle text-success"></i> Online</a> -->
-<!--         </div> -->
-<!--       </div> -->
-      <!-- search form -->
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <c:forEach var="item" items="${childList}">
-        <li class="treeview">
-          <a href="javascript:void(0);">
-            <i class="fa ${item.tag}"></i> <span>${item.name}</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-          	<c:forEach var="node" items="${item.children}">
-          	<li id="${node.funcId}">
-          	<c:choose>
-				<c:when test="${node.url==null}"><i class="fa fa-circle-o"></i>${node.name}</c:when>
-				<c:otherwise> <a href="${wmsUrl}${node.url}?privilege=${node.privilege}"><i class="fa fa-circle-o" style="font-style:initial"></i>${node.name}</a></c:otherwise>
-            </c:choose>
-            </li>
-            </c:forEach>
-          </ul>
-        </li>
-        </c:forEach>
-      </ul>
+<body>
+<section class="content-wrapper">
+	<section class="content-header query">
+	      <ol class="breadcrumb">
+	        <li><a href="#"><i class="fa fa-dashboard"></i>系统管理</a></li>
+	        <li class="active">功能列表</li>
+	      </ol>
+	      <div class="search">
+	      	<input type="text" name="name" placeholder="输入功能名称" >
+	      	<input type="hidden" name="queryAll" value="true">
+	      	<input type="hidden" name="parentId" value="">
+	      	<input type="hidden" name="backId" value="">
+	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+		  </div>
     </section>
-  </aside>
+    <section class="content">
+			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+			</div>
+			
+			<div class="list-content">
+				<div class="row">
+					<div class="col-md-10 list-btns">
+						<button type="button" onclick="toAdd()">新增模块</button>
+						<button id="backBtn" type="button" onclick="back()">返回上级菜单</button>
+	<div id="content-wrapper">
+		<section class="content-header">
+			<!-- Page Heading -->
+			<h1>系统管理
+		    <small>功能管理</small>
+		    </h1>
+			<!-- /.row -->
 
-   <div id="page-wrapper" class="iframePage">
-   </div>
-</div>
+			<ol class="breadcrumb">
+		        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>首页</a></li>
+		        <li><a href="javascript:void(0);">系统管理</a></li>
+		        <li class="active">功能管理</li>
+		     </ol>
+		</section>
+		<section class="content">
+		<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<i class="fa fa-bar-chart-o fa-fw"></i>功能列表
+							</h3>
+						</div>
+						<div class="panel-body">
+							<c:if test="${priviledge>1}">
+								<button type="submit" class="btn btn-default">新增</button>
+							</c:if>
+							<table id="funcTable" class="table table-hover">
+								<thead>
+									<tr>
+										<th>操作</th>
+										<th>名称</th>
+										<th>tag</th>
+										<th>创建日期</th>
+										<th>更新日期</th>
+										<th>操作人</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div class="pagination-nav">
+								<ul id="pagination" class="pagination">
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<table id="baseTable" class="table table-hover myClass">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>名称</th>
+									<th>父菜单</th>
+									<th>地址</th>
+									<th>排序</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+							<ul id="pagination" class="pagination">
+							</ul>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</section>
+	</section>
+	
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<script type="text/javascript">
 
-<!-- jQuery 2.2.3 -->
-<script src="${wmsUrl}/jquery/jquery.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/mainpage.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/mainPageNav.js"></script>
-<script src="${wmsUrl}/plugins/jQueryUI/jquery-ui.js"></script>
-  <script src="${wmsUrl}/layer/layer.js"></script>
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-  
-  function modifyPwd(){
-		var index = layer.open({
-			  title:"修改密码",		
-			  type: 2,
-			  content: '${wmsUrl}/admin/modifyPwd.shtml',
-			  maxmin: true
-			});
-			layer.full(index);
-  }
-  
-  $('.type-bar').on('click','.type-bar-item',function(){
-	  $('.type-bar .type-bar-item').removeClass('active');
-	  $(this).addClass('active');
-  });
-  
-  window.onload = function(){
-	  var id = GetQueryString('id');
-	  $('.type-bar-item[data-id='+id+']').addClass('active');
-  }
-  
-  $('.type-bar').on('click','.type-bar-item',function(){
-	  var id = $(this).attr('data-id');//获取id
-	  var url = window.location.href;
-	  if(url.indexOf('id') != -1){
-		  url = url.split('?id')[0];
-	  }
-	  window.location.href = url + '?id=' + id;
-	  
-  });
-  
-  function GetQueryString(name){
-      var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-      var r = window.location.search.substr(1).match(reg);
-      if(r!=null)return  unescape(r[2]); return null;
- }
+$(function(){
+	$("#backBtn").hide();
+})
+/**
+ * 初始化分页信息
+ */
+var options = {
+			queryForm : ".query",
+			url :  "${wmsUrl}/admin/system/funcMng/dataList1.shtml",
+			numPerPage:"100",
+			currentPage:"",
+			index:"1",
+			callback:rebuildTable
+}
+
+
+$(function(){
+	 $(".pagination-nav").pagination(options);
+	 var top = getTopWindow();
+		$('.breadcrumb').on('click','a',function(){
+			top.location.reload();
+		});
+})
+
+
+function reloadTable(){
+	$.page.loadData(options);
+}
+
+
+/**
+ * 重构table
+ */
+function rebuildTable(data){
+	$("#baseTable tbody").html("");
+
+	if (data == null || data.length == 0) {
+		return;
+	}
+	
+	var list = data.obj;
+	
+	if (list == null || list.length == 0) {
+		layer.alert("没有查到数据");
+		return;
+	}
+
+	var str = "";
+	for (var i = 0; i < list.length; i++) {
+		str += "<tr>";
+		
+		str += "<td>" + list[i].funcId;
+		str += "<td>" + list[i].name;
+		
+		str += "</td><td>" + (list[i].parentName==null?"":list[i].parentName);
+		str += "</td><td>" + (list[i].url==null?"":list[i].url);
+		str += "</td><td>" + (list[i].sort==null?"0":list[i].sort);
+		
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='child("+list[i].funcId+")'>子菜单</a>";
+		str += "&nbsp;&nbsp;&nbsp<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].funcId+")'>编辑</a>";
+		str += "</td></tr>";
+	}
+
+	$("#baseTable tbody").html(str);
+}
+
+function child(parentId){
+	var backId = $("[name='parentId']").val(); 
+	$("[name='parentId']").val(parentId);
+	$("[name='backId']").val(backId)
+	
+	$("#backBtn").show();
+	reloadTable();
+}
+
+function back(){
+	var backId = $("[name='backId']").val(); 
+	$("[name='parentId']").val(backId);
+	$("[name='backId']").val("");
+	
+	
+	var parentId = $("[name='parentId']").val();
+	
+	if(parentId==null||parentId==""){
+		$("#backBtn").hide();
+	}
+	
+	reloadTable();
+}
+	
+function toAdd(){
+	
+	var id = $("[name='parentId']").val();
+	
+	var index = layer.open({
+		  type: 2,
+		  content: '${wmsUrl}/admin/system/funcMng/toAdd.shtml?parentId='+id,
+		  area: ['320px', '195px'],
+		  maxmin: true
+		});
+		layer.full(index);
+}
+	
+function toEdit(id){
+	if(id == 0 || id == null){
+		layer.alert("信息不全，请联系技术人员！");
+		return;
+	}
+	
+	var index = layer.open({
+		  type: 2,
+		  content: '${wmsUrl}/admin/system/funcMng/toEdit.shtml?func_id='+id,
+		  area: ['320px', '195px'],
+		  maxmin: true
+		});
+		layer.full(index);
+}
+
 </script>
-<!-- Bootstrap 3.3.6 -->
-<script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="${wmsUrl}/adminLTE/js/app.js"></script>
 </body>
 </html>
-
