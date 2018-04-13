@@ -151,10 +151,12 @@ function sureSup(){
 	
 		$('#baseId', window.parent.document).val(selectTr.children("td").eq(0).text());
 		$('#brand', window.parent.document).val(selectTr.children("td").eq(1).text());
-		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(2).text());
-		$('#catalog', window.parent.document).val(selectTr.children("td").eq(3).text());
-		$('#incrementTax', window.parent.document).val(selectTr.children("td").eq(4).text());
-		$('#tariff', window.parent.document).val(selectTr.children("td").eq(5).text());
+		$('#catalog', window.parent.document).val(selectTr.children("td").eq(2).text());
+		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(3).text().trim());
+		$('#unit', window.parent.document).val(selectTr.children("td").eq(4).text());
+		$('#hscode', window.parent.document).val(selectTr.children("td").eq(5).text().trim());
+		$('#incrementTax', window.parent.document).val(selectTr.children("td").eq(6).text());
+		$('#tariff', window.parent.document).val(selectTr.children("td").eq(7).text());
 
 		 parent.choiseModel();
 		

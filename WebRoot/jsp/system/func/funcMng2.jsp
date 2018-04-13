@@ -11,7 +11,7 @@
 	<section class="content-header">
 	      <h1><i class="fa fa-street-view"></i>功能管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
 	        <li class="active">功能管理</li>
 	      </ol>
     </section>
@@ -28,16 +28,16 @@
 								<c:forEach var="item" items="${menuList}">
 								<li>
 									<span><i class="fa fa-folder"></i> ${item.name}</span>
-									<a href="#" onclick="showAddFunc(${item.funcId})"><i class="fa fa-plus"></i></a>
-									<a href="#" onclick="showEditFunc(${item.funcId})"><i class="fa fa-pencil"></i></a>
-			                		<a href="#" onclick="deleteFunc(${item.funcId})"><i class="fa fa-trash-o"></i></a>
+									<a href="javascript:void(0);" onclick="showAddFunc(${item.funcId})"><i class="fa fa-plus"></i></a>
+									<a href="javascript:void(0);" onclick="showEditFunc(${item.funcId})"><i class="fa fa-pencil"></i></a>
+			                		<a href="javascript:void(0);" onclick="deleteFunc(${item.funcId})"><i class="fa fa-trash-o"></i></a>
 									<ul>
 										<c:forEach var="node" items="${item.children}">
 											<li style="display: none;">
 							                	<span class="tree-font">
 							                		${node.name}(${node.url})
-							                		<a href="#" onclick="showEditFunc(${node.funcId})"><i class="fa fa-pencil"></i></a>
-							                		<a href="#" onclick="deleteFunc(${node.funcId})"><i class="fa fa-trash-o"></i></a>
+							                		<a href="javascript:void(0);" onclick="showEditFunc(${node.funcId})"><i class="fa fa-pencil"></i></a>
+							                		<a href="javascript:void(0);" onclick="deleteFunc(${node.funcId})"><i class="fa fa-trash-o"></i></a>
 							                	</span>
 											</li>
 										</c:forEach>

@@ -5,6 +5,6 @@
 		<b>Version</b> 1.0.0
 	</div>
 	<strong>Copyright &copy; 2017-2022 <a
-		href="#">鑫海通达</a>.
+		href="javascript:void(0);">鑫海通达</a>.
 	</strong> All rights reserved.
 </footer>

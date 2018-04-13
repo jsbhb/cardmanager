@@ -26,6 +26,8 @@ public class CreateGoodsInfoEntity {
 	private String thirdCatalogId;
 	private double incrementTax;
 	private double tariff;
+	private String unit;
+	private String hscode;
 	private int goodsId;
 	private int itemId;
 	private String itemStatus;
@@ -37,6 +39,7 @@ public class CreateGoodsInfoEntity {
 	private double exciseFax;
 	private String origin;
 	private double weight;
+	private int conversion;
 	private double proxyPrice;
 	private double fxPrice;
 	private double retailPrice;
@@ -222,6 +225,24 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setGoodsDetailPath(String goodsDetailPath) {
 		this.goodsDetailPath = goodsDetailPath;
+	}
+	public int getConversion() {
+		return conversion;
+	}
+	public void setConversion(int conversion) {
+		this.conversion = conversion;
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	public String getHscode() {
+		return hscode;
+	}
+	public void setHscode(String hscode) {
+		this.hscode = hscode;
 	}
 
 }

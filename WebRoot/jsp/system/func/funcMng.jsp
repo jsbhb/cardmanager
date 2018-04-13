@@ -23,8 +23,8 @@
 			<!-- /.row -->
 
 			<ol class="breadcrumb">
-		        <li><a href="#"><i class="fa fa-dashboard"></i>首页</a></li>
-		        <li><a href="#">系统管理</a></li>
+		        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>首页</a></li>
+		        <li><a href="javascript:void(0);">系统管理</a></li>
 		        <li class="active">功能管理</li>
 		     </ol>
 		</section>

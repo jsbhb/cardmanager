@@ -18,7 +18,7 @@
 <section class="content-wrapper">
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i>供应商管理</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>供应商管理</a></li>
 	        <li class="active">供应商列表</li>
 	      </ol>
 	      <div class="search">

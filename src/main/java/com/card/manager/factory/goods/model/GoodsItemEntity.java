@@ -47,6 +47,7 @@ public class GoodsItemEntity extends Pagination {
 	private String typeId;
 	private String categoryId;
 	private String tabId;
+	private int conversion;
 
 	public int getId() {
 		return id;
@@ -270,6 +271,14 @@ public class GoodsItemEntity extends Pagination {
 
 	public void setTabId(String tabId) {
 		this.tabId = tabId;
+	}
+
+	public int getConversion() {
+		return conversion;
+	}
+
+	public void setConversion(int conversion) {
+		this.conversion = conversion;
 	}
 	
 }

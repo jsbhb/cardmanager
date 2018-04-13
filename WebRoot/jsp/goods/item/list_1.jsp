@@ -103,8 +103,8 @@
 				</div>
 				<div class="col-md-10 list-btns">
 					<button type="button" onclick="jump(40)">新增商品</button>
-					<button type="button" onclick = "beUse('')">批量可用</button>
-					<button type="button" onclick = "beFx('')">批量可分销</button>
+<!-- 					<button type="button" onclick = "beUse('')">批量可用</button> -->
+<!-- 					<button type="button" onclick = "beFx('')">批量可分销</button> -->
 					<button type="button" onclick = "noBeFx('')">批量不可分销</button>
 				</div>
 			</div>
@@ -217,11 +217,16 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		str += "<td><input type='checkbox'/>"
+		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td>" + list[i].itemCode;
-		str += "</td><td>" + list[i].baseEntity.brand;
-		str += "</td><td>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
+		if (list[i].baseEntity == null) {
+			str += "</td><td>";
+			str += "</td><td>";
+		} else {
+			str += "</td><td>" + list[i].baseEntity.brand;
+			str += "</td><td>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
+		}
 		str += "</td><td>" + list[i].supplierName;
 		if (list[i].tagBindEntity != null) {
 			var tmpTagId = list[i].tagBindEntity.tagId;
@@ -238,7 +243,11 @@ function rebuildTable(data){
 		} else {
 			str += "</td><td>普通";
 		}
-		str += "</td><td>" + list[i].baseEntity.incrementTax;
+		if (list[i].baseEntity == null) {
+			str += "</td><td>";
+		} else {
+			str += "</td><td>" + list[i].baseEntity.incrementTax;
+		}
 		str += "</td><td>" + list[i].exciseTax;
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
@@ -284,22 +293,8 @@ function toEdit(id){
 }
 
 function beUse(id){
-	if(id == ""){
-		var valArr = new Array; 
-		var itemIds;
-	    $("[name='check']:checked").each(function(i){ 
-	        valArr[i] = $(this).val(); 
-	    }); 
-	    if(valArr.length==0){
-	    	layer.alert("请选择数据");
-	    	return;
-	    }
-	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-	} else {
-		itemIds = id;
-	}
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+itemIds,
+		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+id,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
@@ -318,22 +313,8 @@ function beUse(id){
 }
 
 function beFx(id){
-	if(id == ""){
-		var valArr = new Array; 
-		var itemIds;
-	    $("[name='check']:checked").each(function(i){ 
-	        valArr[i] = $(this).val(); 
-	    }); 
-	    if(valArr.length==0){
-	    	layer.alert("请选择数据");
-	    	return;
-	    }
-	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-	} else {
-		itemIds = id;
-	}
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+itemIds,
+		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+id,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',

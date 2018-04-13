@@ -143,7 +143,7 @@
 					                </select>
 				                </div>
 							</div>
-							<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a>
+							<a class="col-sm-2 control-label no-padding-right" href="javascript:void(0);" onclick="toTag()">+新增标签</a>
 							<div class="col-sm-2">
 							</div>
 						</div>

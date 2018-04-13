@@ -65,12 +65,30 @@
 		                </select>
 	                </div>
 	                <div class="right-items last-items">
-						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" disabled>
+						<select class="form-control" name="thirdCatalogId" id="thirdCatalogId" disabled>
 	                  	  <option selected="selected" value="${goodsInfo.goodsBase.thirdCatalogId}">${thirdName}</option>
 <!-- 						<option selected="selected" value="-1">选择分类</option> -->
 		                </select>
 	                </div>
 				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">计量单位</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="unit" id="unit" value="${goodsInfo.goodsBase.unit}" readonly>
+					<div class="item-content">
+	             		（包、件、个）
+	             	</div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">海关代码</div>
+				<div class="col-sm-9 item-right">
+                 	<input type="text" class="form-control" name="hscode" id="hscode" value="${goodsInfo.goodsBase.hscode}" readonly>
+		            <div class="item-content">
+	             		（海关代码HSCode）
+	             	</div>
+	            </div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">增值税率</div>
@@ -160,7 +178,16 @@
 				<div class="col-sm-9 item-right">
 	                <input type="text" class="form-control" name="weight" value="${goodsInfo.goods.goodsItem.weight}">
 					<div class="item-content">
-						（计量单位：克或毫升。请按整数格式输入，例：2500）
+						（请按整数格式输入，例：2500）
+		            </div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">换算比例</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="conversion" value="${goodsInfo.goods.goodsItem.conversion}">
+					<div class="item-content">
+						（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
 		            </div>
 				</div>
 			</div>

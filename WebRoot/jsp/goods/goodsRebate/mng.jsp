@@ -16,7 +16,7 @@
 		<section class="content-header">
 	      <h1><i class="fa fa-street-view"></i>财务管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
 	        <li>财务管理</li>
 	        <li class="active">商品返佣</li>
 	      </ol>

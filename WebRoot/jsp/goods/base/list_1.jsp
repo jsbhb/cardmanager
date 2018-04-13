@@ -15,7 +15,7 @@
 	<section class="content-header">
 	      <h1><i class="fa fa-street-view"></i>基础信息管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
 	        <li>商品管理</li>
 	        <li class="active">基础信息管理</li>
 	      </ol>

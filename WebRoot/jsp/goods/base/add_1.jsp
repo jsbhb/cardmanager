@@ -193,17 +193,17 @@
 			 }
 			 var tmpFirstCatalogId = $("#firstCatalogId").val();
 			 if(tmpFirstCatalogId == -1){
-				 layer.alert("请选择一级分类");
+				 layer.alert("请选择商品分类");
 				 return;
 			 }
 			 var tmpSecondCatalogId = $("#secondCatalogId").val();
 			 if(tmpSecondCatalogId == -1){
-				 layer.alert("请选择二级分类");
+				 layer.alert("请选择商品分类");
 				 return;
 			 }
 			 var tmpThirdCatalogId = $("#thirdCatalogId").val();
 			 if(tmpThirdCatalogId == -1){
-				 layer.alert("请选择三级分类");
+				 layer.alert("请选择商品分类");
 				 return;
 			 }
 			 var tmpIncrementTax = $("#incrementTax").val();
