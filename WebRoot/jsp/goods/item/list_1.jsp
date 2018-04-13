@@ -297,7 +297,7 @@ function beUse(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parents().find("td").eq(11).text() == "初始化") {
+	    	if ($(this).parent().siblings().eq(10).text() == "初始化") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -333,7 +333,7 @@ function beFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parents().find("td").eq(11).text() == "可用") {
+	    	if ($(this).parent().siblings().eq(10).text() == "可用") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -369,7 +369,7 @@ function noBeFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parents().find("td").eq(11).text() == "可分销") {
+	    	if ($(this).parent().siblings().eq(10).text() == "可分销") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
