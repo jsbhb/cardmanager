@@ -8,6 +8,7 @@
 package com.card.manager.factory.goods.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -219,11 +220,13 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	public void puton(String itemId, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-		List<String> list = new ArrayList<String>();
-		list.add(itemId);
+		String[] arr = itemId.split(",");
+		List<String> itemIdList = Arrays.asList(arr);
+//		List<String> list = new ArrayList<String>();
+//		list.add(itemId);
 		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
 				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/" + staffEntity.getGradeId(),
-				staffEntity.getToken(), true, list, HttpMethod.POST);
+				staffEntity.getToken(), true, itemIdList, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
