@@ -68,7 +68,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">计量单位</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="unit" value="${brand.unit}">
+					<input type="text" class="form-control" name="unit" <c:if test="${brand.unit != 'null'}"> value="${fn:trim(brand.unit)}" </c:if>>
 				</div>
 			</div>
 			<div class="title">
@@ -160,14 +160,14 @@
                 }
             }
     	  },
-      	  hscode: {
-              message: '海关代码不正确',
-              validators: {
-                  notEmpty: {
-                      message: '海关代码不能为空！'
-                  }
-              }
-      	  },
+//       	  hscode: {
+//               message: '海关代码不正确',
+//               validators: {
+//                   notEmpty: {
+//                       message: '海关代码不能为空！'
+//                   }
+//               }
+//       	  },
      	  tariff:{
 			   message: '海关税率不正确',
 			   validators: {

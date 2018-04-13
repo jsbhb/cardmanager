@@ -349,7 +349,8 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
-						 location.reload();
+						 parent.layer.closeAll();
+						 parent.location.reload();
 					 }else{
 						 layer.alert(data.msg);
 					 }

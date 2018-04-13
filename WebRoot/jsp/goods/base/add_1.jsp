@@ -115,7 +115,6 @@
 		var secondSelect = $("#secondCatalogId");
 		var thirdSelect = $("#thirdCatalogId");
 		secondSelect.empty();
-		secondSelect.append("<option value='-1'>选择分类</option>")
 		$.ajax({
 			 url:"${wmsUrl}/admin/goods/catalogMng/querySecondCatalogByFirstId.shtml?firstId="+firstId,
 			 type:'post',
@@ -132,7 +131,7 @@
 						if (list == null || list.length == 0) {
 							return;
 						}
-						secondSelect.empty();
+						secondSelect.append("<option value='-1'>选择分类</option>")
 						for (var i = 0; i < list.length; i++) {
 							secondSelect.append("<option value='"+list[i].secondId+"'>"+list[i].name+"</option>")
 						}
@@ -150,7 +149,6 @@
 		var secondId = $("#secondCatalogId").val();
 		var thirdSelect = $("#thirdCatalogId");
 		thirdSelect.empty();
-		secondSelect.append("<option value='-1'>选择分类</option>")
 		$.ajax({
 			 url:"${wmsUrl}/admin/goods/catalogMng/queryThirdCatalogBySecondId.shtml?secondId="+secondId,
 			 type:'post',
@@ -167,8 +165,6 @@
 						if (list == null || list.length == 0) {
 							return;
 						}
-
-						thirdSelect.empty();
 						for (var i = 0; i < list.length; i++) {
 							thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
 						}
@@ -269,14 +265,14 @@
                 }
             }
     	  },
-      	  hscode: {
-              message: '海关代码不正确',
-              validators: {
-                  notEmpty: {
-                      message: '海关代码不能为空！'
-                  }
-              }
-      	  },
+//       	  hscode: {
+//               message: '海关代码不正确',
+//               validators: {
+//                   notEmpty: {
+//                       message: '海关代码不能为空！'
+//                   }
+//               }
+//       	  },
      	  tariff:{
 			   message: '海关税率不正确',
 			   validators: {
@@ -317,7 +313,7 @@
 	function toCategory(){
 		var index = layer.open({
 			  title:"新增分类",	
-			  area: ['70%', '45%'],	
+			  area: ['70%', '50%'],	
 			  type: 2,
 			  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 			  maxmin: false

@@ -179,5 +179,5 @@ alter table auth_operator add column `2SFlg` char(1) DEFAULT '0' COMMENT '微店
 
 --2018-0-09
 LOCK TABLES `t_sequence` WRITE;
-INSERT INTO `t_sequence` VALUES ('base',401);
+INSERT INTO `t_sequence` VALUES ('base',701);
 UNLOCK TABLES;
