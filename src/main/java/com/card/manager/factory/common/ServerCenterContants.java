@@ -84,6 +84,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/user/customer";
 	public static final String USER_CENTER_ALL_GRADE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/user/feign/list-grade";
+	public static final String USER_CENTER_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/type";
 	/**
 	 * 商品中心url
 	 */

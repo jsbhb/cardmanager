@@ -1,0 +1,105 @@
+.title-discount {
+	color:#666;
+}
+.title-discount > h1{
+	padding: 0 20px;
+    font-size: 21px;
+}
+.title-discount > p{
+	padding: 0 30px;
+}
+.treeList {
+    min-height:20px;
+    padding:19px;
+    margin-bottom:20px;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    font-size:12px;
+    color:#666;
+}
+.treeList li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative;
+}
+.treeList li input{
+    padding: 3px 8px;
+    margin:0 0 0 5px;
+    width:165px;
+    border-radius:4px;
+    border:1px solid #d9d9d9;
+    outline:none;
+}
+.treeList li::before, .treeList li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto;
+}
+.treeList li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px;
+}
+.treeList li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:22px;
+    width:25px;
+}
+.treeList li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #999;
+    border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none;
+}
+.treeList li.parent_li>span {
+    cursor:pointer;
+}
+.treeList>ul>li::before, .treeList>ul>li::after {
+    border:0;
+}
+.treeList li:last-child::before {
+    height:23px;
+}
+.treeList li.parent_li>span:hover, .treeList li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000;
+}
+.treeList ul{
+	margin-left:50px;
+}
+.treeList > ul{
+    overflow:hidden;
+}
+.treeList > ul > li{
+    display: inline-block;
+    vertical-align: text-top;
+}
+.submit-btn{
+	position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+.submit-btn > span{
+	display: inline-block;
+    padding: 3px 8px;
+    background: #5491de;
+    border: 1px solid #5491de;
+    border-radius: 3px;
+    color: #fff;
+    margin-bottom: 10px;
+    cursor: pointer;
+}

@@ -21,10 +21,12 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
@@ -47,23 +49,24 @@ public class GoodsItemMngController extends BaseController {
 
 	@Resource
 	SpecsService specsService;
-	
+
 	@Resource
 	GoodsService goodsService;
-	
+
 	@Resource
 	CatalogService catalogService;
 
-//	@RequestMapping(value = "/mng")
-//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-//		Map<String, Object> context = getRootMap();
-//		StaffEntity opt = SessionUtils.getOperator(req);
-//		context.put("opt", opt);
-//		return forword("goods/item/mng", context);
-//	}
+	// @RequestMapping(value = "/mng")
+	// public ModelAndView toFuncList(HttpServletRequest req,
+	// HttpServletResponse resp) {
+	// Map<String, Object> context = getRootMap();
+	// StaffEntity opt = SessionUtils.getOperator(req);
+	// context.put("opt", opt);
+	// return forword("goods/item/mng", context);
+	// }
 
 	@RequestMapping(value = "/mng")
-//	@RequestMapping(value = "/list")
+	// @RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
@@ -125,78 +128,80 @@ public class GoodsItemMngController extends BaseController {
 		return pcb;
 	}
 
-//	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
-//	@ResponseBody
-//	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GoodsItemEntity item) {
-//		PageCallBack pcb = null;
-//		StaffEntity staffEntity = SessionUtils.getOperator(req);
-//		Map<String, Object> params = new HashMap<String, Object>();
-//		try {
-//			String status = req.getParameter("status");
-//			if (!StringUtil.isEmpty(status)) {
-//				item.setStatus(status);
-//			}
-//			String itemCode = req.getParameter("itemCode");
-//			if (!StringUtil.isEmpty(itemCode)) {
-//				item.setItemCode(itemCode);
-//			}
-//			String supplierId = req.getParameter("supplierId");
-//			if (!StringUtil.isEmpty(supplierId)) {
-//				item.setSupplierId(supplierId);
-//			}
-//			String goodsName = req.getParameter("goodsName");
-//			if (!StringUtil.isEmpty(goodsName)) {
-//				item.setGoodsName(goodsName);
-//			}
-//			String sku = req.getParameter("sku");
-//			if (!StringUtil.isEmpty(sku)) {
-//				item.setSku(sku);
-//			}
-//			String goodsId = req.getParameter("goodsId");
-//			if (!StringUtil.isEmpty(goodsId)) {
-//				item.setGoodsId(goodsId);
-//			}
-//			String itemId = req.getParameter("itemId");
-//			if (!StringUtil.isEmpty(itemId)) {
-//				item.setItemId(itemId);
-//			}
-//			String tagId = req.getParameter("tagId");
-//			if (!StringUtil.isEmpty(tagId)) {
-//				GoodsTagBindEntity tagBindEntity = new GoodsTagBindEntity();
-//				tagBindEntity.setTagId(Integer.parseInt(tagId));
-//				item.setTagBindEntity(tagBindEntity);
-//			}
-//
-//			params.put("centerId", staffEntity.getGradeId());
-//			params.put("shopId", staffEntity.getShopId());
-//			params.put("gradeLevel", staffEntity.getGradeLevel());
-//
-//			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
-//					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
-//
-//			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
-//			for (GoodsItemEntity entity : list) {
-//				GoodsUtil.changeSpecsInfo(entity);
-//			}
-//
-//		} catch (ServerCenterNullDataException e) {
-//			if (pcb == null) {
-//				pcb = new PageCallBack();
-//			}
-//			pcb.setPagination(item);
-//			pcb.setSuccess(true);
-//			return pcb;
-//		} catch (Exception e) {
-//			if (pcb == null) {
-//				pcb = new PageCallBack();
-//			}
-//			pcb.setErrTrace(e.getMessage());
-//			pcb.setSuccess(false);
-//			return pcb;
-//		}
-//
-//		return pcb;
-//	}
+	// @RequestMapping(value = "/dataList", method = RequestMethod.POST)
+	// @ResponseBody
+	// public PageCallBack dataList(HttpServletRequest req, HttpServletResponse
+	// resp, GoodsItemEntity item) {
+	// PageCallBack pcb = null;
+	// StaffEntity staffEntity = SessionUtils.getOperator(req);
+	// Map<String, Object> params = new HashMap<String, Object>();
+	// try {
+	// String status = req.getParameter("status");
+	// if (!StringUtil.isEmpty(status)) {
+	// item.setStatus(status);
+	// }
+	// String itemCode = req.getParameter("itemCode");
+	// if (!StringUtil.isEmpty(itemCode)) {
+	// item.setItemCode(itemCode);
+	// }
+	// String supplierId = req.getParameter("supplierId");
+	// if (!StringUtil.isEmpty(supplierId)) {
+	// item.setSupplierId(supplierId);
+	// }
+	// String goodsName = req.getParameter("goodsName");
+	// if (!StringUtil.isEmpty(goodsName)) {
+	// item.setGoodsName(goodsName);
+	// }
+	// String sku = req.getParameter("sku");
+	// if (!StringUtil.isEmpty(sku)) {
+	// item.setSku(sku);
+	// }
+	// String goodsId = req.getParameter("goodsId");
+	// if (!StringUtil.isEmpty(goodsId)) {
+	// item.setGoodsId(goodsId);
+	// }
+	// String itemId = req.getParameter("itemId");
+	// if (!StringUtil.isEmpty(itemId)) {
+	// item.setItemId(itemId);
+	// }
+	// String tagId = req.getParameter("tagId");
+	// if (!StringUtil.isEmpty(tagId)) {
+	// GoodsTagBindEntity tagBindEntity = new GoodsTagBindEntity();
+	// tagBindEntity.setTagId(Integer.parseInt(tagId));
+	// item.setTagBindEntity(tagBindEntity);
+	// }
+	//
+	// params.put("centerId", staffEntity.getGradeId());
+	// params.put("shopId", staffEntity.getShopId());
+	// params.put("gradeLevel", staffEntity.getGradeLevel());
+	//
+	// pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
+	// ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE,
+	// GoodsItemEntity.class);
+	//
+	// List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+	// for (GoodsItemEntity entity : list) {
+	// GoodsUtil.changeSpecsInfo(entity);
+	// }
+	//
+	// } catch (ServerCenterNullDataException e) {
+	// if (pcb == null) {
+	// pcb = new PageCallBack();
+	// }
+	// pcb.setPagination(item);
+	// pcb.setSuccess(true);
+	// return pcb;
+	// } catch (Exception e) {
+	// if (pcb == null) {
+	// pcb = new PageCallBack();
+	// }
+	// pcb.setErrTrace(e.getMessage());
+	// pcb.setSuccess(false);
+	// return pcb;
+	// }
+	//
+	// return pcb;
+	// }
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
@@ -205,7 +210,7 @@ public class GoodsItemMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			
+
 			String brandId = req.getParameter("brandId");
 			if (!StringUtil.isEmpty(brandId)) {
 				GoodsBaseEntity baseEntity = item.getBaseEntity();
@@ -228,11 +233,11 @@ public class GoodsItemMngController extends BaseController {
 				tagBindEntity.setTagId(Integer.parseInt(tagId));
 				item.setTagBindEntity(tagBindEntity);
 			}
-			
-//			String status = req.getParameter("status");
-//			if (!StringUtil.isEmpty(status)) {
-//				item.setStatus(status);
-//			}
+
+			// String status = req.getParameter("status");
+			// if (!StringUtil.isEmpty(status)) {
+			// item.setStatus(status);
+			// }
 			String tabId = req.getParameter("hidTabId");
 			if ("first".equals(tabId)) {
 				item.setStatus("3");
@@ -241,7 +246,7 @@ public class GoodsItemMngController extends BaseController {
 			} else if ("third".equals(tabId)) {
 				item.setStatus("5");
 			}
-			
+
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
@@ -270,27 +275,27 @@ public class GoodsItemMngController extends BaseController {
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
 			}
-			
+
 			if (pcb != null) {
 				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
 				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
 				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
 				GoodsBaseEntity goodsInfo = null;
-				for(GoodsItemEntity info : list){
+				for (GoodsItemEntity info : list) {
 					goodsInfo = info.getBaseEntity();
-					for(FirstCatalogEntity fce : first) {
+					for (FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
 							goodsInfo.setFirstCatalogId(fce.getName());
 							break;
 						}
 					}
-					for(SecondCatalogEntity sce : second) {
+					for (SecondCatalogEntity sce : second) {
 						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
 							goodsInfo.setSecondCatalogId(sce.getName());
 							break;
 						}
 					}
-					for(ThirdCatalogEntity tce : third) {
+					for (ThirdCatalogEntity tce : third) {
 						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
 							goodsInfo.setThirdCatalogId(tce.getName());
 							break;
@@ -321,14 +326,15 @@ public class GoodsItemMngController extends BaseController {
 
 	@RequestMapping(value = "/dataListByLabel", method = RequestMethod.POST)
 	@ResponseBody
-	public PageCallBack dataListByLabel(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsItemEntity item) {
+	public PageCallBack dataListByLabel(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody GoodsItemEntity item) {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			item.setCurrentPage(1);
 			item.setNumPerPage(10);
-			
+
 			String typeId = item.getTypeId();
 			String categoryId = item.getCategoryId();
 			if (!StringUtil.isEmpty(typeId) && !StringUtil.isEmpty(categoryId)) {
@@ -375,30 +381,30 @@ public class GoodsItemMngController extends BaseController {
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
 			}
-			
+
 			if (pcb != null) {
 				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
 				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
 				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
 				GoodsBaseEntity goodsInfo = null;
-				for(GoodsItemEntity info : list){
+				for (GoodsItemEntity info : list) {
 					goodsInfo = info.getBaseEntity();
 					if (goodsInfo == null) {
 						continue;
 					}
-					for(FirstCatalogEntity fce : first) {
+					for (FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
 							goodsInfo.setFirstCatalogId(fce.getName());
 							break;
 						}
 					}
-					for(SecondCatalogEntity sce : second) {
+					for (SecondCatalogEntity sce : second) {
 						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
 							goodsInfo.setSecondCatalogId(sce.getName());
 							break;
 						}
 					}
-					for(ThirdCatalogEntity tce : third) {
+					for (ThirdCatalogEntity tce : third) {
 						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
 							goodsInfo.setThirdCatalogId(tce.getName());
 							break;
@@ -439,7 +445,7 @@ public class GoodsItemMngController extends BaseController {
 			return forword("error", context);
 		}
 		try {
-			context.put("item", goodsItemService.queryById(id,opt.getToken()));
+			context.put("item", goodsItemService.queryById(id, opt.getToken()));
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 			context.put("tags", tags);
 		} catch (Exception e) {
@@ -448,6 +454,49 @@ public class GoodsItemMngController extends BaseController {
 		}
 
 		return forword("goods/item/show", context);
+	}
+
+	@RequestMapping(value = "/toSetRebate")
+	public ModelAndView toSetRebate(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+
+		String id = req.getParameter("id");
+		if (StringUtil.isEmpty(id)) {
+			context.put(ERROR, "没有明细编号");
+			return forword("error", context);
+		}
+		try {
+			context.put("itemId", id);
+			List<GoodsRebateEntity> list = goodsService.queryGoodsRebateById(id, opt.getToken());
+			if (list != null) {
+				Map<Integer, Double> map = new HashMap<Integer, Double>();
+				for (GoodsRebateEntity model : list) {
+					map.put(model.getGradeType(), model.getProportion());
+				}
+				context.put("map", map);
+			}
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
+			context.put("gradeList", gradeList);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+
+		return forword("goods/item/rebate", context);
+	}
+
+	@RequestMapping(value = "/rebate")
+	public void rebate(HttpServletRequest req, HttpServletResponse resp, @RequestBody List<GoodsRebateEntity> list) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		try {
+			goodsService.updGoodsRebateEntity(list, opt.getToken());
+			sendSuccessMessage(resp, "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(resp, e.getMessage());
+		}
 	}
 
 	@RequestMapping(value = "/toAdd")
@@ -574,7 +623,7 @@ public class GoodsItemMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public void update(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsPojo pojo) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -585,7 +634,7 @@ public class GoodsItemMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-		
+
 		sendSuccessMessage(resp, null);
 	}
 

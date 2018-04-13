@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.goods.model;
 
+import com.card.manager.factory.base.Pagination;
+
 /**
  * ClassName: GoodsEntity <br/>
  * Function: 商品实体 <br/>
@@ -16,28 +18,42 @@ package com.card.manager.factory.goods.model;
  * @version
  * @since JDK 1.7
  */
-public class GoodsRebateEntity extends GoodsEntity {
-	private String first;// 区域返佣比例
-	private String second;// 店铺返佣比例
-	private String third;// 推手返佣比例
+public class GoodsRebateEntity extends Pagination {
+	private Integer id;
+	private String itemId;
+	private Integer gradeType;// 客户类型
+	private double proportion;// 返佣比例
 	private String remark;// 备注
-	public String getFirst() {
-		return first;
+	private String opt;
+	public Integer getId() {
+		return id;
 	}
-	public void setFirst(String first) {
-		this.first = first;
+	public String getOpt() {
+		return opt;
 	}
-	public String getSecond() {
-		return second;
+	public void setOpt(String opt) {
+		this.opt = opt;
 	}
-	public void setSecond(String second) {
-		this.second = second;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public String getThird() {
-		return third;
+	public String getItemId() {
+		return itemId;
 	}
-	public void setThird(String third) {
-		this.third = third;
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+	public Integer getGradeType() {
+		return gradeType;
+	}
+	public void setGradeType(Integer gradeType) {
+		this.gradeType = gradeType;
+	}
+	public double getProportion() {
+		return proportion;
+	}
+	public void setProportion(double proportion) {
+		this.proportion = proportion;
 	}
 	public String getRemark() {
 		return remark;

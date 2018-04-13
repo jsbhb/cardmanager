@@ -10,6 +10,7 @@ package com.card.manager.factory.goods.service;
 import java.util.List;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
@@ -112,7 +113,7 @@ public interface GoodsService extends ServerCenterService {
 	 * @return
 	 * @since JDK 1.7
 	 */
-	GoodsRebateEntity queryGoodsRebateById(String id, String token);
+	List<GoodsRebateEntity> queryGoodsRebateById(String id, String token);
 
 	/**
 	 * 
@@ -121,7 +122,7 @@ public interface GoodsService extends ServerCenterService {
 	 * @param token
 	 * @since JDK 1.7
 	 */
-	void updGoodsRebateEntity(GoodsRebateEntity entity, String token) throws Exception;
+	void updGoodsRebateEntity(List<GoodsRebateEntity> list, String token) throws Exception;
 
 	/**
 	 * queryGoodsTag:根据编号查询商品信息. <br/>
@@ -216,5 +217,13 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void updGoodsInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * @fun 应该在系统那块，防止冲突暂时写在这里
+	 * @param id
+	 * @param token
+	 * @return
+	 */
+	List<GradeTypeDTO> queryGradeType(String id, String token);
 
 }

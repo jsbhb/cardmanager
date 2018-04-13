@@ -18,39 +18,29 @@
 </head>
 
 <body>
-	<section class="content">
+	<section class="content-wrapper query content-iframe">
+		<section class="content-header">
+		      <ol class="breadcrumb">
+		        <li><a href="javascript:void(0);">财务管理</a></li>
+		        <li class="active">返佣查看</li>
+		      </ol>
+		      <div class="search">
+		      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value = "${list[0].name}">
+				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
+		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+			  </div>
+	    </section>
+		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px;">
+		    <div class="select-content">
+           		<ul class="first-ul">
+           			<c:forEach var="menu" items="${list}">
+           				<c:set var="menu" value="${menu}" scope="request" />
+           				<%@include file="recursive.jsp"%>  
+					</c:forEach>
+           		</ul>
+           	</div>
+		</form>
         <div class="main-content">
-        <div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">搜索</h5>
-	            	<div class="box-tools pull-right">
-	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
-			</div>
-		    <div class="box-body">
-				<div class="row form-horizontal query">
-					<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分级名称</label>
-							<div class="col-sm-2">
-								<div class="input-group">
-									 <select class="form-control" name="gradeId" id="gradeId" style="width: 100%;">
-				                   	  <c:forEach var="grade" items="${list}">
-		                   	  			<option value="${grade.id}">${grade.name}</option>
-				                   	  </c:forEach>
-					                </select>
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-10 col-md-12">
-	                        <div class="form-group">
-                                <button type="button" class="btn btn-primary" id="querybtns">提交</button>
-                        	</div>
-                	</div>
-				</div>
-			</div>
-		</div>
 			<div class="row">
 				<div class="col-xs-12" >
 					<form class="form-horizontal" role="form" id="gradeForm" >
@@ -62,18 +52,18 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
+				                    <i class="glyphicon glyphicon-user"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="gradeName" id = "gradeName" value="">
+		                  			<input type="text" readonly class="form-control" name="gradeName_1" id = "gradeName_1" value="" style="background:#fff;">
 				                </div>
 							</div>
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">可提现金额</label>
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
+				                    <i class="glyphicon glyphicon-euro"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="">
+				                  <input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="" style="background:#fff;">
 				                </div>
 							</div>
 						</div>
@@ -82,18 +72,18 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
+				                    <i class="glyphicon glyphicon-euro"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="">
+				                  <input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="" style="background:#fff;">
 				                </div>
 							</div>
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">待到账金额</label>
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
+				                    <i class="glyphicon glyphicon-euro"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="">
+				                  <input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="" style="background:#fff;">
 				                </div>
 							</div>
 						</div>
@@ -143,7 +133,7 @@
 	}
 
 	$(function(){
-		 $(".pagination-nav").pagination(options);
+		$(".pagination-nav").pagination(options);
 	})
 	
 	function reloadTable(){
@@ -163,8 +153,8 @@
 		var list = data.obj;
 		
 		var rebate = data.object;
-		var gradeName = $("#gradeId").find("option:selected").text();
-		$("#gradeName").val(gradeName);
+		var gradeName = $("#gradeName").val();
+		$("#gradeName_1").val(gradeName);
 		if(rebate != null){
 			$("#canBePresented").val(rebate.canBePresented == null ? 0 : rebate.canBePresented);
 			$("#alreadyPresented").val(rebate.alreadyPresented == null ? 0 : rebate.alreadyPresented);
@@ -191,6 +181,46 @@
 
 		$("#staffTable tbody").html(str);
 	 }
+	
+	
+	//点击展开
+	$('ul').on('click','li span i:not(active)',function(){
+		$(this).addClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideDown(300);
+	});
+	//点击收缩
+	$('ul').on('click','li span i.active',function(){
+		$(this).removeClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideUp(300);
+	});
+	
+	//点击展开下拉列表
+	$('#gradeName').click(function(){
+		$('.select-content').stop();
+		$('.select-content').slideDown(300);
+	});
+	//点击空白隐藏下拉列表
+	$('html').click(function(event){
+		var el = event.target || event.srcelement;
+		if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
+			$('.select-content').stop();
+			$('.select-content').slideUp(300);
+		}
+	});
+	//点击选择分类
+	$('.select-content').on('click','span',function(event){
+		var el = event.target || event.srcelement;
+		if(el.nodeName != 'I'){
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			$('#gradeName').val(name);
+			$('#gradeId').val(id);
+			$('.select-content').stop();
+			$('.select-content').slideUp(300);
+		}
+	});
 	</script>
 </body>
 </html>

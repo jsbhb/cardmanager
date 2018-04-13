@@ -270,8 +270,10 @@ function rebuildTable(data){
 		}
 		if(status == 0){
 			str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
 		}else if(status == 1){
 			str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >可分销</a>";
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
 		}else if(status == 2){
 			str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
 		}
@@ -291,6 +293,17 @@ function toEdit(id){
 		  title:"编辑商品信息",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/goods/goodsMng/toEditGoodsInfo.shtml?itemId='+id,
+		  maxmin: true
+		});
+		layer.full(index);
+}
+
+
+function setRebate(id){
+	var index = layer.open({
+		  title:"设置商品返佣比例",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/goods/itemMng/toSetRebate.shtml?id='+id,
 		  maxmin: true
 		});
 		layer.full(index);

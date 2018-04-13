@@ -57,13 +57,14 @@ public class RebateMngController extends BaseController {
 		for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
 			list.add(entry.getValue());
 		}
-		if (gradeId != 0) {
-			TreePackUtil.packGradeChildren(list, result, gradeId);
-			GradeBO grade = map.get(gradeId);
-			result.add(grade);
-		} else {
-			result.addAll(list);
-		}
+//		if (gradeId != 0) {
+//			TreePackUtil.packGradeChildren(list, result, gradeId);
+//			GradeBO grade = map.get(gradeId);
+//			result.add(grade);
+//		} else {
+//			result.addAll(list);
+//		}
+		result = TreePackUtil.packGradeChildren(list, gradeId);
 		Collections.sort(result);
 		context.put("list", result);
 		return forword("/user/rebate/list", context);

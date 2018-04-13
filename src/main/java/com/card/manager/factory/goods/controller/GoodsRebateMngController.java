@@ -108,8 +108,8 @@ public class GoodsRebateMngController extends BaseController {
 		context.put(OPT, opt);
 		try {
 			String id = req.getParameter("id");
-			GoodsRebateEntity entity = goodsService.queryGoodsRebateById(id, opt.getToken());
-			context.put("goods", entity);
+//			GoodsRebateEntity entity = goodsService.queryGoodsRebateById(id, opt.getToken());
+//			context.put("goods", entity);
 			return forword("goods/goodsRebate/show", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -123,7 +123,7 @@ public class GoodsRebateMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		goodsRebateEntity.setOpt(staffEntity.getOptid());
 		try {
-			goodsService.updGoodsRebateEntity(goodsRebateEntity, staffEntity.getToken());
+//			goodsService.updGoodsRebateEntity(goodsRebateEntity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
