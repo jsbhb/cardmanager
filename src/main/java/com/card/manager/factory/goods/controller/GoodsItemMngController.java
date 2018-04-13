@@ -383,6 +383,9 @@ public class GoodsItemMngController extends BaseController {
 				GoodsBaseEntity goodsInfo = null;
 				for(GoodsItemEntity info : list){
 					goodsInfo = info.getBaseEntity();
+					if (goodsInfo == null) {
+						continue;
+					}
 					for(FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
 							goodsInfo.setFirstCatalogId(fce.getName());

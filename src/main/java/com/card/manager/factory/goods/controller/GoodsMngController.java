@@ -51,13 +51,13 @@ public class GoodsMngController extends BaseController {
 	@Resource
 	CatalogService catalogService;
 
-//	@RequestMapping(value = "/mng")
-//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-//		Map<String, Object> context = getRootMap();
-//		StaffEntity opt = SessionUtils.getOperator(req);
-//		context.put("opt", opt);
-//		return forword("goods/goods/mng", context);
-//	}
+	@RequestMapping(value = "/mng")
+	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put("opt", opt);
+		return forword("goods/goods/add_choose", context);
+	}
 
 	@RequestMapping(value = "/ueditor")
 	public ModelAndView ueditor(HttpServletRequest req, HttpServletResponse resp) {
@@ -232,8 +232,7 @@ public class GoodsMngController extends BaseController {
 		return pcb;
 	}
 
-//	@RequestMapping(value = "/toAdd")
-	@RequestMapping(value = "/mng")
+	@RequestMapping(value = "/toAdd")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);

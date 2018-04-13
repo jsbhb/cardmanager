@@ -323,6 +323,7 @@ body.hold-transition .main-header .logo {
 }
 .list-content > .content-container > .container-left li{
 	cursor:pointer;
+	overflow: hidden;
 }
 .list-content > .content-container > .container-left li i{
 	font-size: 16px;
@@ -410,6 +411,9 @@ body.hold-transition .main-header .logo {
 	margin-top: 35px;
 }
 .content-iframe > form > .list-item > .item-right > small[data-bv-validator=regexp]{
+	margin-top: 0;
+}
+.content-iframe > form > .list-item > .item-right > small[data-bv-validator=numeric]{
 	margin-top: 0;
 }
 .content-iframe > form > .list-item > .label-content > small{

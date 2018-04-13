@@ -452,6 +452,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsBase.setBrand(entity.getBrand());
 			goodsBase.setIncrementTax(entity.getIncrementTax()+"");
 			goodsBase.setTariff(entity.getTariff()+"");
+			goodsBase.setUnit(entity.getUnit());
+			goodsBase.setHscode(entity.getHscode());
 			goodsBase.setFirstCatalogId(entity.getFirstCatalogId());
 			goodsBase.setSecondCatalogId(entity.getSecondCatalogId());
 			goodsBase.setThirdCatalogId(entity.getThirdCatalogId());
@@ -509,6 +511,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setWeight(entity.getWeight());
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+		goodsItem.setConversion(entity.getConversion());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());

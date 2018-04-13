@@ -122,8 +122,8 @@ public class UserRefillingMngController extends BaseController {
 		String type = "";
 		typeId = opt.getGradeId()+"";
 		type = "0";
-		CenterRebate centerRebate = financeMngService.queryCenterRebate(typeId, type, opt.getToken());
-		context.put("info", centerRebate);
+//		CenterRebate centerRebate = financeMngService.queryCenterRebate(typeId, type, opt.getToken());
+//		context.put("info", centerRebate);
 		context.put("typeId", typeId);
 		context.put("type", type);
 		return forword("user/refilling/show", context);

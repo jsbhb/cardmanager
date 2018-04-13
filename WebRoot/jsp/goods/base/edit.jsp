@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
@@ -21,7 +22,7 @@
         		<h1>基本信息</h1>
         	</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">商品品牌<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="brandId" id="brandId" disabled="disabled">
 			            <option selected="selected" value="${brand.brandId}">${brand.brand}</option>
@@ -35,7 +36,7 @@
 	             </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">商品分类<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left">商品分类</div>
 				<div class="col-sm-9 item-right">
 					<div class="right-items">
 						<select class="form-control" name="firstCatalogId" id="firstCatalogId" disabled="disabled">
@@ -52,56 +53,38 @@
 		                </select>
 	                </div>
 	                <div class="right-items last-items">
-						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId" disabled="disabled">
+						<select class="form-control" name="thirdCatalogId" id="thirdCatalogId" disabled="disabled">
 						<option selected="selected" value="${thirdId}">${thirdName}</option>
 		                </select>
 	                </div>
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">商品名称<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="goodsName" value="${brand.goodsName}">
+					<input type="text" class="form-control" name="goodsName" value="${fn:trim(brand.goodsName)}">
 				</div>
 			</div>
-			<!-- <div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品条码<font style="color:red">*</font> </label>
-				<div class="col-sm-5">
-					<div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-pencil"></i>
-	                  </div>
-                 			<input type="text" class="form-control" name="encode" value="${brand.encode}">
-	                </div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">计量单位</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="unit" <c:if test="${brand.unit != 'null'}"> value="${fn:trim(brand.unit)}" </c:if>>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">单位<font style="color:red">*</font> </label>
-				<div class="col-sm-5">
-					<div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-pencil"></i>
-	                  </div>
-                 			<input type="text" class="form-control" name="unit" value="${brand.unit}">
-	                </div>
-				</div>
-			</div> -->
 			<div class="title">
         		<h1>海关信息(跨境商品必填)</h1>
         	</div>
-			<!-- <div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
-				<div class="col-sm-5">
-					<div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-pencil"></i>
-	                  </div>
-                 			<input type="text" class="form-control" name="hscode" value="${brand.hscode}">
-	                </div>
-				</div>
-			</div> -->
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">增值税率</div>
+				<div class="col-sm-3 item-left">海关代码</div>
+				<div class="col-sm-9 item-right">
+                 	<input type="text" class="form-control" name="hscode" id="hscode" <c:if test="${brand.hscode != 'null'}"> value="${fn:trim(brand.hscode)}" </c:if>>
+		            <div class="item-content">
+	             		（海关代码HSCode）
+	             	</div>
+	            </div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">增值税率</div>
 				<div class="col-sm-9 item-right">
                  	<input type="text" class="form-control" name="incrementTax" value="${brand.incrementTax}">
 	            	<div class="item-content">
@@ -110,7 +93,7 @@
 	            </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">海关税率</div>
+				<div class="col-sm-3 item-left">海关税率</div>
 				<div class="col-sm-9 item-right">
                 	<input type="text" class="form-control" name="tariff" value="${brand.tariff}">
 	            	<div class="item-content">
@@ -120,97 +103,10 @@
 			</div>
 			<div class="submit-btn">
             	<button type="button" id="submitBtn">提交</button>
-                <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->
              </div>
 		</form>
 	</section>
-<%-- 	<%@ include file="../../footer.jsp"%> --%>
 	<script type="text/javascript">
-	
-	/*$("#brandId").change(function(){
-		$("#brand").val($("#brandId").find("option:selected").text());
-	});
-	
-	$("#firstCatalogId").change(function(){
-		var firstId = $("#firstCatalogId").val();
-		var secondSelect = $("#secondCatalogId");
-		var thirdSelect = $("#thirdCatalogId");
-		secondSelect.empty();
-		$.ajax({
-			 url:"${wmsUrl}/admin/goods/catalogMng/querySecondCatalogByFirstId.shtml?firstId="+firstId,
-			 type:'post',
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 success:function(data){
-				 if(data.success){
-					 if (data == null || data.length == 0) {
-							return;
-						}
-						
-						var list = data.obj;
-						
-						if (list == null || list.length == 0) {
-							return;
-						}
-						var str = "";
-						secondSelect.append("<option value='-1'>选择分类</option>")
-						for (var i = 0; i < list.length; i++) {
-							secondSelect.append("<option value='"+list[i].secondId+"'>"+list[i].name+"</option>")
-						}
-				 }else{
-					 layer.alert(data.msg);
-				 }
-			 },
-			 error:function(){
-				 layer.alert("提交失败，请联系客服处理");
-			 }
-		 });
-		
-		if(thirdSelect.is(":visible")){
-			thirdSelect.hide('fast');
-		}
-	});
-	
-	$("#secondCatalogId").change(function(){
-		
-		var secondId = $("#secondCatalogId").val();
-		var thirdSelect = $("#thirdCatalogId");
-		thirdSelect.empty();
-		$.ajax({
-			 url:"${wmsUrl}/admin/goods/catalogMng/queryThirdCatalogBySecondId.shtml?secondId="+secondId,
-			 type:'post',
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 success:function(data){
-				 if(data.success){
-					 if (data == null || data.length == 0) {
-							return;
-						}
-						
-						var list = data.obj;
-						
-						if (list == null || list.length == 0) {
-							return;
-						}
-						
-						var str = "";
-						for (var i = 0; i < list.length; i++) {
-							thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
-						}
-						
-						if(!thirdSelect.is(":visible")){
-							thirdSelect.show('fast');
-						}
-				 }else{
-					 layer.alert(data.msg);
-				 }
-			 },
-			 error:function(){
-				 layer.alert("提交失败，请联系客服处理");
-			 }
-		 });
-	});*/
-	
 	
 	 $("#submitBtn").click(function(){
 		 $('#goodsBaseForm').data("bootstrapValidator").validate();
@@ -239,10 +135,6 @@
 		 }
 	 });
 	
-	 $('#resetBtn').click(function() {
-	        $('#goodsBaseForm').data('bootstrapValidator').resetForm(true);
-	    });
-	
 	$('#goodsBaseForm').bootstrapValidator({
 //      live: 'disabled',
       message: 'This value is not valid',
@@ -260,23 +152,23 @@
                   }
               }
       	  },
-      	 brandId: {
-             message: '商品品牌不正确',
-             validators: {
-                 notEmpty: {
-                     message: '商品品牌不能为空！'
-                 }
-             }
-     	  },
-//       	 encode: {
-//              message: '条形码不正确',
-//              validators: {
-//                  notEmpty: {
-//                      message: '条形码不能为空！'
-//                  }
-//              }
-//      	  },
-     	 tariff:{
+      	  unit: {
+            message: '计量单位不正确',
+            validators: {
+                notEmpty: {
+                    message: '计量单位不能为空！'
+                }
+            }
+    	  },
+//       	  hscode: {
+//               message: '海关代码不正确',
+//               validators: {
+//                   notEmpty: {
+//                       message: '海关代码不能为空！'
+//                   }
+//               }
+//       	  },
+     	  tariff:{
 			   message: '海关税率不正确',
 			   validators: {
 				   notEmpty: {
@@ -302,9 +194,6 @@
 		   }
       }
   });
-	
-	
-	
 	</script>
 </body>
 </html>

@@ -20,6 +20,37 @@
 <body>
 	<section class="content">
         <div class="main-content">
+        <div class="box box-info">
+			<div class="box-header with-border">
+				<div class="box-header with-border">
+	            	<h5 class="box-title">搜索</h5>
+	            	<div class="box-tools pull-right">
+	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	              	</div>
+	            </div>
+			</div>
+		    <div class="box-body">
+				<div class="row form-horizontal query">
+					<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分级名称</label>
+							<div class="col-sm-2">
+								<div class="input-group">
+									 <select class="form-control" name="gradeId" id="gradeId" style="width: 100%;">
+				                   	  <c:forEach var="grade" items="${list}">
+		                   	  			<option value="${grade.id}">${grade.name}</option>
+				                   	  </c:forEach>
+					                </select>
+				                </div>
+							</div>
+						</div>
+						<div class="col-md-offset-10 col-md-12">
+	                        <div class="form-group">
+                                <button type="button" class="btn btn-primary" id="querybtns">提交</button>
+                        	</div>
+                	</div>
+				</div>
+			</div>
+		</div>
 			<div class="row">
 				<div class="col-xs-12" >
 					<form class="form-horizontal" role="form" id="gradeForm" >
@@ -33,7 +64,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-user-o"></i>
 				                  </div>
-		                  			<input type="text" readonly class="form-control" name="gradeName" value="${opt.gradeName}">
+		                  			<input type="text" readonly class="form-control" name="gradeName" id = "gradeName" value="">
 				                </div>
 							</div>
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">可提现金额</label>
@@ -42,7 +73,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="canBePresented" value="${info.canBePresented}">
+				                  <input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="">
 				                </div>
 							</div>
 						</div>
@@ -53,27 +84,16 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name=alreadyPresented value="${info.alreadyPresented}">
+				                  <input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="">
 				                </div>
 							</div>
-<!-- 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">待到账金额</label> -->
-<!-- 							<div class="col-sm-3"> -->
-<!-- 								<div class="input-group"> -->
-<!-- 				                  <div class="input-group-addon"> -->
-<!-- 				                    <i class="fa fa-address-book"></i> -->
-<!-- 				                  </div> -->
-<%-- 				                  <input type="text" readonly class="form-control" name="stayToAccount" value="${info.stayToAccount}"> --%>
-<!-- 				                </div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 						<div class="form-group"> -->
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">已返充金额</label>
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">待到账金额</label>
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-address-book"></i>
 				                  </div>
-				                  <input type="text" readonly class="form-control" name="refilling" value="${info.refilling}">
+				                  <input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="">
 				                </div>
 							</div>
 						</div>
@@ -88,10 +108,8 @@
 										<thead>
 											<tr>
 												<th>订单号</th>
-												<th>区域返佣金额</th>
-												<th>店铺返佣金额</th>
-												<th>推手返佣金额</th>
-												<th>下单时间</th>
+												<th>返佣金额</th>
+												<th>完成时间</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -144,6 +162,19 @@
 		
 		var list = data.obj;
 		
+		var rebate = data.object;
+		var gradeName = $("#gradeId").find("option:selected").text();
+		$("#gradeName").val(gradeName);
+		if(rebate != null){
+			$("#canBePresented").val(rebate.canBePresented == null ? 0 : rebate.canBePresented);
+			$("#alreadyPresented").val(rebate.alreadyPresented == null ? 0 : rebate.alreadyPresented);
+			$("#stayToAccount").val(rebate.stayToAccount == null ? 0 : rebate.stayToAccount);
+		} else {
+			$("#canBePresented").val(0);
+			$("#alreadyPresented").val(0);
+			$("#stayToAccount").val(0);
+		}
+		
 		if (list == null || list.length == 0) {
 			layer.alert("没有查到数据");
 			return;
@@ -153,9 +184,7 @@
 		for (var i = 0; i < list.length; i++) {
 			str += "<tr>";
 			str += "<td>" + list[i].orderId;
-			str += "</td><td>" + list[i].centerRebateMoney;
-			str += "</td><td>" + (list[i].shopRebateMoney == null ? "":list[i].shopRebateMoney);
-			str += "</td><td>" + (list[i].userRebateMoney == null ? "":list[i].userRebateMoney);
+			str += "</td><td>" + list[i].rebateMoney;
 			str += "</td><td>" + list[i].createTime;
 			str += "</td></tr>";
 		}

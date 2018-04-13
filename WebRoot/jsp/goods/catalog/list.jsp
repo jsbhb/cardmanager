@@ -11,8 +11,8 @@
 	<section class="content-header">
 	      <h1><i class="fa fa-street-view"></i>分类管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 商品管理</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 商品管理</a></li>
 	        <li class="active">分类管理</li>
 	      </ol>
     </section>
@@ -29,25 +29,25 @@
 								<c:forEach var="first" items="${firsts}">
 								<li>
 									<span><i class="fa fa-folder"></i> ${first.name}</span>
-									<a href="#" onclick="toAdd('${first.firstId}',2,'${first.name}')"><i class="fa fa-plus"></i></a>
-			                		<a href="#" onclick="toEdit('${first.firstId}',1,'${first.name}')"><i class="fa fa-pencil"></i></a>
-			                		<a href="#" onclick="del('${first.firstId}',1)"><i class="fa fa-trash-o"></i></a>
+									<a href="javascript:void(0);" onclick="toAdd('${first.firstId}',2,'${first.name}')"><i class="fa fa-plus"></i></a>
+			                		<a href="javascript:void(0);" onclick="toEdit('${first.firstId}',1,'${first.name}')"><i class="fa fa-pencil"></i></a>
+			                		<a href="javascript:void(0);" onclick="del('${first.firstId}',1)"><i class="fa fa-trash-o"></i></a>
 									<ul>
 										<c:forEach var="second" items="${first.seconds}">
 											<li style="display: none;">
 							                	<span class="tree-font"><i class="fa fa-folder"></i>
 							                		${second.name}
-             										<a href="#" onclick="toAdd('${second.secondId}',3,'${second.name}')"><i class="fa fa-plus"></i></a>
-							                		<a href="#" onclick="toEdit('${second.secondId}',2,'${second.name}')"><i class="fa fa-pencil"></i></a>
-							                		<a href="#" onclick="del('${second.secondId}',2)"><i class="fa fa-trash-o"></i></a>
+             										<a href="javascript:void(0);" onclick="toAdd('${second.secondId}',3,'${second.name}')"><i class="fa fa-plus"></i></a>
+							                		<a href="javascript:void(0);" onclick="toEdit('${second.secondId}',2,'${second.name}')"><i class="fa fa-pencil"></i></a>
+							                		<a href="javascript:void(0);" onclick="del('${second.secondId}',2)"><i class="fa fa-trash-o"></i></a>
 							                	</span>
 							                	<ul>
 													<c:forEach var="third" items="${second.thirds}">
 														<li style="display: none;">
 										                	<span class="tree-font">
 										                		${third.name}
-										                		<a href="#" onclick="toEdit('${third.thirdId}',3,'${third.name}')"><i class="fa fa-pencil"></i></a>
-										                		<a href="#" onclick="del('${third.thirdId}',3)"><i class="fa fa-trash-o"></i></a>
+										                		<a href="javascript:void(0);" onclick="toEdit('${third.thirdId}',3,'${third.name}')"><i class="fa fa-pencil"></i></a>
+										                		<a href="javascript:void(0);" onclick="del('${third.thirdId}',3)"><i class="fa fa-trash-o"></i></a>
 										                	</span>
 														</li>
 													</c:forEach>

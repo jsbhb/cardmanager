@@ -16,7 +16,7 @@
 		<section class="content-header">
 	      <h1><i class="fa fa-street-view"></i>分级管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
 	        <li class="active">分级管理</li>
 	      </ol>
 	    </section>

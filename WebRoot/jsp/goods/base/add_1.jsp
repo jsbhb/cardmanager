@@ -21,7 +21,7 @@
         		<h1>基本信息</h1>
         	</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">商品品牌<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="brandId" id="brandId">
                  	  <option selected="selected" value="-1">选择品牌</option>
@@ -34,7 +34,7 @@
 	             </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">商品分类<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left">商品分类</div>
 				<div class="col-sm-9 item-right">
 					<div class="right-items">
 						<select class="form-control" name="firstCatalogId" id="firstCatalogId">
@@ -50,7 +50,7 @@
 		                </select>
 	                </div>
 	                <div class="right-items last-items">
-						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId">
+						<select class="form-control" name="thirdCatalogId" id="thirdCatalogId">
 						<option selected="selected" value="-1">选择分类</option>
 		                </select>
 	                </div>
@@ -58,49 +58,31 @@
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">商品名称<font style="color:red">*</font> </div>
+				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="goodsName">
+					<input type="text" class="form-control" name="goodsName" id="goodsName">
 				</div>
 			</div>
-			<!-- <div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">商品条码<font style="color:red">*</font> </label>
-				<div class="col-sm-5">
-					<div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-pencil"></i>
-	                  </div>
-                 			<input type="text" class="form-control" name="encode" value="${brand.encode}">
-	                </div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">计量单位</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="unit" id="unit">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">单位<font style="color:red">*</font> </label>
-				<div class="col-sm-5">
-					<div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-pencil"></i>
-	                  </div>
-                 			<input type="text" class="form-control" name="unit" value="${brand.unit}">
-	                </div>
-				</div>
-			</div> -->
 			<div class="title">
         		<h1>海关信息(跨境商品必填)</h1>
         	</div>
-			<!-- <div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">hscode</label>
-				<div class="col-sm-5">
-					<div class="input-group">
-	                  <div class="input-group-addon">
-	                    <i class="fa fa-pencil"></i>
-	                  </div>
-                 			<input type="text" class="form-control" name="hscode" value="${brand.hscode}">
-	                </div>
-				</div>
-			</div> -->
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">增值税率</div>
+				<div class="col-sm-3 item-left">海关代码</div>
+				<div class="col-sm-9 item-right">
+                 	<input type="text" class="form-control" name="hscode" id="hscode">
+		            <div class="item-content">
+	             		（海关代码HSCode）
+	             	</div>
+	            </div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">增值税率</div>
 				<div class="col-sm-9 item-right">
                  	<input type="text" class="form-control" name="incrementTax" id="incrementTax">
 	            	<div class="item-content">
@@ -109,7 +91,7 @@
 	            </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left" for="form-field-1">海关税率</div>
+				<div class="col-sm-3 item-left">海关税率</div>
 				<div class="col-sm-9 item-right">
                 	<input type="text" class="form-control" name="tariff" id="tariff">
 	            	<div class="item-content">
@@ -119,11 +101,9 @@
 			</div>
 			<div class="submit-btn">
             	<button type="button" id="submitBtn">确定</button>
-                <!-- <button type="button" class="btn btn-info" id="resetBtn">重置</button> -->
              </div>
 		</form>
 	</section>
-<%-- 	<%@ include file="../../footer.jsp"%> --%>
 	<script type="text/javascript">
 	
 	$("#brandId").change(function(){
@@ -151,7 +131,6 @@
 						if (list == null || list.length == 0) {
 							return;
 						}
-						var str = "";
 						secondSelect.append("<option value='-1'>选择分类</option>")
 						for (var i = 0; i < list.length; i++) {
 							secondSelect.append("<option value='"+list[i].secondId+"'>"+list[i].name+"</option>")
@@ -164,14 +143,9 @@
 				 layer.alert("提交失败，请联系客服处理");
 			 }
 		 });
-		
-// 		if(thirdSelect.is(":visible")){
-// 			thirdSelect.hide('fast');
-// 		}
 	});
 	
 	$("#secondCatalogId").change(function(){
-		
 		var secondId = $("#secondCatalogId").val();
 		var thirdSelect = $("#thirdCatalogId");
 		thirdSelect.empty();
@@ -191,14 +165,8 @@
 						if (list == null || list.length == 0) {
 							return;
 						}
-						
-						var str = "";
 						for (var i = 0; i < list.length; i++) {
 							thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
-						}
-						
-						if(!thirdSelect.is(":visible")){
-							thirdSelect.show('fast');
 						}
 				 }else{
 					 layer.alert(data.msg);
@@ -214,6 +182,26 @@
 	 $("#submitBtn").click(function(){
 		 $('#goodsBaseForm').data("bootstrapValidator").validate();
 		 if($('#goodsBaseForm').data("bootstrapValidator").isValid()){
+			 var tmpBrandId = $("#brandId").val();
+			 if(tmpBrandId == -1){
+				 layer.alert("请选择品牌信息");
+				 return;
+			 }
+			 var tmpFirstCatalogId = $("#firstCatalogId").val();
+			 if(tmpFirstCatalogId == -1){
+				 layer.alert("请选择商品分类");
+				 return;
+			 }
+			 var tmpSecondCatalogId = $("#secondCatalogId").val();
+			 if(tmpSecondCatalogId == -1){
+				 layer.alert("请选择商品分类");
+				 return;
+			 }
+			 var tmpThirdCatalogId = $("#thirdCatalogId").val();
+			 if(tmpThirdCatalogId == -1){
+				 layer.alert("请选择商品分类");
+				 return;
+			 }
 			 var tmpIncrementTax = $("#incrementTax").val();
 			 if(tmpIncrementTax > 1){
 				 layer.alert("增值税率填写有误，请重新填写！");
@@ -269,23 +257,23 @@
                   }
               }
       	  },
-      	 brandId: {
-             message: '品牌不正确',
-             validators: {
-                 notEmpty: {
-                     message: '品牌不能为空！'
-                 }
-             }
-     	  },
-//       	 encode: {
-//              message: '条形码不正确',
-//              validators: {
-//                  notEmpty: {
-//                      message: '条形码不能为空！'
-//                  }
-//              }
-//      	  },
-     	 tariff:{
+      	  unit: {
+            message: '计量单位不正确',
+            validators: {
+                notEmpty: {
+                    message: '计量单位不能为空！'
+                }
+            }
+    	  },
+//       	  hscode: {
+//               message: '海关代码不正确',
+//               validators: {
+//                   notEmpty: {
+//                       message: '海关代码不能为空！'
+//                   }
+//               }
+//       	  },
+     	  tariff:{
 			   message: '海关税率不正确',
 			   validators: {
 				   notEmpty: {
@@ -315,7 +303,7 @@
 	function toBrand(){
 		var index = layer.open({
 			  title:"新增品牌",	
-			  area: ['60%', '40%'],	
+			  area: ['70%', '40%'],	
 			  type: 2,
 			  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
 			  maxmin: false
@@ -325,7 +313,7 @@
 	function toCategory(){
 		var index = layer.open({
 			  title:"新增分类",	
-			  area: ['70%', '45%'],	
+			  area: ['70%', '50%'],	
 			  type: 2,
 			  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 			  maxmin: false

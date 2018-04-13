@@ -39,7 +39,7 @@
 				                  </div>
 		                  			<input type="text" class="form-control" name="templateName">
 				                </div>
-				                <div class="input-group"><a href="#" onclick="addProperties()">新建属性</a></div>
+				                <div class="input-group"><a href="javascript:void(0);" onclick="addProperties()">新建属性</a></div>
 							</div>
 						</div>
 	            	</div>

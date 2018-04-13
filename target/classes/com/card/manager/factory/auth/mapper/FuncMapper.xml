@@ -15,7 +15,7 @@
 	<!-- 获取角色菜单 -->
 	<select id="queryFuncByOptId" resultMap="authInfo">
 		select f.*,rf.privilege from auth_func f left join auth_rolefunc rf on rf.funcid = f.funcid 
-		where rf.roleid in (select roleid from auth_operatorrole where operatorid = #{id});
+		where rf.roleid in (select roleid from auth_operatorrole where operatorid = #{id}) order by f.sort;
 	</select>
 	
 	<select id="selectFunc" resultMap="authInfo">

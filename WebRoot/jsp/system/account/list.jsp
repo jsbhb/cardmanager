@@ -16,7 +16,7 @@
 <section class="content-wrapper">
     <section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="#"><i class="fa fa-dashboard"></i>系统管理</a></li>
+	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>系统管理</a></li>
 	        <li class="active">账号管理</li>
 	      </ol>
 	      <div class="search">

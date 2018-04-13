@@ -25,6 +25,23 @@
 		<result column="parentGradeId" property="parentGradeId" />
 		<result column="gradeLevel" property="gradeLevel" />
 		<result column="shopId" property="shopId" />
+		<result column="2BFlg" property="tbFlg" />
+		<result column="phone" property="phone" />
+		<result column="2SFlg" property="tsFlg" />
+	</resultMap>
+	
+	<resultMap id="queryOperator" type="com.card.manager.factory.order.model.OperatorEntity">
+		<result column="optid" property="optid" />
+		<result column="badge" property="badge" />
+		<result column="optName" property="optName" />
+		<result column="password" property="password" />
+		<result column="status" property="status" />
+		<result column="gradeId" property="gradeId" />
+		<result column="shopId" property="shopId" />
+		<result column="gradeLevel" property="gradeLevel" />
+		<result column="userCenterId" property="userCenterId" />
+		<result column="gradeName" property="gradeName" />
+		<result column="parentGradeId" property="parentGradeId" />
 	</resultMap>
 
 	<!-- 获取角色菜单 -->
@@ -36,7 +53,7 @@
 	</select>
 
 	<select id="queryByList" resultMap="operator">
-		select a.*,r.roleName from auth_operator a 
+		select a.*,r.roleName,r.roleId from auth_operator a 
 		left join auth_operatorrole b on a.optid = b.operatorid 
 		left join auth_role r on r.roleid = b.roleid 
 		where a.status  in (1,2) 
@@ -54,13 +71,13 @@
 	</select>
 	
 	<select id="selectByOptId" resultMap="operator">
-		select * from auth_operator where optid = #{optId}
+		select * from auth_operator where userCenterId = #{optId}
 	</select>
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">
          INSERT INTO auth_operator (
-              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel)
-       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel})
+              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel,phone)
+       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel},#{phone})
     </insert>
     
     <insert id="insertRoleOpt" parameterType="object">
@@ -94,5 +111,51 @@
     <delete id="deleteAllFunc">
     		delete from auth_rolefunc where roleid=#{roleId};
     </delete>
-	
+    
+    
+	<update id="updatePwd">
+		update auth_operator set password=#{password}
+		where badge = #{userName}
+	</update>
+    
+    <update id="update2BFlg" parameterType="object">
+		update auth_operator set updatetime = now(),2BFlg = '1'
+		where optid = #{optid}
+    </update>
+
+	<select id="selectOperatorInfoByOpt" parameterType="object" resultMap="queryOperator">
+		SELECT * FROM auth_operator where 1=1
+		and 2BFlg = '1'
+		<if test="parentGradeId == 0 or parentGradeId == null">
+			and ifnull(parentGradeId,0) != '0'
+		</if> 
+		<if test="parentGradeId !=0 and parentGradeId != null">
+			<if test="gradeLevel ==2">
+				and ifnull(parentGradeId,0) != '0'
+				and (gradeid = #{gradeId} or parentGradeId = #{gradeId})
+			</if>
+			<if test="gradeLevel ==3">
+				and ifnull(parentGradeId,0) != '0'
+				and (gradeid = #{gradeId} and parentGradeId = #{parentGradeId} and shopid = #{shopId})
+			</if>
+		</if> 
+	</select>
+    
+    <update id="update2SFlg" parameterType="object">
+		update auth_operator set updatetime = now(),2SFlg = '1'
+		where optid = #{optid}
+    </update>
+    
+    <select id="selectByParam" resultMap="operator">
+		select * from auth_operator where 1=1
+		<if test="gradelevel ==2 or gradelevel ==3">
+			and ifnull(gradelevel,0) = #{gradelevel}
+		</if>
+		<if test="gradelevel ==1">
+			and ifnull(gradelevel,0) in ('1','2')
+		</if>
+		<if test="parentGradeId !=all">
+			and parentGradeId = #{parentGradeId}
+		</if>
+	</select>
 </mapper>

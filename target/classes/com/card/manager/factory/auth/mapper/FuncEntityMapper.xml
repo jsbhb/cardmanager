@@ -10,34 +10,44 @@
 		<result column="funcGroupId" property="funcGroupId" />
 		<result column="parentId" property="parentId" />
 		<result column="tag" property="tag" />
+		<result column="sort" property="sort" />
 		<result column="createTime" property="createTime" />
 		<result column="updateTime" property="updateTime" />
 		<result column="opt" property="opt" />
+		<result column="parentName" property="parentName" />
 	</resultMap>
 	
 	<select id="queryByList" resultMap="funcEntity" >
-		 select * from auth_func  
+		select f.*,p.name as parentName from auth_func f left join auth_func p on f.parentid = p.funcid
 		<where>
+			<if test="queryAll">
+				<if test="parentId != null and parentId !=''">
+					and f.parentId = #{parentId}
+				</if>
+				<if test="parentId == null or parentId == ''">
+					and f.parentId is null
+				</if>
+			</if>
 			<if test="funcId != null and funcId !=''">
-				and funcId = #{funcId,jdbcType=NUMERIC}
+				and f.funcId = #{funcId,jdbcType=NUMERIC}
 			</if>
 			<if test="name != null and name != ''">
-				and name like CONCAT('%',#{name,jdbcType=VARCHAR},'%') 
+				and f.name like CONCAT('%',#{name,jdbcType=VARCHAR},'%') 
 			</if>
 			<if test="url != null and url != ''">
-				and url like CONCAT('%',#{url,jdbcType=VARCHAR},'%') 
+				and f.url like CONCAT('%',#{url,jdbcType=VARCHAR},'%') 
 			</if>
 			<if test="funcGroupId != null and funcGroupId !=''">
-				and funcGroupId = #{orderId}
+				and f.funcGroupId = #{orderId}
 			</if>
 			<if test="startTime != null and startTime != ''">
-				and updateTime &gt;= #{startTime}
+				and f.updateTime &gt;= #{startTime}
 			</if>
 			<if test="endTime != null and endTime != ''">
-				and updateTime &lt;= #{endTime}
+				and f.updateTime &lt;= #{endTime}
 			</if>
 		</where>
-		order by updateTime desc
+		order by sort
 	</select>
 	
 	 
@@ -64,6 +74,10 @@
 			</if>
 		</where>
 		order by updateTime desc
+	</select>
+	
+	<select id="queryById" resultMap="funcEntity">
+		 select * from auth_func  where funcId = ${funcId}
 	</select>
 	
 	<update id="update" parameterType="Object" >

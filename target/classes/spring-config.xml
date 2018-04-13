@@ -19,6 +19,8 @@
 	<task:annotation-driven scheduler="qbScheduler"
 		mode="proxy" />
 	<task:scheduler id="qbScheduler" pool-size="10" />
+	
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
 	<!-- Activates annotation-based bean configuration -->
 	<context:annotation-config />

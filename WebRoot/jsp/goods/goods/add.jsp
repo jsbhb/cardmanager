@@ -32,13 +32,13 @@
 		</div>
 		<form class="form-horizontal" role="form" id="itemForm">
 			<div class="title">
-	       		<h1>基础商品</h1>
+	       		<h1>基础信息</h1>
 	       	</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="brandId" id="brandId">
-	                	<option selected="selected" value="">--请选择商品品牌--</option>
+	                	<option selected="selected" value="-1">选择品牌</option>
 		                <c:forEach var="brand" items="${brands}">
 		                <option value="${brand.brandId}">${brand.brand}</option>
 		                </c:forEach>
@@ -67,12 +67,30 @@
 		                </select>
 	                </div>
 	                <div class="right-items last-items">
-						<select class="form-control" hidden name="thirdCatalogId" id="thirdCatalogId">
+						<select class="form-control" name="thirdCatalogId" id="thirdCatalogId">
 						<option selected="selected" value="-1">选择分类</option>
 		                </select>
 	                </div>
 					<a class="addBtn" href="javascript:void(0);" onclick="toCategory()">新增分类</a>
 				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">计量单位</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="unit" id="unit">
+					<div class="item-content">
+	             		（包、件、个）
+	             	</div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">海关代码</div>
+				<div class="col-sm-9 item-right">
+                 	<input type="text" class="form-control" name="hscode" id="hscode">
+		            <div class="item-content">
+	             		（海关代码HSCode）
+	             	</div>
+	            </div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">增值税率</div>
@@ -151,7 +169,16 @@
 				<div class="col-sm-9 item-right">
 	                <input type="text" class="form-control" name="weight">
 					<div class="item-content">
-						（计量单位：克或毫升。请按整数格式输入，例：2500）
+						（请按整数格式输入，例：2500）
+		            </div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">换算比例</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="conversion" value="1">
+					<div class="item-content">
+						（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
 		            </div>
 				</div>
 			</div>
@@ -245,17 +272,20 @@
 	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
-	<script type="text/javascript">
-	 $(function () {
-	     CKEDITOR.replace('editor1');
-	     $(".textarea").wysihtml5();
-	 });
-	 
+	<script type="text/javascript">	 
  	$("#brandId").change(function(){
 		$("#brand").val($("#brandId").find("option:selected").text());
 		//赋值
 		$("#baseId").val("");
 	});
+ 	
+ 	$("#unit").change(function(){
+		$("#baseId").val("");
+ 	});
+ 	
+ 	$("#hscode").change(function(){
+		$("#baseId").val("");
+ 	});
 	 
 	$("#supplierId").change(function(){
 		$("#supplierName").val($("#supplierId").find("option:selected").text());
@@ -410,6 +440,31 @@
 	 $("#submitBtn").click(function(){
 		 $('#itemForm').data("bootstrapValidator").validate();
 		 if($('#itemForm').data("bootstrapValidator").isValid()){
+			 var tmpBrandId = $("#brandId").val();
+			 if(tmpBrandId == -1){
+				 layer.alert("请选择品牌信息");
+				 return;
+			 }
+			 var tmpFirstCatalogId = $("#firstCatalogId").val();
+			 if(tmpFirstCatalogId == -1){
+				 layer.alert("请选择商品分类");
+				 return;
+			 }
+			 var tmpSecondCatalogId = $("#secondCatalogId").val();
+			 if(tmpSecondCatalogId == -1){
+				 layer.alert("请选择商品分类");
+				 return;
+			 }
+			 var tmpThirdCatalogId = $("#thirdCatalogId").val();
+			 if(tmpThirdCatalogId == -1){
+				 layer.alert("请选择商品分类");
+				 return;
+			 }
+			 var tmpSupplierId = $("#supplierId").val();
+			 if(tmpSupplierId == -1){
+				 layer.alert("请选择供应商");
+				 return;
+			 }
 			 var tmpIncrementTax = $("#incrementTax").val();
 			 if(tmpIncrementTax > 1){
 				 layer.alert("增值税率填写有误，请重新填写！");
@@ -425,42 +480,13 @@
 				 layer.alert("消费税率填写有误，请重新填写！");
 				 return;
 			 }
-			 
 			 var url = "${wmsUrl}/admin/goods/goodsMng/createGoodsInfo.shtml";
-// 			 var templateId = $("#templateId").val();
-			 
 			 var formData = sy.serializeObject($('#itemForm'));
 			 var context = ue.getContent();
 			 formData["detailInfo"] = context;
 			 var tagId = $('#tagId li.active').attr('data-id');
 			 formData["tagId"] = tagId;
 			 
-// 			 var newFormData;
-// 			 if(templateId!= null && templateId!=""){
-// 				 var key = "";
-// 				 var value = "";
-				 
-// 				 newFormData={};
-// 				 for(var json in formData){
-// 					 if(json.indexOf(":")!=-1){
-// 						 key +=json+";"
-// 						 value += formData[json]+";"
-// 					 }else{
-// 						 newFormData[json] = formData[json];
-// 					 }
-// 				}
-				 
-// 				 if(key == ""||value == ""){
-// 					 layer.alert("没选择规格信息！");
-// 					 return;
-// 				 }
-				 
-// 				 newFormData["keys"] = key;
-// 				 newFormData["values"] = value;
-// 			 }else{
-// 				 newFormData = formData;
-// 			 }
-		
 			 $.ajax({
 				 url:url,
 				 type:'post',
@@ -558,32 +584,21 @@
 		       validating: 'glyphicon glyphicon-refresh'
 		   },
 		   fields: {
-			   	  baseId: {
-			 		   trigger:"change",
-		          	   message: '基础商品未添加',
-		          	   validators: {
-			               notEmpty: {
-			                   message: '基础商品未添加！'
-			               }
-			           }
-			   	  },
-				  goodsName: {
-						trigger:"change",
-						message: '商品名称不正确',
+				  unit: {
+						message: '计量单位不正确',
 						validators: {
 							notEmpty: {
-								message: '商品名称不能为空！'
+								message: '计量单位不能为空！'
 							}
 						}
 				  },
-				  itemCode: {
-					   trigger:"change",
-					   message: '商家编码不正确',
-					   validators: {
-						   notEmpty: {
-							   message: '商家编码不能为空！'
-						   }
-					   }
+				  hscode: {
+						message: '海关代码不正确',
+						validators: {
+							notEmpty: {
+								message: '海关代码不能为空！'
+							}
+						}
 				  },
 				  incrementTax:{
 					   message: '增值税率不正确',
@@ -607,6 +622,22 @@
 						   }
 					   }
 				  },
+				  goodsName: {
+						message: '商品名称不正确',
+						validators: {
+							notEmpty: {
+								message: '商品名称不能为空！'
+							}
+						}
+				  },
+				  itemCode: {
+					   message: '商家编码不正确',
+					   validators: {
+						   notEmpty: {
+							   message: '商家编码不能为空！'
+						   }
+					   }
+				  },
 				  exciseFax:{
 					   message: '消费税率不正确',
 					   validators: {
@@ -619,28 +650,36 @@
 					   }
 				  },
 				  origin: {
-					  trigger:"change",
-					  message: '国家不正确',
+					  message: '原产国不正确',
 					  validators: {
 						   notEmpty: {
-							   message: '国家不能为空！'
+							   message: '原产国不能为空！'
 						   }
 					   }
 				  },
 				  weight: {
-						trigger:"change",
-						message: '重量不正确',
+						message: '商品重量不正确',
 						validators: {
 							notEmpty: {
-								message: '重量不能为空！'
+								message: '商品重量不能为空！'
 							},
 							numeric: {
-							   message: '重量只能输入数字'
+							   message: '商品重量只能输入数字'
+						   }
+						}
+				   },
+				   conversion: {
+						message: '换算比例不正确',
+						validators: {
+							notEmpty: {
+								message: '换算比例不能为空！'
+							},
+							numeric: {
+							   message: '换算只能输入数字'
 						   }
 						}
 				   },
 				   proxyPrice:{
-					   trigger:"change",
 					   message:"成本价有误",
 					   validators: {
 						   notEmpty: {
@@ -652,7 +691,6 @@
 						}
 				   },
 				   fxPrice:{
-					   trigger:"change",
 					   message:"分销价有误",
 					   validators: {
 						   notEmpty: {
@@ -695,7 +733,7 @@
 		function toTag(){
 			var index = layer.open({
 				  title:"新增标签",	
-				  area: ['40%', '30%'],	
+				  area: ['70%', '30%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/goodsMng/toTag.shtml',
 				  maxmin: false
@@ -738,7 +776,7 @@
 		function toBrand(){
 			var index = layer.open({
 				  title:"新增品牌",	
-				  area: ['50%', '30%'],	
+				  area: ['70%', '30%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
 				  maxmin: false
@@ -812,31 +850,6 @@
 		    	return; 
 	    	} 
 	   	}
-// 	    function saveHtml(){
-// 	    	var context = ue.getContent();
-// 	    	if(context == ''){
-// 	    		layer.alert("没有内容！");
-// 	    		return;
-// 	    	}
-	    	
-// 	    	$.ajax({
-// 				 url:"${wmsUrl}/admin/goods/goodsMng/saveHtml.shtml",
-// 				 type:'post',
-// 				 data:{"html":context,"goodsId":""},
-// 				 dataType:'json',
-// 				 success:function(data){
-// 					 if(data.success){	
-// 						 layer.alert("保存成功");
-// 						 parent.reloadTable();
-// 					 }else{
-// 						 layer.alert(data.msg);
-// 					 }
-// 				 },
-// 				 error:function(){
-// 					 layer.alert("提交失败，请联系客服处理");
-// 				 }
-// 			 });
-// 	    }
 	    function isFocus(e){
 	        alert(UE.getEditor('editor').isFocus());
 	        UE.dom.domUtils.preventDefault(e)

@@ -15,7 +15,7 @@ import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
-import com.card.manager.factory.user.model.CenterRebate;
+import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.ShopRebate;
 
 /**
@@ -37,7 +37,7 @@ public interface FinanceMngService extends ServerCenterService {
 	
 	void insertCard(CardEntity cardInfo, StaffEntity staffEntity) throws Exception;
 	
-	CenterRebate queryCenterRebate(String id, String type, String token);
+	Rebate queryRebate(Integer id, String token);
 	
 	ShopRebate queryShopRebate(String id, String type, String token);
 	

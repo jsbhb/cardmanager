@@ -24,7 +24,7 @@
 	        	<div class="box box-warning">
 	        		<div class="box-header with-border">
 						<div class="box-header with-border">
-			            	<h5 class="box-title">绑定基础商品<font style="color:red">*</font> <a href="#" onclick="showBaseGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
+			            	<h5 class="box-title">绑定基础商品<font style="color:red">*</font> <a href="javascript:void(0);" onclick="showBaseGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
 			            	<div class="box-tools pull-right">
 			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 			              	</div>
@@ -66,7 +66,7 @@
 	        	<div class="box box-primary">
 	        		<div class="box-header with-border">
 						<div class="box-header with-border">
-			            	<h5 class="box-title">规格模板<font style="color:red">(非必需)</font> <a href="#" onclick="showSpaceGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
+			            	<h5 class="box-title">规格模板<font style="color:red">(非必需)</font> <a href="javascript:void(0);" onclick="showSpaceGoods()" style="margin-left:10px"><i class="fa fa-plus"></i></a></h5>
 			            	<div class="box-tools pull-right">
 			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 			              	</div>
@@ -303,7 +303,7 @@
 					                </select>
 				                </div>
 							</div>
-							<a class="col-sm-2 control-label no-padding-right" href="#" onclick="toTag()">+新增标签</a>
+							<a class="col-sm-2 control-label no-padding-right" href="javascript:void(0);" onclick="toTag()">+新增标签</a>
 							<div class="col-sm-2">
 							</div>
 						</div>
