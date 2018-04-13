@@ -86,7 +86,7 @@
 					 if(data.success){	
 						 layer.alert("插入成功");
 						 parent.layer.closeAll();
-						 parent.location.reload();
+						 parent.reloadTable();
 					 }else{
 						  layer.alert(data.errInfo);
 					 }

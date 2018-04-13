@@ -1,5 +1,6 @@
 package com.card.manager.factory.auth.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,24 +12,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.auth.model.AuthInfo;
+import com.card.manager.factory.auth.model.FuncEntity;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.base.BaseController;
+import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
+import com.github.pagehelper.Page;
 
 @Controller
 @RequestMapping("/admin/system/funcMng")
 public class FuncMngController extends BaseController {
-	
-	private final String PARENT_ID = "parent_id";
+
+	private final String PARENT_ENTITY = "parent";
 	private final String FUNC_ID = "func_id";
 	private final String FUNC_DETAIL = "func";
-
 
 	@Resource
 	FuncMngService funcMngService;
@@ -45,7 +50,7 @@ public class FuncMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/editFunc", method = RequestMethod.POST)
 	public void editFunc(HttpServletRequest req, HttpServletResponse resp, @RequestBody AuthInfo authInfo) {
 
@@ -83,21 +88,65 @@ public class FuncMngController extends BaseController {
 		context.put("menuList", queryMenuList(req, opt));
 		return forword("system/func/funcMng2", context);
 	}
-	
-	
+
+	@RequestMapping(value = "/list1")
+	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		return forword("system/func/funcMng", context);
+	}
+
+	@RequestMapping(value = "/dataList1")
+	@ResponseBody
+	public PageCallBack dataList1(Pagination pagination, HttpServletRequest req, HttpServletResponse resp) {
+		PageCallBack pcb = new PageCallBack();
+		try {
+			Page<FuncEntity> page = null;
+			Map<String, Object> params = new HashMap<String, Object>();
+
+			params.put("parentId", req.getParameter("parentId"));
+
+			String queryAll = req.getParameter("queryAll");
+			if (!StringUtil.isEmpty(queryAll)) {
+				params.put("queryAll", Boolean.parseBoolean(queryAll));
+			}
+
+			page = funcMngService.dataList(pagination, params);
+
+			pcb.setObj(page);
+			pcb.setSuccess(true);
+			pcb.setPagination(webPageConverter(page));
+		} catch (Exception e) {
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return pcb;
+		}
+
+		return pcb;
+
+	}
+
 	@RequestMapping(value = "/toAdd")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
-		try{
-			int parentId = Integer.parseInt(req.getParameter(PARENT_ID));
-			context.put(PARENT_ID, parentId);
-		}catch(Exception e){
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+
+			String parentId = req.getParameter("parentId");
+
+			if (!StringUtil.isEmpty(parentId)) {
+				params.put("funcId", parentId);
+				FuncEntity entity = funcMngService.queryById(params);
+				context.put(PARENT_ENTITY, entity);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 			return forword("error", context);
 		}
 		return forword("system/func/add", context);
 	}
-	
-	
+
 	@RequestMapping(value = "/toEdit")
 	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();

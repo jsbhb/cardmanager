@@ -1,8 +1,6 @@
 package com.card.manager.factory.auth.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,6 +29,7 @@ import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.base.BaseController;
+import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.constants.Constants;
@@ -160,7 +159,7 @@ public class LoginController extends BaseController {
 
 		// 设置MenuList到Session
 		List<AuthInfo> authInfos = funcMngService.queryFuncByOptId(operator.getOptid());
-		List<AuthInfo> menuList = treeAuthInfo(authInfos);
+		List<AuthInfo> menuList = AuthCommon.treeAuthInfo2(authInfos);
 
 		if (menuList == null) {
 			return false;
@@ -250,42 +249,25 @@ public class LoginController extends BaseController {
 			return forword("login", context);
 		}
 
-		context.put("menuList", SessionUtils.getMenuList(req));
-		context.put("operator", operator);
-		return forword("main", context);
-	}
+		String id = req.getParameter("id");
 
-	private List<AuthInfo> treeAuthInfo(List<AuthInfo> authInfos) {
-		if (authInfos == null || authInfos.size() == 0) {
-			return null;
-		}
-		Map<String, AuthInfo> authCaches = new HashMap<String, AuthInfo>();
-		for (AuthInfo authInfo : authInfos) {
-			if (authInfo.getParentId() == null || "".equals(authInfo.getParentId())) {
-				authCaches.put(authInfo.getFuncId(), authInfo);
-			}
-		}
-
-		for (AuthInfo authInfo : authInfos) {
-			if (authCaches.containsKey(authInfo.getParentId())) {
-				List<AuthInfo> temChild = authCaches.get(authInfo.getParentId()).getChildren();
-				if (temChild == null) {
-					temChild = new ArrayList<AuthInfo>();
-					temChild.add(authInfo);
-					authCaches.get(authInfo.getParentId()).setChildren(temChild);
-				} else {
-					temChild.add(authInfo);
+		List<AuthInfo> menuList = SessionUtils.getMenuList(req);
+		if (menuList != null) {
+			context.put("menuList", menuList);
+			context.put("id",id);
+			if (StringUtil.isEmpty(id)) {
+				context.put("childList", menuList.get(0).getChildren());
+			} else {
+				for(AuthInfo auth:menuList){
+					if(id.equals(auth.getFuncId())){
+						context.put("childList", auth.getChildren());
+					}
 				}
 			}
 		}
 
-		List<AuthInfo> menuAuth = new ArrayList<AuthInfo>();
-
-		for (Map.Entry<String, AuthInfo> entry : authCaches.entrySet()) {
-			menuAuth.add(entry.getValue());
-		}
-
-		return menuAuth;
+		context.put("operator", operator);
+		return forword("main", context);
 	}
 
 	@RequestMapping("/modifyPwd")

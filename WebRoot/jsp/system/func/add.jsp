@@ -15,61 +15,68 @@
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12 form-horizontal">
-					<form class="form-horizontal" role="form" id="funcForm">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能名称<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="name" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
-				                	<input type="hidden" class="form-control" name="parentId" value="${parent_id}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能图标<font style="color:red">*</font> </label>
-							<div class="col-sm-9">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="tag" placeholder="请输入...">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能链接 </label>
-							<div class="col-sm-9">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="url" placeholder="请输入...">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">描述</label>
-							<div class="col-sm-5">
-				                  <textarea class="form-control" rows="3" placeholder="请输入内容" name="description"></textarea>
-							</div>
-						</div>
-						</form>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary"  name="signup" onclick="btnSubmit()">提交</button>
-	                            <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-	                            <button type="button" class="btn btn-info" id="closeBtn">关闭</button>
-	                        </div>
-                       </div>
+	<section class="content-wrapper">
+        <div class="content">
+			<form class="form-horizontal" role="form" id="funcForm">
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能名称<font style="color:red">*</font> </label>
+					<div class="col-sm-3">
+						<div class="input-group">
+		                  <div class="input-group-addon">
+		                    <i class="fa fa-user-o"></i>
+		                  </div>
+                  			<input type="text" class="form-control" name="name" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
+		                	<input type="hidden" class="form-control" name="parentId" value="${parent.funcId}">
+		                </div>
+					</div>
 				</div>
-			</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="form-field-1">父菜单名称<font style="color:red">*</font> </label>
+					<div class="col-sm-9">
+						<div class="input-group">
+		                  <div class="input-group-addon">
+		                    <i class="fa fa-phone"></i>
+		                  </div>
+		                  <input type="text" class="form-control" disabled name="parentName"  value="${parent.name}">
+		                </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能图标<font style="color:red">*</font> </label>
+					<div class="col-sm-9">
+						<div class="input-group">
+		                  <div class="input-group-addon">
+		                    <i class="fa fa-phone"></i>
+		                  </div>
+		                  <input type="text" class="form-control" name="tag" placeholder="请输入...">
+		                </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能链接 </label>
+					<div class="col-sm-9">
+						<div class="input-group">
+		                  <div class="input-group-addon">
+		                    <i class="fa fa-phone"></i>
+		                  </div>
+		                  <input type="text" class="form-control" name="url" placeholder="请输入...">
+		                </div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="form-field-1">描述</label>
+					<div class="col-sm-5">
+		                  <textarea class="form-control" rows="3" placeholder="请输入内容" name="description"></textarea>
+					</div>
+				</div>
+				</form>
+				<div class="col-md-offset-3 col-md-9">
+					<div class="form-group">
+                          <button type="button" class="btn btn-primary"  name="signup" onclick="btnSubmit()">提交</button>
+                          <button type="button" class="btn btn-info" id="resetBtn">重置</button>
+                          <button type="button" class="btn btn-info" id="closeBtn">关闭</button>
+                      </div>
+              	</div>
 		</div>
 	</section>
 	<script type="text/javascript">
@@ -87,7 +94,7 @@
 					 if(data.success){	
 						 layer.alert("插入成功");
 						 parent.layer.closeAll();
-						 parent.location.reload();
+						 parent.reloadTable();
 					 }else{
 						  layer.alert(data.msg);
 					 }

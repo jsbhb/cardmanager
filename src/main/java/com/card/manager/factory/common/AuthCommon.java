@@ -87,9 +87,43 @@ public class AuthCommon {
 			}
 		}
 
-		List<AuthInfo> menuList = treeAuthInfo(optMenuList);
+		List<AuthInfo> menuList = treeAuthInfo2(optMenuList);
 
 		return menuList;
+	}
+	
+	public static List<AuthInfo> treeAuthInfo2(List<AuthInfo> authInfos) {
+		if (authInfos == null || authInfos.size() == 0) {
+			return null;
+		}
+		List<AuthInfo> authCaches = new ArrayList<AuthInfo>();
+		for (AuthInfo authInfo : authInfos) {
+			if (authInfo.getParentId() == null || "".equals(authInfo.getParentId())) {
+				authCaches.add(authInfo);
+			}
+		}
+
+		List<AuthInfo> childList;
+		List<AuthInfo> grandSonList;
+
+		for (AuthInfo pAuth : authCaches) {
+			childList = new ArrayList<AuthInfo>();
+			for (AuthInfo child : authInfos) {
+				if (child.getParentId() != null && pAuth.getFuncId().equals(child.getParentId())) {
+					grandSonList = new ArrayList<AuthInfo>();
+					for (AuthInfo grandSon : authInfos) {
+						if (grandSon.getParentId() != null && child.getFuncId().equals(grandSon.getParentId())) {
+							grandSonList.add(grandSon);
+						}
+					}
+					child.setChildren(grandSonList);
+					childList.add(child);
+				}
+			}
+			pAuth.setChildren(childList);
+		}
+
+		return authCaches;
 	}
 
 }

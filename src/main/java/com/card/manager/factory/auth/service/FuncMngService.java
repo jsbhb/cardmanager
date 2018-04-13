@@ -1,6 +1,7 @@
 package com.card.manager.factory.auth.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.card.manager.factory.auth.model.AuthInfo;
 import com.card.manager.factory.auth.model.FuncEntity;
@@ -103,5 +104,28 @@ public interface FuncMngService {
 	 * @since JDK 1.7  
 	 */
 	public void editFunc(AuthInfo authInfo);
+
+
+	/**  
+	 * dataList:分页查询. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param pagination
+	 * @param params
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	Page<FuncEntity> dataList(Pagination pagination, Map<String, Object> params);
+
+
+	/**  
+	 * queryById:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param parentId
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	FuncEntity queryById(Map<String, Object> params);
 
 }

@@ -69,23 +69,12 @@
         </ul>
       </div>
       <div class="type-bar">
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-pie-chart fa-fw"></i>
-	  		<p>统计</p>
+      <c:forEach var="item" items="${menuList}">
+      	<div class="type-bar-item" data-id="${item.funcId}">
+	  		<i class="fa ${item.tag} fa-fw"></i>
+	  		<p>${item.name}</p>
 	  	</div>
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-file-text-o fa-fw" style="padding:5px 6px;"></i>
-	  		<p>订单</p>
-	  	</div>
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-rmb fa-fw" style="padding:7px 4px;"></i>
-	  		<p>财务</p>
-	  	</div>
-	  	<div class="type-bar-item">
-	  		<i class="fa fa-user fa-fw"></i>
-	  		<p>运营</p>
-	  	</div>
-	  </div>
+      </c:forEach>
     </nav>
   </header>
   <aside class="main-sidebar">
@@ -104,7 +93,7 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <c:forEach var="item" items="${menuList}">
+        <c:forEach var="item" items="${childList}">
         <li class="treeview">
           <a href="#">
             <i class="fa ${item.tag}"></i> <span>${item.name}</span>
@@ -155,6 +144,27 @@
 	  $('.type-bar .type-bar-item').removeClass('active');
 	  $(this).addClass('active');
   });
+  
+  window.onload = function(){
+	  var id = GetQueryString('id');
+	  $('.type-bar-item[data-id='+id+']').addClass('active');
+  }
+  
+  $('.type-bar').on('click','.type-bar-item',function(){
+	  var id = $(this).attr('data-id');//获取id
+	  var url = window.location.href;
+	  if(url.indexOf('id') != -1){
+		  url = url.split('?id')[0];
+	  }
+	  window.location.href = url + '?id=' + id;
+	  
+  });
+  
+  function GetQueryString(name){
+      var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if(r!=null)return  unescape(r[2]); return null;
+ }
 </script>
 <!-- Bootstrap 3.3.6 -->
 <script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>

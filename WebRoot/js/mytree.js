@@ -38,7 +38,8 @@ $(function(){
     
     function dealChild(node){
     	if(node.is(':checked')){
-    		node.parent().parent().parent().parent('li.parent_li').find(".pcheck").prop("checked",true);
+    		node.parent().parent().parent('li.parent_li').find(".pcheck").prop("checked",true);
+    		node.parent().parent().parent().parent().parent('li.parent_li').find(".pcheck").prop("checked",true);
     	}
     }
 });

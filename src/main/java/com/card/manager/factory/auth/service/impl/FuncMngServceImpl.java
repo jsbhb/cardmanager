@@ -1,6 +1,7 @@
 package com.card.manager.factory.auth.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -52,11 +53,11 @@ public class FuncMngServceImpl implements FuncMngService {
 
 	@Override
 	public void addFunc(AuthInfo authInfo) {
-		
-		if("-1".equals(authInfo.getParentId())){
+
+		if ("-1".equals(authInfo.getParentId())) {
 			authInfo.setParentId(null);
 		}
-		
+
 		funcMapper.insertFunc(authInfo);
 	}
 
@@ -73,6 +74,17 @@ public class FuncMngServceImpl implements FuncMngService {
 	@Override
 	public List<AuthInfo> queryFuncByRoleId(int roleId) {
 		return funcMapper.selectFuncByRoleId(roleId);
+	}
+
+	@Override
+	public Page<FuncEntity> dataList(Pagination pagination, Map<String, Object> params) {
+		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
+		return funcEntityMapper.queryByList(params);
+	}
+
+	@Override
+	public FuncEntity queryById(Map<String, Object> params) {
+		return funcEntityMapper.queryById(params);
 	}
 
 }

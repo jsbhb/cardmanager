@@ -17,6 +17,8 @@ public class FuncEntity {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private Integer sort;
+	private String parentName;
 
 	public String getFuncId() {
 		return funcId;
@@ -89,4 +91,21 @@ public class FuncEntity {
 	public void setOpt(String opt) {
 		this.opt = opt;
 	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
 }

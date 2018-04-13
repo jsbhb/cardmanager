@@ -75,14 +75,25 @@
 						<ul>
 							<c:forEach var="item" items="${menuList}">
 							<li>
-								<input type="checkbox" class="flat-red pcheck" name='funcId' value="${item.funcId}" <c:if test="${item.selected=='true'}">checked</c:if> > <span><i class="fa fa-folder-open"></i>${item.name}</span>
+								<input type="checkbox" class="flat-red pcheck" name='funcId' value="${item.funcId}" <c:if test="${item.selected=='true'}">checked</c:if> >
+								 <span><i class="fa fa-folder-open"></i>${item.name}</span>
 								<ul>
 									<c:forEach var="node" items="${item.children}">
 										<li>
-											<label><input type="checkbox" class="flat-red" name='funcId' value="${node.funcId}" <c:if test="${node.selected}">checked</c:if>></label>
+											<input type="checkbox" class="flat-red pcheck" name='funcId' value="${node.funcId}" <c:if test="${node.selected}">checked</c:if>>
 						                	<span class="tree-font">
-						                		${node.name}
+						                		<i class="fa fa-folder-open"></i>${node.name}
 						                	</span>
+						                	<ul>
+												<c:forEach var="grandSon" items="${node.children}">
+													<li>
+														<input type="checkbox" class="flat-red" name='funcId' value="${grandSon.funcId}" <c:if test="${grandSon.selected}">checked</c:if>>
+									                	<span class="tree-font">
+									                		${grandSon.name}
+									                	</span>
+													</li>
+												</c:forEach>
+											</ul>
 										</li>
 									</c:forEach>
 								</ul>
