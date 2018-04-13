@@ -25,28 +25,28 @@ public class AuthAfterInterceptor extends HandlerInterceptorAdapter {
 	@Override  
     public void postHandle(HttpServletRequest request,HttpServletResponse response,Object handler,ModelAndView modelAndView) throws Exception{
 		
-		if(modelAndView!=null){
-			String menuUrl = StringUtils.remove( request.getRequestURI(),request.getContextPath());
-			menuUrl = StringUtils.substringBeforeLast(menuUrl, "/");
-			
-			List<AuthInfo> authInfos = SessionUtils.getMenuList(request);
-			
-			if(authInfos!=null){
-				for(AuthInfo authInfo:authInfos){
-					List<AuthInfo> children = authInfo.getChildren();
-					
-					if(children==null){
-						continue;
-					}
-					
-					for(AuthInfo child:children){
-						if(child.getUrl().contains(menuUrl)){
-							modelAndView.addObject("privilege", child.getPrivilege());
-						}
-					}
-				}
-			}
-		}
+//		if(modelAndView!=null){
+//			String menuUrl = StringUtils.remove( request.getRequestURI(),request.getContextPath());
+//			menuUrl = StringUtils.substringBeforeLast(menuUrl, "/");
+//			
+//			List<AuthInfo> authInfos = SessionUtils.getMenuList(request);
+//			
+//			if(authInfos!=null){
+//				for(AuthInfo authInfo:authInfos){
+//					List<AuthInfo> children = authInfo.getChildren();
+//					
+//					if(children==null){
+//						continue;
+//					}
+//					
+//					for(AuthInfo child:children){
+//						if(child.getUrl().contains(menuUrl)){
+//							modelAndView.addObject("privilege", child.getPrivilege());
+//						}
+//					}
+//				}
+//			}
+//		}
 		
 		super.postHandle(request, response, handler, modelAndView) ;
     }  

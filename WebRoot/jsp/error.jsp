@@ -18,7 +18,7 @@
 			<h2>错误内容</h2>
 			
 			<p class="text">
-				${error}
+				${msg}
 			</p>
 		</div>
 		

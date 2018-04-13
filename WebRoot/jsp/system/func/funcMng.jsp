@@ -34,59 +34,9 @@
 			
 			<div class="list-content">
 				<div class="row">
-					<div class="col-md-10 list-btns">
+					<div class="col-md-12 list-btns">
 						<button type="button" onclick="toAdd()">新增模块</button>
 						<button id="backBtn" type="button" onclick="back()">返回上级菜单</button>
-	<div id="content-wrapper">
-		<section class="content-header">
-			<!-- Page Heading -->
-			<h1>系统管理
-		    <small>功能管理</small>
-		    </h1>
-			<!-- /.row -->
-
-			<ol class="breadcrumb">
-		        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>首页</a></li>
-		        <li><a href="javascript:void(0);">系统管理</a></li>
-		        <li class="active">功能管理</li>
-		     </ol>
-		</section>
-		<section class="content">
-		<div class="row">
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">
-								<i class="fa fa-bar-chart-o fa-fw"></i>功能列表
-							</h3>
-						</div>
-						<div class="panel-body">
-							<c:if test="${priviledge>1}">
-								<button type="submit" class="btn btn-default">新增</button>
-							</c:if>
-							<table id="funcTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>操作</th>
-										<th>名称</th>
-										<th>tag</th>
-										<th>创建日期</th>
-										<th>更新日期</th>
-										<th>操作人</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
 						<table id="baseTable" class="table table-hover myClass">
 							<thead>
 								<tr>
