@@ -1,0 +1,1 @@
+alter table auth_func add sort int comment "排序";
