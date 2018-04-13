@@ -103,8 +103,8 @@
 				</div>
 				<div class="col-md-10 list-btns">
 					<button type="button" onclick="jump(40)">新增商品</button>
-<!-- 					<button type="button" onclick = "beUse('')">批量可用</button> -->
-<!-- 					<button type="button" onclick = "beFx('')">批量可分销</button> -->
+					<button type="button" onclick = "beUse('')">批量可用</button>
+					<button type="button" onclick = "beFx('')">批量可分销</button>
 					<button type="button" onclick = "noBeFx('')">批量不可分销</button>
 				</div>
 			</div>
@@ -293,8 +293,24 @@ function toEdit(id){
 }
 
 function beUse(id){
+	if(id == ""){
+		var valArr = new Array; 
+		var itemIds;
+	    $("[name='check']:checked").each(function(i){
+	    	if ($(this).parents().find("td").eq(11).text() == "初始化") {
+	 	        valArr[i] = $(this).val(); 
+	    	}
+	    }); 
+	    if(valArr.length==0){
+	    	layer.alert("请选择初始化状态的数据");
+	    	return;
+	    }
+	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+	} else {
+		itemIds = id;
+	}
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+id,
+		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+itemIds,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
@@ -313,8 +329,24 @@ function beUse(id){
 }
 
 function beFx(id){
+	if(id == ""){
+		var valArr = new Array; 
+		var itemIds;
+	    $("[name='check']:checked").each(function(i){
+	    	if ($(this).parents().find("td").eq(11).text() == "可用") {
+	 	        valArr[i] = $(this).val(); 
+	    	}
+	    }); 
+	    if(valArr.length==0){
+	    	layer.alert("请选择可用状态的数据");
+	    	return;
+	    }
+	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+	} else {
+		itemIds = id;
+	}
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+id,
+		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+itemIds,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
@@ -336,11 +368,13 @@ function noBeFx(id){
 	if(id == ""){
 		var valArr = new Array; 
 		var itemIds;
-	    $("[name='check']:checked").each(function(i){ 
-	        valArr[i] = $(this).val(); 
+	    $("[name='check']:checked").each(function(i){
+	    	if ($(this).parents().find("td").eq(11).text() == "可分销") {
+	 	        valArr[i] = $(this).val(); 
+	    	}
 	    }); 
 	    if(valArr.length==0){
-	    	layer.alert("请选择数据");
+	    	layer.alert("请选择可分销状态的数据");
 	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
