@@ -15,61 +15,44 @@
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12 form-horizontal">
-					<form class="form-horizontal" role="form" id="funcForm">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能名称<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="name" value="${func.name}" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
-		                  			<input type="hidden" class="form-control" name="funcId" value="${func.funcId}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能图标<font style="color:red">*</font> </label>
-							<div class="col-sm-9">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="tag" value="${func.tag}" placeholder="请输入...">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">功能链接 </label>
-							<div class="col-sm-9">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="url" value="${func.url}" placeholder="请输入...">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">描述</label>
-							<div class="col-sm-5">
-				                  <textarea class="form-control" rows="3" placeholder="请输入内容"  name="description">${func.description}</textarea>
-							</div>
-						</div>
-						</form>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary"  name="signup" onclick="btnSubmit()">提交</button>
-	                            <button type="button" class="btn btn-info" id="closeBtn">关闭</button>
-	                        </div>
-                       </div>
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="funcForm">
+			<div class="list-item">
+				<div class="col-sm-3 item-left">功能名称</div>
+				<div class="col-sm-9 item-right">
+                 			<input type="text" class="form-control" name="name" value="${func.name}" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
+                 			<input type="hidden" class="form-control" name="funcId" value="${func.funcId}">
 				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">功能图标</div>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="tag" value="${func.tag}" placeholder="请输入...">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">功能链接</div>
+				<div class="col-sm-9 item-right">
+	               <input type="text" class="form-control" name="url" value="${func.url}" placeholder="请输入...">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">排序</div>
+				<div class="col-sm-9 item-right">
+	               <input type="text" class="form-control" name="sort" value="${func.sort}" placeholder="请输入...">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">描述</div>
+				<div class="col-sm-9 item-right">
+	                  <textarea class="form-control" rows="3" placeholder="请输入内容"  name="description">${func.description}</textarea>
+				</div>
+			</div>
+			<div class="submit-btn">
+           		<button type="button" class="btn btn-primary"  name="signup" onclick="btnSubmit()">提交</button>
+                 <button type="button" class="btn btn-info" id="closeBtn">关闭</button>
+       		</div>
+			</form>
 	</section>
 	<script type="text/javascript">
 	

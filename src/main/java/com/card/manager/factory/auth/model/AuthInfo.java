@@ -9,7 +9,7 @@ import java.util.List;
  * @datetime 2016年7月27日
  * @func 权限信息
  */
-public class AuthInfo implements Serializable{
+public class AuthInfo implements Serializable {
 	/**
 	 * 
 	 */
@@ -23,6 +23,7 @@ public class AuthInfo implements Serializable{
 	private String description;
 	private List<AuthInfo> children;
 	private boolean isSelected;
+	private Integer sort;
 
 	public String getFuncId() {
 		return funcId;
@@ -95,4 +96,13 @@ public class AuthInfo implements Serializable{
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
 }
