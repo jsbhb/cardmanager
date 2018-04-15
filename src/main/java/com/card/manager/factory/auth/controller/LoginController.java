@@ -359,12 +359,6 @@ public class LoginController extends BaseController {
 			}
 
 		} catch (Exception e) {
-			try {
-				sftpService.logout();
-			} catch (Exception e1) {
-				sendFailureMessage(resp, "操作失败：" + e1.getMessage());
-				return;
-			}
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}

@@ -18,326 +18,274 @@
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="gradeForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>基本信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分级名称</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="gradeName" value="${grade.gradeName}">
-		                  			<input type="hidden" class="form-control" name="id" value="${grade.id}">
-		                  			<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">公司名称</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="company" value="${grade.company}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">上级机构</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.parentGradeName}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>业务信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">业务类型</label>
-							<div class="col-sm-3">
-							<c:if test="${grade.gradeType==1}">
-		                   		<label>
-				                  	跨境<input type="radio" name="gradeType" value="1" class="flat-red" checked>
-				                </label>
-							</c:if>
-							<c:if test="${grade.gradeType==0}">
-				                <label>
-				                  	大贸<input type="radio" name="gradeType" value="0" class="flat-red" checked>
-				                </label>
-							</c:if>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">负责人</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="personInCharge" value="${grade.personInCharge}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">上级负责人</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
-				                   	  <c:forEach var="charge" items="${charges}">
-				                   	  	<c:choose>
-										   <c:when test="${charge.userCenterId==grade.gradePersonInCharge}">
-				                   	  			<option value="${charge.userCenterId}" selected="selected" >${charge.optName}</option>
-										   </c:when>
-										   <c:otherwise>
-				                   	  			<option value="${charge.userCenterId}">${charge.optName}</option>
-										   </c:otherwise>
-										</c:choose> 
-				                   	  </c:forEach>
-					              </select>
-<%-- 				                   <input type="text" class="form-control" name="gradePersonInCharge" value="${grade.gradePersonInCharge}"> --%>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>联系方式</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">负责人电话</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" readonly name="phone" id="phone" value="${grade.phone}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>区域中心域名信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">电脑商城域名<font style="color:red"></font> </label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="redirectUrl" value="${grade.redirectUrl}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">手机商城域名<font style="color:red"></font> </label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="mobileUrl" value="${grade.mobileUrl}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>注册信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="storeName" value="${grade.storeName}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店联系人</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="contacts" value="${grade.contacts}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">联系人电话</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="contactsPhone" value="${grade.contactsPhone}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group picker-country">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店地区</label>
-							<div class="col-sm-2">
-								<div class="input-group">
-								  <select class="form-control picker-province" name="province" id="province" data-name="${grade.province}"></select>
-				                </div>
-							</div>
-							<div class="col-sm-2">
-								<div class="input-group">
-								  <select class="form-control picker-city" name="city" id="city" data-name="${grade.city}"></select>
-				                </div>
-							</div>
-							<div class="col-sm-2">
-								<div class="input-group">
-								  <select class="form-control picker-district" name="district" id="district" data-name="${grade.district}"></select>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店地址</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="address" value="${grade.address}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">门店经营者</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="storeOperator" value="${grade.storeOperator}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">经营者证件号</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="operatorIDNum" value="${grade.operatorIDNum}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-xs-3">
-							<div class="sbox-body">
-								<div class="form-group">
-									<img src="${grade.picPath1}" id="img1" width="120px" height="160px" alt="添加证件正面照">
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath1" id="picPath1" value="${grade.picPath1}"> 
-										<input type="file" name="pic" id="pic1" />
-										<button type="button" class="btn btn-info" onclick="uploadFile(1)">上传</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-xs-3">
-							<div class="sbox-body">
-								<div class="form-group">
-									<img src="${grade.picPath2}" id="img2" width="120px" height="160px" alt="添加营业执照">
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath2" id="picPath2" value="${grade.picPath2}"> 
-										<input type="file" name="pic" id="pic2" />
-										<button type="button" class="btn btn-info" onclick="uploadFile(2)">上传</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-xs-3">
-							<div class="sbox-body">
-								<div class="form-group">
-									<img src="${grade.picPath3}" id="img3" width="120px" height="160px" alt="添加门店照片">
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath3" id="picPath3" value="${grade.picPath3}"> 
-										<input type="file" name="pic" id="pic3" />
-										<button type="button" class="btn btn-info" onclick="uploadFile(3)">上传</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-xs-3">
-							<div class="sbox-body">
-								<div class="form-group">
-									<img src="${grade.picPath4}" id="img4" width="120px" height="160px" alt="添加供销货架图片">
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<input type="hidden" class="form-control" name="picPath4" id="picPath4" value="${grade.picPath4}"> 
-										<input type="file" name="pic" id="pic4" />
-										<button type="button" class="btn btn-info" onclick="uploadFile(4)">上传</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
-	                        </div>
-                       </div>
-                       <div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>员工列表</h4></label>
-						</div>
-						<div class="form-group" id="syncStaff" style="display:none;">
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"></label>
-							<button type="button" id="syncStaff" onclick="getStaff()" class="btn btn-warning">同步员工</button>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"></label>
-							<div class="col-sm-10">
-							<div class="box box-warning">
-									<table id="staffTable" class="table table-hover">
-										<thead>
-											<tr>
-												<th>badge</th>
-												<th>名称</th>
-												<th>分级机构</th>
-												<th>用户中心编号</th>
-												<th>角色</th>
-											</tr>
-										</thead>
-										<tbody>
-										</tbody>
-									</table>
-									<div class="pagination-nav">
-										<ul id="pagination" class="pagination">
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="form">
+			<div class="title">
+	       		<h1>基础信息</h1>
+	       	</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >分级名称</label>
+				<div class="col-sm-9 item-right">
+            		<input type="text" class="form-control" name="gradeName" value="${grade.gradeName}">
+            		<input type="hidden" class="form-control" name="id" value="${grade.id}">
+            		<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
 				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >公司名称</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="company" value="${grade.company}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >上级机构</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.parentGradeName}">
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>业务信息</h1>
+	       	</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >业务类型</label>
+				<div class="col-sm-9 item-right">
+				<c:if test="${grade.gradeType==1}">
+                  		<label>
+	                  	跨境<input type="radio" name="gradeType" value="1" class="flat-red" checked>
+	                </label>
+				</c:if>
+				<c:if test="${grade.gradeType==0}">
+	                <label>
+	                  	大贸<input type="radio" name="gradeType" value="0" class="flat-red" checked>
+	                </label>
+				</c:if>
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >负责人</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="personInCharge" value="${grade.personInCharge}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >上级负责人</label>
+				<div class="col-sm-3 item-right">
+	                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
+	                   	  <c:forEach var="charge" items="${charges}">
+	                   	  	<c:choose>
+							   <c:when test="${charge.userCenterId==grade.gradePersonInCharge}">
+	                   	  			<option value="${charge.userCenterId}" selected="selected" >${charge.optName}</option>
+							   </c:when>
+							   <c:otherwise>
+	                   	  			<option value="${charge.userCenterId}">${charge.optName}</option>
+							   </c:otherwise>
+							</c:choose> 
+	                   	  </c:forEach>
+		              </select>
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>联系方式</h1>
+	       	</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >负责人电话</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" readonly name="phone" id="phone" value="${grade.phone}">
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>区域中心域名信息</h1>
+	       	</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >电脑商城域名<font style="color:red"></font> </label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="redirectUrl" value="${grade.redirectUrl}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >手机商城域名<font style="color:red"></font> </label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="mobileUrl" value="${grade.mobileUrl}">
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>注册信息</h1>
+	       	</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >门店名称</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="storeName" value="${grade.storeName}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >门店联系人</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="contacts" value="${grade.contacts}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >联系人电话</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="contactsPhone" value="${grade.contactsPhone}">
+				</div>
+			</div>
+			<div class="list-item picker-country">
+				<label class="col-sm-3 item-left" >门店地区</label>
+				<div class="col-sm-2">
+					  <select class="form-control picker-province" name="province" id="province" data-name="${grade.province}"></select>
+				</div>
+				<div class="col-sm-2">
+					  <select class="form-control picker-city" name="city" id="city" data-name="${grade.city}"></select>
+				</div>
+				<div class="col-sm-2">
+					  <select class="form-control picker-district" name="district" id="district" data-name="${grade.district}"></select>
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >门店地址</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="address" value="${grade.address}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >门店经营者</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="storeOperator" value="${grade.storeOperator}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >经营者证件号</label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="operatorIDNum" value="${grade.operatorIDNum}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">证件正面照</div>
+				<div class="col-sm-9 item-right addContent">
+					<c:choose>
+					   <c:when test="${grade.picPath1 != null && grade.picPath1 != ''}">
+               	  			<div class="item-img choose" id="content1" data-id="1">
+								<img src="${grade.picPath1}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${grade.picPath1}" type="hidden" name="picPath1" id="picPath1">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content1" data-id="1">
+								+
+								<input type="file" id="pic1" name="pic" />
+								<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">营业执照</div>
+				<div class="col-sm-9 item-right addContent">
+				<c:choose>
+					   <c:when test="${grade.picPath2 != null && grade.picPath2 != ''}">
+               	  			<div class="item-img choose" id="content2" data-id="2">
+								<img src="${grade.picPath2}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${grade.picPath2}" type="hidden" name="picPath2" id="picPath2">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content2" data-id="2">
+								+
+								<input type="file" id="pic2" name="pic" />
+								<input type="hidden" class="form-control" name="picPath2" id="picPath2"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">门店照片</div>
+				<div class="col-sm-9 item-right addContent">
+				<c:choose>
+					   <c:when test="${grade.picPath3 != null && grade.picPath3 != ''}">
+               	  			<div class="item-img choose" id="content3" data-id="3">
+								<img src="${grade.picPath3}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${grade.picPath3}" type="hidden" name="picPath3" id="picPath3">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content3" data-id="3">
+								+
+								<input type="file" id="pic3" name="pic" />
+								<input type="hidden" class="form-control" name="picPath3" id="picPath3"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">供销货架图片</div>
+				<div class="col-sm-9 item-right addContent">
+				<c:choose>
+					   <c:when test="${grade.picPath4 != null && grade.picPath4 != ''}">
+               	  			<div class="item-img choose" id="content2" data-id="4">
+								<img src="${grade.picPath4}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${grade.picPath4}" type="hidden" name="picPath4" id="picPath4">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content4" data-id="4">
+								+
+								<input type="file" id="pic4" name="pic" />
+								<input type="hidden" class="form-control" name="picPath4" id="picPath4"> 
+							</div>
+					   </c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+			<div class="submit-btn">
+           			 <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
+                  	<button type="button" class="btn btn-info" id="closeBtn">关闭</button>
+       		</div>
+            <div class="title">
+	       		<h1>员工列表</h1>
+	       	</div>
+	       	
+	       	<div class="list-content">
+	       	<div class="row">
+				<div class="col-md-10 list-btns">
+					<button type="button" id="syncStaff" onclick="getStaff()" class="btn btn-warning">同步员工</button>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<table id="staffTable" class="table table-hover myClass">
+					<thead>
+						<tr>
+							<th>badge</th>
+							<th>名称</th>
+							<th>分级机构</th>
+							<th>用户中心编号</th>
+							<th>角色</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div class="pagination-nav">
+					<ul id="pagination" class="pagination">
+					</ul>
+				</div>
+			</div>
+		</form>
 	</section>
 	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	$(".picker-country").picker();
 	
-	function uploadFile(id) {
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		var id = $(this).parent().attr('data-id'); 
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
 			secureuri : false,
@@ -345,14 +293,27 @@
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
-					$("#picPath"+id).val(data.msg);
-					$("#img"+id).attr("src",data.msg);
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath'+id+'">'
+					$("#content"+id).html(imgPath);
+					$("#content"+id).addClass('choose');
 				} else {
 					layer.alert(data.msg);
 				}
 			}
 		})
-	}
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var id = $(this).parent().parent().attr("data-id");
+		var ht = '<div class="item-img" id="content'+id+'" data-id="'+id+'">+<input type="file" id="pic'+id+'" name="pic"/><input type="hidden" name="picPath'+id+'" id="picPath'+id+'" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
+	
+	 $('#closeBtn').click(function() {
+		 parent.layer.closeAll();
+	   });
 	
 	/**
 	 * 初始化分页信息
@@ -373,8 +334,8 @@
 	
 	
 	$("#submitBtn").click(function(){
-		 $('#gradeForm').data("bootstrapValidator").validate();
-		 if($('#gradeForm').data("bootstrapValidator").isValid()){
+		 $('#form').data("bootstrapValidator").validate();
+		 if($('#form').data("bootstrapValidator").isValid()){
 			 var reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
 			 if(!reg.test($("#phone").val())) 
 			 { 
@@ -384,7 +345,7 @@
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeMng/update.shtml",
 				 type:'post',
-				 data:JSON.stringify(sy.serializeObject($('#gradeForm'))),
+				 data:JSON.stringify(sy.serializeObject($('#form'))),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
@@ -475,7 +436,7 @@
 		$("#staffTable tbody").html(str);
 	 }
 	
-	$('#gradeForm').bootstrapValidator({
+	$('#form').bootstrapValidator({
 //      live: 'disabled',
       message: 'This value is not valid',
       feedbackIcons: {

@@ -16,36 +16,19 @@
 
 <body>
 	<section class="content-iframe content">
-		<form class="form-horizontal" role="form" id="funcForm">
+		<form class="form-horizontal" role="form" id="from">
 			<div class="list-item">
-				<div class="col-sm-3 item-left">功能名称</div>
+				<div class="col-sm-3 item-left">分级类型名称</div>
 				<div class="col-sm-9 item-right">
-            			<input type="text" class="form-control" name="name" value="" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
+            			<input type="text" class="form-control" name="name" value="${gradeType.name}" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
+            			<input type="hidden"  class="form-control" name="id" value="${gradeType.id}" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">上级名称</div>
+				<div class="col-sm-3 item-left">上级分类</div>
 				<div class="col-sm-9 item-right">
-            			<input type="text" class="form-control" disable value="${parent.name}" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
-            			<input type="hidden" class="form-control" name="parentId" value="${parent.funcId}">
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">功能图标</div>
-				<div class="col-sm-9 item-right">
-	                  <input type="text" class="form-control" name="tag" value="" placeholder="请输入...">
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">功能链接</div>
-				<div class="col-sm-9 item-right">
-	               <input type="text" class="form-control" name="url" value="" placeholder="请输入...">
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">排序</div>
-				<div class="col-sm-9 item-right">
-	               <input type="text" class="form-control" name="sort" value="" placeholder="请输入...">
+            			<input type="text" disabled class="form-control" disable value="${parentId}" name="parentId" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
+            			<input type="hidden"  class="form-control" disable value="${parentId}" name="parentId" data-toggle="popover" data-placement="top" placeholder="请输入功能名称" >
 				</div>
 			</div>
 			<div class="list-item">
@@ -56,8 +39,8 @@
 			</div>
 			<div class="submit-btn">
            			<button type="button" class="btn btn-primary"  name="signup" onclick="btnSubmit()">提交</button>
-                        <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-                        <button type="button" class="btn btn-info" id="closeBtn">关闭</button>
+                     <button type="button" class="btn btn-info" id="resetBtn">重置</button>
+                     <button type="button" class="btn btn-info" id="closeBtn">关闭</button>
        		</div>
 		</form>
 	</section>
@@ -65,18 +48,18 @@
 	
 	 function btnSubmit(){
 		 
-		 if($('#funcForm').data("bootstrapValidator").isValid()){
+		 if($('#from').data("bootstrapValidator").isValid()){
 			 $.ajax({
-				 url:"${wmsUrl}/admin/system/funcMng/addFunc.shtml",
+				 url:"${wmsUrl}/admin/system/gradeType/add.shtml",
 				 type:'post',
-				 data:JSON.stringify(sy.serializeObject($("#funcForm"))),
+				 data:JSON.stringify(sy.serializeObject($("#from"))),
 			     contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	
 						 layer.alert("插入成功");
 						 parent.layer.closeAll();
-						 parent.reloadTable();
+						 parent.location.reload();
 					 }else{
 						  layer.alert(data.msg);
 					 }
@@ -95,10 +78,10 @@
 	   });
 	
 	 $('#resetBtn').click(function() {
-	        $('#funcForm').data('bootstrapValidator').resetForm(true);
+	        $('#from').data('bootstrapValidator').resetForm(true);
 	    });
 	
-	$('#funcForm').bootstrapValidator({
+	$('#from').bootstrapValidator({
       message: 'This value is not valid',
       feedbackIcons: {
           valid: 'glyphicon glyphicon-ok',
@@ -114,12 +97,6 @@
                   }
               }
       	  },
-	      tag: {
-	          message: '标签'	  	 
-	          },
-	      url: {
-	          message: '标签链接'
-	  	  },
 	  	description: {
 	          message: '描述'
 	  	  }

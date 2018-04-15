@@ -99,9 +99,7 @@ public class SftpServiceImpl implements SftpService {
 	public synchronized void uploadFile(String remotePath, String sftpFileName, InputStream inputStream,
 			String pathContants) throws Exception {
 		try {
-			if (!isLogin) {
 				login();
-			}
 			sftp.cd(remotePath + pathContants);
 		} catch (SftpException e) {
 			logger.warn("directory is not exist");

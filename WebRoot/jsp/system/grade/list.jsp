@@ -36,33 +36,33 @@
 					<button type="button" onclick="toAdd()">新增分级</button>
 				</div>
 			</div>
-				<div class="col-md-12 ">
-					<table id="baseTable" class="table table-hover myClass">
-						<thead>
-							<tr>
-								<th>等级编号</th>
-								<th>名称</th>
-								<th>上级机构</th>
-								<th>类型</th>
-								<th>公司</th>
-								<th>负责人</th>
-								<th>电话</th>
-								<th>创建时间</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-					<div class="pagination-nav" style="float:right;margin-bottom:15px;">
-						<ul id="pagination" class="pagination">
-						</ul>
-					</div>
+			<div class="col-md-12 ">
+				<table id="baseTable" class="table table-hover myClass">
+					<thead>
+						<tr>
+							<th>等级编号</th>
+							<th>名称</th>
+							<th>上级机构</th>
+							<th>类型</th>
+							<th>公司</th>
+							<th>负责人</th>
+							<th>电话</th>
+							<th>创建时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+					<ul id="pagination" class="pagination">
+					</ul>
 				</div>
 			</div>
+		</div>
 	</section>
-	</section>
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+</section>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 

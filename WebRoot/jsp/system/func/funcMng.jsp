@@ -33,10 +33,13 @@
 			</div>
 			
 			<div class="list-content">
-				<div class="row">
-					<div class="col-md-12 list-btns">
-						<button type="button" onclick="toAdd()">新增模块</button>
-						<button id="backBtn" type="button" onclick="back()">返回上级菜单</button>
+					<div class="row">
+						<div class="col-md-10 list-btns">
+							<button type="button" onclick="toAdd()">新增模块</button>
+							<button id="backBtn" type="button" onclick="back()">返回上级菜单</button>
+						</div>
+					</div>
+					<div class="col-md-12">
 						<table id="baseTable" class="table table-hover myClass">
 							<thead>
 								<tr>
