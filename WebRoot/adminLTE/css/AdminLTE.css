@@ -464,15 +464,18 @@ body.hold-transition .main-header .logo {
 	border: 1px solid #d9d9d9;
 	outline: none;
 }
-.content-iframe > form > .select-content > .first-ul > li{
+.content-iframe > form > .select-content ul li{
 	margin-bottom:5px;
 }
-.content-iframe > form > .select-content > .first-ul > li > span{
+.content-iframe > form > .select-content ul li span{
 	cursor:pointer;
 	margin-bottom:5px;
 	display: inline-block;
 }
-.content-iframe > form > .select-content > .first-ul > li > span > i.active{
+.content-iframe > form > .select-content ul li span.no-child{
+	margin-left:15px;
+}
+.content-iframe > form > .select-content ul  li  span  i.active{
 	-webkit-transform: rotate(90deg);
   	-ms-transform: rotate(90deg);
   	-o-transform: rotate(90deg);
@@ -497,7 +500,7 @@ body.hold-transition .main-header .logo {
 	cursor:pointer;
 } */
 .content-iframe > form > .select-content ul{
-	margin-left:30px;
+	margin-left:10px;
 }
 .content-iframe > form > .select-content ul li{
 	margin-bottom:5px;

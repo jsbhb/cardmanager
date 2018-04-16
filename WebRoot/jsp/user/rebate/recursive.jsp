@@ -15,7 +15,7 @@
 		</li>
 	</c:when>
 	<c:when test="${empty menu.children}">
-		<li><span data-id="${menu.id}" data-name="${menu.name}">${menu.name}</span></li>
+		<li><span data-id="${menu.id}" data-name="${menu.name}" class="no-child">${menu.name}</span></li>
 	</c:when>
 </c:choose>
 

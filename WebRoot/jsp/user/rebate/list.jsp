@@ -25,13 +25,13 @@
 		        <li class="active">返佣查看</li>
 		      </ol>
 		      <div class="search">
-		      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value = "${list[0].name}">
+		      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" value = "${list[0].name}">
 				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 			  </div>
 	    </section>
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px;">
-		    <div class="select-content" style="width: 173px;left: calc(100% - 183px);top: -30px;">
+		    <div class="select-content" style="width: 200px;left: calc(100% - 240px);top: -30px;">
            		<ul class="first-ul" style="margin-left:10px;">
            			<c:forEach var="menu" items="${list}">
            				<c:set var="menu" value="${menu}" scope="request" />
@@ -184,13 +184,13 @@
 	
 	
 	//点击展开
-	$('ul').on('click','li span i:not(active)',function(){
+	$('.select-content').on('click','li span i:not(active)',function(){
 		$(this).addClass('active');
 		$(this).parent().next().stop();
 		$(this).parent().next().slideDown(300);
 	});
 	//点击收缩
-	$('ul').on('click','li span i.active',function(){
+	$('.select-content').on('click','li span i.active',function(){
 		$(this).removeClass('active');
 		$(this).parent().next().stop();
 		$(this).parent().next().slideUp(300);
@@ -201,6 +201,7 @@
 		$('.select-content').stop();
 		$('.select-content').slideDown(300);
 	});
+	
 	//点击空白隐藏下拉列表
 	$('html').click(function(event){
 		var el = event.target || event.srcelement;
