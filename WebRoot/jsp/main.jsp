@@ -30,7 +30,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>ERP</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>供销统一贸易后台</span>
+      <span class="logo-lg"><b>供销贸易后台</span>
     </a>
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->

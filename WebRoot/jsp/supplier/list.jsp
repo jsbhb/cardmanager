@@ -35,7 +35,7 @@
 			<div class="list-content">
 				<div class="row">
 					<div class="col-md-10 list-btns">
-						<button type="button" onclick="toAdd()">新增员工</button>
+						<button type="button" onclick="toAdd()">新增供应商</button>
 					</div>
 				</div>
 				<div class="row">
