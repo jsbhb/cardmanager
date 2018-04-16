@@ -226,4 +226,12 @@ public interface GoodsService extends ServerCenterService {
 	 */
 	List<GradeTypeDTO> queryGradeType(String id, String token);
 
+	/**
+	 * @fun 应该在系统那块，防止冲突暂时写在这里
+	 * @param id
+	 * @param token
+	 * @return
+	 */
+	GradeTypeDTO queryGradeTypeById(String id, String token);
+
 }

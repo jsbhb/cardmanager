@@ -87,7 +87,9 @@ public class ServerCenterContants {
 	public static final String USER_CENTER_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/type";
 	public static final String USER_CENTER_GRADE_TYPE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/update";
+			+ "/grade/type/update";
+	public static final String USER_CENTER_GRADE_TYPE_BY_ID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/type/{id}";
 	/**
 	 * 商品中心url
 	 */

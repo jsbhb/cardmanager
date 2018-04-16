@@ -758,4 +758,16 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		return list;
 	}
+
+	@Override
+	public GradeTypeDTO queryGradeTypeById(String id, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE_BY_ID;
+		ResponseEntity<String> query_result = helper.requestWithParams(url, token, true, null, HttpMethod.GET, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GradeTypeDTO.class);
+	}
 }

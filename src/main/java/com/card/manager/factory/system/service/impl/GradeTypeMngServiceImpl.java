@@ -7,9 +7,6 @@
  */
 package com.card.manager.factory.system.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpMethod;
@@ -69,6 +66,7 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 	}
 
 	@Override
+	@Log(content = "更新分级类型信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void update(GradeTypeEntity entity, StaffEntity staff) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -82,19 +80,18 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 
 		// 如果失败，提示
 		if (!success) {
-			throw new Exception("新增失败:" + json.getString("errorMsg"));
+			throw new Exception("更新失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
+	@Log(content = "删除分级类型信息操作", source = Log.BACK_PLAT, type = Log.DELETE)
 	public void delete(String id, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
 
 		ResponseEntity<String> result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE + "?id=" + id,
-				staffEntity.getToken(), true, params, HttpMethod.DELETE);
+				staffEntity.getToken(), true, null, HttpMethod.DELETE);
 
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
@@ -102,7 +99,7 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 
 		// 如果失败，提示
 		if (!success) {
-			throw new Exception("新增失败:" + json.getString("errorMsg"));
+			throw new Exception("删除失败:" + json.getString("errorMsg"));
 		}
 	}
 

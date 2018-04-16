@@ -61,7 +61,7 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="glyphicon glyphicon-euro"></i>
+				                    <i class="fa fa-cny fa-fw"></i>
 				                  </div>
 				                  <input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="" style="background:#fff;">
 				                </div>
@@ -72,7 +72,7 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="glyphicon glyphicon-euro"></i>
+				                    <i class="fa fa-cny fa-fw"></i>
 				                  </div>
 				                  <input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="" style="background:#fff;">
 				                </div>
@@ -81,7 +81,7 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 				                  <div class="input-group-addon">
-				                    <i class="glyphicon glyphicon-euro"></i>
+				                    <i class="fa fa-cny fa-fw"></i>
 				                  </div>
 				                  <input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="" style="background:#fff;">
 				                </div>
