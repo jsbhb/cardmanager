@@ -8,6 +8,7 @@
 package com.card.manager.factory.goods.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
@@ -241,5 +242,7 @@ public interface GoodsService extends ServerCenterService {
 	 * @return
 	 */
 	List<GradeTypeDTO> queryGradeTypeChildren(String id, String token);
+
+	Map<String, String> getGoodsRebate(String itemId, String token);
 
 }
