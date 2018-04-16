@@ -75,6 +75,9 @@
 					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
                			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
+               			<input type="hidden" class="form-control" name="typeId" id="typeId" value="first">
+               			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="first">
+               			<input type="hidden" class="form-control" name="tabId" id="tabId" value="first">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -86,6 +89,7 @@
                 </div>
             </div>
 		</div>
+		
 	
 		<div class="list-tabBar">
 			<ul>
@@ -482,30 +486,11 @@ $('.list-tabBar').on('click','ul li:not(.active)',function(){
 function queryDataByLabelTouch(typeId,categoryId,tabId){
 	var url = "${wmsUrl}/admin/goods/itemMng/dataListByLabel.shtml";	 
 	var formData = {};
-	formData["typeId"] = typeId;
-	formData["categoryId"] = categoryId;
-	formData["tabId"] = tabId;
+	$("#typeId").val(typeId);
+	$("#categoryId").val(categoryId);
+	$("#typeId").val(tabId);
 	
-	$.ajax({
-		 url:url,
-		 type:'post',
-		 data:JSON.stringify(formData),
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){
-				 rebuildTable(data);
-			 }else{
-				 layer.alert(data.msg);
-			 }
-			 var pagination = data.pagination;
-			 $.page.currentPage = pagination.currentPage + "";
-		 	 $.page.setLine(pagination.totalPages, options,pagination.totalRows);
-		 },
-		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	});
+	reloadTable();
 }
 
 
