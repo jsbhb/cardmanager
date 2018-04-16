@@ -95,7 +95,6 @@
 	</section>
 	</section>
 	
-	<%@ include file="../../footer.jsp"%>
 	
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">

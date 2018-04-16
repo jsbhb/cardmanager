@@ -65,7 +65,6 @@
 		</div>
 	</section>
 </section>
-<%@ include file="../../footer.jsp"%>
 <script src="${wmsUrl}/js/mytree.js"></script>
 <script type="text/javascript">
 

@@ -102,7 +102,6 @@
 			</div>
 		</div>
 	</section>
-	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript">
 	 $("#submitBtn").click(function(){
 		 if($('#staffForm').data("bootstrapValidator").isValid()){

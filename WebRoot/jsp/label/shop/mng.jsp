@@ -63,7 +63,6 @@
 			</div>
 		</div>
 	</section>
-	<%@ include file="../../footer.jsp"%>
 	<script type="text/javascript">
 	function downLoadFile(path){
 		location.href="${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26");

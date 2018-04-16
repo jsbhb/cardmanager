@@ -65,7 +65,6 @@ i {font-size:10px;}
 			</div>
 		</section>
 	</section>
-	<%@ include file="../../footer.jsp"%>
 <script type="text/javascript">
 
 /**

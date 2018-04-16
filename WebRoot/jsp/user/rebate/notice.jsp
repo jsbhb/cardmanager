@@ -19,6 +19,5 @@
 				当前账号暂无权限使用返佣查看功能，请联系管理员!
 			</p>
 		</div>
-	<%@ include file="../../footer.jsp"%>
 </body>
 </html>

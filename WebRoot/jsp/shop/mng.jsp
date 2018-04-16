@@ -79,7 +79,6 @@
 			</div>
 		</div>
 	</section>
-	<%@ include file="../footer.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	function uploadFile() {
