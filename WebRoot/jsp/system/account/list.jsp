@@ -53,7 +53,7 @@
 							<tbody>
 							</tbody>
 						</table>
-						<div class="pagination-nav" style="float:right;margin-bottom:15px;">
+						<div class="pagination-nav">
 							<ul id="pagination" class="pagination">
 							</ul>
 						</div>
