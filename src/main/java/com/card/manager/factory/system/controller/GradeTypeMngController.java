@@ -68,15 +68,16 @@ public class GradeTypeMngController extends BaseController {
 			String type = req.getParameter("type");
 
 			if (TYPE_ADD.equals(type)) {
-				GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(parentId, opt.getToken());
+				GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(id, opt.getToken());
 				req.setAttribute("parentGradeTypeDTO", parentGrade);
-				req.setAttribute("parentId", parentId);
 				return forword("system/gradeType/add", context);
 			}
 
 			if (TYPE_EDIT.equals(type)) {
-				GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(parentId, opt.getToken());
-				req.setAttribute("parentGradeTypeDTO", parentGrade);
+				if (!"1".equals(id)) {
+					GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(parentId, opt.getToken());
+					req.setAttribute("parentGradeTypeDTO", parentGrade);
+				}
 				GradeTypeDTO grade = goodsService.queryGradeTypeById(id, opt.getToken());
 				req.setAttribute("GradeTypeDTO", grade);
 				req.setAttribute("parentId", parentId);
