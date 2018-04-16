@@ -158,4 +158,6 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7
 	 */
 	List<StaffEntity> selectByParam(Map<String, String> params);
+	
+	void updateOperatorInfo(StaffEntity staff);
 }

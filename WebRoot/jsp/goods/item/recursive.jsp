@@ -5,7 +5,14 @@
 <c:choose>
 	<c:when test="${not empty menu.childern}">
 		<li>
-			<span><i class="fa fa-minus fa-fw"></i>${menu.name}</span><input type="text" placeholder="请输入分润比例，例如0.17" parentId="${menu.parentId}" id="${menu.id}" value = "${map[menu.id]}">
+			<c:choose>
+				<c:when test="${menu.id == 1}">
+					<span><i class="fa fa-minus fa-fw"></i>${menu.name}</span><input type="text" value="0.0" placeholder="请输入分润比例，例如0.17" parentId="${menu.parentId}" id="${menu.id}" readonly>
+				</c:when>
+				<c:otherwise>
+					<span><i class="fa fa-minus fa-fw"></i>${menu.name}</span><input type="text" placeholder="请输入分润比例，例如0.17" parentId="${menu.parentId}" id="${menu.id}" value = "${map[menu.id]}">
+				</c:otherwise>
+			</c:choose>
 			<ul>
 				<c:forEach var="menu" items="${menu.childern}">
 					<c:set var="menu" value="${menu}" scope="request" />

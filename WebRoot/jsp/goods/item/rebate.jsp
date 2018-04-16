@@ -62,29 +62,33 @@ $(function(){
     	var val = $(that).val();
     	var parentId = $(that).attr('parentId');
     	var id = $(that).attr('id');
-    	if(val != ''){
-    		if(parseFloat(val) >= 1){
-        		layer.alert('请设置小于1的两位小数');
-        		$(that).val('');
-        		return;
-        	}
-        	if(parentId != 0 && parentId != null){
-            	var parentVal = $('input[id='+parentId+']').val();
-            	var childArr = $('input[parentId='+id+']');
-            	if(parentVal == ''){
-            		layer.alert('请先设置上级比例');
-            	}else{
-            		if(parseFloat(parentVal) <= parseFloat(val)){
-                		layer.alert('下级比例不能高于或等于上级');
-                		$(that).val('');
+    	if(id != 1){
+    		if(val != ''){
+        		if(parseFloat(val) >= 1){
+            		layer.alert('请设置小于1的两位小数');
+            		$(that).val('');
+            		return;
+            	}
+            	if(parentId != 0 && parentId != null){
+                	var parentVal = $('input[id='+parentId+']').val();
+                	var childArr = $('input[parentId='+id+']');
+                	if(parentId != 1){
+                		if(parentVal == ''){
+                    		layer.alert('请先设置上级比例');
+                    	}else{
+                    		if(parseFloat(parentVal) <= parseFloat(val)){
+                        		layer.alert('下级比例不能高于或等于上级');
+                        		$(that).val('');
+                        	}
+                    	}
+                    	$.each(childArr,function(k,v){
+                    		if($(v).val() >= val){
+                    			layer.alert('上级比例不能低于下级');
+                    			$(that).val('');
+                    		}
+                    	});
                 	}
             	}
-            	$.each(childArr,function(k,v){
-            		if($(v).val() >= val){
-            			layer.alert('上级比例不能低于下级');
-            			$(that).val('');
-            		}
-            	});
         	}
     	}
     })

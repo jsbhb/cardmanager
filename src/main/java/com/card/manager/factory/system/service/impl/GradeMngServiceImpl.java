@@ -23,6 +23,7 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
@@ -113,7 +114,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 		JSONObject obj = json.getJSONObject("obj");
 		int userId = obj.getInt("userId");
-		int gradeId = obj.getInt("centerId");
+		int gradeId = obj.getInt("gradeId");
 		StaffEntity staffEntity = new StaffEntity();
 		staffEntity.setGradeName(gradeInfo.getGradeName());
 		staffEntity.setParentGradeId(staff.getGradeId());
@@ -131,14 +132,22 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffEntity.setOptName(gradeInfo.getPersonInCharge());
 		staffEntity.setGradeId(gradeId);
 		staffEntity.setUserCenterId(userId);
+		//加到缓存
+		GradeBO gradeBO = new GradeBO();
+		gradeBO.setGradeType(gradeInfo.getGradeType());
+		gradeBO.setId(gradeInfo.getId());
+		gradeBO.setName(gradeInfo.getGradeName());
+		gradeBO.setParentId(gradeInfo.getParentId());
+		CachePoolComponent.addGrade(gradeBO);
 		//订货平台账号
 		staffEntity.setPhone(gradeInfo.getPhone());
+		staffEntity.setGradeType(gradeInfo.getGradeType());
 
 		// 权限中心注册
 		registerAuthCenter(staffEntity,true);
 
-		//区域中心时开通资金池
-		if(gradeInfo.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
+		//区域中心复制商城时开通资金池
+		if (gradeInfo.getCopyMall() == 1) {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("centerId", gradeId);
 			ResponseEntity<String> finance_result = helper.requestWithParams(
@@ -242,8 +251,13 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			throw new Exception("更新分级信息失败:" + json.getString("errorMsg"));
 		}
 		
-		//区域中心时开通资金池
-		if(gradeInfo.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
+		StaffEntity staff = new StaffEntity();
+		staff.setUserCenterId(gradeInfo.getPersonInChargeId());
+		staff.setGradeType(gradeInfo.getGradeType());
+		staffMapper.updateOperatorInfo(staff);
+		
+		//区域中心复制商城时开通资金池
+		if(gradeInfo.getCopyMall() == 1){
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("centerId", gradeInfo.getId());
 			ResponseEntity<String> finance_result = helper.requestWithParams(

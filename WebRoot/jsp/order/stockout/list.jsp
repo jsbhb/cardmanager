@@ -25,7 +25,7 @@
 	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
     </section>
-	<section class="content">
+	<section class="content content-iframe">
 		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
@@ -62,26 +62,31 @@
 		                </select>
 					</div>
 				</div>
+				
 				<div class="col-xs-3">
 					<div class="searchItem">
-			            <select class="form-control" name="centerId" id="centerId" >
-	                   	  <option selected="selected" value="">区域选择</option>
-	                   	  <c:forEach var="center" items="${centerId}">
-                  	  			<option value="${center.gradeId}">${center.gradeName}</option>
-	                   	  </c:forEach>
-		              	</select>
+			            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" >
+						<input type="hidden" class="form-control" name="gradeId" id="gradeId" >
 					</div>
 				</div>
-				<div class="col-xs-3">
-					<div class="searchItem">
-			            <select class="form-control" name="shopId" id="shopId">
-	                   	  <option selected="selected" value="">店铺选择</option>
-	                   	  <c:forEach var="shop" items="${shopId}">
-                  	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
-	                   	  </c:forEach>
-		              	</select>
-					</div>
-				</div>
+			    <div class="select-content" style="width: 200px;left: calc(50% + 39px);top: 105px;">
+	           		<ul class="first-ul" style="margin-left:10px;">
+	           			<c:forEach var="menu" items="${list}">
+	           				<c:set var="menu" value="${menu}" scope="request" />
+	           				<%@include file="recursive.jsp"%>  
+						</c:forEach>
+	           		</ul>
+	           	</div>
+<!-- 				<div class="col-xs-3"> -->
+<!-- 					<div class="searchItem"> -->
+<!-- 			            <select class="form-control" name="shopId" id="shopId"> -->
+<!-- 	                   	  <option selected="selected" value="">店铺选择</option> -->
+<%-- 	                   	  <c:forEach var="shop" items="${shopId}"> --%>
+<%--                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option> --%>
+<%-- 	                   	  </c:forEach> --%>
+<!-- 		              	</select> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<div class="col-xs-3">
 					<div class="searchItem">
 						<input type="text" class="form-control" name="orderId" placeholder="请输入商品编码">
@@ -251,26 +256,26 @@ function rebuildTable(data){
 		if (tmpCenterId == -1) {
 			tmpCenterName = "订货平台";
 		}
-		var centerSelect = document.getElementById("centerId");
-		var options = centerSelect.options;
-		for(var j=0;j<options.length;j++){
-			if (tmpCenterId==options[j].value) {
-				tmpCenterName = options[j].text;
-				break;
-			}
-		}
-		str += "</td><td>" + (tmpCenterName == "" ? "" : tmpCenterName);
+// 		var centerSelect = document.getElementById("centerId");
+// 		var options = centerSelect.options;
+// 		for(var j=0;j<options.length;j++){
+// 			if (tmpCenterId==options[j].value) {
+// 				tmpCenterName = options[j].text;
+// 				break;
+// 			}
+// 		}
+		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		var tmpShopId = list[i].shopId;
-		var tmpShopName = "";
-		var shopSelect = document.getElementById("shopId");
-		var soptions = shopSelect.options;
-		for(var j=0;j<soptions.length;j++){
-			if (tmpShopId==soptions[j].value) {
-				tmpShopName = soptions[j].text;
-				break;
-			}
-		}
-		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
+// 		var tmpShopName = "";
+// 		var shopSelect = document.getElementById("shopId");
+// 		var soptions = shopSelect.options;
+// 		for(var j=0;j<soptions.length;j++){
+// 			if (tmpShopId==soptions[j].value) {
+// 				tmpShopName = soptions[j].text;
+// 				break;
+// 			}
+// 		}
+		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		if (true) {
 			str += "<td align='left'>";
@@ -295,6 +300,47 @@ function toShow(orderId){
 		});
 		layer.full(index);
 }
+
+//点击展开
+$('.select-content').on('click','li span i:not(active)',function(){
+	$(this).addClass('active');
+	$(this).parent().next().stop();
+	$(this).parent().next().slideDown(300);
+});
+//点击收缩
+$('.select-content').on('click','li span i.active',function(){
+	$(this).removeClass('active');
+	$(this).parent().next().stop();
+	$(this).parent().next().slideUp(300);
+});
+
+//点击展开下拉列表
+$('#gradeName').click(function(){
+	
+	$('.select-content').stop();
+	$('.select-content').slideDown(300);
+});
+
+//点击空白隐藏下拉列表
+$('html').click(function(event){
+	var el = event.target || event.srcelement;
+	if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+//点击选择分类
+$('.select-content').on('click','span',function(event){
+	var el = event.target || event.srcelement;
+	if(el.nodeName != 'I'){
+		var name = $(this).attr('data-name');
+		var id = $(this).attr('data-id');
+		$('#gradeName').val(name);
+		$('#gradeId').val(id);
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
 
 </script>
 </body>

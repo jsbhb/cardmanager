@@ -30,15 +30,16 @@ public class GoodsTagMngController extends BaseController {
 	@Resource
 	GoodsService goodsService;
 
-	@RequestMapping(value = "/mng")
-	public ModelAndView mngList(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("label/goodsTag/mng", context);
-	}
+//	@RequestMapping(value = "/mng")
+//	public ModelAndView mngList(HttpServletRequest req, HttpServletResponse resp) {
+//		Map<String, Object> context = getRootMap();
+//		StaffEntity opt = SessionUtils.getOperator(req);
+//		context.put("opt", opt);
+//		return forword("label/goodsTag/mng", context);
+//	}
 
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/mng")
+//	@RequestMapping(value = "/list")
 	public ModelAndView goodsItemList(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
@@ -47,7 +48,7 @@ public class GoodsTagMngController extends BaseController {
 			//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		} catch (Exception e) {
 		}
-		return forword("label/goodsTag/list", context);
+		return forword("label/goodsTag/list_1", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)

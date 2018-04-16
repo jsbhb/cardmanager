@@ -34,18 +34,12 @@
 							<label class="col-sm-2 control-label no-padding-right">订单编号</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderId}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">供应商</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.supplierName}">
 				                </div>
 							</div>
@@ -54,9 +48,6 @@
 							<label class="col-sm-2 control-label no-padding-right">消费者编号</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.userId}">
 				                </div>
 							</div>
@@ -84,18 +75,12 @@
 							<label class="col-sm-2 control-label no-padding-right">创建时间</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-			                    	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                	</div>
 				                  	<input type="text" class="form-control" name="area" readonly value="${order.createTime}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">所属店铺</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 				                  <input type="text" class="form-control"  readonly value="${order.shopName}">
 				                </div>
 							</div>
@@ -104,18 +89,12 @@
 							<label class="col-sm-2 control-label no-padding-right">所属区域</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-			                    	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                	</div>
 				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">推手编号</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-			                    	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                	</div>
 				                  	<input type="text" class="form-control" name="pushUserId" readonly value="${order.pushUserId}">
 				                </div>
 							</div>
@@ -138,9 +117,6 @@
 							<label class="col-sm-2 control-label no-padding-right">支付类型</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-									<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
 									<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly  value="微信"></c:if>
 									<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly  value="支付宝"></c:if>
 									<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly  value="银联"></c:if>
@@ -149,9 +125,6 @@
 							<label class="col-sm-1 control-label no-padding-right">支付金额</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payment}">
 				                </div>
 							</div>
@@ -160,18 +133,12 @@
 							<label class="col-sm-2 control-label no-padding-right">税费</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.taxFee}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">邮费</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.postFee}">
 				                </div>
 							</div>
@@ -180,18 +147,12 @@
 							<label class="col-sm-2 control-label no-padding-right">消费税</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.exciseTax}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">支付时间</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payTime}">
 				                </div>
 							</div>
@@ -200,9 +161,6 @@
 							<label class="col-sm-2 control-label no-padding-right">交易流水号</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payNo}">
 				                </div>
 							</div>
@@ -227,18 +185,12 @@
 									<label class="col-sm-2 control-label no-padding-right">快递公司</label>
 									<div class="col-sm-4">
 										<div class="input-group">
-											<div class="input-group-addon">
-						                    	<i class="fa fa-pencil"></i>
-						                  	</div>
 				                  			<input type="text" class="form-control" readonly  value="${express.expressName}">
 						                </div>
 									</div>
 									<label class="col-sm-1 control-label no-padding-right">快递单号</label>
 									<div class="col-sm-4">
 										<div class="input-group">
-						                  <div class="input-group-addon">
-						                    <i class="fa fa-pencil"></i>
-						                  </div>
 				                  			<input type="text" class="form-control" readonly  value="${express.expressId}">
 						                </div>
 									</div>
@@ -263,18 +215,12 @@
 							<label class="col-sm-2 control-label no-padding-right">名称</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-									<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveName}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">电话</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receivePhone}">
 				                </div>
 							</div>
@@ -283,18 +229,12 @@
 							<label class="col-sm-2 control-label no-padding-right">收获地址</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveProvince}${order.orderDetail.receiveCity}${order.orderDetail.receiveArea}">
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">详细地址</label>
 							<div class="col-sm-4">
 								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveAddress}">
 				                </div>
 							</div>

@@ -19,6 +19,5 @@
 				当前账号还未绑定银行卡，请先绑定银行卡，再申请提现!
 			</p>
 		</div>
-	<%@ include file="../../footer.jsp"%>
 </body>
 </html>

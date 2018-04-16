@@ -8,13 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/js/pagination.js"></script>
-<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
-
 </head>
 
 <body>
@@ -24,53 +18,48 @@
 	       		<h1>基础信息</h1>
 	       	</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >分级名称</label>
+				<label class="col-sm-3 item-left" >分级名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
             		<input type="text" class="form-control" name="gradeName" value="${grade.gradeName}">
             		<input type="hidden" class="form-control" name="id" value="${grade.id}">
             		<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
+            		<input type="hidden" class="form-control" name="personInChargeId" value="${grade.personInChargeId}">
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >公司名称</label>
+				<label class="col-sm-3 item-left" >公司名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="company" value="${grade.company}">
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >上级机构</label>
+				<label class="col-sm-3 item-left" >上级机构<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.parentGradeName}">
 				</div>
 			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;" value="${gradeType.name}">
+	                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="${grade.gradeType}">
+				</div>
+			</div>
+			<div class="select-content" style="width: 420px;top: 219px;">
+           		<ul class="first-ul" style="margin-left:10px;">
+           			<c:forEach var="menu" items="${gradeList}">
+           				<c:set var="menu" value="${menu}" scope="request" />
+           				<%@include file="recursive.jsp"%>  
+					</c:forEach>
+           		</ul>
+           	</div>
 			<div class="title">
-	       		<h1>业务信息</h1>
+	       		<h1>负责人信息</h1>
 	       	</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >业务类型</label>
+				<label class="col-sm-3 item-left" >上级负责人<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-				<c:if test="${grade.gradeType==1}">
-                  		<label>
-	                  	跨境<input type="radio" name="gradeType" value="1" class="flat-red" checked>
-	                </label>
-				</c:if>
-				<c:if test="${grade.gradeType==0}">
-	                <label>
-	                  	大贸<input type="radio" name="gradeType" value="0" class="flat-red" checked>
-	                </label>
-				</c:if>
-				</div>
-			</div>
-			<div class="list-item">
-				<label class="col-sm-3 item-left" >负责人</label>
-				<div class="col-sm-9 item-right">
-	                  <input type="text" class="form-control" name="personInCharge" value="${grade.personInCharge}">
-				</div>
-			</div>
-			<div class="list-item">
-				<label class="col-sm-3 item-left" >上级负责人</label>
-				<div class="col-sm-3 item-right">
-	                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
+	                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge">
 	                   	  <c:forEach var="charge" items="${charges}">
 	                   	  	<c:choose>
 							   <c:when test="${charge.userCenterId==grade.gradePersonInCharge}">
@@ -84,11 +73,14 @@
 		              </select>
 				</div>
 			</div>
-			<div class="title">
-	       		<h1>联系方式</h1>
-	       	</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >负责人电话</label>
+				<label class="col-sm-3 item-left" >负责人名称<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="personInCharge" value="${grade.personInCharge}">
+				</div>
+			</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >负责人电话<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" readonly name="phone" id="phone" value="${grade.phone}">
 				</div>
@@ -112,49 +104,51 @@
 	       		<h1>注册信息</h1>
 	       	</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >门店名称</label>
+				<label class="col-sm-3 item-left" >门店名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="storeName" value="${grade.storeName}">
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >门店联系人</label>
+				<label class="col-sm-3 item-left" >门店联系人<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="contacts" value="${grade.contacts}">
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >联系人电话</label>
+				<label class="col-sm-3 item-left" >联系人电话<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="contactsPhone" value="${grade.contactsPhone}">
 				</div>
 			</div>
 			<div class="list-item picker-country">
-				<label class="col-sm-3 item-left" >门店地区</label>
-				<div class="col-sm-2">
-					  <select class="form-control picker-province" name="province" id="province" data-name="${grade.province}"></select>
-				</div>
-				<div class="col-sm-2">
-					  <select class="form-control picker-city" name="city" id="city" data-name="${grade.city}"></select>
-				</div>
-				<div class="col-sm-2">
-					  <select class="form-control picker-district" name="district" id="district" data-name="${grade.district}"></select>
+				<label class="col-sm-3 item-left" >门店地区<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<div class="right-items">
+						  <select class="form-control picker-province" name="province" id="province" data-name="${grade.province}"></select>
+					</div>
+					<div class="right-items">
+						  <select class="form-control picker-city" name="city" id="city" data-name="${grade.city}"></select>
+					</div>
+					<div class="right-items">
+						  <select class="form-control picker-district" name="district" id="district" data-name="${grade.district}"></select>
+					</div>
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >门店地址</label>
+				<label class="col-sm-3 item-left" >门店地址<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="address" value="${grade.address}">
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >门店经营者</label>
+				<label class="col-sm-3 item-left" >门店经营者<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="storeOperator" value="${grade.storeOperator}">
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >经营者证件号</label>
+				<label class="col-sm-3 item-left" >经营者证件号<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="operatorIDNum" value="${grade.operatorIDNum}">
 				</div>
@@ -278,7 +272,10 @@
 			</div>
 		</form>
 	</section>
-	<%@ include file="../../footer.jsp"%>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/js/pagination.js"></script>
+	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	$(".picker-country").picker();
@@ -321,7 +318,7 @@
 	var options = {
 				queryForm : ".query",
 				url :  "${wmsUrl}/admin/system/gradeMng/dataListForGrade.shtml?gradeId="+${grade.id},
-				numPerPage:"20",
+				numPerPage:"10",
 				currentPage:"",
 				index:"1",
 				callback:rebuildTable
@@ -573,6 +570,45 @@
       }
   });
 	
+	//点击展开
+	$('.select-content').on('click','li span i:not(active)',function(){
+		$(this).addClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideDown(300);
+	});
+	//点击收缩
+	$('.select-content').on('click','li span i.active',function(){
+		$(this).removeClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideUp(300);
+	});
+	
+	//点击展开下拉列表
+	$('#gradeTypeId').click(function(){
+		$('.select-content').stop();
+		$('.select-content').slideDown(300);
+	});
+	
+	//点击空白隐藏下拉列表
+	$('html').click(function(event){
+		var el = event.target || event.srcelement;
+		if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeTypeId"){
+			$('.select-content').stop();
+			$('.select-content').slideUp(300);
+		}
+	});
+	//点击选择分类
+	$('.select-content').on('click','span',function(event){
+		var el = event.target || event.srcelement;
+		if(el.nodeName != 'I'){
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			$('#gradeTypeId').val(name);
+			$('#gradeType').val(id);
+			$('.select-content').stop();
+			$('.select-content').slideUp(300);
+		}
+	});
 	
 	
 	</script>
