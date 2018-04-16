@@ -19,7 +19,7 @@
     <section class="content-header">
 		      <ol class="breadcrumb">
 		        <li><a href="javascript:void(0);">系统管理</a></li>
-		        <li class="active">角色管理</li>
+		        <li class="active">分级管理</li>
 		      </ol>
 		      <div class="search">
 		      	<input type="text" name="name" placeholder="输入分级名称" >
