@@ -31,8 +31,8 @@
 			  </div>
 	    </section>
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px;">
-		    <div class="select-content">
-           		<ul class="first-ul">
+		    <div class="select-content" style="width: 173px;left: calc(100% - 183px);top: -30px;">
+           		<ul class="first-ul" style="margin-left:10px;">
            			<c:forEach var="menu" items="${list}">
            				<c:set var="menu" value="${menu}" scope="request" />
            				<%@include file="recursive.jsp"%>  
