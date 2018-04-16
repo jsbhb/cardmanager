@@ -23,6 +23,8 @@ import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
+import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
@@ -39,6 +41,9 @@ public class GradeMngController extends BaseController {
 
 	@Resource
 	StaffMngService staffMngService;
+	
+	@Resource
+	GoodsService goodsService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -53,6 +58,8 @@ public class GradeMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		List<StaffEntity> GradeCharge = CachePoolComponent.getGradePersoninCharge(opt.getToken());
+		List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
+		context.put("gradeList", gradeList);
 		if (opt.getGradeLevel() == 1) {
 			context.put("charges", GradeCharge);
 		} else {

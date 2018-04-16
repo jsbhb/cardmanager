@@ -88,9 +88,9 @@ function remove(id){
 
 
 
-function toAdd(parentId,id){
+function toAdd(id,parentId){
 	var index = layer.open({
-		  title:"编辑分类",		
+		  title:"新增分类",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/system/gradeType/toAdd.shtml?parentId='+parentId+"&id="+id+"&type=0",
 		  area: ['320px', '195px'],
@@ -100,7 +100,7 @@ function toAdd(parentId,id){
 }
 
 
-function toEdit(parentId,id){
+function toEdit(id,parentId){
 	var index = layer.open({
 		  title:"编辑分类",		
 		  type: 2,

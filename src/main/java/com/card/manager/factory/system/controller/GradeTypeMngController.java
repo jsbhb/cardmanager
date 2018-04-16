@@ -55,8 +55,10 @@ public class GradeTypeMngController extends BaseController {
 	@RequestMapping(value = "/toAdd")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
 		try {
 
+			String id = req.getParameter("id");
 			String parentId = req.getParameter("parentId");
 
 			if (StringUtil.isEmpty(parentId)) {
@@ -66,15 +68,19 @@ public class GradeTypeMngController extends BaseController {
 			String type = req.getParameter("type");
 
 			if (TYPE_ADD.equals(type)) {
-
+				GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(parentId, opt.getToken());
+				req.setAttribute("parentGradeTypeDTO", parentGrade);
 				req.setAttribute("parentId", parentId);
 				return forword("system/gradeType/add", context);
 			}
 
 			if (TYPE_EDIT.equals(type)) {
-
+				GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(parentId, opt.getToken());
+				req.setAttribute("parentGradeTypeDTO", parentGrade);
+				GradeTypeDTO grade = goodsService.queryGradeTypeById(id, opt.getToken());
+				req.setAttribute("GradeTypeDTO", grade);
 				req.setAttribute("parentId", parentId);
-				return forword("system/gradeType/add", context);
+				return forword("system/gradeType/edit", context);
 			}
 
 			context.put(MSG, "没有操作类型信息！");

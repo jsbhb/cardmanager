@@ -20,14 +20,15 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">分级类型名称</div>
 				<div class="col-sm-9 item-right">
-            			<input type="text" class="form-control" name="name" data-toggle="popover" data-placement="top" placeholder="请输入分级类型名称" >
+            			<input type="text" class="form-control" name="name" value="${GradeTypeDTO.name}" data-toggle="popover" data-placement="top" placeholder="请输入分级类型名称" >
+            			<input type="hidden"  class="form-control" name="id" value="${GradeTypeDTO.id}" data-toggle="popover" data-placement="top">
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">上级分类名称</div>
 				<div class="col-sm-9 item-right">
             			<input type="text" disabled class="form-control" readonly value="${parentGradeTypeDTO.name}" name="parentName" data-toggle="popover" data-placement="top">
-            			<input type="hidden"  class="form-control" value="${parentGradeTypeDTO.id}" name="parentId" data-toggle="popover" data-placement="top">
+            			<input type="hidden"  class="form-control" value="${GradeTypeDTO.parentId}" name="parentId" data-toggle="popover" data-placement="top">
 				</div>
 			</div>
 			<div class="list-item">
@@ -49,7 +50,7 @@
 		 
 		 if($('#from').data("bootstrapValidator").isValid()){
 			 $.ajax({
-				 url:"${wmsUrl}/admin/system/gradeType/add.shtml",
+				 url:"${wmsUrl}/admin/system/gradeType/edit.shtml",
 				 type:'post',
 				 data:JSON.stringify(sy.serializeObject($("#from"))),
 			     contentType: "application/json; charset=utf-8",

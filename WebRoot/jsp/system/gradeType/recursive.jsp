@@ -5,7 +5,7 @@
 <c:choose>
 	<c:when test="${not empty menu.childern}">
 		<li>
-			<span><i class="fa fa-minus fa-fw"></i>${menu.name}</span><a href="" >
+			<span><i class="fa fa-minus fa-fw"></i>${menu.name}</span><a href="javascript:void(0);" >
 			<a href='javascript:void(0);' class='table-btns' onclick='toAdd(${menu.id},${menu.parentId})' >新增</a>
 			<a href='javascript:void(0);' class='table-btns' onclick='toEdit(${menu.id},${menu.parentId})' >修改</a>
 			<a href='javascript:void(0);' class='table-btns' onclick='remove(${menu.id})' >删除</a>
