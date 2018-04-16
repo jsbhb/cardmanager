@@ -23,6 +23,7 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
@@ -113,7 +114,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 		JSONObject obj = json.getJSONObject("obj");
 		int userId = obj.getInt("userId");
-		int gradeId = obj.getInt("centerId");
+		int gradeId = obj.getInt("gradeId");
 		StaffEntity staffEntity = new StaffEntity();
 		staffEntity.setGradeName(gradeInfo.getGradeName());
 		staffEntity.setParentGradeId(staff.getGradeId());
@@ -131,6 +132,13 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffEntity.setOptName(gradeInfo.getPersonInCharge());
 		staffEntity.setGradeId(gradeId);
 		staffEntity.setUserCenterId(userId);
+		//加到缓存
+		GradeBO gradeBO = new GradeBO();
+		gradeBO.setGradeType(gradeInfo.getGradeType());
+		gradeBO.setId(gradeInfo.getId());
+		gradeBO.setName(gradeInfo.getGradeName());
+		gradeBO.setParentId(gradeInfo.getParentId());
+		CachePoolComponent.addGrade(gradeBO);
 		//订货平台账号
 		staffEntity.setPhone(gradeInfo.getPhone());
 		staffEntity.setGradeType(gradeInfo.getGradeType());

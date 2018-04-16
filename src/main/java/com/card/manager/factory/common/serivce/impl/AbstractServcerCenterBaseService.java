@@ -21,6 +21,7 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.supplier.model.SupplierEntity;
@@ -85,9 +86,13 @@ public abstract class AbstractServcerCenterBaseService implements ServerCenterSe
 				supNameMap.put(entity.getId(), entity.getSupplierName());
 			}
 			OrderInfo orderInfo = null;
+			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(token);
 			for(Object info : list){
 				orderInfo = (OrderInfo) info;
 				orderInfo.setSupplierName(supNameMap.get(orderInfo.getSupplierId()));
+				
+				orderInfo.setCenterName(map.get(orderInfo.getShopId()).getName());
+				orderInfo.setShopName(map.get(orderInfo.getShopId()).getName());
 			}
 		}
 		
