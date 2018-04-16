@@ -8,11 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +18,7 @@
 	       		<h1>基础信息</h1>
 	       	</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">分级名称<font style="color:red">*</font></div>
+				<label class="col-sm-3 item-left">分级名称<font style="color:red">*</font></label>
 				<div class="col-sm-9 item-right">
                  	<input type="text" class="form-control" name="gradeName">
 				</div>
@@ -30,7 +26,7 @@
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >公司名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-                  <input type="text" class="form-control" name="company" placeholder="请输入...">
+                  <input type="text" class="form-control" name="company">
 				</div>
 			</div>
 			<div class="list-item">
@@ -41,31 +37,37 @@
 	                  <input type="hidden" readonly class="form-control" name="gradeLevel" value="${opt.gradeLevel+1}">
 				</div>
 			</div>
-			<div class="title">
-	       		<h1>业务信息</h1>
-	       	</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >业务类型<font style="color:red">*</font> </label>
-				<div class="col-sm-2">
-               		<label>
-	                  	跨境<input type="radio" name="gradeType" value="1" class="flat-red" checked>
-	                </label>
-	                <label>
-	                  	大贸<input type="radio" name="gradeType" value="0" class="flat-red">
-	                </label>
-				</div>
-			</div>
-			<div class="list-item">
-				<label class="col-sm-3 item-left" >负责人<font style="color:red">*</font> </label>
+				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-	                  <input type="text" class="form-control" name="personInCharge" placeholder="请输入负责人名称">
+					<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;">
+	                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType">
 				</div>
 			</div>
-			<div class="list-item">
+			<div class="select-content" style="width: 420px;top: 219px;">
+           		<ul class="first-ul" style="margin-left:10px;">
+           			<c:forEach var="menu" items="${gradeList}">
+           				<c:set var="menu" value="${menu}" scope="request" />
+           				<%@include file="recursive.jsp"%>  
+					</c:forEach>
+           		</ul>
+           	</div>
+			<div class="list-item" style="display:none;" id="copySelect">
+				<label class="col-sm-3 item-left" >复制商城<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="copyMall" id="copyMall">
+                	  <option selected="selected" value="0">不复制</option>
+                	  <option value="1">复制</option>
+	                </select>
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>负责人信息</h1>
+	       	</div>
+	       	<div class="list-item">
 				<label class="col-sm-3 item-left" >上级负责人<font style="color:red">*</font> </label>
-				<div class="col-sm-2 item-right">
-	                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge" style="width: 100%;">
-<!-- 				                   	  <option selected="selected" value="">未选择</option> -->
+				<div class="col-sm-9 item-right">
+	                  <select class="form-control" name="gradePersonInCharge" id="gradePersonInCharge">
 	                   	  <c:forEach var="charge" items="${charges}">
 		                   	  	<c:choose>
 						           <c:when test="${charge.userCenterId=='8001'}">
@@ -79,13 +81,16 @@
 		              </select>
 				</div>
 			</div>
-			<div class="title">
-	       		<h1>联系方式</h1>
-	       	</div>
+			<div class="list-item">
+				<label class="col-sm-3 item-left" >负责人名称<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+	                  <input type="text" class="form-control" name="personInCharge">
+				</div>
+			</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >负责人电话<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-	                  <input type="text" class="form-control" name="phone" id="phone" placeholder="请输入...">
+	                  <input type="text" class="form-control" name="phone" id="phone">
 				</div>
 			</div>
 			<div class="title">
@@ -126,14 +131,16 @@
 			</div>
 			<div class="list-item picker-country">
 				<label class="col-sm-3 item-left" >门店地区<font style="color:red">*</font> </label>
-				<div class="col-sm-2">
-					  <select class="form-control picker-province" name="province" id="province"></select>
-				</div>
-				<div class="col-sm-2">
-					  <select class="form-control picker-city" name="city" id="city"></select>
-				</div>
-				<div class="col-sm-2">
-					  <select class="form-control picker-district" name="district" id="district"></select>
+				<div class="col-sm-9 item-right">
+					<div class="right-items">
+						  <select class="form-control picker-province" name="province" id="province"></select>
+					</div>
+					<div class="right-items">
+						  <select class="form-control picker-city" name="city" id="city"></select>
+					</div>
+					<div class="right-items">
+						  <select class="form-control picker-district" name="district" id="district"></select>
+					</div>
 				</div>
 			</div>
 			<div class="list-item">
@@ -201,7 +208,9 @@
        		</div>
 		</form>
 	</section>
-	<%@ include file="../../footer.jsp"%>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	$(".picker-country").picker();
@@ -424,7 +433,52 @@
       }
   });
 	
+	//点击展开
+	$('.select-content').on('click','li span i:not(active)',function(){
+		$(this).addClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideDown(300);
+	});
+	//点击收缩
+	$('.select-content').on('click','li span i.active',function(){
+		$(this).removeClass('active');
+		$(this).parent().next().stop();
+		$(this).parent().next().slideUp(300);
+	});
 	
+	//点击展开下拉列表
+	$('#gradeTypeId').click(function(){
+		$('.select-content').stop();
+		$('.select-content').slideDown(300);
+	});
+	
+	//点击空白隐藏下拉列表
+	$('html').click(function(event){
+		var el = event.target || event.srcelement;
+		if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeTypeId"){
+			$('.select-content').stop();
+			$('.select-content').slideUp(300);
+		}
+	});
+	//点击选择分类
+	$('.select-content').on('click','span',function(event){
+		var el = event.target || event.srcelement;
+		if(el.nodeName != 'I'){
+			var name = $(this).attr('data-name');
+			var id = $(this).attr('data-id');
+			$('#gradeTypeId').val(name);
+			$('#gradeType').val(id);
+			$('.select-content').stop();
+			$('.select-content').slideUp(300);
+			if(id == 2){
+				$('#copySelect').stop();
+				$('#copySelect').slideDown(300);
+			} else {
+				$('#copySelect').stop();
+				$('#copySelect').slideUp(300);
+			}
+		}
+	});
 	
 	</script>
 </body>

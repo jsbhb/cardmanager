@@ -43,15 +43,16 @@ public class GoodsQRMngController extends BaseController {
 	@Resource
 	GradeMngService gradeMngService;
 
-	@RequestMapping(value = "/mng")
-	public ModelAndView mngList(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("label/goods/mng", context);
-	}
+//	@RequestMapping(value = "/mng")
+//	public ModelAndView mngList(HttpServletRequest req, HttpServletResponse resp) {
+//		Map<String, Object> context = getRootMap();
+//		StaffEntity opt = SessionUtils.getOperator(req);
+//		context.put("opt", opt);
+//		return forword("label/goods/mng", context);
+//	}
 
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/mng")
+//	@RequestMapping(value = "/list")
 	public ModelAndView goodsItemList(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
@@ -60,7 +61,7 @@ public class GoodsQRMngController extends BaseController {
 			//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		} catch (Exception e) {
 		}
-		return forword("label/goods/list", context);
+		return forword("label/goods/list_1", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)

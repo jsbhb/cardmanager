@@ -495,7 +495,7 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
-						 jump(26);
+						 jump(10);
 					 }else{
 						 layer.alert(data.msg);
 					 }

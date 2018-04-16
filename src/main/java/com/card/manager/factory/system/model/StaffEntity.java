@@ -41,6 +41,7 @@ public class StaffEntity {
 	private String tbFlg;
 	private int platform;
 	private String tsFlg;
+	private int gradeType;
 
 	public String getTsFlg() {
 		return tsFlg;
@@ -264,6 +265,14 @@ public class StaffEntity {
 
 	public void setPlatform(int platform) {
 		this.platform = platform;
+	}
+
+	public int getGradeType() {
+		return gradeType;
+	}
+
+	public void setGradeType(int gradeType) {
+		this.gradeType = gradeType;
 	}
 
 }

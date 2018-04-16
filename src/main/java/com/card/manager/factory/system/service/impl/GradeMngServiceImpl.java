@@ -133,12 +133,13 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffEntity.setUserCenterId(userId);
 		//订货平台账号
 		staffEntity.setPhone(gradeInfo.getPhone());
+		staffEntity.setGradeType(gradeInfo.getGradeType());
 
 		// 权限中心注册
 		registerAuthCenter(staffEntity,true);
 
-		//区域中心时开通资金池
-		if(gradeInfo.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
+		//区域中心复制商城时开通资金池
+		if (gradeInfo.getCopyMall() == 1) {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("centerId", gradeId);
 			ResponseEntity<String> finance_result = helper.requestWithParams(
@@ -242,8 +243,13 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			throw new Exception("更新分级信息失败:" + json.getString("errorMsg"));
 		}
 		
-		//区域中心时开通资金池
-		if(gradeInfo.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
+		StaffEntity staff = new StaffEntity();
+		staff.setUserCenterId(gradeInfo.getPersonInChargeId());
+		staff.setGradeType(gradeInfo.getGradeType());
+		staffMapper.updateOperatorInfo(staff);
+		
+		//区域中心复制商城时开通资金池
+		if(gradeInfo.getCopyMall() == 1){
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("centerId", gradeInfo.getId());
 			ResponseEntity<String> finance_result = helper.requestWithParams(

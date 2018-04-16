@@ -85,6 +85,8 @@ public class GradeEntity extends Pagination{
 	private String picPath3;
 
 	private String picPath4;
+
+	private int copyMall;
 	
 	
 	public Integer getGradeLevel() {
@@ -368,6 +370,14 @@ public class GradeEntity extends Pagination{
 
 	public void setMobileUrl(String mobileUrl) {
 		this.mobileUrl = mobileUrl;
+	}
+
+	public int getCopyMall() {
+		return copyMall;
+	}
+
+	public void setCopyMall(int copyMall) {
+		this.copyMall = copyMall;
 	}
 
 }

@@ -76,8 +76,8 @@
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">
          INSERT INTO auth_operator (
-              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel,phone)
-       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel},#{phone})
+              badge,optName,password,status,createTime,updateTime,opt,platid,gradeid,gradename,usercenterid,parentGradeId,shopId,gradeLevel,phone,grade_type)
+       VALUE (#{badge},#{optName},#{password},#{status},now(),now(),#{opt},#{platId},#{gradeId},#{gradeName},#{userCenterId},#{parentGradeId},#{shopId},#{gradeLevel},#{phone},#{gradeType})
     </insert>
     
     <insert id="insertRoleOpt" parameterType="object">
@@ -158,4 +158,9 @@
 			and parentGradeId = #{parentGradeId}
 		</if>
 	</select>
+    
+    <update id="updateOperatorInfo" parameterType="object">
+		update auth_operator set updatetime = now(),grade_type=#{gradeType}
+		where userCenterId = #{userCenterId}
+    </update>
 </mapper>
