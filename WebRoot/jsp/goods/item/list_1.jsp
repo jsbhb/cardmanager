@@ -104,12 +104,14 @@
 					<span class="all-classfiy">所有分类</span>
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
-				<div class="col-md-10 list-btns">
-					<button type="button" onclick="jump(9)">新增商品</button>
-					<button type="button" onclick = "beUse('')">批量可用</button>
-					<button type="button" onclick = "beFx('')">批量可分销</button>
-					<button type="button" onclick = "noBeFx('')">批量不可分销</button>
-				</div>
+				<c:if test="${opt.gradeId == 0}">
+					<div class="col-md-10 list-btns">
+						<button type="button" onclick="jump(9)">新增商品</button>
+						<button type="button" onclick = "beUse('')">批量可用</button>
+						<button type="button" onclick = "beFx('')">批量可分销</button>
+						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
+					</div>
+				</c:if>
 			</div>
 			<div class="row content-container">
 				<div class="col-md-2 container-left hideList" style="display:none;">
