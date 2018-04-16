@@ -743,7 +743,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		RestCommonHelper helper = new RestCommonHelper();
 		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE;
 		if (id != null) {
-			url = url+ "?id=" + id;
+			url = url + "?id=" + id;
 		}
 		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
 
@@ -789,5 +789,16 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			list.add(JSONUtilNew.parse(jObj.toString(), GradeTypeDTO.class));
 		}
 		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, String> getGoodsRebate(String itemId, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		String url = URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_GET_REBATE + "?itemId=" + itemId;
+		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), Map.class);
 	}
 }

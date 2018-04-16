@@ -60,9 +60,6 @@ public class GoodsItemMngController extends BaseController {
 	@Resource
 	CatalogService catalogService;
 	
-	@Resource
-	RedisTemplate<String, Object> redisTemplate;
-
 	// @RequestMapping(value = "/mng")
 	// public ModelAndView toFuncList(HttpServletRequest req,
 	// HttpServletResponse resp) {
@@ -284,11 +281,10 @@ public class GoodsItemMngController extends BaseController {
 
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
 			Map<String,String> rebateMap = null;
-			HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
-				if(gradeType != null){
-					rebateMap = hashOperations.entries("goodsrebate:"+entity.getItemId());
+				if(gradeType != null && !"".equals(gradeType)){
+					rebateMap = goodsService.getGoodsRebate(entity.getItemId(), staffEntity.getToken());
 					String rebateStr = rebateMap.get(gradeType);
 					double rebate = Double.valueOf(rebateStr == null ? "0" : rebateStr);
 					entity.setRebate(CalculationUtils.mul(entity.getGoodsPrice().getRetailPrice(), rebate));

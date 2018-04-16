@@ -110,6 +110,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/brand/remove?brandId={brandId}";
 	public static final String GOODS_CENTER_SYNC_STOCK = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/syncStock";
+	public static final String GOODS_CENTER_GET_REBATE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/rebate";
 
 	/*------------------------规格管理---------------------*/
 	public static final String GOODS_CENTER_SPECS_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
