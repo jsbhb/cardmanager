@@ -48,6 +48,15 @@ public class GoodsItemEntity extends Pagination {
 	private String categoryId;
 	private String tabId;
 	private int conversion;
+	private double rebate;
+
+	public double getRebate() {
+		return rebate;
+	}
+
+	public void setRebate(double rebate) {
+		this.rebate = rebate;
+	}
 
 	public int getId() {
 		return id;

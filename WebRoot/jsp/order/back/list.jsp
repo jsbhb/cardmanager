@@ -15,15 +15,16 @@
 
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>订单管理</a></li>
+	        <li><a href="javascript:void(0);">首页</a></li>
+	        <li>订单管理</li>
 	        <li class="active">退款订单</li>
 	      </ol>
 	      <div class="search">
 	      	<input type="text" name="orderId" placeholder="输入订单编号" >
-	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
 	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
     </section>
@@ -111,19 +112,19 @@
 		
 	
 		<div class="list-content">
-			<div class="row">
-				<div class="col-md-12 list-btns">
-					<button type="button" onclick="">订单导出</button>
-					<button type="button" onclick="">订单导出</button>
-				</div>
-			</div>
+<!-- 			<div class="row"> -->
+<!-- 				<div class="col-md-12 list-btns"> -->
+<!-- 					<button type="button" onclick="">订单导出</button> -->
+<!-- 					<button type="button" onclick="">订单导出</button> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="row">
 				<div class="col-md-12">
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
 								<th>订单编号</th>
-								<th>状态</th>
+								<th>订单状态</th>
 								<th>快递公司</th>
 								<th>物流单号</th>
 								<th>供应商</th>

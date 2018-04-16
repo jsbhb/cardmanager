@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
@@ -37,6 +40,7 @@ import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 
@@ -55,6 +59,9 @@ public class GoodsItemMngController extends BaseController {
 
 	@Resource
 	CatalogService catalogService;
+	
+	@Resource
+	RedisTemplate<String, Object> redisTemplate;
 
 	// @RequestMapping(value = "/mng")
 	// public ModelAndView toFuncList(HttpServletRequest req,
@@ -78,6 +85,10 @@ public class GoodsItemMngController extends BaseController {
 		context.put("firsts", firsts);
 		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
 		context.put("brands", brands);
+		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+		if(grade != null){
+			context.put("gradeType", grade.getGradeType());
+		}
 		return forword("goods/item/list_1", context);
 	}
 
@@ -95,7 +106,6 @@ public class GoodsItemMngController extends BaseController {
 				pcb.setSuccess(false);
 				return pcb;
 			}
-
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());
 			params.put("gradeLevel", staffEntity.getGradeLevel());
@@ -212,6 +222,7 @@ public class GoodsItemMngController extends BaseController {
 		try {
 
 			String brandId = req.getParameter("brandId");
+			String type = req.getParameter("type");
 			if (!StringUtil.isEmpty(brandId)) {
 				GoodsBaseEntity baseEntity = item.getBaseEntity();
 				if (baseEntity != null) {
@@ -233,7 +244,7 @@ public class GoodsItemMngController extends BaseController {
 				tagBindEntity.setTagId(Integer.parseInt(tagId));
 				item.setTagBindEntity(tagBindEntity);
 			}
-
+			String gradeType = req.getParameter("gradeType");
 			// String status = req.getParameter("status");
 			// if (!StringUtil.isEmpty(status)) {
 			// item.setStatus(status);
@@ -269,11 +280,19 @@ public class GoodsItemMngController extends BaseController {
 			params.put("gradeLevel", staffEntity.getGradeLevel());
 
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
-					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
+					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE+"&type="+type, GoodsItemEntity.class);
 
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+			Map<String,String> rebateMap = null;
+			HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
+				if(gradeType != null){
+					rebateMap = hashOperations.entries("goodsrebate:"+entity.getItemId());
+					String rebateStr = rebateMap.get(gradeType);
+					double rebate = Double.valueOf(rebateStr == null ? "0" : rebateStr);
+					entity.setRebate(CalculationUtils.mul(entity.getGoodsPrice().getRetailPrice(), rebate));
+				}
 			}
 
 			if (pcb != null) {

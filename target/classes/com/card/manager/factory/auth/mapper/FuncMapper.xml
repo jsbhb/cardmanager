@@ -9,6 +9,7 @@
 		<result column="tag" property="tag" />
 		<result column="parentId" property="parentId" />
 		<result column="privilege" property="privilege" />
+		<result column="sort" property="sort" />
 		<result column="description" property="description" />
 	</resultMap>
 
@@ -32,7 +33,7 @@
 	
 	<insert id="insertFunc"  useGeneratedKeys="true"  keyProperty="funcid" parameterType="object">
          INSERT INTO auth_func (
-              name,url,parentid,tag,createtime,updatetime,description) VALUE (#{name},#{url},#{parentId},#{tag},now(),now(),#{description})
+              name,url,parentid,tag,createtime,updatetime,sort,description) VALUE (#{name},#{url},#{parentId},#{tag},now(),now(),#{sort},#{description})
     </insert>
     
 	<delete id="deleteFuncById">
@@ -50,6 +51,9 @@
 		<if test="url !=null and url !=''">
 			,url = #{url}
 		</if> 
+		<if test="sort !=null and sort !=''">
+			,sort = #{sort}
+		</if>
 		<if test="tag !=null and tag !=''">
 			,tag = #{tag}
 		</if> 

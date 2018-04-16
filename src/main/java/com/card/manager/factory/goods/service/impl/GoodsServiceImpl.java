@@ -741,10 +741,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		List<GradeTypeDTO> list = new ArrayList<GradeTypeDTO>();
 
 		RestCommonHelper helper = new RestCommonHelper();
-		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE;
-		if (id != null) {
-			url = url + "?id=" + id;
-		}
+		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_CHILDREN_GRADE_TYPE + "?id=" + id;
 		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
