@@ -741,7 +741,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		List<GradeTypeDTO> list = new ArrayList<GradeTypeDTO>();
 
 		RestCommonHelper helper = new RestCommonHelper();
-		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_CHILDREN_GRADE_TYPE + "?id=" + id;
+		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE;
+		if (id != null) {
+			url = url+ "?id=" + id;
+		}
 		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -766,5 +769,25 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GradeTypeDTO.class);
+	}
+
+	@Override
+	public List<GradeTypeDTO> queryGradeTypeChildren(String id, String token) {
+		List<GradeTypeDTO> list = new ArrayList<GradeTypeDTO>();
+
+		RestCommonHelper helper = new RestCommonHelper();
+		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_CHILDREN_GRADE_TYPE + "?id=" + id;
+		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		if (obj == null || obj.size() == 0) {
+			return null;
+		}
+		for (int i = 0; i < obj.size(); i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), GradeTypeDTO.class));
+		}
+		return list;
 	}
 }

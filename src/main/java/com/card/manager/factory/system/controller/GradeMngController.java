@@ -59,10 +59,10 @@ public class GradeMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		List<StaffEntity> GradeCharge = CachePoolComponent.getGradePersoninCharge(opt.getToken());
 		if (opt.getGradeType() == 0) {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeType("1", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren("1", opt.getToken());
 			context.put("gradeList", gradeList);
 		} else {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(opt.getGradeType()+"", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType()+"", opt.getToken());
 			context.put("gradeList", gradeList);
 		}
 		if (opt.getGradeLevel() == 1) {
@@ -176,10 +176,10 @@ public class GradeMngController extends BaseController {
 		}
 		context.put("opt", opt);
 		if (opt.getGradeType() == 0) {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeType("1", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren("1", opt.getToken());
 			context.put("gradeList", gradeList);
 		} else {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(opt.getGradeType()+"", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType()+"", opt.getToken());
 			context.put("gradeList", gradeList);
 		}
 		try {
