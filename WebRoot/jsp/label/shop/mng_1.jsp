@@ -9,7 +9,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-
 <body>
 	<section class="content-header">
 	      <ol class="breadcrumb">
@@ -19,30 +18,32 @@
 	      </ol>
     </section>
 	<section class="content-iframe content">
-		<div class="title">
-       		<h1>店铺信息</h1>
-       	</div>
-		<div class="list-item">
-			<div class="col-sm-3 item-left">店铺编号</div>
-			<div class="col-sm-9 item-right">
-				<input type="text" readonly class="form-control" name="shopId" value="${opt.shopId}">
+		<form class="form-horizontal" role="form" id="gradeConfigForm" >
+			<div class="title">
+	       		<h1>店铺信息</h1>
+	       	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺编号</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" readonly class="form-control" name="shopId" value="${opt.shopId}">
+				</div>
 			</div>
-		</div>
-		<div class="list-item">
-			<div class="col-sm-3 item-left">店铺名称</div>
-			<div class="col-sm-9 item-right">
-				<input type="text" readonly class="form-control" name="gradeName" value="${opt.gradeName}">
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" readonly class="form-control" name="gradeName" value="${opt.gradeName}">
+				</div>
 			</div>
-		</div>
-		<div class="list-item">
-			<div class="col-sm-3 item-left">链接地址</div>
-			<div class="col-sm-9 item-right">
-				<input type="text" readonly class="form-control" name="strLink" value="${strLink}">
+			<div class="list-item">
+				<div class="col-sm-3 item-left">链接地址</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" readonly class="form-control" name="strLink" value="${strLink}">
+				</div>
 			</div>
-		</div>
-        <div class="submit-btn">
-           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strLink}+')">下载二维码</button>
-       	</div>
+	        <div class="submit-btn">
+	           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strLink}+')">下载二维码</button>
+	       	</div>
+		</form>
 	</section>
 	<%@include file="../../resource.jsp"%>
 	<script type="text/javascript">

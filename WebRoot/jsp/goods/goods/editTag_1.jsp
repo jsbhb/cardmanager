@@ -8,19 +8,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 </head>
 
-<body >
+<body>
 <section class="content-iframe">
 	<form class="form-horizontal" role="form" id="itemForm" style="margin-top:20px;">
 		<div class="list-item">
 			<div class="col-xs-3 item-left">标签名称<font style="color:red">*</font> </div>
 			<div class="col-xs-9 item-right">
-            	<input type="text" class="form-control" name="tagName">
+				<input type="text" class="form-control" name="tagName" value="${tagEntity.tagName}">
+				<input type="hidden" class="form-control" name="id" value="${tagEntity.id}">
             	<div class="item-content">
              		（请输入数字、英文和汉字，限1-10字）
              	</div>
@@ -31,13 +29,15 @@
         </div>
 	</form>
 </section>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script type="text/javascript">
 	 
 	 $("#submitBtn").click(function(){
 		 $('#itemForm').data("bootstrapValidator").validate();
 		 if($('#itemForm').data("bootstrapValidator").isValid()){		
 			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/goodsMng/saveTag.shtml",
+				 url:"${wmsUrl}/admin/label/goodsTagMng/updateTag.shtml",
 				 type:'post',
 				 data:JSON.stringify(sy.serializeObject($('#itemForm'))),
 				 contentType: "application/json; charset=utf-8",
@@ -46,6 +46,7 @@
 					 if(data.success){
 						 layer.alert("保存成功");
 						 parent.layer.closeAll();
+// 						 parent.refreshTag();
 						 parent.location.reload();
 						 
 					 }else{

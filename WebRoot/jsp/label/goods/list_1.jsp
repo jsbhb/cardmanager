@@ -51,10 +51,10 @@
 					<table id="itemTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th width="15%">商品编码</th>
-								<th width="20%">商品名称</th>
+								<th width="10%">商品编码</th>
+								<th width="30%">商品名称</th>
 								<th width="50%">商品链接</th>
-								<th width="15%">操作</th>
+								<th width="10%">操作</th>
 							</tr>
 						</thead>
 						<tbody>

@@ -110,7 +110,7 @@ function toAdd(){
 		  area: ['70%', '40%'],	
 		  type: 2,
 		  content: '${wmsUrl}/admin/goods/goodsMng/toTag.shtml',
-		  maxmin: true
+		  maxmin: false
 		});
 }
 function toEdit(id){
@@ -119,7 +119,7 @@ function toEdit(id){
 		  area: ['70%', '40%'],	
 		  type: 2,
 		  content: '${wmsUrl}/admin/label/goodsTagMng/toEditTag.shtml?tagId='+id,
-		  maxmin: true
+		  maxmin: false
 		});
 }
 function toDelete(id){

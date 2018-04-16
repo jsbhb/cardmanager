@@ -10,44 +10,140 @@
 <title>供销贸易后台</title>
 <link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="${wmsUrl}/css/style.css">
-<link rel="stylesheet" href="${wmsUrl}/css/form-elements.css">
-
+<style>
+	body{
+		background: url("${wmsUrl}/img/background.jpg") no-repeat ;
+		background-size: cover;
+	}
+	input::-webkit-input-placeholder{
+        color: #999;
+    }
+    input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+        color: #999;
+    }
+    input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+        color: #999;
+    }
+    input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+        color: #999;
+    }
+/* 	input:-webkit-autofill{ */
+/* 	    -webkit-box-shadow: 0 0 0px 1000px white inset !important; */
+/* 	    background-color: rgba(255,255,255,0.5) !important; */
+/* 	    background-image: none !important; */
+/* 	    color: #666 !important; */
+/* 	    -webkit-tap-highlight-color:rgba(255,255,255,0.5) !important; */
+/* 	} */
+	.login-header{
+		text-align: left;
+    	padding: 14px 30px;
+    	background: #fff;
+	}
+	.login-header span{
+		vertical-align: middle;
+	    margin-left: 30px;
+	    padding-left: 30px;
+	    font-size: 18px;
+	    border-left: 1px solid #d9d9d9;
+	    color: #666;
+	}
+	.login-desc{
+		font-size: 16px;
+	    color: #fff;
+	    text-align: center;
+	    line-height: 40px;
+	    font-weight: 100;
+	    padding: 5px;
+	    background: #a8a3a7 url('${wmsUrl}/img/logo_1.png') no-repeat calc(50% - 205px) center;
+	    background-size: 36px 36px;
+	}
+	.inner-bg{
+		margin-top: 7%;
+	}
+	.form-top h3{
+		font-size: 20px;
+		font-weight: 600;
+		padding-bottom: 30px;
+		color: #333;
+		margin: 0;
+	}
+	.form-bottom div{
+		padding: 24px 0 12px 0;
+	    border-bottom: 1px solid #e9e9e9;
+	    margin-bottom: 10px;
+	}
+	.form-bottom div{
+		overflow: hidden;
+	}
+	.form-bottom div label{
+		float:left;
+		width: 15%;
+		font-size: 16px;
+		line-height: 28px;
+		color: #666;
+		font-weight: normal;
+	}
+	.form-bottom div input{
+		float: left;
+		width: 85%;
+	    font-size: 16px;
+	    border: none;
+	    padding-right: 0;
+	    height: 28px;
+	    line-height: 20px;
+	    background: transparent;
+	    outline: none;
+	    color: #666;
+	    padding-left: 20px;
+	}
+	.form-bottom button.btn{
+		width: 100%;
+	    height: 54px;
+	    font-size: 18px;
+	    -webkit-border-radius: 2px;
+	    -moz-border-radius: 2px;
+	    border-radius: 2px;
+	   	color: #ffffff;
+	    background-color: #5491de;
+	    border-color: #5491de;
+	    margin-top: 20px;
+	}
+	.login-content{
+		width: 480px;
+    	margin: auto;
+    	padding: 40px 25px;
+    	background: rgba(255,255,255,0.5);
+	}
+}
+</style>
 </head>
 
 <body>
 	<!-- Top content -->
         <div class="top-content">
+        	<div class="login-header">
+        		<img src="${wmsUrl}/img/logo.png"/>
+        		<span>登录</span>
+        	</div>
+        	<div class="login-desc">
+        		「供销贸易后台」，更便捷、更优质的体验都在这里
+        	</div>
             <div class="inner-bg">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>供销贸易后台</strong></h1>
-                            <div class="description">
-                            	<p></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        <div class="form-box login-content">
                         	<div class="form-top">
-                        		<div class="form-top-left">
-                        			<h3>登录</h3>
-                            		<p>请输入您的员工号和密码登陆：</p>
-                        		</div>
-                        		<div class="form-top-right">
-                        			<i class="fa fa-key"></i>
-                        		</div>
+                        		<h3>帐号登录</h3>
                             </div>
                             <div class="form-bottom">
 			                    <form action="" class="login-form">
-			                    	<div class="form-group">
-			                    		<label class="sr-only" for="form-username">Username</label>
-			                        	<input type="text" name="form-username" placeholder="请输入员工号" class="form-username form-control" id="form-username">
+			                    	<div class="">
+			                    		<label class="" for="form-username">员工号</label>
+			                        	<input type="text" name="form-username" placeholder="请输入绑定的员工号" id="form-username">
 			                        </div>
-			                        <div class="form-group">
-			                        	<label class="sr-only" for="form-password">Password</label>
-			                        	<input type="password" name="form-password" placeholder="请输入密码" class="form-password form-control" id="form-password">
+			                        <div class="">
+			                        	<label class="" for="form-password">密码</label>
+			                        	<input type="password" name="form-password" placeholder="请输入登录密码" id="form-password">
 			                        </div>
 			                    	<button id="submitBtn" type="button" class="btn">登录</button>
 			                    </form>
@@ -61,39 +157,16 @@
     
 	<script src="${wmsUrl}/js/jquery.min.js" type='text/javascript'></script>
 	<script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
-	<script src="${wmsUrl}/js/jquery.backstretch.min.js"></script>
-	<script src="${wmsUrl}/js/login.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/manager.js"></script>
 	<script type="text/javascript">
 	
 	jQuery(document).ready(function() {
 		
-	    /*
-	        Fullscreen background
-	    */
-	    $.backstretch("${wmsUrl}/img/backgrounds/1.jpg");
-	    
-	    /*
-	        Form validation
-	    */
-	    $('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
-	    	$(this).removeClass('input-error');
-	    });
 	    
 	    $('#submitBtn').on('click', function(e) {
 	    	
 	    	var userName = $("#form-username").val();
 	    	var pwd = $("#form-password").val();
-	    	
-	    	if(userName==""){
-	    		$("#form-username").addClass('input-error');
-	    		return;
-	    	}
-	    	
-	    	if(pwd==""){
-	    		$("#form-password").addClass('input-error');
-	    		return;
-	    	}
 	    	
     		$.ajax(
     				{
@@ -106,11 +179,10 @@
     		            		window.location.href = "${wmsUrl}/admin/main.shtml";
     		            	}else{
     		            		alert(data.msg);
-    			            	$(".login_err").html(data.msg);	
     		            	}
 	    		         } ,
 	    		         error : function(data) {   
-	    		            	$(".login_err").html("网络异常，请稍后登录");	
+	    		            	alert("网络异常，请稍后登录");	
 	    		       	 }
     				}
     			)
@@ -121,16 +193,6 @@
 			if(e.keyCode == 13){
 				var userName = $("#form-username").val();
 		    	var pwd = $("#form-password").val();
-		    	
-		    	if(userName==""){
-		    		$("#form-username").addClass('input-error');
-		    		return;
-		    	}
-		    	
-		    	if(pwd==""){
-		    		$("#form-password").addClass('input-error');
-		    		return;
-		    	}
 		    	
 	    		$.ajax(
 	    				{
@@ -143,11 +205,10 @@
 	    		            		window.location.href = "${wmsUrl}/admin/main.shtml";
 	    		            	}else{
 	    		            		alert(data.msg);
-	    			            	$(".login_err").html(data.msg);	
 	    		            	}
 		    		         } ,
 		    		         error : function(data) {   
-		    		            	$(".login_err").html("网络异常，请稍后登录");	
+		    		            	alert("网络异常，请稍后登录");	
 		    		       	 }
 	    				}
 	    			)
