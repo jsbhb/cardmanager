@@ -123,17 +123,17 @@ function rebuildTable(data){
 		}
 		
 		
-		var type = list[i].gradeType;
-		
-		if(type == "0"){
-			str += "</td><td>大贸" ;
-		}else if(type == "1"){
-			str += "</td><td>跨境";
-		}else if(type == "100"){
-			str += "</td><td>总公司";
-		}else{
-			str += "</td><td>无";
-		}
+// 		var type = list[i].gradeType;
+// 		if(type == "0"){
+// 			str += "</td><td>大贸" ;
+// 		}else if(type == "1"){
+// 			str += "</td><td>跨境";
+// 		}else if(type == "100"){
+// 			str += "</td><td>总公司";
+// 		}else{
+// 			str += "</td><td>无";
+// 		}
+		str += "</td><td>" + (list[i].gradeTypeName == null ? "" : list[i].gradeTypeName);
 		str += "</td><td>" + (list[i].company == null ? "" : list[i].company);
 		str += "</td><td>" + (list[i].personInCharge == null ? "" : list[i].personInCharge);
 		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
