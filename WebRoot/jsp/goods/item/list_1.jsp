@@ -75,9 +75,8 @@
 					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
                			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
-               			<input type="hidden" class="form-control" name="typeId" id="typeId" value="first">
-               			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="first">
-               			<input type="hidden" class="form-control" name="tabId" id="tabId" value="first">
+               			<input type="hidden" class="form-control" name="typeId" id="typeId" value="">
+               			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -478,17 +477,15 @@ $('.goods-classify').on('click','.all-classfiy',function(){
 //切换tabBar
 $('.list-tabBar').on('click','ul li:not(.active)',function(){
 	var tabId = $(this).attr("data-id");
-	$("#hidTabId").val(tabId);
-	queryDataByLabelTouch("","",tabId);
+	queryDataByLabelTouch($("#typeId").val(),$("#categoryId").val(),tabId);
 });
 
 //点击分类标签及tab标签时做数据查询动作
 function queryDataByLabelTouch(typeId,categoryId,tabId){
-	var url = "${wmsUrl}/admin/goods/itemMng/dataListByLabel.shtml";	 
 	var formData = {};
 	$("#typeId").val(typeId);
 	$("#categoryId").val(categoryId);
-	$("#typeId").val(tabId);
+	$("#hidTabId").val(tabId);
 	
 	reloadTable();
 }

@@ -59,7 +59,7 @@ public class GoodsItemMngController extends BaseController {
 
 	@Resource
 	CatalogService catalogService;
-	
+
 	// @RequestMapping(value = "/mng")
 	// public ModelAndView toFuncList(HttpServletRequest req,
 	// HttpServletResponse resp) {
@@ -83,7 +83,7 @@ public class GoodsItemMngController extends BaseController {
 		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
 		context.put("brands", brands);
 		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
-		if(grade != null){
+		if (grade != null) {
 			context.put("gradeType", grade.getGradeType());
 		}
 		return forword("goods/item/list_1", context);
@@ -254,6 +254,32 @@ public class GoodsItemMngController extends BaseController {
 			} else if ("third".equals(tabId)) {
 				item.setStatus("5");
 			}
+			
+			String typeId = item.getTypeId();
+			String categoryId = item.getCategoryId();
+			if (!StringUtil.isEmpty(typeId) && !StringUtil.isEmpty(categoryId)) {
+				GoodsBaseEntity baseEntity = item.getBaseEntity();
+				if (baseEntity != null) {
+					if ("first".equals(typeId)) {
+						baseEntity.setFirstCatalogId(categoryId);
+					} else if ("second".equals(typeId)) {
+						baseEntity.setSecondCatalogId(categoryId);
+					} else if ("third".equals(typeId)) {
+						baseEntity.setThirdCatalogId(categoryId);
+					}
+					item.setBaseEntity(baseEntity);
+				} else {
+					GoodsBaseEntity newBaseEntity = new GoodsBaseEntity();
+					if ("first".equals(typeId)) {
+						newBaseEntity.setFirstCatalogId(categoryId);
+					} else if ("second".equals(typeId)) {
+						newBaseEntity.setSecondCatalogId(categoryId);
+					} else if ("third".equals(typeId)) {
+						newBaseEntity.setThirdCatalogId(categoryId);
+					}
+					item.setBaseEntity(newBaseEntity);
+				}
+			}
 
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {
@@ -277,17 +303,18 @@ public class GoodsItemMngController extends BaseController {
 			params.put("gradeLevel", staffEntity.getGradeLevel());
 
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
-					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE+"&type="+type, GoodsItemEntity.class);
+					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE + "&type=" + type, GoodsItemEntity.class);
 
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
-			Map<String,String> rebateMap = null;
+			Map<String, String> rebateMap = null;
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
-				if(gradeType != null && !"".equals(gradeType)){
+				if (gradeType != null && !"".equals(gradeType)) {
 					rebateMap = goodsService.getGoodsRebate(entity.getItemId(), staffEntity.getToken());
 					String rebateStr = rebateMap.get(gradeType);
 					double rebate = Double.valueOf(rebateStr == null ? "0" : rebateStr);
-					entity.setRebate(CalculationUtils.mul(entity.getGoodsPrice().getRetailPrice(), rebate));
+					entity.setRebate(CalculationUtils.round(2,
+							CalculationUtils.mul(entity.getGoodsPrice().getRetailPrice(), rebate)));
 				}
 			}
 
@@ -389,8 +416,9 @@ public class GoodsItemMngController extends BaseController {
 			params.put("shopId", staffEntity.getShopId());
 			params.put("gradeLevel", staffEntity.getGradeLevel());
 
+			String type = req.getParameter("type");
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
-					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
+					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE + "&type=" + type, GoodsItemEntity.class);
 
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
 			for (GoodsItemEntity entity : list) {
