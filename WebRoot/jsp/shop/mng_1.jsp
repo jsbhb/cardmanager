@@ -44,10 +44,22 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品主图</div>
 				<div class="col-sm-9 item-right addContent">
-					<div class="item-img">
-						+
-						<input type="file" id="pic1"/>
-					</div>
+					<c:choose>
+					   <c:when test="${shop.headImg != null && shop.headImg != ''}">
+               	  			<div class="item-img choose" id="content" >
+								<img src="${shop.headImg}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${shop.headImg}" type="hidden" name="headImg" id="headImg">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content" >
+								+
+								<input type="file" id="pic" name="pic" />
+								<input type="hidden" class="form-control" name="headImg" id="headImg"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
 				</div>
 			</div>
 	        <div class="submit-btn">
@@ -74,6 +86,33 @@
 			}
 		})
 	}
+	
+	
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic",
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="headImg" name="headImg">'
+					$("#content").html(imgPath);
+					$("#content").addClass('choose');
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="headImg" id="headImg" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
 	
 	$("#submitBtn").click(function(){
 		 $.ajax({
