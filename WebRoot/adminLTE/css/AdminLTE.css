@@ -42,6 +42,17 @@ body {
 .wrapper:after {
   clear: both;
 }
+
+.skin-blue .main-header .navbar .type-bar .type-bar-item i.fa-desktop {
+	padding: 7px 5px;
+}
+.skin-blue .main-header .navbar .type-bar .type-bar-item i.fa-car {
+	padding: 5px 4.5px;
+}
+.skin-blue .main-header .navbar .type-bar .type-bar-item i.fa-money{
+	padding: 6px 5px;
+}
+
 .layout-boxed .wrapper {
   max-width: 1250px;
   margin: 0 auto;
