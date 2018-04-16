@@ -19,7 +19,6 @@ import com.card.manager.factory.auth.model.AuthInfo;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
-import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.exception.OperatorSaveException;

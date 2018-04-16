@@ -85,6 +85,15 @@ public interface RoleMngService {
 	 * @since JDK 1.7  
 	 */
 	void edit(RoleEntity role,boolean needUpdateFunc) throws Exception;
+
+	/**  
+	 * getRoleIdByGradeTypeId:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param id  
+	 * @since JDK 1.7  
+	 */
+	Integer getRoleIdByGradeTypeId(Integer id);
 	
 	
 

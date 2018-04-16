@@ -17,8 +17,11 @@ import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.system.exception.SyncUserCenterException;
+import com.card.manager.factory.system.mapper.RoleMapper;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeTypeEntity;
+import com.card.manager.factory.system.model.GradeTypeRole;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeTypeMngService;
 import com.card.manager.factory.util.URLUtils;
@@ -39,6 +42,9 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 
 	@Resource
 	StaffMapper<StaffEntity> staffMapper;
+	
+	@Resource
+	RoleMapper<GradeTypeRole> roleMapper;
 
 	@Override
 	@Log(content = "新增分级类型信息操作", source = Log.BACK_PLAT, type = Log.ADD)
@@ -49,14 +55,18 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE, staff.getToken(), true, entity,
 				HttpMethod.POST);
 
-		JSONObject json = JSONObject.fromObject(result.getBody());
-
-		boolean success = json.getBoolean("success");
-
-		// 如果失败，提示
-		if (!success) {
-			throw new Exception("新增失败:" + json.getString("errorMsg"));
+		
+		try {
+			JSONObject json = JSONObject.fromObject(result.getBody());
+			GradeTypeRole gtr = new GradeTypeRole(json.getInt("obj"),entity.getRole());
+			
+			roleMapper.insertGradeTypeRole(gtr);
+			
+		} catch (Exception e) {
+			throw new SyncUserCenterException("更新用户中心编号失败！" + e.getMessage());
 		}
+		
+		
 	}
 
 
@@ -82,6 +92,10 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 		if (!success) {
 			throw new Exception("更新失败:" + json.getString("errorMsg"));
 		}
+		
+		GradeTypeRole role = new GradeTypeRole(entity.getId(), entity.getRole());
+		
+		roleMapper.updateByGradeTypeId(role);
 	}
 
 	@Override

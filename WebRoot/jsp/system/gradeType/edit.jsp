@@ -32,6 +32,21 @@
 				</div>
 			</div>
 			<div class="list-item">
+				<label class="col-sm-3 item-left"><font style="color:red">*</font>角色</label>
+				<div class="col-sm-2">
+                   <select class="form-control" name="role" id="roleId" style="width: 100%;">
+                   	  <c:forEach var="role" items="${roles}">
+                   	  	<c:if test="${role.roleId==roleId}">
+                   	  		<option value="${role.roleId}" selected>${role.roleName}</option>
+                   	  	</c:if>
+                   	  	<c:if test="${role.roleId!=roleId}">
+                   	  		<option value="${role.roleId}">${role.roleName}</option>
+                   	  	</c:if>
+                   	  </c:forEach>
+	                </select>
+				</div>
+			</div>
+			<div class="list-item">
 				<div class="col-sm-3 item-left">分级类型描述</div>
 				<div class="col-sm-9 item-right">
 	                  <textarea class="form-control" rows="3" placeholder="请输入内容"  name="description"></textarea>
@@ -47,7 +62,7 @@
 	<script type="text/javascript">
 	
 	 function btnSubmit(){
-		 
+		 $('#from').data("bootstrapValidator").validate();
 		 if($('#from').data("bootstrapValidator").isValid()){
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeType/edit.shtml",

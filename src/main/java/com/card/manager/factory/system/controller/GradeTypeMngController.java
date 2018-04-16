@@ -17,8 +17,10 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.system.model.GradeTypeEntity;
+import com.card.manager.factory.system.model.RoleEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeTypeMngService;
+import com.card.manager.factory.system.service.RoleMngService;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 
@@ -28,9 +30,15 @@ public class GradeTypeMngController extends BaseController {
 
 	private static final String TYPE_ADD = "0";
 	private static final String TYPE_EDIT = "1";
+	
+	@Resource
+	RoleMngService roleMngService;
 
 	@Resource
 	GoodsService goodsService;
+	
+	@Resource
+	RoleMngService roleService;
 
 	@Resource
 	GradeTypeMngService gradeTypeService;
@@ -66,6 +74,9 @@ public class GradeTypeMngController extends BaseController {
 				return forword("error", context);
 			}
 			String type = req.getParameter("type");
+			
+			List<RoleEntity> roleList = roleMngService.queryAll();
+			context.put("roles", roleList);
 
 			if (TYPE_ADD.equals(type)) {
 				GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(id, opt.getToken());
@@ -78,9 +89,12 @@ public class GradeTypeMngController extends BaseController {
 					GradeTypeDTO parentGrade = goodsService.queryGradeTypeById(parentId, opt.getToken());
 					req.setAttribute("parentGradeTypeDTO", parentGrade);
 				}
+				
+				Integer roleId = roleService.getRoleIdByGradeTypeId(Integer.parseInt(id));
 				GradeTypeDTO grade = goodsService.queryGradeTypeById(id, opt.getToken());
 				req.setAttribute("GradeTypeDTO", grade);
 				req.setAttribute("parentId", parentId);
+				req.setAttribute("roleId", roleId);
 				return forword("system/gradeType/edit", context);
 			}
 

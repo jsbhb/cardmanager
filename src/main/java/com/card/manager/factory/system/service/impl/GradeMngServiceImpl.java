@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.common.AuthCommon;
@@ -25,14 +26,15 @@ import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseSer
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.shop.model.ShopEntity;
+import com.card.manager.factory.system.mapper.RoleMapper;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
+import com.card.manager.factory.system.model.GradeTypeRole;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
-import com.card.manager.factory.annotation.Log;
 
 import net.sf.json.JSONObject;
 
@@ -50,6 +52,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 	@Resource
 	StaffMapper<StaffEntity> staffMapper;
+	
+	@Resource
+	RoleMapper<GradeTypeRole> roleMapper;
 
 //	@Override
 //	public PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception {
@@ -139,9 +144,14 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		gradeBO.setName(gradeInfo.getGradeName());
 		gradeBO.setParentId(gradeInfo.getParentId());
 		CachePoolComponent.addGrade(gradeBO);
-		//订货平台账号
+		
+		
+		//平台账号
 		staffEntity.setPhone(gradeInfo.getPhone());
 		staffEntity.setGradeType(gradeInfo.getGradeType());
+		
+		
+		staffEntity.setRoleId(roleMapper.getRoleIdByGradeTypeId(gradeInfo.getGradeType()));
 
 		// 权限中心注册
 		registerAuthCenter(staffEntity,true);
@@ -195,13 +205,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 		// 插入用户表
 		staffEntity.setBadge(staffEntity.getGradeId() * 10000 + "1");
-		if(staffEntity.getGradeLevel() == ServerCenterContants.SECOND_GRADE){
-			staffEntity.setRoleId(AuthCommon.EARA_ADMIN);
-			staffEntity.setRoleName("区域负责人");
-		}else{
-			staffEntity.setRoleName("店铺负责人");
-			staffEntity.setRoleId(AuthCommon.SHOP_ADMIN);
-		}
+		
 		
 		if(hasUserId){
 			staffEntity.setStatus(AuthCommon.STAFF_STATUS_ON + "");

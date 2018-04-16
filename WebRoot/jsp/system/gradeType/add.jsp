@@ -31,6 +31,17 @@
 				</div>
 			</div>
 			<div class="list-item">
+				<label class="col-sm-3 item-left"><font style="color:red">*</font>角色</label>
+				<div class="col-sm-2">
+                   <select class="form-control" name="role" id="roleId" style="width: 100%;">
+                   	  <option selected="selected" value="-1">选择角色</option>
+                   	  <c:forEach var="role" items="${roles}">
+                   	  	<option value="${role.roleId}">${role.roleName}</option>
+                   	  </c:forEach>
+	                </select>
+				</div>
+			</div>
+			<div class="list-item">
 				<div class="col-sm-3 item-left">分级类型描述</div>
 				<div class="col-sm-9 item-right">
 	                  <textarea class="form-control" rows="3" placeholder="请输入内容"  name="description"></textarea>

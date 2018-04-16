@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.base.BaseMapper;
+import com.card.manager.factory.system.model.GradeTypeRole;
 import com.github.pagehelper.Page;
 
 /**  
@@ -74,5 +75,34 @@ public interface RoleMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7  
 	 */
 	void deleteAllFunc(int roleId);
+
+	/**  
+	 * insertGradeTypeRole:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param gtr  
+	 * @since JDK 1.7  
+	 */
+	void insertGradeTypeRole(GradeTypeRole gtr);
+
+	/**  
+	 * getRoleIdByGradeTypeId:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param gradeType
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	Integer getRoleIdByGradeTypeId(Integer gradeTypeId);
+
+	/**  
+	 * updateByGradeTypeId:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param id  
+	 * @since JDK 1.7  
+	 */
+	void updateByGradeTypeId(GradeTypeRole role);
+
 
 }

@@ -93,4 +93,9 @@ public class RoleMngServiceImpl implements RoleMngService {
 		return roleMapper.queryNormal();
 	}
 
+	@Override
+	public Integer getRoleIdByGradeTypeId(Integer id) {
+		return roleMapper.getRoleIdByGradeTypeId(id);
+	}
+
 }
