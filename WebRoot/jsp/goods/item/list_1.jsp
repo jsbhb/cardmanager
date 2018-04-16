@@ -149,7 +149,14 @@
 								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
 								<th width="5%">明细编码</th>
-								<th width="12%">操作</th>
+								<c:choose>
+									<c:when test="${opt.gradeId == 0}">
+										<th width="12%">操作</th>
+									</c:when>
+									<c:when test="${opt.gradeId != 0}">
+										<th width="12%">返佣</th>
+									</c:when>
+								</c:choose>
 							</tr>
 						</thead>
 						<tbody>
@@ -178,7 +185,7 @@ $('.searchBtn').on('click',function(){
  */
 var options = {
 	queryForm : ".query",
-	url :  "${wmsUrl}/admin/goods/itemMng/dataList.shtml",
+	url :  "${wmsUrl}/admin/goods/itemMng/dataList.shtml?gradeType=${gradeType}&type=1",
 	numPerPage:"10",
 	currentPage:"",
 	index:"1",
@@ -263,24 +270,29 @@ function rebuildTable(data){
 			default:str += "</td><td>状态错误："+status;
 		}
 		str += "</td><td>" + list[i].itemId;
-		if (status != 2) {
-			str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
-		} else {
-			str += "</td><td>";
-		}
-		if(status == 0){
-			str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
-			str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
-		}else if(status == 1){
-			str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >可分销</a>";
-			str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
-		}else if(status == 2){
-			str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
-		}
-		if(status==1||status==2){
-			if(list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
+		var gradeId = "${opt.gradeId}";
+		if(gradeId == 0){
+			if (status != 2) {
+				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
+			} else {
+				str += "</td><td>";
 			}
+			if(status == 0){
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
+			}else if(status == 1){
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >可分销</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
+			}else if(status == 2){
+				str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
+			}
+			if(status==1||status==2){
+				if(list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
+				}
+			}
+		} else {
+			str += "</td><td>" + list[i].rebate;
 		}
 		str += "</td></tr>";
 	}
