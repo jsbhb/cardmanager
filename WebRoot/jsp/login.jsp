@@ -188,7 +188,7 @@
     			)
 	    });
 	    
-		$(document).keyup(function(e) {
+		$('input').keyup(function(e) {
 			
 			if(e.keyCode == 13){
 				var userName = $("#form-username").val();
