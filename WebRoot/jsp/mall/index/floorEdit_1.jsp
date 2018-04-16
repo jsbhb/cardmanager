@@ -57,10 +57,22 @@
 				<div class="list-item">
 					<div class="col-sm-3 item-left">楼层大图</div>
 					<div class="col-sm-9 item-right addContent">
-						<div class="item-img">
-							+
-							<input type="file" id="pic1"/>
-						</div>
+						<c:choose>
+						   <c:when test="${dict.picPath1 != null && dict.picPath1 != ''}">
+	               	  			<div class="item-img choose" id="content1" data-id="1">
+									<img src="${dict.picPath1}">
+									<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+									<input value="${dict.picPath1}" type="hidden" name="picPath1" id="picPath1">
+								</div>
+						   </c:when>
+						   <c:otherwise>
+	                	  		<div class="item-img" id="content1" data-id="1">
+									+
+									<input type="file" id="pic1" name="pic" />
+									<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
+								</div>
+						   </c:otherwise>
+						</c:choose> 
 					</div>
 				</div>
 		        <div class="submit-btn">
@@ -117,6 +129,35 @@
 				callback:rebuildTable
 	}
 	
+	
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		var id = $(this).parent().attr('data-id'); 
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic"+id,
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath'+id+'">'
+					$("#content"+id).html(imgPath);
+					$("#content"+id).addClass('choose');
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var id = $(this).parent().parent().attr("data-id");
+		var ht = '<div class="item-img" id="content'+id+'" data-id="'+id+'">+<input type="file" id="pic'+id+'" name="pic"/><input type="hidden" name="picPath'+id+'" id="picPath'+id+'" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
+	
 	function toAdd(){
 		var index = layer.open({
 			  title:"新增内容编辑",		
@@ -167,7 +208,7 @@
 		for (var i = 0; i < list.length; i++) {
 			str += "<tr>";
 			str += "</td><td>" + list[i].id;
-			str += "</td><td>" + list[i].picPath;
+			str += "</td><td><img style='width:62px;height:62px;'  src=\"" + list[i].picPath+"\">";
 			str += "</td><td>" + list[i].href;
 			str += "</td><td>" + list[i].title;
 			str += "</td><td>" + list[i].origin;
@@ -179,7 +220,8 @@
 		$("#floorGoodsTable tbody").html(str);
 	}
 	
-	function save(){
+	
+	$("#submitBtn").click(function(){
 		$('#floorForm').data("bootstrapValidator").validate();
 		 if($('#floorForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
@@ -203,7 +245,7 @@
 		 }else{
 			 layer.alert("提交失败，请联系客服处理");
 		 }
-	}
+	})
 	
 	$('#floorForm').bootstrapValidator({
 //      live: 'disabled',

@@ -24,11 +24,12 @@
 						<thead>
 							<tr>
 								<th width="10%">布局编号</th>
+								<th width="15%">大图</th>
 								<th width="15%">分类中文名</th>
 								<th width="15%">分类英文名</th>
-								<th width="15%">页面类型</th>
-								<th width="15%">页面类型</th>
-								<th width="15%">是否显示</th>
+								<th width="10%">页面类型</th>
+								<th width="10%">页面类型</th>
+								<th width="10%">是否显示</th>
 								<th width="15%">操作</th>
 							</tr>
 						</thead>
@@ -87,6 +88,7 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		str += "</td><td>" + list[i].id;
+		str += "</td><td><img style='width:62px;height:62px;'  src=\"" + list[i].picPath1+"\">";
 		str += "</td><td>" + list[i].name;
 		str += "</td><td>" + list[i].enname;
 		

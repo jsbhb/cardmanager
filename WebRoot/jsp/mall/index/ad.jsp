@@ -45,7 +45,7 @@
 													<td>广告${item.id}</td>
 													<td>${item.dictId}</td>
 													<td>${item.href}</td>
-													<td>${item.picPath}</td>
+													<td><img style="width:62px;height:62px;"  src="${item.picPath}"/></td>
 													<td>${item.description}</td>
 													<td>${item.createTime}</td>
 													<td><button type='button' class='btn btn-warning' onclick='toEdit(${item.id})' >编辑</button></td>
