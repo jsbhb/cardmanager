@@ -8,18 +8,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
 	<section class="content-header">
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>订单管理</a></li>
-	        <li class="active">退款订单</li>
+	        <li class="active">预售订单</li>
 	      </ol>
 	      <div class="search">
 	      	<input type="text" name="orderId" placeholder="输入订单编号" >
@@ -32,7 +27,7 @@
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
 		<div class="moreSearchContent">
-			<div class="row form-horizontal">
+			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
@@ -131,6 +126,7 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
+								<th>选择</th>
 								<th>订单编号</th>
 								<th>状态</th>
 								<th>快递公司</th>
@@ -157,7 +153,9 @@
 	</section>
 	</section>
 	
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 
