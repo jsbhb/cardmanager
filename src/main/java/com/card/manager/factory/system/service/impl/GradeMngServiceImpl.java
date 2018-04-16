@@ -29,6 +29,7 @@ import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
+import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
@@ -50,6 +51,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 	@Resource
 	StaffMapper<StaffEntity> staffMapper;
+	
+	@Resource
+	StaffMngService staffMngService;
 
 //	@Override
 //	public PageCallBack dataList(Pagination pagination, Map<String, Object> hashMap, String token) throws Exception {
@@ -145,6 +149,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 		// 权限中心注册
 		registerAuthCenter(staffEntity,true);
+		
+		//自动注册微店平台
+		staffMngService.sync2S(staff,userId);
 
 		//区域中心复制商城时开通资金池
 		if (gradeInfo.getCopyMall() == 1) {
@@ -256,6 +263,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staff.setGradeType(gradeInfo.getGradeType());
 		staffMapper.updateOperatorInfo(staff);
 		
+		//自动注册微店平台
+		staffMngService.sync2S(staff,gradeInfo.getPersonInChargeId());
+				
 		//区域中心复制商城时开通资金池
 		if(gradeInfo.getCopyMall() == 1){
 			Map<String, Object> params = new HashMap<String, Object>();

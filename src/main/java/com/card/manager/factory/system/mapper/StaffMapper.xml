@@ -28,6 +28,7 @@
 		<result column="2BFlg" property="tbFlg" />
 		<result column="phone" property="phone" />
 		<result column="2SFlg" property="tsFlg" />
+		<result column="grade_type" property="gradeType" />
 	</resultMap>
 	
 	<resultMap id="queryOperator" type="com.card.manager.factory.order.model.OperatorEntity">
