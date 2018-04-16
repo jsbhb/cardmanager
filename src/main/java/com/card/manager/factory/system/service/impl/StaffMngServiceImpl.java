@@ -68,8 +68,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 		// 生成badge
 		try {
 			int badge = staffMapper.nextVal(staff.getGradeId() + "");
-			badge += staff.getGradeId() * 100000;
-			staff.setBadge(badge + "");
+			staff.setBadge(staff.getGradeId() +"00000"+badge);
 			staff.setPassword(MethodUtil.MD5("000000"));
 		} catch (Exception e) {
 			throw new OperatorSaveException("生成自增bagde出错:" + e.getMessage());
