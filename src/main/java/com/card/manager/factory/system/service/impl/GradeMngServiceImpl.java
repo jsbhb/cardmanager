@@ -56,6 +56,8 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 	@Resource
 	RoleMapper<GradeTypeRole> roleMapper;
+	
+	@Resource
 	StaffMngService staffMngService;
 
 	// @Override
@@ -269,7 +271,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffMapper.updateOperatorInfo(staff);
 
 		// 自动注册微店平台
-		staffMngService.sync2S(staff, gradeInfo.getPersonInChargeId());
+		//staffMngService.sync2S(staff, gradeInfo.getPersonInChargeId());
 
 		// 区域中心复制商城时开通资金池
 		if (gradeInfo.getCopyMall() == 1) {
