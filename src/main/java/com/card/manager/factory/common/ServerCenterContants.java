@@ -90,6 +90,8 @@ public class ServerCenterContants {
 			+ "/grade/type/update";
 	public static final String USER_CENTER_GRADE_TYPE_BY_ID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/type/{id}";
+	public static final String USER_CENTER_CHILDREN_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/type/children";
 	/**
 	 * 商品中心url
 	 */
