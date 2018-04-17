@@ -1129,6 +1129,7 @@ a:focus {
 }
 .sidebar-menu .treeview-menu > li {
   margin: 0;
+  max-height: 999px;
 }
 .sidebar-menu .treeview-menu > li > a {
   padding: 15px 5px 15px 15px;
