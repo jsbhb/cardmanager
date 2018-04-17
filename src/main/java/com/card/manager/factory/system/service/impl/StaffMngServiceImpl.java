@@ -74,13 +74,14 @@ public class StaffMngServiceImpl implements StaffMngService {
 			throw new OperatorSaveException("生成自增bagde出错:" + e.getMessage());
 		}
 
+		//新建员工时需要控制员工账号新建分级的权限
 		//根据roleId 获取绑定的gradeTypeId
-		try {
-			int gradeTypeId = staffMapper.queryGradeTypeIdByRoleId(staff.getRoleId()+"");
-			staff.setGradeType(gradeTypeId);
-		} catch (Exception e) {
-			throw new OperatorSaveException("根据roleId获取绑定的gradeTypeId出错:" + e.getMessage());
-		}
+//		try {
+//			int gradeTypeId = staffMapper.queryGradeTypeIdByRoleId(staff.getRoleId()+"");
+//			staff.setGradeType(gradeTypeId);
+//		} catch (Exception e) {
+//			throw new OperatorSaveException("根据roleId获取绑定的gradeTypeId出错:" + e.getMessage());
+//		}
 		try {
 			staff.setStatus(AuthCommon.STAFF_STATUS_OFF + "");
 			staffMapper.insert(staff);
