@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.system.service;
 
+import java.util.List;
+
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.model.GradeEntity;
@@ -79,5 +81,16 @@ public interface GradeMngService extends ServerCenterService {
 	ShopEntity queryByGradeId(String gradeId, String token);
 	
 	void updateShop(ShopEntity shopInfo, StaffEntity staffEntity) throws Exception;
+
+	/**  
+	 * queryChildrenById:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param id
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<Integer> queryChildrenById(int id, String token);
 
 }

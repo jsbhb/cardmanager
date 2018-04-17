@@ -8,6 +8,7 @@
 package com.card.manager.factory.system.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -37,6 +38,7 @@ import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -56,7 +58,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 	@Resource
 	RoleMapper<GradeTypeRole> roleMapper;
-	
+
 	@Resource
 	StaffMngService staffMngService;
 
@@ -146,7 +148,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		// 加到缓存
 		GradeBO gradeBO = new GradeBO();
 		gradeBO.setGradeType(gradeInfo.getGradeType());
-		gradeBO.setId(gradeInfo.getId());
+		gradeBO.setId(gradeId);
 		gradeBO.setName(gradeInfo.getGradeName());
 		gradeBO.setParentId(gradeInfo.getParentId());
 		CachePoolComponent.addGrade(gradeBO);
@@ -237,6 +239,19 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GradeEntity.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Integer> queryChildrenById(int id, String token) {
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_QUERY_CHILDREN + "/" + id, token, true,
+				null, HttpMethod.GET);
+
+		JSONArray json = JSONArray.fromObject(query_result.getBody());
+		return (List<Integer>) json.toList(json);
+	}
+
 	@Override
 	@Log(content = "更新分级信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception {
@@ -268,10 +283,13 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		StaffEntity staff = new StaffEntity();
 		staff.setUserCenterId(gradeInfo.getPersonInChargeId());
 		staff.setGradeType(gradeInfo.getGradeType());
+		staff.setOptName(gradeInfo.getPersonInCharge());
+		staff.setGradeName(gradeInfo.getGradeName());
+		staff.setPhone(gradeInfo.getPhone());
 		staffMapper.updateOperatorInfo(staff);
 
 		// 自动注册微店平台
-		//staffMngService.sync2S(staff, gradeInfo.getPersonInChargeId());
+		// staffMngService.sync2S(staff, gradeInfo.getPersonInChargeId());
 
 		// 区域中心复制商城时开通资金池
 		if (gradeInfo.getCopyMall() == 1) {

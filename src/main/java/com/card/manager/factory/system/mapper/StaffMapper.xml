@@ -61,6 +61,12 @@
 		<if test="gradeId !=0 and gradeId != null">
 			 and (gradeId = #{gradeId} or parentGradeId = #{gradeId})
 		</if> 
+		<if test="gradeIds !=null ">
+			 and gradeid in (
+			 <foreach collection="gradeIds" item="id" separator=",">
+			 	#{id}
+			 </foreach>)
+		</if>
 	</select>
 	
 	<select id="nextVal" resultType="java.lang.Integer">
@@ -162,6 +168,15 @@
     
     <update id="updateOperatorInfo" parameterType="object">
 		update auth_operator set updatetime = now(),grade_type=#{gradeType}
+		<if test="optName != '' and optName != null">
+			,optName = #{optName}
+		</if>
+		<if test="gradeName != '' and gradeName != null">
+			,gradeName = #{gradeName}
+		</if>
+		<if test="phone != '' and phone != null">
+			,phone = #{phone}
+		</if>
 		where userCenterId = #{userCenterId}
     </update>
 	

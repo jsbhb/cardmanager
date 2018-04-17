@@ -70,6 +70,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/grade/update";
 	public static final String USER_CENTER_GRADE_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/query";
+	public static final String USER_CENTER_GRADE_QUERY_CHILDREN = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/feign/grade/children";
 	public static final String USER_CENTER_PHONE_CHECK = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/user/userNameVerify";
 	public static final String USER_CENTER_PUSHUSER_REGISER = (TOKEN_NOT_NEED ? "/" : "/usercenter/auth/")

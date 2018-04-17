@@ -19,6 +19,7 @@ import com.card.manager.factory.auth.model.AuthInfo;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.RoleCommon;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.log.SysLogger;
@@ -26,6 +27,7 @@ import com.card.manager.factory.system.exception.OperatorSaveException;
 import com.card.manager.factory.system.exception.SyncUserCenterException;
 import com.card.manager.factory.system.model.RoleEntity;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.RoleMngService;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.SessionUtils;
@@ -40,6 +42,9 @@ public class StaffMngController extends BaseController {
 
 	@Resource
 	StaffMngService staffMngService;
+
+	@Resource
+	GradeMngService gradeService;
 
 	@Resource
 	SysLogger sysLogger;
@@ -81,6 +86,15 @@ public class StaffMngController extends BaseController {
 			// } else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
 			// params.put("gradeId", entity.getGradeId());
 			// }
+
+			StaffEntity staff = SessionUtils.getOperator(req);
+
+			if (staff.getRoleId() != AuthCommon.SUPER_ADMIN) {
+				List<Integer> gradeIds = gradeService.queryChildrenById(staff.getGradeId(),
+						SessionUtils.getOperator(req).getToken());
+
+				params.put("gradeIds", gradeIds);
+			}
 
 			page = staffMngService.dataList(pagination, params);
 
