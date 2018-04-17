@@ -88,14 +88,14 @@
 							<li>
 								<input type="checkbox" class="flat-red pcheck" name='funcId' value="${item.funcId}" <c:if test="${item.selected=='true'}">checked</c:if> >
 								 <span><i class="fa fa-folder-open"></i>${item.name}</span>
-								<ul>
+								<ul style="margin-left:30px">
 									<c:forEach var="node" items="${item.children}">
 										<li>
 											<input type="checkbox" class="flat-red pcheck" name='funcId' value="${node.funcId}" <c:if test="${node.selected}">checked</c:if>>
 						                	<span class="tree-font">
 						                		<i class="fa fa-folder-open"></i>${node.name}
 						                	</span>
-						                	<ul>
+						                	<ul style="margin-left:30px">
 												<c:forEach var="grandSon" items="${node.children}">
 													<li>
 														<input type="checkbox" class="flat-red" name='funcId' value="${grandSon.funcId}" <c:if test="${grandSon.selected}">checked</c:if>>

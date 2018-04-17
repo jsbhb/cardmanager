@@ -27,7 +27,7 @@
 									<a href="javascript:void(0);" onclick="toAdd('${first.firstId}',2,'${first.name}')"><i class="fa fa-plus"></i></a>
 			                		<a href="javascript:void(0);" onclick="toEdit('${first.firstId}',1,'${first.name}')"><i class="fa fa-pencil"></i></a>
 			                		<a href="javascript:void(0);" onclick="del('${first.firstId}',1)"><i class="fa fa-trash-o"></i></a>
-									<ul>
+									<ul style="margin-left:30px">
 										<c:forEach var="second" items="${first.seconds}">
 											<li style="display: none;">
 							                	<span class="tree-font"><i class="fa fa-folder"></i>
@@ -36,7 +36,7 @@
 							                		<a href="javascript:void(0);" onclick="toEdit('${second.secondId}',2,'${second.name}')"><i class="fa fa-pencil"></i></a>
 							                		<a href="javascript:void(0);" onclick="del('${second.secondId}',2)"><i class="fa fa-trash-o"></i></a>
 							                	</span>
-							                	<ul>
+							                	<ul style="margin-left:30px">
 													<c:forEach var="third" items="${second.thirds}">
 														<li style="display: none;">
 										                	<span class="tree-font">
