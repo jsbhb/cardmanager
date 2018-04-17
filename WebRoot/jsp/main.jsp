@@ -41,7 +41,7 @@
   	}
   	.today-orders .today-orders-item{
   		float: left;
-  		width: calc(100% / 3);
+  		width: calc(100% / 3 -1px);
   		height: 80px;
 	    padding: 10px 20px;
 	    text-align: center;

@@ -3,6 +3,11 @@ alter table coopback.auth_operator add grade_type tinyint(3) unsigned NOT NULL c
 
 alter table auth_role add parentId int comment "角色父类";
 
+--2018-0-09
+LOCK TABLES `t_sequence` WRITE;
+INSERT INTO `t_sequence` VALUES ('base',701);
+UNLOCK TABLES;
+
 
 DROP TABLE IF EXISTS `auth_gradeType_role`;
 CREATE TABLE `auth_gradeType_role` (
