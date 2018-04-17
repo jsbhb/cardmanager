@@ -41,7 +41,7 @@
   	}
   	.today-orders .today-orders-item{
   		float: left;
-  		width: calc(100% / 3);
+  		width: calc(100% / 3 - 1px);
   		height: 80px;
 	    padding: 10px 20px;
 	    text-align: center;
@@ -64,7 +64,6 @@
   		padding: 10px;
   		margin-top: 10px;
   		background: #fff;
-  		width: 100%;
   	}
   	.today-pie .today-pie-content{
   		width: 100%;
@@ -81,7 +80,7 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper" style="overflow:hidden">
   <header class="main-header">
-    <a href="#" onclick="location.reload()" class="logo">
+    <a href="javascript:void(0);" onclick="location.reload()" class="logo">
 <!--     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>ERP</span>
@@ -152,7 +151,7 @@
       <ul class="sidebar-menu">
         <c:forEach var="item" items="${childList}">
         <li class="treeview">
-          <a href="#">
+          <a href="javascript:void(0);">
             <i class="fa ${item.tag}"></i> <span>${item.name}</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-right pull-right"></i>
@@ -207,7 +206,72 @@
 <script src="${wmsUrl}/layer/layer.js"></script>
 <script src="${wmsUrl}/build/dist/echarts.js"></script>
 <script>
+  var option = {
+     	    title : {
+       	        text: '一周订单销售量变化',
+//        	        subtext: '纯属虚构'
+       	    },
+       	    tooltip : {
+       	        trigger: 'axis'
+       	    },
+       	    legend: {
+       	        data:['销售量']
+       	    },
+       	    toolbox: {
+       	        show : true,
+       	        feature : {
+       	            mark : {show: true},
+       	            dataView : {show: true, readOnly: false},
+       	            magicType : {show: true, type: ['line', 'bar']},
+       	            restore : {show: true},
+       	            saveAsImage : {show: true}
+       	        }
+       	    },
+       	    calculable : true,
+       	    xAxis : [
+       	        {
+       	            type : 'category',
+       	            boundaryGap : false,
+       	            data : ['周一','周二','周三','周四','周五','周六','周日']
+       	        }
+       	    ],
+       	    yAxis : [
+       	        {
+       	            type : 'value',
+       	            axisLabel : {
+       	                formatter: '{value} 件'
+       	            }
+       	        }
+       	    ],
+       	    series : [
+       	        {
+       	            name:'销售量',
+       	            type:'line',
+       	            data:[5, 8, 2, 18, 12, 13, 4],
+       	            markPoint : {
+       	                data : [
+       	                    {type : 'max', name: '最大值'},
+       	                    {type : 'min', name: '最小值'}
+       	                ]
+       	            },
+       	            markLine : {
+       	                data : [
+       	                    {type : 'average', name: '平均值'}
+       	                ]
+       	            }
+       	        }
+       	    ]
+       	};
   $.widget.bridge('uibutton', $.ui.button);
+  
+  setCharts('week-line-content',option);
+  
+  $('.sidebar-toggle').click(function(){
+	  setTimeout(function(){
+	  	$("#page-wrapper").css("width",window.innerWidth - $('.main-sidebar').width());
+	  	setCharts('week-line-content',option);
+	  },300);
+  });
   
   function modifyPwd(){
 		var index = layer.open({
@@ -244,154 +308,29 @@
       var r = window.location.search.substr(1).match(reg);
       if(r!=null)return  unescape(r[2]); return null;
  }
-  //创建图表
-  require.config({
-        paths: {
-            echarts: '${wmsUrl}/build/dist'
-        }
-    });
-    require(
-        [
-            'echarts',
-            'echarts/chart/pie',//饼图
-            'echarts/chart/line',//折线图
-            'echarts/chart/bar',//柱状图
-            'echarts/chart/funnel'//d
-        ],
-        function (ec) {
-//             var myChart1 = ec.init(document.getElementById('today-pie-content'));
-            var myChart2 = ec.init(document.getElementById('week-line-content'));
-//             var option1 = {
-//                 title : {
-//                     text: '某站点用户访问来源',
-//                     subtext: '纯属虚构',
-//                     x:'center'
-//                 },
-//                 tooltip : {
-//                     trigger: 'item',
-//                     formatter: "{a} <br/>{b} : {c} ({d}%)"
-//                 },
-//                 legend: {
-//                     orient : 'vertical',
-//                     x : 'left',
-//                     data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-//                 },
-//                 toolbox: {
-//                     show : true,
-//                     feature : {
-//                         mark : {show: true},
-//                         dataView : {show: true, readOnly: false},
-//                         magicType : {
-//                             show: true,
-//                             type: ['pie', 'funnel'],
-//                             option: {
-//                                 funnel: {
-//                                     x: '25%',
-//                                     width: '50%',
-//                                     funnelAlign: 'left',
-//                                     max: 1548
-//                                 }
-//                             }
-//                         },
-//                         restore : {show: true},
-//                         saveAsImage : {show: true}
-//                     }
-//                 },
-//                 calculable : true,
-//                 series : [
-//                     {
-//                         name:'访问来源',
-//                         type:'pie',
-//                         radius : '55%',
-//                         center: ['50%', '60%'],
-//                         data:[
-//                             {value:335, name:'直接访问'},
-//                             {value:310, name:'邮件营销'},
-//                             {value:234, name:'联盟广告'},
-//                             {value:135, name:'视频广告'},
-//                             {value:1548, name:'搜索引擎'}
-//                         ]
-//                     }
-//                 ]
-//             };
-            
-            option2 = {
-           	    title : {
-           	        text: '一周订单销售量变化',
-//            	        subtext: '纯属虚构'
-           	    },
-           	    tooltip : {
-           	        trigger: 'axis'
-           	    },
-           	    legend: {
-           	        data:['销售量']
-           	    },
-           	    toolbox: {
-           	        show : true,
-           	        feature : {
-           	            mark : {show: true},
-           	            dataView : {show: true, readOnly: false},
-           	            magicType : {show: true, type: ['line', 'bar']},
-           	            restore : {show: true},
-           	            saveAsImage : {show: true}
-           	        }
-           	    },
-           	    calculable : true,
-           	    xAxis : [
-           	        {
-           	            type : 'category',
-           	            boundaryGap : false,
-           	            data : ['周一','周二','周三','周四','周五','周六','周日']
-           	        }
-           	    ],
-           	    yAxis : [
-           	        {
-           	            type : 'value',
-           	            axisLabel : {
-           	                formatter: '{value} 件'
-           	            }
-           	        }
-           	    ],
-           	    series : [
-           	        {
-           	            name:'销售量',
-           	            type:'line',
-           	            data:[5, 8, 2, 18, 12, 13, 4],
-           	            markPoint : {
-           	                data : [
-           	                    {type : 'max', name: '最大值'},
-           	                    {type : 'min', name: '最小值'}
-           	                ]
-           	            },
-           	            markLine : {
-           	                data : [
-           	                    {type : 'average', name: '平均值'}
-           	                ]
-           	            }
-           	        },
-//            	        {
-//            	            name:'最低气温',
-//            	            type:'line',
-//            	            data:[1, -2, 2, 5, 3, 2, 0],
-//            	            markPoint : {
-//            	                data : [
-//            	                    {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
-//            	                ]
-//            	            },
-//            	            markLine : {
-//            	                data : [
-//            	                    {type : 'average', name : '平均值'}
-//            	                ]
-//            	            }
-//            	        }
-           	    ]
-           	};
-            
-//             myChart1.setOption(option1);
-            myChart2.setOption(option2);
-            
-        }
-    );
+  
+  function setCharts(em,option){
+	//创建图表
+	  require.config({
+	        paths: {
+	            echarts: '${wmsUrl}/build/dist'
+	        }
+	    });
+	    require(
+	        [
+	            'echarts',
+	            'echarts/chart/pie',//饼图
+	            'echarts/chart/line',//折线图
+	            'echarts/chart/bar',//柱状图
+	            'echarts/chart/funnel'//d
+	        ],
+	        function (ec) {
+	            var myChart = ec.init(document.getElementById(em));
+	            myChart.setOption(option);
+	        }
+	    );
+  }
+  
   
 </script>
 <!-- Bootstrap 3.3.6 -->
