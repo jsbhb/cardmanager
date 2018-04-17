@@ -146,7 +146,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		// 加到缓存
 		GradeBO gradeBO = new GradeBO();
 		gradeBO.setGradeType(gradeInfo.getGradeType());
-		gradeBO.setId(gradeInfo.getId());
+		gradeBO.setId(gradeId);
 		gradeBO.setName(gradeInfo.getGradeName());
 		gradeBO.setParentId(gradeInfo.getParentId());
 		CachePoolComponent.addGrade(gradeBO);
