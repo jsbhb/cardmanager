@@ -19,6 +19,7 @@ import com.card.manager.factory.auth.model.AuthInfo;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.RoleCommon;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.exception.OperatorSaveException;
@@ -74,12 +75,12 @@ public class StaffMngController extends BaseController {
 			Page<StaffEntity> page = null;
 			Map<String, Object> params = new HashMap<String, Object>();
 
-			//暂时不做数据拦截，只要能进入员工管理就能查看所有用户记录
-//			if (id != null && !"".equals(id)) {
-//				params.put("gradeId", Integer.parseInt(id));
-//			} else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
-//				params.put("gradeId", entity.getGradeId());
-//			}
+			// 暂时不做数据拦截，只要能进入员工管理就能查看所有用户记录
+			// if (id != null && !"".equals(id)) {
+			// params.put("gradeId", Integer.parseInt(id));
+			// } else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
+			// params.put("gradeId", entity.getGradeId());
+			// }
 
 			page = staffMngService.dataList(pagination, params);
 
@@ -103,9 +104,11 @@ public class StaffMngController extends BaseController {
 		context.put(OPERATOR, opt);
 
 		List<RoleEntity> roleList = roleMngService.queryAll();
-		context.put("roles", roleList);
+
+		context.put("roles", RoleCommon.roleList(roleList, opt.getRoleId()));
 
 		return forword("system/staff/add", context);
+
 	}
 
 	@RequestMapping(value = "/addStaff", method = RequestMethod.POST)
@@ -182,7 +185,7 @@ public class StaffMngController extends BaseController {
 			StaffEntity opt = SessionUtils.getOperator(req);
 			int optId = Integer.parseInt(req.getParameter(OPT_ID));
 
-			staffMngService.sync2B(opt,optId);
+			staffMngService.sync2B(opt, optId);
 
 		} catch (Exception e) {
 			sysLogger.error(LoggerConstants.LOGIN_LOGGER, e.getMessage() + "同步失败.");

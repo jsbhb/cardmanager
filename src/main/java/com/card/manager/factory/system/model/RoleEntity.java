@@ -31,6 +31,9 @@ public class RoleEntity {
 	private int opt;
 	private int type;// 级别
 	private List<AuthInfo> authList;
+	private List<RoleEntity> children;
+	private int parentId;
+	private String parentName;
 
 	public int getRoleId() {
 		return roleId;
@@ -48,7 +51,7 @@ public class RoleEntity {
 		this.roleName = roleName;
 	}
 
-	public String	 getRoleState() {
+	public String getRoleState() {
 		return roleState;
 	}
 
@@ -103,4 +106,29 @@ public class RoleEntity {
 	public void setFuncId(String funcId) {
 		this.funcId = funcId;
 	}
+
+	public int getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
+
+	public List<RoleEntity> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<RoleEntity> children) {
+		this.children = children;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
 }

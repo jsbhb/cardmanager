@@ -21,10 +21,12 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
+import com.card.manager.factory.common.RoleCommon;
 import com.card.manager.factory.system.model.RoleEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.RoleMngService;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
 import com.github.pagehelper.Page;
 
 @Controller
@@ -54,6 +56,13 @@ public class RoleMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
+
+		String parentId = req.getParameter("id");
+		if (!StringUtil.isEmpty(parentId)) {
+			RoleEntity parent = roleMngService.queryById(Integer.parseInt(parentId));
+			context.put("parent", parent);
+		}
+
 		return forword("system/role/add", context);
 	}
 
@@ -87,13 +96,14 @@ public class RoleMngController extends BaseController {
 			List<AuthInfo> menuList = null;
 			List<AuthInfo> optMenuList = null;
 			// 获取编辑角色信息
-			List<AuthInfo> roleMenuList  = funcMngService.queryFuncByRoleId(roleId);
+			List<AuthInfo> roleMenuList = funcMngService.queryFuncByRoleId(roleId);
 			if (roleId == AuthCommon.SUPER_ADMIN) {
 				optMenuList = funcMngService.queryFunc();
-				menuList = AuthCommon.treeAuthInfo(optMenuList,roleMenuList);
+				menuList = AuthCommon.treeAuthInfo(optMenuList, roleMenuList);
 			} else {
 				// 获取当前用户可操作所有功能菜单
-				optMenuList = funcMngService.queryFuncByOptId(opt.getOptid());
+				optMenuList = funcMngService
+						.queryFuncByRoleId((role.getParentId() == 0 ? role.getRoleId() : role.getParentId()));
 				menuList = AuthCommon.treeAuthInfo(optMenuList, roleMenuList);
 			}
 
@@ -139,8 +149,16 @@ public class RoleMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
+
+		List<RoleEntity> roleList = roleMngService.queryAll();
+
+		List<RoleEntity> roleTree = RoleCommon.treeRole(roleList, opt.getRoleId());
+		context.put("roleTree", roleTree);
+
 		return forword("system/role/list", context);
 	}
+
+	
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody

@@ -158,7 +158,12 @@ public class LoginController extends BaseController {
 		SessionUtils.setOperator(request, operator);
 
 		// 设置MenuList到Session
-		List<AuthInfo> authInfos = funcMngService.queryFuncByOptId(operator.getOptid());
+		List<AuthInfo> authInfos;
+		if (operator.getRoleId() == AuthCommon.SUPER_ADMIN) {
+			authInfos = funcMngService.queryFunc();
+		} else {
+			authInfos = funcMngService.queryFuncByOptId(operator.getOptid());
+		}
 		List<AuthInfo> menuList = AuthCommon.treeAuthInfo2(authInfos);
 
 		if (menuList == null) {
@@ -254,12 +259,12 @@ public class LoginController extends BaseController {
 		List<AuthInfo> menuList = SessionUtils.getMenuList(req);
 		if (menuList != null) {
 			context.put("menuList", menuList);
-			context.put("id",id);
+			context.put("id", id);
 			if (StringUtil.isEmpty(id)) {
 				context.put("childList", menuList.get(0).getChildren());
 			} else {
-				for(AuthInfo auth:menuList){
-					if(id.equals(auth.getFuncId())){
+				for (AuthInfo auth : menuList) {
+					if (id.equals(auth.getFuncId())) {
 						context.put("childList", auth.getChildren());
 					}
 				}

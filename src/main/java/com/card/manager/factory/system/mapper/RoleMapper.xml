@@ -10,6 +10,7 @@
 		<result column="createTime" property="createTime" />
 		<result column="updateTime" property="updateTime" />
 		<result column="type" property="type" />
+		<result column="parentName" property="parentName" />
 	</resultMap>
 	
 	
@@ -33,8 +34,8 @@
 	</select>
 
 	<select id="queryById" resultMap="roleEntity">
-		select * from auth_role where
-		roleid = #{roleId}
+		select r.*,r1.roleName as parentName from auth_role r left join auth_role r1 on r.parentId = r1.roleid where
+		r.roleid = #{roleId}
 	</select>
 	
 	
@@ -46,7 +47,7 @@
 	<insert id="insert" useGeneratedKeys="true" keyProperty="roleid"
 		parameterType="object">
 		INSERT INTO auth_role (
-		roleName,roleState,createTime,updateTime,opt,type) VALUE (#{roleName},#{roleState},now(),now(),#{opt},#{type})
+		roleName,roleState,createTime,updateTime,opt,type,parentId) VALUE (#{roleName},#{roleState},now(),now(),#{opt},#{type},#{parentId})
 	</insert>
 
 	<insert id="insertGradeTypeRole" useGeneratedKeys="true" keyProperty="roleid"

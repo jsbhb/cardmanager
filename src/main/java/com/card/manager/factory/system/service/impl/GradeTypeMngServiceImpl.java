@@ -65,8 +65,6 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 		} catch (Exception e) {
 			throw new SyncUserCenterException("更新用户中心编号失败！" + e.getMessage());
 		}
-		
-		
 	}
 
 
