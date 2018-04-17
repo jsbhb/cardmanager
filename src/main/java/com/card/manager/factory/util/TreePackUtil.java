@@ -38,17 +38,13 @@ public class TreePackUtil {
 					if (grade.getId() == gradeId) {
 						rootList.add(grade);
 					}
-					if (grade.getId() >= gradeId) {
-						tempMap.put(grade.getId(), grade);
-						tempList.add(grade);
-					}
 				} else {
 					if (grade.getParentId() == null || grade.getParentId() == 0) {
 						rootList.add(grade);
 					}
-					tempList.add(grade);
-					tempMap.put(grade.getId(), grade);
 				}
+				tempList.add(grade);
+				tempMap.put(grade.getId(), grade);
 			}
 			for(GradeBO grade : tempList){
 				GradeBO temp = tempMap.get(grade.getParentId());

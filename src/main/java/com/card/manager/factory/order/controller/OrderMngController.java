@@ -141,8 +141,9 @@ public class OrderMngController extends BaseController {
 			if(gradeId != 0 && gradeId != null){
 				pagination.setShopId(gradeId);
 			}
-			if(req.getParameter("gradeId") != null){
-				pagination.setShopId(gradeId);
+			String gradeIdStr = req.getParameter("gradeId");
+			if(gradeIdStr != null){
+				pagination.setShopId(Integer.valueOf(gradeIdStr));
 			}
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
