@@ -37,7 +37,7 @@ public class ShopMngController extends BaseController {
 		
 		ShopEntity shop = gradeMngService.queryByGradeId(opt.getGradeId()+"", opt.getToken());
 		context.put("shop", shop);
-		return forword("shop/mng_1", context);
+		return forword("shop/mng", context);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)

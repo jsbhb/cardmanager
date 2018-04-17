@@ -55,7 +55,7 @@ public class MallMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("mall/index/mng_2", context);
+		return forword("mall/index/mng", context);
 	}
 
 	@RequestMapping(value = "/list")
@@ -63,7 +63,7 @@ public class MallMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		return forword("mall/index/floor_1", context);
+		return forword("mall/index/floor", context);
 	}
 
 	@RequestMapping(value = "/toAddFloor")
@@ -80,7 +80,7 @@ public class MallMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("mall/index/floorAdd_1", context);
+		return forword("mall/index/floorAdd", context);
 	}
 
 	@RequestMapping(value = "/toEditFloor")
@@ -94,7 +94,7 @@ public class MallMngController extends BaseController {
 			context.put("dict", entity);
 			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 			context.put("firsts", catalogs);
-			return forword("mall/index/floorEdit_1", context);
+			return forword("mall/index/floorEdit", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);
@@ -119,7 +119,7 @@ public class MallMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("mall/index/addFloorContent_1", context);
+		return forword("mall/index/addFloorContent", context);
 	}
 
 	@RequestMapping(value = "/ad")
@@ -141,7 +141,7 @@ public class MallMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("mall/index/ad_1", context);
+		return forword("mall/index/ad", context);
 	}
 
 	@RequestMapping(value = "/banner")
@@ -164,7 +164,7 @@ public class MallMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("mall/index/banner_1", context);
+		return forword("mall/index/banner", context);
 	}
 
 	@RequestMapping(value = "/h5Banner")
@@ -187,7 +187,7 @@ public class MallMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("mall/index/h5Banner_1", context);
+		return forword("mall/index/h5Banner", context);
 	}
 
 	@RequestMapping(value = "/toEditContent")
@@ -199,7 +199,7 @@ public class MallMngController extends BaseController {
 			String id = req.getParameter("id");
 			DictData data = mallService.queryDataById(id, opt.getGradeId(), opt.getToken());
 			context.put("data", data);
-			return forword("mall/index/contentEdit_1", context);
+			return forword("mall/index/contentEdit", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);

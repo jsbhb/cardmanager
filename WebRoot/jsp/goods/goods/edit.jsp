@@ -11,9 +11,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/lang/zh-cn/zh-cn.js"></script>
 </head>
 
 <body>
@@ -293,6 +290,9 @@
 	       	</div>
 		</form>
 	</section>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/lang/zh-cn/zh-cn.js"></script>
 	<%@include file="../../resource.jsp"%>
 	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>

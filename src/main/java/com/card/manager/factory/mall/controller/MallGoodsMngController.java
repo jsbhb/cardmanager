@@ -59,7 +59,7 @@ public class MallGoodsMngController extends BaseController {
 			context.put("tags", tags);
 		} catch (Exception e) {
 		}
-		return forword("mall/goods/list_1", context);
+		return forword("mall/goods/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)

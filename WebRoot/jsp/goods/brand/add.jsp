@@ -8,43 +8,28 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="brandForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>基本信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">品牌名称<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="brand">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-	                            <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-iframe">
+       	<form class="form-horizontal" role="form" id="brandForm" style="margin-top:20px;">
+			<div class="list-item">
+				<div class="col-xs-3 item-left" for="form-field-1">品牌名称<font style="color:red">*</font> </div>
+				<div class="col-xs-9 item-right">
+					<input type="text" class="form-control" name="brand">
+	            	<div class="item-content">
+	             		（请输入数字、英文和汉字，限1-40字）
+	             	</div>
 				</div>
 			</div>
-		</div>
+			<div class="submit-btn">
+                <button type="button" class="btn btn-primary" id="submitBtn">确定</button>
+            </div>
+		</form>
 	</section>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<%@include file="../../resource.jsp"%>
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
@@ -57,15 +42,15 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	
-						 layer.alert("插入成功");
+// 						 layer.alert("新增品牌成功");
 						 parent.location.reload();
 					 }else{
-						 parent.reloadTable();
+// 						 parent.reloadTable();
 						 layer.alert(data.msg);
 					 }
 				 },
 				 error:function(){
-					 layer.alert("提交失败，请联系客服处理");
+					 layer.alert("新增品牌失败，请联系客服处理");
 				 }
 			 });
 		 }else{
@@ -87,10 +72,10 @@
       },
       fields: {
     	  brand: {
-              message: '品牌不正确',
+              message: '品牌名称不正确',
               validators: {
                   notEmpty: {
-                      message: '品牌不能为空！'
+                      message: '品牌名称不能为空！'
                   }
               }
       	  }

@@ -61,7 +61,7 @@ public class GoodsQRMngController extends BaseController {
 			//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		} catch (Exception e) {
 		}
-		return forword("label/goods/list_1", context);
+		return forword("label/goods/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)

@@ -8,127 +8,100 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
 	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>品牌管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);">首页</a></li>
 	        <li>商品管理</li>
 	        <li class="active">品牌管理</li>
 	      </ol>
-    </section>	
-	<section class="content">
-		<div class="box box-warning">
-			<div class="box-header">
-				<div class="row form-horizontal"><!--
-				<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级编号<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="id">
-				                </div>
-							</div>
-						</div>
+	      <div class="search">
+	      	<input type="text" name="brand" placeholder="请输入品牌名称">
+	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
+	      	<div class="moreSearchBtn">高级搜索</div>
+		  </div>
+    </section>
+    <section class="content">
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
+		<div class="moreSearchContent">
+			<div class="row form-horizontal query list-content">
+				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="hidBrand" placeholder="请输入品牌名称">
 					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">分级名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="brandName">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">公司名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="company">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-offset-10 col-md-12">
-						<div class="form-group">
-                                <button type="button" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
-                                <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-                        </div>
-                     </div>-->
-				</div> 
+				</div>
+				<div class="col-xs-3">
+					<div class="searchBtns">
+						 <div class="lessSearchBtn">简易搜索</div>
+                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+                         <button type="button" class="clear">清除选项</button>
+                    </div>
+                </div>
+            </div>
+		</div>
+	
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-10 list-btns">
+					<button type="button" onclick="toAdd()">新增品牌</button>
+				</div>
 			</div>
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-								<button type="button" onclick="toAdd()" class="btn btn-primary">新增品牌</button>
-								</h3>
-							</div>
-							<table id="brandTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>操作</th>
-										<th>品牌编码</th>
-										<th>品牌名称</th>
-										<th>创建人</th>
-										<th>创建时间</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+			<div class="row content-container">
+				<div class="col-md-12 container-right">
+					<table id="brandTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th width="25%">品牌编码</th>
+								<th width="25%">品牌名称</th>
+								<th width="25%">创建时间</th>
+								<th width="25%">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>	
 	</section>
-	</section>
+</section>
 	
-	
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
+//点击搜索按钮
+$('.searchBtn').on('click',function(){
+	$("#querybtns").click();
+});
 
 /**
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/goods/brandMng/dataList.shtml",
-			numPerPage:"20",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+		queryForm : ".query",
+		url :  "${wmsUrl}/admin/goods/brandMng/dataList.shtml",
+		numPerPage:"10",
+		currentPage:"",
+		index:"1",
+		callback:rebuildTable
 }
-
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
+	 var top = getTopWindow();
+	$('.breadcrumb').on('click','a',function(){
+		top.location.reload();
+	});
 })
 
 
@@ -157,22 +130,14 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		//if ("${privilege>=2}") {
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-			str += "<a href='#' onclick='del(\""+list[i].brandId+"\")'><i class='fa fa-trash-o' style='font-size:20px'></i></a>";
-			str += "</td>";
-		}
-		str += "</td><td>" + list[i].brandId;
+		str += "<td>" + list[i].brandId;
 		str += "</td><td>" + list[i].brand;
-		str += "</td><td>" + list[i].opt;
 		str += "</td><td>" + list[i].createTime;
-		
+		str += "</td><td>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")'>编辑</a>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='del(\""+list[i].brandId+"\")'>删除</a>";
 		str += "</td></tr>";
 	}
-		
-
 	$("#brandTable tbody").html(str);
 }
 	
@@ -203,23 +168,23 @@ function del(id){
 	
 function toEdit(id){
 	var index = layer.open({
-		  title:"品牌查看",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/brandMng/toEdit.shtml?brandId='+id,
-		  maxmin: true
-		});
-		layer.full(index);
+	  title:"编辑品牌",	
+	  area: ['70%', '30%'],		
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/brandMng/toEdit.shtml?brandId='+id,
+	  maxmin: false
+	});
 }
 
 
 function toAdd(){
 	var index = layer.open({
-		  title:"新增供应商",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
-		  maxmin: true
-		});
-		layer.full(index);
+	  title:"新增品牌",	
+	  area: ['70%', '30%'],		
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
+	  maxmin: false
+	});
 }
 
 </script>

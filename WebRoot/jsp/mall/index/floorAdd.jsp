@@ -8,133 +8,100 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<style type="text/css">
+	.input-group input[type=radio]{
+		float:left;
+		margin-top:8px;
+		margin-right:5px;
+	} 
+	.input-group span{
+		float:left;
+		margin-top: 6px;  
+		margin-right: 10px;
+	}
+</style>
 </head>
 
 <body >
-<section class="content-wrapper" style="height:900px">
-	<section class="content">
-		<form class="form-horizontal" role="form" id="floorForm" >
-			<div class="col-md-12">
-	        	<div class="box box-info">
-	        		<div class="box-header with-border">
-						<div class="box-header with-border">
-			            	<h5 class="box-title">新增楼层</h5>
-			            	<div class="box-tools pull-right">
-			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-			              	</div>
-			            </div>
-					</div>
-		            <div class="box-body">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">分类选择</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-									<select class="form-control" name="firstCatalogId" id="firstCatalogId" style="width: 100%;">
-				                   	  <option selected="selected" value="-1">未选择</option>
-				                   	  <c:forEach var="first" items="${firsts}">
-				                   	  	<option value="${first.firstId}">${first.name}</option>
-				                   	  </c:forEach>
-					                </select>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">页面类型</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-		                  			<input type="radio" name="pageType" value="0" checked >pc
-		                  			<input type="radio" name="pageType" value="1" >H5
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">是否显示</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-		                  			<input type="radio"  name="show" value="1" checked>显示
-		                  			<input type="radio"  name="show" value="0" >不显示
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">楼层名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-	                  				<input type="text" class="form-control" name="name">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">别称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-	                  				<input type="text" class="form-control" name="enname">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">楼层大图</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-							 		<input type="hidden" class="form-control" name="picPath1" id="picPath1">
-	                  				<input type="file" name="pic" id="pic"/>
-	                  				<button type="button" class="btn btn-info"  onclick="uploadFile()">上传 </button>
-				                </div>
-							</div>
-						</div>
-	            	</div>
-          		</div>
+<section class="content-wrapper">
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="floorForm">
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">楼层分类</div>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="firstCatalogId" id="firstCatalogId">
+                   	  <option selected="selected" value="-1">未选择</option>
+                   	  <c:forEach var="first" items="${firsts}">
+                   	  	<option value="${first.firstId}">${first.name}</option>
+                   	  </c:forEach>
+	                </select>
+				</div>
 			</div>
-			<div class="col-md-offset-1 col-md-9">
-				<div class="form-group">
-                     <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-                 </div>
-            </div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">页面类型</div>
+				<div class="col-sm-9 item-right">
+					<div class="input-group">
+               			<input type="radio" name="pageType" value="0" checked > <span>PC</span>
+               			<input type="radio" name="pageType" value="1" > <span>H5</span>
+	                </div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">是否显示</div>
+				<div class="col-sm-9 item-right">
+					<div class="input-group">
+               			<input type="radio"  name="show" value="1" checked><span>显示</span>
+               			<input type="radio"  name="show" value="0" ><span>不显示</span>
+	                </div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">楼层名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="name">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">楼层别称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="enname">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">楼层描述</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="description">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">楼层大图</div>
+				<div class="col-sm-9 item-right addContent">
+					<div class="item-img">
+						+
+						<input type="file" id="pic1"/>
+					</div>
+				</div>
+			</div>
+	        <div class="submit-btn">
+	           	<button type="button" id="submitBtn">提交</button>
+	       	</div>
 		</form>
 	</section>
 </section>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
-
-	
 	 function refresh(){
-			parent.location.reload();
+		parent.location.reload();
 	 }
-	 
-	 function uploadFile(){
-			$.ajaxFileUpload({
-				url:'${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
-				secureuri:false,
-				fileElementId:"pic",
-				dataType: 'json',
-				success: function (data){
-				   if(data.success){
-					   $("#picPath1").attr("type", "text")
-					   $("#picPath1").val(data.msg);
-				   }else{
-					   layer.alert(data.msg);
-				   }
-				}
-			})
-		}
 	 
 	 $("#submitBtn").click(function(){
 		 $('#floorForm').data("bootstrapValidator").validate();
 		 if($('#floorForm').data("bootstrapValidator").isValid()){
-			 
 			 var url = "${wmsUrl}/admin/mall/indexMng/saveDict.shtml";
-		
 			 $.ajax({
 				 url:url,
 				 type:'post',
@@ -170,29 +137,41 @@
 		   },
 		   fields: {
 			   name: {
-			 		trigger:"change",
-		          	message: '分类名称未添加',
-		          	validators: {
-			               notEmpty: {
-			                   message: '分类名称未添加！'
-			               }
-			           }
-			   	  },
-				  picPath1: {
-					   trigger:"change",
-			           message: '商家编码不正确',
-			           validators: {
-			               notEmpty: {
-			                   message: '商家编码不能为空！'
-			               }
-			           }
-			   	  }
+		           message: '楼层名称不正确',
+		           validators: {
+		               notEmpty: {
+		                   message: '楼层名称不能为空！'
+		               }
+		           }
+		   	  },
+			  pic1: {
+		           message: '楼层大图不正确',
+		           validators: {
+		               notEmpty: {
+		                   message: '楼层大图不能为空！'
+		               }
+		           }
+		   	  }
 		}});
 		
-		
 		function toList(){
-				$("#list",window.parent.document).trigger("click");
+			$("#list",window.parent.document).trigger("click");
 		}
+		
+		//点击上传图片
+		$('.item-right').on('change','.item-img input[type=file]',function(){
+			alert(1);
+			var ht = '<div class="item-img">+<input type="file"/></div>';
+			var imgHt = '<img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+			$('.addContent').append(ht);
+			$(this).parent().addClass('choose');
+			$(this).parent().html(imgHt);
+		});
+		//删除主图
+		$('.item-right').on('click','.bgColor i',function(){
+			alert(111);
+			$(this).parent().parent().remove();
+		});
 	</script>
 </body>
 </html>

@@ -44,7 +44,7 @@ public class BrandMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("goods/brand/add_1", context);
+		return forword("goods/brand/add", context);
 	}
 
 	@RequestMapping(value = "/addBrand", method = RequestMethod.POST)
@@ -67,7 +67,7 @@ public class BrandMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("goods/brand/list_1", context);
+		return forword("goods/brand/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
@@ -122,7 +122,7 @@ public class BrandMngController extends BaseController {
 			return forword("error", context);
 		}
 
-		return forword("goods/brand/edit_1", context);
+		return forword("goods/brand/edit", context);
 	}
 
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)

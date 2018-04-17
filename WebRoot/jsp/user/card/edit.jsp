@@ -8,73 +8,45 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="userBindCardForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>银行卡信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行卡号</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="cardNo" id="cardNo" onblur="checkCardNo()" value="${card.cardNo}">
-				                  <input type="hidden" class="form-control" name="id" id="id" value="${card.id}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行名称</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">持卡人姓名</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="cardName" id="cardName" value="${card.cardName}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">预留电话</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="cardMobile" id="cardMobile" value="${card.cardMobile}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-iframe content">
+        <form class="form-horizontal" role="form" id="userBindCardForm" >
+        	<div class="title">
+	       		<h1>银行卡信息</h1>
+	       	</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">银行卡号</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="cardNo" id="cardNo" onblur="checkCardNo()" value="${card.cardNo}">
+	                <input type="hidden" class="form-control" name="id" id="id" value="${card.id}">
 				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">银行名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">持卡人姓名</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="cardName" id="cardName" value="${card.cardName}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">预留电话</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="cardMobile" id="cardMobile" value="${card.cardMobile}">
+				</div>
+			</div>
+	        <div class="submit-btn">
+	           	<button type="button" id="submitBtn">保存</button>
+	       	</div>
+		</form>
 	</section>
+	<%@include file="../../resource.jsp"%>
 	<script type="text/javascript">	
 	
 	function checkCardNo(){

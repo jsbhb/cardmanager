@@ -8,50 +8,29 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 </head>
 
-<body >
-<section class="content-wrapper">
-	<section class="content">
-		<form class="form-horizontal" role="form" id="itemForm" >
-			<div class="col-md-12">
-	        	<div class="box box-info">
-	        		<div class="box-header with-border">
-						<div class="box-header with-border">
-			            	<h5 class="box-title">标签信息</h5>
-			            	<div class="box-tools pull-right">
-			                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-			              	</div>
-			            </div>
-					</div>
-		            <div class="box-body">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">标签名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-				                  	<input type="text" class="form-control" name="tagName" value="${tagEntity.tagName}">
-				                  	<input type="hidden" class="form-control" name="id" value="${tagEntity.id}">
-				                </div>
-							</div>
-							<div class="col-sm-2">
-								<div class="form-group">
-		                     		<button type="button" class="btn btn-primary" id="submitBtn">确定</button>
-		                        </div>
-							</div>
-						</div>
-	            	</div>
-          		</div>
+<body>
+<section class="content-iframe">
+	<form class="form-horizontal" role="form" id="itemForm" style="margin-top:20px;">
+		<div class="list-item">
+			<div class="col-xs-3 item-left">标签名称<font style="color:red">*</font> </div>
+			<div class="col-xs-9 item-right">
+				<input type="text" class="form-control" name="tagName" value="${tagEntity.tagName}">
+				<input type="hidden" class="form-control" name="id" value="${tagEntity.id}">
+            	<div class="item-content">
+             		（请输入数字、英文和汉字，限1-10字）
+             	</div>
 			</div>
-		</form>
-	</section>
+        </div>
+		<div class="submit-btn">
+            <button type="button" class="btn btn-primary" id="submitBtn">确定</button>
+        </div>
+	</form>
 </section>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script type="text/javascript">
 	 
 	 $("#submitBtn").click(function(){

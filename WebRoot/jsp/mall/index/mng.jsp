@@ -8,36 +8,32 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>首页设置</title>
-<%@include file="../../resource.jsp"%>
 </head>
 <body>
 	<section class="content-wrapper">
 		<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>首页设置</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
+	        <li><a href="javascript:void(0);">首页</a></li>
 	        <li>商城管理</li>
 	        <li class="active">首页设置</li>
 	      </ol>
-    	</section>	
+	    </section>	
 		<section class="content">
-	        <div class="box box-primary">
-				<div class="box-header">
-				<ul id="navTab" class="nav nav-tabs">
-					<li class="active"><a id="list"  href="${wmsUrl}/admin/mall/indexMng/list.shtml">楼层设置</a></li>
-					<li><a href="${wmsUrl}/admin/mall/indexMng/banner.shtml">PC轮播设置</a></li>
-					<li><a href="${wmsUrl}/admin/mall/indexMng/h5Banner.shtml">H5轮播设置</a></li>
-					<li><a href="${wmsUrl}/admin/mall/indexMng/ad.shtml">广告设置</a></li>
+			<div class="list-tabBar">
+				<ul>
+					<li class="active" data-url="${wmsUrl}/admin/mall/indexMng/list.shtml">楼层设置</li>
+					<li data-url="${wmsUrl}/admin/mall/indexMng/banner.shtml">PC轮播设置</li>
+					<li data-url="${wmsUrl}/admin/mall/indexMng/h5Banner.shtml">H5轮播设置</li>
+					<li data-url="${wmsUrl}/admin/mall/indexMng/ad.shtml">广告设置</li>
 				</ul>
-				</div>
-				<div class="box-body">
-					<div id="page-wrapper">
-					</div>
+			</div>
+			<div class="box-body">
+				<div id="page-wrapper">
 				</div>
 			</div>
 		</section>
 	</section>
+	<%@include file="../../resource.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/navPage.js"></script>
 	<script type="text/javascript">
 		$(function(){
@@ -51,6 +47,11 @@
 			newIframeObject.width = width;
 			newIframeObject.height = height;
 			$("#page-wrapper").append(newIframeObject);
+			
+			$('.list-tabBar').on('click','li',function(){
+				var url = $(this).attr('data-url');
+				$("#page-wrapper iframe").attr('src',url);
+			});
 		})
 	</script>
 </body>

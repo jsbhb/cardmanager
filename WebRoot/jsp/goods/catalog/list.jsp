@@ -3,16 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
- <!-- Bootstrap 3.3.6 -->
-<%@include file="../../resource.jsp" %>
-
-
 <section class="content-wrapper">
 	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>分类管理</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 首页</a></li>
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i> 商品管理</a></li>
+	        <li><a href="javascript:void(0);">首页</a></li>
+	        <li>商品管理</li>
 	        <li class="active">分类管理</li>
 	      </ol>
     </section>
@@ -65,6 +60,9 @@
 		</div>
 	</section>
 </section>
+
+ <!-- Bootstrap 3.3.6 -->
+<%@include file="../../resource.jsp" %>
 <script src="${wmsUrl}/js/mytree.js"></script>
 <script type="text/javascript">
 

@@ -8,93 +8,68 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
-<section class="content-wrapper">
+
 	<section class="content">
-		<div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">搜索</h5>
-	            	<div class="box-tools pull-right">
-	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
-			</div>
-		    <div class="box-body">
-			<div class="row form-horizontal query">
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right" for="form-field-1">品牌</label>
-						<div class="col-sm-5">
-							<div class="input-group">
-			                  <select class="form-control" name="brandId" id="brandId" style="width: 100%;">
-		                   	  <option selected="selected" value="">未选择</option>
-		                   	  <c:forEach var="brand" items="${brands}">
-		                   	  	<option value="${brand.brandId}">${brand.brand}</option>
-		                   	  </c:forEach>
-			                </select>
-			                </div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-6">
-					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right" for="form-field-1">名称</label>
-						<div class="col-sm-5">
-							<div class="input-group">
-			                  <input type="text" class="form-control" name="goodsName">
-			                </div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-4">
-					<div class="col-md-offset-3 col-md-12">
-						<div class="form-group">
-	                         <button type="button" class="btn btn-primary" id="querybtns" name="signup">提交</button>
-	                    </div>
-	                </div>
-                </div>
-			</div>
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
-	</div>
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="baseTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>基础编码</th>
-										<th>品牌名称</th>
-										<th>商品名称</th>
-										<th>分类</th>
-										<th>所属机构</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+		<div class="moreSearchContent active">
+			<div class="row form-horizontal query list-content">
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="brandId" id="brandId">
+		                	<option selected="selected" value="">--请选择商品品牌--</option>
+			                <c:forEach var="brand" items="${brands}">
+			                <option value="${brand.brandId}">${brand.brand}</option>
+			                </c:forEach>
+			            </select>
 					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+			           <input type="text" class="form-control" name="goodsName" placeholder="请输入商品名称">
+					</div>
+				</div>
+				<div class="col-xs-5">
+					<div class="searchBtns">
+                         <button type="button" class="query" id="querybtns" name="signup">查询</button>
+                         <button type="button" class="clear">清除选项</button>
+						 <button type="button" class="add" onclick="toAdd()">新增基础商品</button>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="list-content">
+			<div class="col-md-12 container-right" style="padding:0;">
+				<table id="baseTable" class="table table-hover myClass">
+					<thead>
+						<tr>
+							<th width="7%">基础编码</th>
+							<th width="20%">品牌名称</th>
+							<th width="25%">商品分类</th>
+							<th width="20%">商品名称</th>
+							<th width="7%">计量单位</th>
+							<th width="7%">海关代码</th>
+							<th width="7%">增值税率</th>
+							<th width="7%">海关税率</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div class="pagination-nav">
+					<ul id="pagination" class="pagination">
+					</ul>
 				</div>
 			</div>
 		</div>	
 	</section>
-	</section>
 	
-	
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 
@@ -104,7 +79,7 @@
 var options = {
 			queryForm : ".query",
 			url :  "${wmsUrl}/admin/goods/baseMng/dataList.shtml",
-			numPerPage:"20",
+			numPerPage:"10",
 			currentPage:"",
 			index:"1",
 			callback:rebuildTable
@@ -143,10 +118,12 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td align='left'>" + list[i].id + "</td>";
 		str += "</td><td>" + list[i].brand;
-		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
-		str += "</td><td>" + list[i].centerId;
-		
+		str += "</td><td>" + list[i].goodsName;
+		str += "</td><td>" + (list[i].unit == null ? "" : list[i].unit);
+		str += "</td><td>" + (list[i].hscode == null ? "" : list[i].hscode);
+		str += "</td><td>" + list[i].incrementTax;
+		str += "</td><td>" + list[i].tariff;		
 		str += "</td></tr>";
 	}
 		
@@ -171,16 +148,30 @@ function sureSup(){
 	
 		$('#baseId', window.parent.document).val(selectTr.children("td").eq(0).text());
 		$('#brand', window.parent.document).val(selectTr.children("td").eq(1).text());
-		$('#baseName', window.parent.document).val(selectTr.children("td").eq(2).text());
-		$('#catalog', window.parent.document).val(selectTr.children("td").eq(3).text());
+		$('#catalog', window.parent.document).val(selectTr.children("td").eq(2).text());
+		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(3).text().trim());
+		$('#unit', window.parent.document).val(selectTr.children("td").eq(4).text());
+		$('#hscode', window.parent.document).val(selectTr.children("td").eq(5).text().trim());
+		$('#incrementTax', window.parent.document).val(selectTr.children("td").eq(6).text());
+		$('#tariff', window.parent.document).val(selectTr.children("td").eq(7).text());
+
+		 parent.choiseModel();
 		
-		
-		$('#baseInfo', window.parent.document).show();
+// 		$('#baseInfo', window.parent.document).show();
 		
 		
 		parent.layer.closeAll();
 }
 
+function toAdd(){
+	var index = layer.open({
+		  title:"新增基础商品",		
+		  type: 2,
+		  content: '${wmsUrl}/admin/goods/baseMng/toAdd.shtml',
+		  maxmin: false
+		});
+		layer.full(index);
+}
 </script>
 </body>
 </html>

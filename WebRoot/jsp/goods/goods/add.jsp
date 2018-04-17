@@ -10,9 +10,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
 </head>
 
 <body>
@@ -272,6 +269,9 @@
 	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
 	<script type="text/javascript">	 
  	$("#brandId").change(function(){
 		$("#brand").val($("#brandId").find("option:selected").text());

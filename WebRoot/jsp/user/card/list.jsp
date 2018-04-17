@@ -8,57 +8,50 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
 </head>
 <body>
 <section class="content-wrapper">
 	<section class="content-header">
-	      <h1><i class="fa fa-street-view"></i>绑定银行卡</h1>
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>个人中心</a></li>
-	        <li class="active">绑定卡号</li>
+	        <li><a href="javascript:void(0);">首页</a></li>
+	        <li>个人中心</li>
+	        <li class="active">绑卡信息</li>
 	      </ol>
-    </section>	
+    </section>
 	<section class="content">
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-								<button type="button" onclick="toAdd()" class="btn btn-primary">新增银行卡</button>
-								</h3>
-							</div>
-							<table id="cardTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>银行卡号</th>
-										<th>银行名称</th>
-										<th>持卡人姓名</th>
-										<th>预留电话</th>
-										<th>修改</th>
-										<th>解绑</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-12 list-btns">
+					<button type="button" onclick="toAdd()">新增银行卡</button>
+				</div>
+			</div>
+			<div class="row content-container">
+				<div class="col-md-12 container-right active">
+					<table id="cardTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th width="25%">银行卡号</th>
+								<th width="15%">银行名称</th>
+								<th width="15%">持卡人姓名</th>
+								<th width="15%">预留电话</th>
+								<th width="15%">修改</th>
+								<th width="15%">解绑</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>	
 	</section>
-	</section>
-	
-	
+</section>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 

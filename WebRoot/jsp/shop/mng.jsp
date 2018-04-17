@@ -8,77 +8,66 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../resource.jsp"%>
 </head>
-
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="gradeConfigForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>微店信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">店铺编号</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-<%-- 		                  			<input type="text" readonly class="form-control" name="shopId" value="${opt.shopId}"> --%>
-		                  			<input type="hidden" class="form-control" name="id" id="id" value="${shop.id}">
-		                  			<input type="text" readonly class="form-control" name="gradeId" id="gradeId" value="${opt.shopId}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">店铺名称</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="name" id="name" value="${shop.name}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">店铺简介</label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="aboutUs" id="aboutUs" value="${shop.aboutUs}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="sbox-body">
-								<div class="form-group">
-									<img src="${shop.headImg}" id="img1" width="120px" height="160px" alt="上传微店头像">
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<input type="hidden" class="form-control" name="headImg" id="headImg" value="${shop.headImg}"> 
-										<input type="file" name="pic1" id="pic1" />
-										<button type="button" class="btn btn-info" onclick="uploadFile()">上传</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-header">
+	      <ol class="breadcrumb">
+	        <li><a href="javascript:void(0);">首页</a></li>
+	        <li>微店管理</li>
+	        <li class="active">信息维护</li>
+	      </ol>
+    </section>
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="gradeConfigForm" >
+			<div class="title">
+	       		<h1>微店信息</h1>
+	       	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺编号</div>
+				<div class="col-sm-9 item-right">
+					<input type="hidden" class="form-control" name="id" id="id" value="${shop.id}">
+          			<input type="text" readonly class="form-control" name="gradeId" id="gradeId" value="${opt.gradeId}">
 				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="name" id="name" value="${shop.name}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺简介</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="aboutUs" id="aboutUs" value="${shop.aboutUs}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺头像</div>
+				<div class="col-sm-9 item-right addContent">
+					<c:choose>
+					   <c:when test="${shop.headImg != null && shop.headImg != ''}">
+               	  			<div class="item-img choose" id="content" >
+								<img src="${shop.headImg}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${shop.headImg}" type="hidden" name="headImg" id="headImg">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content" >
+								+
+								<input type="file" id="pic" name="pic" />
+								<input type="hidden" class="form-control" name="headImg" id="headImg"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
+				</div>
+			</div>
+	        <div class="submit-btn">
+	           	<button type="button" id="submitBtn">保存</button>
+	       	</div>
+		</form>
 	</section>
+	<%@include file="../resource.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	function uploadFile() {
@@ -97,6 +86,33 @@
 			}
 		})
 	}
+	
+	
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic",
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="headImg" name="headImg">'
+					$("#content").html(imgPath);
+					$("#content").addClass('choose');
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="headImg" id="headImg" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
 	
 	$("#submitBtn").click(function(){
 		 $.ajax({

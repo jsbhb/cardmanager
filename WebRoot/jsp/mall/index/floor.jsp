@@ -8,78 +8,67 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
 <section class="content-wrapper">
 	<section class="content">
-	
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-							<button type="button" class="btn btn-primary" onclick="toAdd()">新增楼层</button>
-						</div>
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="floorTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>布局编号</th>
-										<th>分类中文名</th>
-										<th>分类英文名</th>
-										<th>页面类型</th>
-										<th>页面类型</th>
-										<th>是否显示</th>
-										<th>创建时间</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-12 list-btns">
+					<button type="button" onclick="toAdd()">新增楼层</button>
+				</div>
+			</div>
+			<div class="row content-container">
+				<div class="col-md-12 container-right active">
+					<table id="floorTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th width="10%">布局编号</th>
+								<th width="15%">大图</th>
+								<th width="15%">分类中文名</th>
+								<th width="15%">分类英文名</th>
+								<th width="10%">页面类型</th>
+								<th width="10%">页面类型</th>
+								<th width="10%">是否显示</th>
+								<th width="15%">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</section>
-	</section>
+</section>
 	
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/js/pagination.js"></script>
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
-
-
 /**
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/mall/indexMng/dataList.shtml?code=module_00024",
-			numPerPage:"20",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/mall/indexMng/dataList.shtml?code=module_00024",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
-
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
 })
 
-
 function reloadTable(){
 	$.page.loadData(options);
 }
-
 
 /**
  * 重构table
@@ -90,20 +79,16 @@ function rebuildTable(data){
 	if (data == null || data.length == 0) {
 		return;
 	}
-	
 	var list = data.obj;
-	
 	if (list == null || list.length == 0) {
 		layer.alert("没有查到数据");
 		return;
 	}
-
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		//if ("${privilege>=2}") {
-			
 		str += "</td><td>" + list[i].id;
+		str += "</td><td><img style='width:62px;height:62px;'  src=\"" + list[i].picPath1+"\">";
 		str += "</td><td>" + list[i].name;
 		str += "</td><td>" + list[i].enname;
 		
@@ -134,17 +119,10 @@ function rebuildTable(data){
 			str += "</td><td>显示";
 		}
 		
-		str += "</td><td>" + list[i].createTime;
-		if (true) {
-			str += "<td align='left'>";
-			str += "<button type='button' class='btn btn-warning' onclick='toEdit("+list[i].id+")'>编辑</button>";
-			str += "<button type='button' class='btn btn-warning' onclick='delete("+list[i].id+")'>删除</button>";
-			str += "</td>";
-		}
+		str += "</td><td>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")'>编辑</a>";
 		str += "</td></tr>";
 	}
-		
-
 	$("#floorTable tbody").html(str);
 }
 	
@@ -153,7 +131,7 @@ function toEdit(id){
 		  title:"楼层编辑",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/mall/indexMng/toEditFloor.shtml?id='+id,
-		  maxmin: true
+		  maxmin: false
 		});
 		layer.full(index);
 }
@@ -163,7 +141,7 @@ function toAdd(id){
 		  title:"新增楼层",		
 		  type: 2,
 		  content: '${wmsUrl}/admin/mall/indexMng/toAddFloor.shtml',
-		  maxmin: true
+		  maxmin: false
 		});
 		layer.full(index);
 }

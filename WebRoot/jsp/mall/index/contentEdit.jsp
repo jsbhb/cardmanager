@@ -8,111 +8,114 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
-<link rel="stylesheet"
-	href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
 </head>
 
 <body>
-	<section class="content-wrapper" style="height: 900px">
-		<section class="content">
+	<section class="content-wrapper">
+		<section class="content-iframe content">
 				<form class="form-horizontal" role="form" id="adForm">
-					<div class="col-md-12">
-						<div class="box box-info">
-							<div class="box-header with-border">
-								<div class="box-header with-border">
-									<h5 class="box-title">内容设置</h5>
-									<div class="box-tools pull-right">
-										<button type="button" class="btn btn-box-tool"
-											data-widget="collapse">
-											<i class="fa fa-minus"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-							<div class="box-body">
-								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">编号</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" readonly name="id" value="${data.id}"> 
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">跳转链接</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="href" value="${data.href}"> 
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">标题</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="title" value="${data.title}"> 
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">价格</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="price" value="${data.price}"> 
-										</div>
-									</div>
-								</div>
-									<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">国家</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="origin" value="${data.origin}"> 
-										</div>
-									</div>
-								</div>
-									<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">商品编号</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="goodsId" value="${data.goodsId}"> 
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">描述</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="description"  value="${data.description}"> 
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label no-padding-right">大图(309*148px)</label>
-									<div class="col-sm-6">
-										<div class="input-group">
-											<input type="text" class="form-control" name="picPath" id="picPath" value="${data.picPath}"> 
-											<input type="file" name="pic" id="pic" />
-											<button type="button" class="btn btn-info" onclick="uploadFile()">上传</button>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-offset-1 col-md-9">
-									<div class="form-group">
-											<button type="button" class="btn btn-info" onclick="save()">保存</button>
-					                 </div>
-					            </div>
-							</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">编号</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" readonly name="id" value="${data.id}"> 
 						</div>
 					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">跳转链接</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" name="href" value="${data.href}"> 
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">商品标题</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" name="title" value="${data.title}"> 
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">价格</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" name="price" value="${data.price}"> 
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">国家</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" name="origin" value="${data.origin}"> 
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">商品编号</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" name="goodsId" value="${data.goodsId}"> 
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">描述</div>
+						<div class="col-sm-9 item-right">
+							<input type="text" class="form-control" name="description" value="${data.description}"> 
+						</div>
+					</div>
+					<div class="list-item">
+						<div class="col-sm-3 item-left">大图(309*148px)</div>
+						<div class="col-sm-9 item-right addContent">
+							<c:choose>
+							   <c:when test="${data.picPath != null && data.picPath != ''}">
+		               	  			<div class="item-img choose" id="content" >
+										<img src="${data.picPath}">
+										<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+										<input value="${data.picPath}" type="hidden" name="picPath" id="picPath">
+									</div>
+							   </c:when>
+							   <c:otherwise>
+		                	  		<div class="item-img" id="content" >
+										+
+										<input type="file" id="pic" name="pic" />
+										<input type="hidden" class="form-control" name="picPath" id="picPath"> 
+									</div>
+							   </c:otherwise>
+							</c:choose> 
+						</div>
+					</div>
+			        <div class="submit-btn">
+			           	<button type="button" onclick="save()">保存</button>
+			       	</div>
 				</form>
 		</section>
 	</section>
+	<%@include file="../../resource.jsp"%>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
+	
+	
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic",
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath" name="picPath">'
+					$("#content").html(imgPath);
+					$("#content").addClass('choose');
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="picPath" id="picPath" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
 	
 	function save(){
 		$('#adForm').data("bootstrapValidator").validate();
