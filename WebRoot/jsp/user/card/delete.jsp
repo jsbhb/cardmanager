@@ -26,7 +26,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">银行名称</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
+					<input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
 				</div>
 			</div>
 			<div class="list-item">
