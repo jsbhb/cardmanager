@@ -183,4 +183,8 @@
 	<select id="queryGradeTypeIdByRoleId" resultType="java.lang.Integer">
 		select gradeTypeId from auth_gradetype_role where roleId = #{roleId}
 	</select>
+	
+	<select id="queryFirstGradeIdByOpt" resultType="java.lang.Integer">
+		select getFirstGradeId(#{gradeId});
+	</select>
 </mapper>

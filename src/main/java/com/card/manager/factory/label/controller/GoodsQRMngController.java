@@ -99,37 +99,35 @@ public class GoodsQRMngController extends BaseController {
 				item.setItemId(itemId);
 			}
 
+			//根据账号信息获取对应的最上级分级ID
+			int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(staffEntity.getGradeId()+"");
+			//如果是admin进入则显示海外购的内容
+			if (firstGradeId == 0) {
+				firstGradeId = 4;
+			}
+			GradeEntity entity = gradeMngService.queryById(firstGradeId+"", staffEntity.getToken());
+			
 			//总部账号不设置centerId
 			//根据账号信息获取对应的分级地址
-			String gradeId = "";
 			params.put("gradeLevel", staffEntity.getGradeLevel());
-			if (staffEntity.getGradeLevel() == 2) {
-				params.put("centerId", staffEntity.getGradeId());
-				gradeId = staffEntity.getGradeId()+"";
-			} else if (staffEntity.getGradeLevel() == 3) {
-				params.put("centerId", staffEntity.getParentGradeId());
-				gradeId = staffEntity.getParentGradeId()+"";
-			} else {
-				params.put("centerId", "");
-				gradeId = "1";
-			}
+			params.put("centerId", entity.getId());
 
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE_DOWNLOAD, GoodsEntity.class);
-
-			GradeEntity entity = gradeMngService.queryById(gradeId, staffEntity.getToken());
+			
 			String tmpLink = "";
 			if (entity != null) {
+				tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getGradeId() + "&goodsId=";
 				//根据获取到的域名进行商品二维码内容的拼接
 				//内容格式：域名+商品明细地址+centerId+shopId+goodsId
 				//http://shop1.cncoopbuy.com/goodsDetail.html?centerId=13&shopId=15&goodsId=1002
-				if (staffEntity.getGradeLevel() == 2) {
-					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=";
+//				if (staffEntity.getGradeLevel() == 2) {
+//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=";
 //					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=";
-				} else if (staffEntity.getGradeLevel() == 3) {
-					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
+//				} else if (staffEntity.getGradeLevel() == 3) {
+//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
 //					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
-				}
+//				}
 			}
 			
 			@SuppressWarnings("unchecked")

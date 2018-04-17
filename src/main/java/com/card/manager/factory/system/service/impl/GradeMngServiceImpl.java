@@ -343,4 +343,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			throw new Exception("更新微店信息失败:" + json.getString("errorMsg"));
 		}
 	}
+
+	@Override
+	public int queryFirstGradeIdByOpt(String gradeId) {
+		return staffMapper.queryFirstGradeIdByOpt(gradeId);
+	}
 }

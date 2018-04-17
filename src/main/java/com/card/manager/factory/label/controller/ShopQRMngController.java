@@ -39,22 +39,16 @@ public class ShopQRMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
 		
-		//根据账号信息获取对应的分级地址
-		String gradeId = "";
-		if (opt.getGradeLevel() == 2) {
-			gradeId = opt.getGradeId()+"";
-		} else if (opt.getGradeLevel() == 3) {
-			gradeId = opt.getParentGradeId()+"";
-		} else {
-			gradeId = "1";
+		//根据账号信息获取对应的最上级分级ID
+		int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(opt.getGradeId()+"");
+		//如果是admin进入则显示海外购的内容
+		if (firstGradeId == 0) {
+			firstGradeId = 4;
 		}
-
-		GradeEntity entity = gradeMngService.queryById(gradeId, opt.getToken());
+		GradeEntity entity = gradeMngService.queryById(firstGradeId+"", opt.getToken());
 		String strLink = "";
 		if (entity != null) {
-			if (opt.getGradeLevel() == 3) {
-				strLink = entity.getMobileUrl() + "/index.html?shopId=" + opt.getShopId();
-			}
+			strLink = entity.getMobileUrl() + "/index.html?shopId=" + opt.getGradeId();
 		}
 		context.put("strLink", strLink);
 		

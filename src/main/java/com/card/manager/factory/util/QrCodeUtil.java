@@ -104,8 +104,11 @@ public class QrCodeUtil {
 		String fileName = filePath + "/" + goodsId + ".jpg";
     	obj = new File(fileName);
     	
-    	//如果不存在则创建对应文件
+    	//如果不存在则创建对应文件,存在则删除后创建
     	if (!obj.exists()) {
+    		createQrCode(new FileOutputStream(new File(fileName)),goodsPath,900,"JPEG");
+    	} else {
+    		obj.delete();
     		createQrCode(new FileOutputStream(new File(fileName)),goodsPath,900,"JPEG");
     	}
     	return fileName;
@@ -126,8 +129,11 @@ public class QrCodeUtil {
 		String fileName = filePath + "/" + account + ".jpg";
 		obj = new File(fileName);
    	
-	   	//如果不存在则创建对应文件
+	   	//如果不存在则创建对应文件,存在则删除后创建
 	   	if (!obj.exists()) {
+	   		createQrCode(new FileOutputStream(new File(fileName)),goodsPath,900,"JPEG");
+	   	} else {
+	   		obj.delete();
 	   		createQrCode(new FileOutputStream(new File(fileName)),goodsPath,900,"JPEG");
 	   	}
 	   	return fileName;

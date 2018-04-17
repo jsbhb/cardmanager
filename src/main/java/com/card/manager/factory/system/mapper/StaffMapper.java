@@ -170,4 +170,6 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7  
 	 */
 	int queryGradeTypeIdByRoleId(String roleId);
+
+	int queryFirstGradeIdByOpt(String gradeId);
 }

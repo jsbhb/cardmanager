@@ -17,3 +17,26 @@ CREATE TABLE `auth_gradeType_role` (
   `updateTime` datetime DEFAULT NULL COMMENT '更新时间',
   `opt` varchar(20) DEFAULT NULL COMMENT '操作人'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP FUNCTION IF EXISTS `getFirstGradeId`;
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `getFirstGradeId`(rootId INT) RETURNS varchar(2000) CHARSET utf8
+BEGIN
+       DECLARE sTemp VARCHAR(2000);
+       DECLARE sTempGradeId VARCHAR(2000);
+       DECLARE sTempParentGradeId VARCHAR(2000);
+  
+       SET sTemp = '$';
+       SET sTempGradeId =cast(rootId as CHAR);
+       SET sTempParentGradeId = '-1';
+       SELECT parentGradeId INTO sTempParentGradeId FROM auth_operator WHERE gradeid = sTempGradeId limit 1;
+    
+       WHILE sTempParentGradeId <> 0 DO
+		 SET sTempGradeId = sTempParentGradeId;
+         SELECT parentGradeId INTO sTempParentGradeId FROM auth_operator WHERE gradeid = sTempGradeId limit 1;
+       END WHILE;
+       SET sTemp = sTempGradeId;
+       RETURN sTemp;
+     END$$
+DELIMITER ;
