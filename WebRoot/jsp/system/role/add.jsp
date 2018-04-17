@@ -32,6 +32,18 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">上级角色<font style="color:red">*</font> </label>
+							<div class="col-sm-3">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-user-o"></i>
+				                  </div>
+		                  			<input type="text" class="form-control" disabled value="${parent.roleName}">
+		                  			<input type="hidden" class="form-control" name="parentId" value="${parent.roleId}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">是否启用<font style="color:red">*</font> </label>
 							<div class="col-sm-2">
 		                   		<label>
@@ -69,7 +81,7 @@
 					 if(data.success){	
 						 layer.alert("插入成功");
 						 parent.layer.closeAll();
-						 parent.reloadTable();
+						 parent.location.reload();
 					 }else{
 						  layer.alert(data.errInfo);
 					 }
