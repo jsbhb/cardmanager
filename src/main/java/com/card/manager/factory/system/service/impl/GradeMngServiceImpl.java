@@ -268,6 +268,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		StaffEntity staff = new StaffEntity();
 		staff.setUserCenterId(gradeInfo.getPersonInChargeId());
 		staff.setGradeType(gradeInfo.getGradeType());
+		staff.setOptName(gradeInfo.getPersonInCharge());
+		staff.setGradeName(gradeInfo.getGradeName());
+		staff.setPhone(gradeInfo.getPhone());
 		staffMapper.updateOperatorInfo(staff);
 
 		// 自动注册微店平台

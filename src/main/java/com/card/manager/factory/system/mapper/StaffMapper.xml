@@ -162,6 +162,15 @@
     
     <update id="updateOperatorInfo" parameterType="object">
 		update auth_operator set updatetime = now(),grade_type=#{gradeType}
+		<if test="optName != '' and optName != null">
+			,optName = #{optName}
+		</if>
+		<if test="gradeName != '' and gradeName != null">
+			,gradeName = #{gradeName}
+		</if>
+		<if test="phone != '' and phone != null">
+			,phone = #{phone}
+		</if>
 		where userCenterId = #{userCenterId}
     </update>
 	
