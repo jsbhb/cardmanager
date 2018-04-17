@@ -160,4 +160,14 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	List<StaffEntity> selectByParam(Map<String, String> params);
 	
 	void updateOperatorInfo(StaffEntity staff);
+
+	/**  
+	 * 根据roleId获取gradeTypeId <br/>   
+	 *  
+	 * @author hebin 
+	 * @param roleId
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	int queryGradeTypeIdByRoleId(String roleId);
 }

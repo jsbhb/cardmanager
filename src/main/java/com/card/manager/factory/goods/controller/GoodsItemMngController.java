@@ -8,8 +8,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -325,116 +323,6 @@ public class GoodsItemMngController extends BaseController {
 				GoodsBaseEntity goodsInfo = null;
 				for (GoodsItemEntity info : list) {
 					goodsInfo = info.getBaseEntity();
-					for (FirstCatalogEntity fce : first) {
-						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
-							goodsInfo.setFirstCatalogId(fce.getName());
-							break;
-						}
-					}
-					for (SecondCatalogEntity sce : second) {
-						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
-							goodsInfo.setSecondCatalogId(sce.getName());
-							break;
-						}
-					}
-					for (ThirdCatalogEntity tce : third) {
-						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
-							goodsInfo.setThirdCatalogId(tce.getName());
-							break;
-						}
-					}
-				}
-				pcb.setObj(list);
-			}
-
-		} catch (ServerCenterNullDataException e) {
-			if (pcb == null) {
-				pcb = new PageCallBack();
-			}
-			pcb.setPagination(item);
-			pcb.setSuccess(true);
-			return pcb;
-		} catch (Exception e) {
-			if (pcb == null) {
-				pcb = new PageCallBack();
-			}
-			pcb.setErrTrace(e.getMessage());
-			pcb.setSuccess(false);
-			return pcb;
-		}
-
-		return pcb;
-	}
-
-	@RequestMapping(value = "/dataListByLabel", method = RequestMethod.POST)
-	@ResponseBody
-	public PageCallBack dataListByLabel(HttpServletRequest req, HttpServletResponse resp,
-			@RequestBody GoodsItemEntity item) {
-		PageCallBack pcb = null;
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		Map<String, Object> params = new HashMap<String, Object>();
-		try {
-			item.setCurrentPage(1);
-			item.setNumPerPage(10);
-
-			String typeId = item.getTypeId();
-			String categoryId = item.getCategoryId();
-			if (!StringUtil.isEmpty(typeId) && !StringUtil.isEmpty(categoryId)) {
-				GoodsBaseEntity baseEntity = item.getBaseEntity();
-				if (baseEntity != null) {
-					if ("first".equals(typeId)) {
-						baseEntity.setFirstCatalogId(categoryId);
-					} else if ("second".equals(typeId)) {
-						baseEntity.setSecondCatalogId(categoryId);
-					} else if ("third".equals(typeId)) {
-						baseEntity.setThirdCatalogId(categoryId);
-					}
-					item.setBaseEntity(baseEntity);
-				} else {
-					GoodsBaseEntity newBaseEntity = new GoodsBaseEntity();
-					if ("first".equals(typeId)) {
-						newBaseEntity.setFirstCatalogId(categoryId);
-					} else if ("second".equals(typeId)) {
-						newBaseEntity.setSecondCatalogId(categoryId);
-					} else if ("third".equals(typeId)) {
-						newBaseEntity.setThirdCatalogId(categoryId);
-					}
-					item.setBaseEntity(newBaseEntity);
-				}
-			}
-			String tabId = item.getTabId();
-			if (!StringUtil.isEmpty(tabId)) {
-				if ("first".equals(tabId)) {
-					item.setStatus("3");
-				} else if ("second".equals(tabId)) {
-					item.setStatus("4");
-				} else if ("third".equals(tabId)) {
-					item.setStatus("5");
-				}
-			}
-			params.put("centerId", staffEntity.getGradeId());
-			params.put("shopId", staffEntity.getShopId());
-			params.put("gradeLevel", staffEntity.getGradeLevel());
-
-			String type = req.getParameter("type");
-			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
-					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE + "&type=" + type, GoodsItemEntity.class);
-
-			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
-			for (GoodsItemEntity entity : list) {
-				GoodsUtil.changeSpecsInfo(entity);
-			}
-
-			if (pcb != null) {
-				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
-				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
-				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
-				GoodsBaseEntity goodsInfo = null;
-				for (GoodsItemEntity info : list) {
-					goodsInfo = info.getBaseEntity();
-					if (goodsInfo == null) {
-						continue;
-					}
 					for (FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
 							goodsInfo.setFirstCatalogId(fce.getName());

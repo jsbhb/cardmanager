@@ -164,4 +164,8 @@
 		update auth_operator set updatetime = now(),grade_type=#{gradeType}
 		where userCenterId = #{userCenterId}
     </update>
+	
+	<select id="queryGradeTypeIdByRoleId" resultType="java.lang.Integer">
+		select gradeTypeId from auth_gradetype_role where roleId = #{roleId}
+	</select>
 </mapper>

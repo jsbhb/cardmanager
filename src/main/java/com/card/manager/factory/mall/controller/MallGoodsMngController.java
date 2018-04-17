@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,13 +20,9 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
-import com.card.manager.factory.goods.model.FirstCatalogEntity;
-import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
-import com.card.manager.factory.goods.model.SecondCatalogEntity;
-import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -143,88 +138,7 @@ public class MallGoodsMngController extends BaseController {
 
 		return pcb;
 	}
-
-	@RequestMapping(value = "/dataListByLabel", method = RequestMethod.POST)
-	@ResponseBody
-	public PageCallBack dataListByLabel(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsItemEntity item) {
-		PageCallBack pcb = null;
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		Map<String, Object> params = new HashMap<String, Object>();
-		try {
-			item.setCurrentPage(1);
-			item.setNumPerPage(10);
-			
-			String tabId = item.getTabId();
-			if (!StringUtil.isEmpty(tabId)) {
-				if ("first".equals(tabId)) {
-					item.setStatus("1");
-				} else if ("second".equals(tabId)) {
-					item.setStatus("0");
-				}
-			}
-			params.put("centerId", staffEntity.getGradeId());
-			params.put("shopId", staffEntity.getShopId());
-			params.put("gradeLevel", staffEntity.getGradeLevel());
-
-			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
-					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE, GoodsItemEntity.class);
-
-			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
-			for (GoodsItemEntity entity : list) {
-				GoodsUtil.changeSpecsInfo(entity);
-			}
-			
-			if (pcb != null) {
-				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
-				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
-				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
-				GoodsBaseEntity goodsInfo = null;
-				for(GoodsItemEntity info : list){
-					goodsInfo = info.getBaseEntity();
-					if (goodsInfo == null) {
-						continue;
-					}
-					for(FirstCatalogEntity fce : first) {
-						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
-							goodsInfo.setFirstCatalogId(fce.getName());
-							break;
-						}
-					}
-					for(SecondCatalogEntity sce : second) {
-						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
-							goodsInfo.setSecondCatalogId(sce.getName());
-							break;
-						}
-					}
-					for(ThirdCatalogEntity tce : third) {
-						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
-							goodsInfo.setThirdCatalogId(tce.getName());
-							break;
-						}
-					}
-				}
-				pcb.setObj(list);
-			}
-
-		} catch (ServerCenterNullDataException e) {
-			if (pcb == null) {
-				pcb = new PageCallBack();
-			}
-			pcb.setPagination(item);
-			pcb.setSuccess(true);
-			return pcb;
-		} catch (Exception e) {
-			if (pcb == null) {
-				pcb = new PageCallBack();
-			}
-			pcb.setErrTrace(e.getMessage());
-			pcb.setSuccess(false);
-			return pcb;
-		}
-
-		return pcb;
-	}
-
+	
 	@RequestMapping(value = "/puton", method = RequestMethod.POST)
 	public void puton(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);

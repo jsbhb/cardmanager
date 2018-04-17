@@ -484,7 +484,6 @@ $('.list-tabBar').on('click','ul li:not(.active)',function(){
 
 //点击分类标签及tab标签时做数据查询动作
 function queryDataByLabelTouch(typeId,categoryId,tabId){
-	var formData = {};
 	$("#typeId").val(typeId);
 	$("#categoryId").val(categoryId);
 	$("#hidTabId").val(tabId);

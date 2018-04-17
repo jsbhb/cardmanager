@@ -292,38 +292,14 @@ function putoff(id){
 //切换tabBar
 $('.list-tabBar').on('click','ul li:not(.active)',function(){
 	var tabId = $(this).attr("data-id");
-	$("#hidTabId").val(tabId);
 	queryDataByLabelTouch("","",tabId);
 });
 
 //点击分类标签及tab标签时做数据查询动作
 function queryDataByLabelTouch(typeId,categoryId,tabId){
-	var url = "${wmsUrl}/admin/mall/goodsMng/dataListByLabel.shtml";	 
-	var formData = {};
-	formData["typeId"] = typeId;
-	formData["categoryId"] = categoryId;
-	formData["tabId"] = tabId;
+	$("#hidTabId").val(tabId);
 	
-	$.ajax({
-		 url:url,
-		 type:'post',
-		 data:JSON.stringify(formData),
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){
-				 rebuildTable(data);
-			 }else{
-				 layer.alert(data.msg);
-			 }
-			 var pagination = data.pagination;
-			 $.page.currentPage = pagination.currentPage + "";
-		 	 $.page.setLine(pagination.totalPages, options,pagination.totalRows);
-		 },
-		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	});
+	reloadTable();
 }
 
 </script>
