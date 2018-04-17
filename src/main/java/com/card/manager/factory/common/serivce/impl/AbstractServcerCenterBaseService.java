@@ -91,7 +91,7 @@ public abstract class AbstractServcerCenterBaseService implements ServerCenterSe
 				orderInfo = (OrderInfo) info;
 				orderInfo.setSupplierName(supNameMap.get(orderInfo.getSupplierId()));
 				
-				orderInfo.setCenterName(map.get(orderInfo.getShopId()).getName());
+				orderInfo.setCenterName(map.get(orderInfo.getCenterId()).getName());
 				orderInfo.setShopName(map.get(orderInfo.getShopId()).getName());
 			}
 		}
