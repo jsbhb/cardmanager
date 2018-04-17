@@ -8,10 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 </head>
 
 <body>
@@ -104,6 +101,8 @@
              </div>
 		</form>
 	</section>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<%@include file="../../resource.jsp"%>
 	<script type="text/javascript">
 	
 	$("#brandId").change(function(){
@@ -313,7 +312,7 @@
 	function toCategory(){
 		var index = layer.open({
 			  title:"新增分类",	
-			  area: ['70%', '50%'],	
+			  area: ['80%', '50%'],	
 			  type: 2,
 			  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 			  maxmin: false

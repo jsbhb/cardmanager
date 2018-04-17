@@ -138,7 +138,7 @@ function toDelete(id){
 				 if(data.success){	
 					 layer.alert("删除商品标签成功");
 					 parent.layer.closeAll();
-					 parent.location.reload();
+					 location.reload();
 				 }else{
 					 layer.alert(data.msg);
 				 }

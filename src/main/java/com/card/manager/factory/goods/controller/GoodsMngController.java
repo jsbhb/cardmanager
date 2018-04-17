@@ -481,19 +481,6 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "/toAddTag")
-	public ModelAndView toAddTag(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put(OPT, opt);
-		try {
-			return forword("goods/goods/addTag2", context);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-	}
-
 	@RequestMapping(value = "/refreshTag", method = RequestMethod.POST)
 	public void refreshTag(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);

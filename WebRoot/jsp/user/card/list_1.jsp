@@ -22,7 +22,7 @@
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-12 list-btns">
-					<button type="button" onclick="toAdd()">新增商品</button>
+					<button type="button" onclick="toAdd()">新增银行卡</button>
 				</div>
 			</div>
 			<div class="row content-container">

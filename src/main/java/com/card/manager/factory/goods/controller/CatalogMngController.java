@@ -272,7 +272,7 @@ public class CatalogMngController extends BaseController {
 			context.put("opt", opt);
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(opt.getToken());
 			context.put("firsts", catalogs);
-			return forword("goods/catalog/add_1", context);
+			return forword("goods/catalog/addByLabel", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
