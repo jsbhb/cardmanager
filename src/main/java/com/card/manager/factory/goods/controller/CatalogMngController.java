@@ -181,10 +181,10 @@ public class CatalogMngController extends BaseController {
 		try {
 			List<FirstCatalogEntity> firsts = catalogService.queryAll(opt.getToken());
 			context.put("firsts", firsts);
-			return forword("goods/catalog/list_1", context);
+			return forword("goods/catalog/list", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
-			return forword("goods/catalog/list_1", context);
+			return forword("goods/catalog/list", context);
 		}
 	}
 

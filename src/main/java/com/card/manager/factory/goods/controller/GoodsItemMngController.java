@@ -84,7 +84,7 @@ public class GoodsItemMngController extends BaseController {
 		if (grade != null) {
 			context.put("gradeType", grade.getGradeType());
 		}
-		return forword("goods/item/list_1", context);
+		return forword("goods/item/list", context);
 	}
 
 	@RequestMapping(value = "/dataListForGoods", method = RequestMethod.POST)

@@ -35,7 +35,7 @@ public class UserCardMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("user/card/list_1", context);
+		return forword("user/card/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
@@ -101,7 +101,7 @@ public class UserCardMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		return forword("user/card/add_1", context);
+		return forword("user/card/add", context);
 	}
 	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
@@ -147,7 +147,7 @@ public class UserCardMngController extends BaseController {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);
 		}
-		return forword("user/card/edit_1", context);
+		return forword("user/card/edit", context);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -177,7 +177,7 @@ public class UserCardMngController extends BaseController {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);
 		}
-		return forword("user/card/delete_1", context);
+		return forword("user/card/delete", context);
 	}
 	
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)

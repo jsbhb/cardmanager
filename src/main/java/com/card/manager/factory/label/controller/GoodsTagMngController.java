@@ -48,7 +48,7 @@ public class GoodsTagMngController extends BaseController {
 			//context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		} catch (Exception e) {
 		}
-		return forword("label/goodsTag/list_1", context);
+		return forword("label/goodsTag/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
@@ -91,7 +91,7 @@ public class GoodsTagMngController extends BaseController {
 			String tagId = req.getParameter("tagId");
 			GoodsTagEntity goodsTagEntity = goodsService.queryGoodsTag(tagId, opt.getToken());
 			context.put("tagEntity", goodsTagEntity);
-			return forword("goods/goods/editTag_1", context);
+			return forword("goods/goods/editTag", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);

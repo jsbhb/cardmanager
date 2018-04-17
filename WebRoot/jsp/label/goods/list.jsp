@@ -8,135 +8,71 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
+	<section class="content-header">
+	      <ol class="breadcrumb">
+	        <li><a href="javascript:void(0);">首页</a></li>
+	        <li>标签管理</li>
+	        <li class="active">商品二维码</li>
+	      </ol>
+	      <div class="search">
+	      	<input type="text" name="goodsName" placeholder="请输入商品名称">
+	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
+	      	<div class="moreSearchBtn">高级搜索</div>
+		  </div>
+    </section>	
 	<section class="content">
-		<div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">搜索</h5>
-	            	<div class="box-tools pull-right">
-	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
-			</div>
-		    <div class="box-body">
-			<div class="row form-horizontal query">
-<!-- 				<div class="col-xs-4"> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">供应商</label> -->
-<!-- 						<div class="col-sm-8"> -->
-<!-- 							<div class="input-group"> -->
-<!-- 			                  <select class="form-control" name="supplierId" id="supplierId" style="width: 100%;"> -->
-<!-- 		                   	  <option selected="selected" value="">未选择</option> -->
-<%-- 		                   	  <c:forEach var="supplier" items="${suppliers}"> --%>
-<%-- 		                   	  	<option value="${supplier.id}">${supplier.supplierName}</option> --%>
-<%-- 		                   	  </c:forEach> --%>
-<!-- 			                </select> -->
-<!-- 			                </div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-				<div class="col-xs-4">
-					<div class="form-group">
-						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">商品编码</label>
-						<div class="col-sm-8">
-							<div class="input-group">
-	                  			<input type="text" class="form-control" name="goodsId">
-			                </div>
-						</div>
+		<div class="moreSearchContent">
+			<div class="row form-horizontal list-content">
+				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="itemCode" placeholder="请输入商品编码">
 					</div>
 				</div>
-<!-- 				<div class="col-xs-4"> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">明细编码</label> -->
-<!-- 						<div class="col-sm-8"> -->
-<!-- 							<div class="input-group"> -->
-<!-- 			                  <input type="text" class="form-control" name="itemId"> -->
-<!-- 			                </div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 				<div class="col-xs-4"> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">itemCode</label> -->
-<!-- 						<div class="col-sm-8"> -->
-<!-- 							<div class="input-group"> -->
-<!-- 			                  <input type="text" class="form-control" name="itemCode"> -->
-<!-- 			                </div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 				<div class="col-xs-4"> -->
-<!-- 					<div class="form-group"> -->
-<!-- 						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">sku</label> -->
-<!-- 						<div class="col-sm-8"> -->
-<!-- 							<div class="input-group"> -->
-<!-- 			                  <input type="text" class="form-control" name="sku"> -->
-<!-- 			                </div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-				<div class="col-xs-4">
-					<div class="form-group">
-						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">商品名称</label>
-						<div class="col-sm-8">
-							<div class="input-group">
-			                  <input type="text" class="form-control" name="goodsName">
-			                </div>
-						</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+			           <input type="text" class="form-control" name="hidGoodsName" placeholder="请输入商品名称">
 					</div>
 				</div>
-				<div class="col-md-offset-10 col-md-12">
-					<div class="form-group">
-                         <button type="button" class="btn btn-primary" id="querybtns" name="signup">提交</button>
+				<div class="col-xs-3">
+					<div class="searchBtns">
+						 <div class="lessSearchBtn">简易搜索</div>
+                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+                         <button type="button" class="clear">清除选项</button>
                     </div>
                 </div>
-			</div>
+            </div>
 		</div>
-	</div>
-		
-	
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="itemTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>商品编码</th>
-										<th>商品名称</th>
-<!-- 										<th>sku</th> -->
-<!-- 										<th>itemCode</th> -->
-<!-- 										<th>明细编号</th> -->
-<!-- 										<th>供应商</th> -->
-										<th>商品链接</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
+		<div class="list-content">
+			<div class="row content-container">
+				<div class="col-md-12 container-right active">
+					<table id="itemTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th width="10%">商品编码</th>
+								<th width="30%">商品名称</th>
+								<th width="50%">商品链接</th>
+								<th width="10%">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 	</section>
-	</section>
+</section>
 	
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 

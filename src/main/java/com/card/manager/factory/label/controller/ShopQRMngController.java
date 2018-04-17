@@ -58,7 +58,7 @@ public class ShopQRMngController extends BaseController {
 		}
 		context.put("strLink", strLink);
 		
-		return forword("label/shop/mng_1", context);
+		return forword("label/shop/mng", context);
 	}
 	
 	@RequestMapping(value = "/downLoadFile")
