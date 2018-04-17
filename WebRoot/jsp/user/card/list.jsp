@@ -102,10 +102,8 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].cardBank;
 		str += "</td><td>" + list[i].cardName;
 		str += "</td><td>" + list[i].cardMobile;
-		str += "</td><td>" ;
-		str += "<a href='#' onclick='toEdit("+list[i].id+")'><i class='fa  fa-pencil' style='font-size:20px;margin-left:5px'></i></a>";
-		str += "</td><td>" ;
-		str += "<button type='button' class='btn btn-danger' onclick='toDelete(\""+list[i].id+"\")' >解绑</button>";
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")'>编辑</a>";
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toDelete(\""+list[i].id+"\")'>解绑</a>";
 		str += "</td></tr>";
 	}
 

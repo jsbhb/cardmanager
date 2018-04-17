@@ -8,141 +8,93 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
+	<section class="content-header">
+	      <ol class="breadcrumb">
+	        <li><a href="javascript:void(0);">首页</a></li>
+	        <li>个人中心</li>
+	        <li class="active">提现申请</li>
+	      </ol>
+	      <div class="search">
+	      	<input type="text" name="payNo" placeholder="请输入交易流水号">
+	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
+	      	<div class="moreSearchBtn">高级搜索</div>
+		  </div>
+    </section>
 	<section class="content">
-		<div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">搜索</h5>
-	            	<div class="box-tools pull-right">
-	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
+		<div class="moreSearchContent">
+			<div class="row form-horizontal list-content">
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<select class="form-control" name="status" id="status">
+	                   		<option value="">--请选择申请状态--</option>
+               	  			<option selected="selected" value="1">待处理</option>
+               	  			<option value="2">已同意</option>
+               	  			<option value="3">已拒绝</option>
+		              	</select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="hidPayNo" placeholder="请输入交易流水号">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="outMoney" placeholder="请输入提现金额">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchBtns">
+						 <div class="lessSearchBtn">简易搜索</div>
+                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+                         <button type="button" class="clear">清除选项</button>
+                    </div>
+                </div>
+            </div>
+		</div>
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-12 list-btns">
+					<button type="button" onclick="toAdd()">新增提现申请</button>
+				</div>
 			</div>
-		    <div class="box-body">
-			<div class="row form-horizontal query">
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">提现金额</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-		                  			<input type="text" class="form-control" name="outMoney">
-				                </div>
-							</div>
-						</div>
-					</div><div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">申请状态</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="status" id="status" style="width: 160px;">
-				                   		<option value="">全部</option>
-		                   	  			<option selected="selected" value="1">待处理</option>
-		                   	  			<option value="2">已同意</option>
-		                   	  			<option value="3">已拒绝</option>
-					              	</select>
-				                </div>
-							</div>
-						</div>
+			<div class="row content-container">
+				<div class="col-md-12 container-right active">
+					<table id="orderTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th>角色名称</th>
+								<th>提现时余额</th>
+								<th>提现金额</th>
+								<th>申请状态</th>
+								<th>银行名称</th>
+								<th>银行卡号</th>
+								<th>持卡人姓名</th>
+								<th>转账流水号</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">交易流水号</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-		                  			<input type="text" class="form-control" name="payNo">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4" style="display: none">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">区域中心</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="centerId" id="centerId" style="width: 160px;">
-				                   	  <option selected="selected" value="">未选择</option>
-				                   	  <c:forEach var="center" items="${centerId}">
-		                   	  			<option value="${center.gradeId}">${center.gradeName}</option>
-				                   	  </c:forEach>
-					              	</select>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-4" style="display: none">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">门店</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="shopId" id="shopId" style="width: 150px;">
-				                   	  <option selected="selected" value="">未选择</option>
-				                   	  <c:forEach var="shop" items="${shopId}">
-		                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option>
-				                   	  </c:forEach>
-					              	</select>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-offset-10 col-md-12">
-						<div class="form-group">
-                                <button type="button" class="btn btn-primary" id="querybtns">提交</button>
-                        </div>
-                     </div>
 				</div>
 			</div>
 		</div>
-		
-	
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">
-								<button type="button" onclick="toAdd()" class="btn btn-primary">新增提现申请</button>
-								</h3>
-							</div>
-							<table id="orderTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>角色名称</th>
-										<th>提现时余额</th>
-										<th>提现金额</th>
-										<th>申请状态</th>
-										<th>银行名称</th>
-										<th>银行卡号</th>
-										<th>持卡人姓名</th>
-										<th>转账流水号</th>
-<!-- 										<th>最后操作时间</th> -->
-<!-- 										<th>最后操作者</th> -->
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
 	</section>
-	</section>
+</section>
 	
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 
@@ -150,12 +102,12 @@
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/user/userWithdrawalsMng/dataList.shtml",
-			numPerPage:"20",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/user/userWithdrawalsMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -189,34 +141,8 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		
-		var tmpType = list[i].operatorType;
-		var tmpId = list[i].operatorId;
-		if (tmpType == 0) {
-			var tmpCenterName = "";
-			var centerSelect = document.getElementById("centerId");
-			var options = centerSelect.options;
-			for(var j=0;j<options.length;j++){
-				if (tmpId==options[j].value) {
-					tmpCenterName = options[j].text;
-					break;
-				}
-			}
-			str += "<td>" + (tmpCenterName == "" ? "" : tmpCenterName);
-		} else if (tmpType == 1) {
-			var tmpShopName = "";
-			var shopSelect = document.getElementById("shopId");
-			var soptions = shopSelect.options;
-			for(var j=0;j<soptions.length;j++){
-				if (tmpId==soptions[j].value) {
-					tmpShopName = soptions[j].text;
-					break;
-				}
-			}
-			str += "<td>" + (tmpShopName == "" ? "" : tmpShopName);
-		} else if (tmpType == 2) {
-			str += "<td>" + (list[i].operatorName == null ? "" : list[i].operatorName);
-		}
+		var tmpName = ${opt.gradeName};
+		str += "<td>" + (tmpName == null ? "" : tmpName);
 		str += "</td><td>" + list[i].startMoney;
 		str += "</td><td>" + list[i].outMoney;
 
