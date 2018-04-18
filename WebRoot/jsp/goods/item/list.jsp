@@ -63,20 +63,20 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="itemCode" placeholder="请输入商家编码">
-					</div>
-				</div>
-				<div class="col-xs-3">
-					<div class="searchItem">
 			           <input type="text" class="form-control" name="hidGoodsName" placeholder="请输入商品名称">
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
-               			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
-               			<input type="hidden" class="form-control" name="typeId" id="typeId" value="">
-               			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="">
+					</div>
+           			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
+           			<input type="hidden" class="form-control" name="typeId" id="typeId" value="">
+           			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="">
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="itemCode" placeholder="请输入商家编码">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -143,6 +143,7 @@
 							<tr>
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="15%">商品名称</th>
+								<th width="5%">明细编码</th>
 								<th width="10%">商家编码</th>
 								<th width="8%">商品品牌</th>
 								<th width="12%">商品分类</th>
@@ -153,7 +154,6 @@
 								<th width="5%">商品价格</th>
 								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
-								<th width="5%">明细编码</th>
 								<c:choose>
 									<c:when test="${opt.gradeId == 0}">
 										<th width="12%">操作</th>
@@ -231,6 +231,7 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		str += "</td><td>" + list[i].goodsName;
+		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
 			str += "</td><td>";
@@ -274,7 +275,6 @@ function rebuildTable(data){
 			case '2':str += "</td><td>可分销";break;
 			default:str += "</td><td>状态错误："+status;
 		}
-		str += "</td><td>" + list[i].itemId;
 		var gradeId = "${opt.gradeId}";
 		if(gradeId == 0){
 			if (status != 2) {

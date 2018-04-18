@@ -215,6 +215,8 @@ body.hold-transition .main-header .logo {
 }
 .content > .list-content{
 	padding-bottom: 40px;
+	overflow: hidden;
+	min-height: 500px;
 }
 .choose-content{
 	overflow:hidden;
