@@ -8,9 +8,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
 </head>
 <body>
 <section class="content-wrapper query">
@@ -70,7 +67,7 @@
 						<input type="hidden" class="form-control" name="gradeId" id="gradeId" >
 					</div>
 				</div>
-			    <div class="select-content" style="width: 200px;left: calc(50% + 39px);top: 105px;">
+			    <div class="select-content" style="width: 200px;left: calc(50% + 46px);top: 105px;">
 	           		<ul class="first-ul" style="margin-left:10px;">
 	           			<c:forEach var="menu" items="${list}">
 	           				<c:set var="menu" value="${menu}" scope="request" />
@@ -90,17 +87,17 @@
 <!-- 				</div> -->
 				<div class="col-xs-3">
 					<div class="searchItem">
-						<input type="text" class="form-control" name="orderId" placeholder="请输入商品编码">
+						<input type="text" class="form-control" name="orderId" placeholder="请输入订单号">
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-						<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
+						<input type="text" class="form-control" name="itemId" placeholder="请输入商品编号">
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-						<input type="text" class="form-control" name="itemCode" placeholder="请输入商家商品编码">
+						<input type="text" class="form-control" name="itemCode" placeholder="请输入商家编码">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -150,11 +147,14 @@
 	</section>
 	</section>
 	
-	<%@include file="../../resource.jsp"%>
-	<script src="${wmsUrl}/js/pagination.js"></script>
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
-
+//点击搜索按钮
+$('.searchBtn').on('click',function(){
+	$("#querybtns").click();
+});
 
 /**
  * 初始化分页信息

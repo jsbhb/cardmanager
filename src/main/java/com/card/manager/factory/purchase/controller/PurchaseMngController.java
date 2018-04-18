@@ -128,7 +128,7 @@ public class PurchaseMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.TBSyncGoods(itemId, staffEntity);
@@ -269,7 +269,7 @@ public class PurchaseMngController extends BaseController {
 			staffEntity.setGradeId(-1);
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.puton(itemId, staffEntity);
@@ -288,7 +288,7 @@ public class PurchaseMngController extends BaseController {
 			staffEntity.setGradeId(-1);
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.putoff(itemId, staffEntity);

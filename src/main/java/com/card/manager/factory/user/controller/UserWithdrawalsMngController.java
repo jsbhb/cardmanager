@@ -19,16 +19,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.ServerCenterContants;
-import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.finance.model.Withdrawals;
-import com.card.manager.factory.order.model.PushUser;
+import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.user.model.CardEntity;
-import com.card.manager.factory.user.model.CenterRebate;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
 
 @Controller
 @RequestMapping("/admin/user/userWithdrawalsMng")
@@ -36,14 +36,15 @@ public class UserWithdrawalsMngController extends BaseController {
 	
 	@Resource
 	FinanceMngService financeMngService;
+	
+	@Resource
+	GradeMngService gradeMngService;
 
 	@RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		context.put("centerId", CachePoolComponent.getCenter(opt.getToken()));
-		context.put("shopId", CachePoolComponent.getShop(opt.getToken()));
 		return forword("user/withdrawals/list", context);
 	}
 
@@ -54,34 +55,23 @@ public class UserWithdrawalsMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			if (staffEntity.getGradeLevel() == 2) {
-				entity.setOperatorType(0);
-				entity.setOperatorId(staffEntity.getGradeId());
-			} else if (staffEntity.getGradeLevel() == 3) {
-				entity.setOperatorType(1);
-				entity.setOperatorId(staffEntity.getShopId());
-			} else {
-				entity.setOperatorType(2);
-				entity.setOperatorId(staffEntity.getUserCenterId());
+			String hidPayNo = req.getParameter("hidPayNo");
+			if (!StringUtil.isEmpty(hidPayNo)) {
+				entity.setPayNo(hidPayNo);
 			}
+			entity.setOperatorId(staffEntity.getGradeId());
 
 			pcb = financeMngService.dataList(entity, params, staffEntity.getToken(),
 					ServerCenterContants.FINANCE_CENTER_WITHDRAWALS_QUERY, Withdrawals.class);
 			
+			GradeEntity grade = gradeMngService.queryById(staffEntity.getGradeId()+"", staffEntity.getToken());
+			
 			if (pcb != null) {
-				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
 				List<Object> list = (ArrayList<Object>)pcb.getObj();
 				Withdrawals withdrawals = null;
 				for(Object info : list){
 					withdrawals = (Withdrawals) info;
-					if ((withdrawals.getOperatorId() != null && withdrawals.getOperatorId() != 0) && withdrawals.getOperatorType() == 2) {
-						for(PushUser pu : push) {
-							if (withdrawals.getOperatorId().toString().equals(pu.getUserId().toString())) {
-								withdrawals.setOperatorName(pu.getName());
-								break;
-							}
-						}
-					}
+					withdrawals.setOperatorName(grade.getGradeName());
 				}
 				pcb.setObj(list);
 			}

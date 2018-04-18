@@ -318,9 +318,9 @@
 								<table id="goodsTable" class="table table-hover">
 									<thead>
 										<tr>
-											<th>明细编号</th>
-											<th>商品编码</th>
-											<th>sku</th>
+											<th>商品编号</th>
+											<th>商家编码</th>
+											<th>货号</th>
 											<th>商品名称</th>
 											<th>商品价格</th>
 											<th>实际价格</th>

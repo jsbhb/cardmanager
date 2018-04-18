@@ -65,10 +65,11 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
+								<th width="5%">基础编码</th>
 								<th width="14%">品牌名称</th>
 								<th width="20%">商品分类</th>
 								<th width="25%">商品名称</th>
-								<th width="10%">计量单位</th>
+								<th width="5%">计量单位</th>
 								<th width="10%">海关代码</th>
 								<th width="8%">增值税率</th>
 								<th width="8%">海关税率</th>
@@ -143,6 +144,7 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
+		str += "<td>" + list[i].id;
 		str += "</td><td>" + list[i].brand;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
 		str += "</td><td>" + list[i].goodsName;

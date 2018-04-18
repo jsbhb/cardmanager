@@ -55,7 +55,7 @@
 				</div>
 				<div class="col-xs-4">
 					<div class="form-group">
-						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">明细编码</label>
+						<label class="col-sm-4 control-label no-padding-right" for="form-field-1">商品编号</label>
 						<div class="col-sm-8">
 							<div class="input-group">
 			                  <input type="text" class="form-control" name="itemId">
@@ -129,7 +129,7 @@
 										<th>商品名称</th>
 										<th>itemCode</th>
 										<th>商品编码</th>
-										<th>明细编码</th>
+										<th>商品编号</th>
 										<th>订货价</th>
 										<th>最小起批</th>
 										<th>最大起批</th>

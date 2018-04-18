@@ -372,7 +372,7 @@ public class GoodsItemMngController extends BaseController {
 
 		String id = req.getParameter("id");
 		if (StringUtil.isEmpty(id)) {
-			context.put(ERROR, "没有明细编号");
+			context.put(ERROR, "没有商品编号");
 			return forword("error", context);
 		}
 		try {
@@ -395,7 +395,7 @@ public class GoodsItemMngController extends BaseController {
 
 		String id = req.getParameter("id");
 		if (StringUtil.isEmpty(id)) {
-			context.put(ERROR, "没有明细编号");
+			context.put(ERROR, "没有商品编号");
 			return forword("error", context);
 		}
 		try {
@@ -457,7 +457,7 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.beUse(itemId, staffEntity.getToken(), staffEntity.getOptid());
@@ -475,7 +475,7 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.beFx(itemId, staffEntity.getToken(), staffEntity.getOptid());
@@ -493,7 +493,7 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.syncStock(itemId, staffEntity);
@@ -511,7 +511,7 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.fx(itemId, staffEntity.getToken(), staffEntity.getOptid(), staffEntity.getGradeId());
@@ -529,7 +529,7 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			if (StringUtil.isEmpty(itemId)) {
-				sendFailureMessage(resp, "操作失败：没有明细编号");
+				sendFailureMessage(resp, "操作失败：没有商品编号");
 				return;
 			}
 			goodsItemService.noBeFx(itemId, staffEntity.getToken(), staffEntity.getOptid());

@@ -63,7 +63,7 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
+	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入商品编号">
                			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
 					</div>
 				</div>
@@ -104,7 +104,7 @@
 								<th width="10%">商品价格</th>
 								<th width="10%">商品库存</th>
 								<th width="5%">商品状态</th>
-								<th width="10%">明细编码</th>
+								<th width="10%">商品编号</th>
 								<th width="10%">操作</th>
 							</tr>
 						</thead>

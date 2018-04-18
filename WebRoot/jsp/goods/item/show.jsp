@@ -35,7 +35,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">明细编码</label>
+							<label class="col-sm-2 control-label no-padding-right">商品编号</label>
 							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">

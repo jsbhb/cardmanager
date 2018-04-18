@@ -68,7 +68,7 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入明细编码">
+	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入商品编号">
 					</div>
            			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
            			<input type="hidden" class="form-control" name="typeId" id="typeId" value="">
@@ -143,7 +143,7 @@
 							<tr>
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="15%">商品名称</th>
-								<th width="5%">明细编码</th>
+								<th width="5%">商品编号</th>
 								<th width="10%">商家编码</th>
 								<th width="8%">商品品牌</th>
 								<th width="12%">商品分类</th>

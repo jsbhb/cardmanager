@@ -96,7 +96,10 @@
 <script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
-
+//点击搜索按钮
+$('.searchBtn').on('click',function(){
+	$("#querybtns").click();
+});
 
 /**
  * 初始化分页信息
@@ -141,8 +144,7 @@ function rebuildTable(data){
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		var tmpName = ${opt.gradeName};
-		str += "<td>" + (tmpName == null ? "" : tmpName);
+		str += "<td>" + (list[i].operatorName == null ? "" : list[i].operatorName);
 		str += "</td><td>" + list[i].startMoney;
 		str += "</td><td>" + list[i].outMoney;
 
