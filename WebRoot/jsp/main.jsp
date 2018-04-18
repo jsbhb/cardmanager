@@ -22,10 +22,12 @@
   <style>
   	.iframePage{
   		background: #f9f9f9;
-  		padding: 10px;
   		color: #333;
   		overflow: auto;
   		width: calc(100% - 136px);
+  	}
+  	.default-content{
+  		padding: 10px;
   	}
   	.today-orders{
   		background: #fff;
@@ -174,26 +176,28 @@
   </aside>
 
    <div id="page-wrapper" class="iframePage">
-	<div class="today-orders">
-		<h1>当日统计</h1>
-		<div class="today-orders-item">
-			<a href="javascript:void(0);">0</a>
-			<p>出库单数</p>
+	<div class="default-content">
+		<div class="today-orders">
+			<h1>当日统计</h1>
+			<div class="today-orders-item">
+				<a href="javascript:void(0);">0</a>
+				<p>出库单数</p>
+			</div>
+			<div class="today-orders-item">
+				<a href="javascript:void(0);">0</a>
+				<p>入库单数</p>
+			</div>
+			<div class="today-orders-item">
+				<a href="javascript:void(0);">0</a>
+				<p>销售额</p>
+			</div>
 		</div>
-		<div class="today-orders-item">
-			<a href="javascript:void(0);">0</a>
-			<p>入库单数</p>
+	<!-- 	<div class="today-pie"> -->
+	<!-- 		<div class="today-pie-content" id="today-pie-content"></div> -->
+	<!-- 	</div> -->
+		<div class="week-line">
+			<div class="week-line-content" id="week-line-content"></div>
 		</div>
-		<div class="today-orders-item">
-			<a href="javascript:void(0);">0</a>
-			<p>销售额</p>
-		</div>
-	</div>
-<!-- 	<div class="today-pie"> -->
-<!-- 		<div class="today-pie-content" id="today-pie-content"></div> -->
-<!-- 	</div> -->
-	<div class="week-line">
-		<div class="week-line-content" id="week-line-content"></div>
 	</div>
    </div>
 </div>

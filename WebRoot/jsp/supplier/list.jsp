@@ -8,30 +8,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
 <section class="content-wrapper">
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>供应商管理</a></li>
+	        <li><a href="javascript:void(0);">供应商管理</a></li>
 	        <li class="active">供应商列表</li>
 	      </ol>
-	      <div class="search">
-	      	<input type="text" name="name" placeholder="输入供应商名称" >
-	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
-		  </div>
     </section>
 	<section class="content">
 		<section class="content">
-			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
-				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
-			</div>
-			
 			<div class="list-content">
 				<div class="row">
 					<div class="col-md-10 list-btns">
@@ -43,7 +30,6 @@
 						<table id="baseTable" class="table table-hover myClass">
 							<thead>
 								<tr>
-									<th>操作</th>
 									<th>供应商名称</th>
 									<th>国家省市</th>
 									<th>地址</th>
@@ -52,6 +38,7 @@
 									<th>邮箱</th>
 									<th>传真</th>
 									<th>创建时间</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -68,7 +55,9 @@
 	</section>
 	</section>
 	
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<%@include file="../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 
@@ -118,10 +107,8 @@ function rebuildTable(data){
 
 	var str = "";
 	for (var i = 0; i < list.length; i++) {
-		str += "<tr>";
-		//if ("${privilege>=2}") {
-		
-		str += "</td><td>" + list[i].supplierName;
+		str += "<tr><td>";
+		str += list[i].supplierName;
 		str += "</td><td>" + (list[i].country == null ? "" : list[i].country) +" "+(list[i].province == null ? "" : list[i].province);
 		str += "</td><td>" + (list[i].city == null ? "" : list[i].city)+" "+(list[i].area == null ? "" : list[i].area)+" "+(list[i].address == null ? "" : list[i].address);
 		str += "</td><td>" + (list[i].operator == null ? "" : list[i].operator);
@@ -129,11 +116,8 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].email == null ? "" : list[i].email);
 		str += "</td><td>" + (list[i].fax == null ? "" : list[i].fax);
 		str += "</td><td>" + (list[i].enterTime==null ? "" : list[i].enterTime);
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='#' onclick='toEdit("+list[i].id+")'>编辑</a>";
-			str += "</td>";
-		}
+		str += "</td><td>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")' >编辑</a>";
 		str += "</td></tr>";
 	}
 		

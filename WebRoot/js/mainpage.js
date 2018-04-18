@@ -49,7 +49,7 @@ $(function() {
     	}
     	
     	var width = "100%";
-    	var height = window.innerHeight-topOffset;
+    	var height = window.innerHeight-topOffset-10;
         newIframeObject.width=width;
         newIframeObject.height=height; 
         newIframeObject.src=this.href;

@@ -103,6 +103,7 @@ public class FuncMngController extends BaseController {
 			Page<FuncEntity> page = null;
 			Map<String, Object> params = new HashMap<String, Object>();
 
+			params.put("name", req.getParameter("name"));
 			params.put("parentId", req.getParameter("parentId"));
 
 			String queryAll = req.getParameter("queryAll");

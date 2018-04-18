@@ -22,18 +22,20 @@
       </ol>
 	</section>
 	<section class="content" style="align:center">
-		<div class="row">
-			<div class="col-md-12 list-btns">
-				<button type="button" onclick = "toAdd(0,0)">新增一级角色</button>
+		<div class=list-content>
+			<div class="row">
+				<div class="col-md-12 list-btns">
+					<button type="button" onclick = "toAdd(0,0)">新增一级角色</button>
+				</div>
 			</div>
-		</div>
-		<div class="treeList">
-		<ul>
-			<c:forEach var="menu" items="${roleTree}">
-				<c:set var="menu" value="${menu}" scope="request" />
-				<%@include file="recursive.jsp"%>  
-			</c:forEach>
-		</ul>
+			<div class="treeList">
+				<ul>
+					<c:forEach var="menu" items="${roleTree}">
+						<c:set var="menu" value="${menu}" scope="request" />
+						<%@include file="recursive.jsp"%>  
+					</c:forEach>
+				</ul>
+			</div>
 		</div>
 	</section>
 </section>

@@ -8,21 +8,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
     <section class="content-header">
 		      <ol class="breadcrumb">
 		        <li><a href="javascript:void(0);">系统管理</a></li>
 		        <li class="active">分级管理</li>
 		      </ol>
 		      <div class="search">
-		      	<input type="text" name="name" placeholder="输入分级名称" >
+		      	<input type="text" name="gradeName" placeholder="输入分级名称" >
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 			  </div>
 	    </section>
@@ -62,6 +57,8 @@
 		</div>
 	</section>
 </section>
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 

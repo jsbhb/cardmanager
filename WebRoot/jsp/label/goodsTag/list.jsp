@@ -98,8 +98,8 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "</td><td>" + list[i].tagName;
 		str += "</td><td>";
-		str += "<button type='button' class='btn btn-danger' onclick='toEdit(\""+list[i].id+"\")' >修改</button>";
-		str += "<button type='button' class='btn btn-danger' onclick='toDelete(\""+list[i].id+"\")' >删除</button>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit(\""+list[i].id+"\")' >修改</a>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toDelete(\""+list[i].id+"\")' >删除</a>";
 		str += "</td></tr>";
 	}
 	$("#itemTable tbody").html(str);

@@ -8,22 +8,15 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
 
 </head>
 <body>
 <section class="content-wrapper">
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);"><i class="fa fa-dashboard"></i>系统管理</a></li>
+	        <li><a href="javascript:void(0);">系统管理</a></li>
 	        <li class="active">员工管理</li>
 	      </ol>
-	      <div class="search">
-	      	<input type="text" name="name" placeholder="输入员工名称" >
-	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
-	      	<div class="moreSearchBtn">高级搜索</div>
-		  </div>
     </section>
     <section class="content">
 			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
@@ -64,6 +57,8 @@
 		</section>
 	</section>
 	
+<%@include file="../../resource.jsp"%>
+<script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
