@@ -55,6 +55,10 @@ public class MallMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
+		//分级类型不是海外购时，提示无法使用功能
+		if (opt.getGradeType() != 1) {
+			return forword("mall/goods/notice", context);
+		}
 		return forword("mall/index/mng", context);
 	}
 

@@ -25,7 +25,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">店铺编号</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" readonly class="form-control" name="shopId" value="${opt.shopId}">
+					<input type="text" readonly class="form-control" name="shopId" value="${opt.gradeId}">
 				</div>
 			</div>
 			<div class="list-item">
