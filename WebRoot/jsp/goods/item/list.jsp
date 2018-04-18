@@ -155,12 +155,12 @@
 								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
 								<c:choose>
-									<c:when test="${opt.gradeId == 0}">
+									<c:when test="${opt.gradeId == 0 || opt.gradeId == 2}">
 										<th width="12%">操作</th>
 									</c:when>
-									<c:when test="${opt.gradeId != 0}">
+									<c:otherwise>
 										<th width="12%">返佣</th>
-									</c:when>
+									</c:otherwise>
 								</c:choose>
 							</tr>
 						</thead>
@@ -276,7 +276,7 @@ function rebuildTable(data){
 			default:str += "</td><td>状态错误："+status;
 		}
 		var gradeId = "${opt.gradeId}";
-		if(gradeId == 0){
+		if(gradeId == 0 ||gradeId == 2){
 			if (status != 2) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 			} else {
@@ -290,6 +290,7 @@ function rebuildTable(data){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
 			}else if(status == 2){
 				str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
 			}
 			if(status==1||status==2){
 				if(list[i].supplierName!="天天仓"&&list[i].supplierName!=null){

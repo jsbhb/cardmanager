@@ -140,9 +140,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
+		params.put("gradeId", id);
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY+"?type="+type, token, true, null,
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY, token, true, null,
 				HttpMethod.GET, params);
 		
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -240,21 +240,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		List<CardEntity> retList = new ArrayList<CardEntity>();
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
-		String operId = "";
-		String operType = "";
-		if (staffEntity.getGradeLevel() == 1) {
-			operId = staffEntity.getUserCenterId()+"";
-			operType = "2";
-		} else if (staffEntity.getGradeLevel() == 2) {
-			operId = staffEntity.getGradeId()+"";
-			operType = "0";
-		} else if (staffEntity.getGradeLevel() == 3) {
-			operId = staffEntity.getShopId()+"";
-			operType = "1";
-		}
-		params.put("id", operId);
+		params.put("gradeId", staffEntity.getGradeId());
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_LIST+"?type="+operType, staffEntity.getToken(), true, staffEntity,
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_LIST, staffEntity.getToken(), true, staffEntity,
 				HttpMethod.GET, params);
 		
 		JSONObject json = JSONObject.fromObject(query_result.getBody());

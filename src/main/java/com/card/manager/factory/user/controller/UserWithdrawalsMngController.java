@@ -111,24 +111,14 @@ public class UserWithdrawalsMngController extends BaseController {
 		String type = "";
 		if (opt.getGradeLevel() == 1) {
 			return forword("user/withdrawals/notice", context);
-		} else if (opt.getGradeLevel() == 2) {
+		} else {
 			typeId = opt.getGradeId()+"";
-			type = "0";
-//			CenterRebate centerRebate = financeMngService.queryCenterRebate(typeId, type, opt.getToken());
-//			context.put("info", centerRebate);
-			context.put("typeId", typeId);
-			context.put("type", type);
-			return forword("user/withdrawals/show", context);
-		}else if (opt.getGradeLevel() == 3) {
-			typeId = opt.getShopId()+"";
-			type = "1";
 			ShopRebate shopRebate = financeMngService.queryShopRebate(typeId, type, opt.getToken());
 			context.put("info", shopRebate);
 			context.put("typeId", typeId);
 			context.put("type", type);
 			return forword("user/withdrawals/show", context);
 		}
-		return forword("user/withdrawals/notice", context);
 	}
 	
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)

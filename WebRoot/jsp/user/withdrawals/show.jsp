@@ -8,114 +8,71 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
-<%-- <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css"> --%>
-<%-- <script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script> --%>
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="gradeForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>新增提现申请</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">角色名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" readonly class="form-control" name="operatorName"value="${opt.gradeName}">
-				                  	<input type="hidden" readonly class="form-control" name="operatorId" id="operatorId" value="${typeId}">
-				                  	<input type="hidden" readonly class="form-control" name="operatorType" id="operatorType" value="${type}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">可提现金额</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="startMoney" id="startMoney" value="${info.canBePresented}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">提现金额</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="outMoney" id="outMoney" value="0">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>银行卡信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行卡列表</label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<select class="form-control" name="cardId" id="cardId" style="width: 160px;">
-				                   	  <c:forEach var="card" items="${cards}">
-		                   	  			<option value="${card.cardNo}#${card.cardName}#${card.cardBank}">${card.cardBank}</option>
-				                   	  </c:forEach>
-					              	</select>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">银行卡号</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="cardNo" id="cardNo" value="${card.cardNo}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">持卡人姓名</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="cardName" id="cardName" value="${card.cardName}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="gradeForm">
+			<div class="title">
+	       		<h1>提现申请</h1>
+	       	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">角色名称</div>
+				<div class="col-sm-9 item-right">
+           			<input type="text" readonly class="form-control" name="operatorName"value="${opt.gradeName}">
+	               	<input type="hidden" readonly class="form-control" name="operatorId" id="operatorId" value="${typeId}">
+	               	<input type="hidden" readonly class="form-control" name="operatorType" id="operatorType" value="${type}">
 				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">可提现金额</div>
+				<div class="col-sm-9 item-right">
+           			<input type="text" readonly class="form-control" name="startMoney" id="startMoney" value="${info.canBePresented}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">提现金额</div>
+				<div class="col-sm-9 item-right">
+           			<input type="text" class="form-control" name="outMoney" id="outMoney" value="0">
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>银行卡信息</h1>
+	       	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">银行卡列表</div>
+				<div class="col-sm-9 item-right">
+           			<select class="form-control" name="cardId" id="cardId">
+                   	  <c:forEach var="card" items="${cards}">
+           	  			<option value="${card.cardNo}#${card.cardName}#${card.cardBank}">${card.cardBank}</option>
+                   	  </c:forEach>
+	              	</select>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">银行名称</div>
+				<div class="col-sm-9 item-right">
+           			<input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">银行卡号</div>
+				<div class="col-sm-9 item-right">
+           			<input type="text" readonly class="form-control" name="cardNo" id="cardNo" value="${card.cardNo}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">持卡人姓名</div>
+				<div class="col-sm-9 item-right">
+           			<input type="text" readonly class="form-control" name="cardName" id="cardName" value="${card.cardName}">
+				</div>
+			</div>
+	        <div class="submit-btn">
+	           	<button type="button" id="submitBtn">提交</button>
+	       	</div>
+		</form>
 	</section>
+	<%@include file="../../resource.jsp"%>
 	<script type="text/javascript">
 	
 	$("#cardId").change(function(){

@@ -330,7 +330,7 @@ public class ServerCenterContants {
 	public static final String FINANCE_CENTER_CENTER_CHARGE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/recharge/{centerId}";
 	public static final String FINANCE_CENTER_REBATE_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
-			+ SERVER_CENTER_EDITION + "/finance/rebate/{id}";
+			+ SERVER_CENTER_EDITION + "/finance/rebate/{gradeId}";
 	public static final String FINANCE_CENTER_REBATE_DETAIL_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/rebate/detail";
 	public static final String FINANCE_CENTER_WITHDRAWALS_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
@@ -346,7 +346,7 @@ public class ServerCenterContants {
 	public static final String FINANCE_CENTER_CARDINFO_DELETE = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
 	public static final String FINANCE_CENTER_CARDINFO_LIST = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
-			+ SERVER_CENTER_EDITION + "/finance/card/{id}";
+			+ SERVER_CENTER_EDITION + "/finance/card/{gradeId}";
 	public static final String FINANCE_CENTER_USER_APPLY_WITHDRAWALS = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/withdrawal/apply";
 	public static final String FINANCE_CENTER_REFILLING_QUERY = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
