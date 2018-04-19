@@ -19,6 +19,7 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="${wmsUrl}/css/mainpage.css">
   <link rel="stylesheet" href="${wmsUrl}/css/google-font.css">
+  <link rel="icon" href="../img/icoLogo.png" type="image/x-icon"/>
   <style>
   	.iframePage{
   		background: #f9f9f9;

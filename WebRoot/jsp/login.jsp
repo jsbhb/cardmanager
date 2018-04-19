@@ -10,6 +10,7 @@
 <title>供销贸易后台</title>
 <link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
+<link rel="icon" href="../img/icoLogo.png" type="image/x-icon"/>
 <style>
 	body{
 		background: url("${wmsUrl}/img/background.jpg") no-repeat ;

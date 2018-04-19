@@ -126,7 +126,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
+		params.put("gradeId", id);
 		ResponseEntity<String> query_result = helper.requestWithParams(
 				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY, token, true, null,
 				HttpMethod.GET, params);

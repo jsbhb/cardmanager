@@ -103,7 +103,7 @@ public class GoodsQRMngController extends BaseController {
 			int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(staffEntity.getGradeId()+"");
 			//如果是admin进入则显示海外购的内容
 			if (firstGradeId == 0) {
-				firstGradeId = 4;
+				firstGradeId = 2;
 			}
 			GradeEntity entity = gradeMngService.queryById(firstGradeId+"", staffEntity.getToken());
 			

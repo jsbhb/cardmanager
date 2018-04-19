@@ -17,7 +17,7 @@
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick="toAdd()">发起订单退款</button>
+					<button type="button" id="orderBackBtn">发起订单退款</button>
 				</div>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
        	<div class="list-item">
 			<div class="col-sm-3 item-left">订单编号</div>
 			<div class="col-sm-9 item-right">
-				<input type="text" class="form-control" readonly  value="${order.orderId}">
+				<input type="text" class="form-control" readonly name="orderId" id="orderId" value="${order.orderId}">
 			</div>
 		</div>
        	<div class="list-item">
