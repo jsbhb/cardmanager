@@ -629,15 +629,21 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// -------------------保存商品详情---------------------//
 		String savePath;
 		String invitePath;
-		String pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/") + 1);
-		pathId = pathId.substring(0, pathId.lastIndexOf("."));
+		String pathId = "";
+		if (entity.getGoodsDetailPath() != null) {
+			pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/") + 1);
+			pathId = pathId.substring(0, pathId.lastIndexOf("."));
+		}
+		if (!pathId.equals(entity.getGoodsId()+"")) {
+			pathId = entity.getGoodsId()+"";
+		}
 		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
 			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
 			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
 		} else {
 			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
 					+ staffEntity.getGradeId() + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId() + "	/";
+			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId() + "/";
 		}
 		ReadIniInfo.getInstance();
 		savePath = PathFormat.parse(savePath);

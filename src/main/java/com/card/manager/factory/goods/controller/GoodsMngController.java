@@ -439,7 +439,10 @@ public class GoodsMngController extends BaseController {
 			
 			//初始化商详信息
 			String detailInfo = "";
-			detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+			//包含商详地址
+			if (goodsInfo.getGoods().getDetailPath() != null && goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
+				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+			}
 			context.put("detailInfo", detailInfo);
 			
 			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
