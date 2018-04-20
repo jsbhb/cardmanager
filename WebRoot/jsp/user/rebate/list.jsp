@@ -30,16 +30,14 @@
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 			  </div>
 	    </section>
-		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px;">
-		    <div class="select-content" style="width: 200px;left: calc(100% - 240px);top: -30px;">
-           		<ul class="first-ul" style="margin-left:10px;">
-           			<c:forEach var="menu" items="${list}">
-           				<c:set var="menu" value="${menu}" scope="request" />
-           				<%@include file="recursive.jsp"%>  
-					</c:forEach>
-           		</ul>
-           	</div>
-		</form>
+		 <div class="select-content">
+            <ul class="first-ul" style="margin-left:10px;">
+           		<c:forEach var="menu" items="${list}">
+           			<c:set var="menu" value="${menu}" scope="request" />
+           			<%@include file="recursive.jsp"%>  
+				</c:forEach>
+           	</ul>
+       	</div>
         <div class="main-content">
 			<div class="row">
 				<div class="col-xs-12" >
@@ -197,6 +195,9 @@
 	
 	//点击展开下拉列表
 	$('#gradeName').click(function(){
+		$('.select-content').css('width',$(this).outerWidth());
+		$('.select-content').css('left',$(this).offset().left);
+		$('.select-content').css('top',$(this).offset().top + $(this).height());
 		$('.select-content').stop();
 		$('.select-content').slideDown(300);
 	});

@@ -1,20 +1,10 @@
 
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<!-- 公共资源CSS,JS  -->
-<!--Css -->
-<link rel="stylesheet" href="${wmsUrl}/plugins/layer/layer.css">
-<link rel="stylesheet" href="${wmsUrl}/plugins/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="${wmsUrl}/plugins/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="${wmsUrl}/css/mainpage.css">
-<link rel="stylesheet" href="${wmsUrl}/css/tree.css">
-<link rel="stylesheet" href="${wmsUrl}/adminLTE/css/AdminLTE.css">
-<link rel="stylesheet" href="${wmsUrl}/adminLTE/css/skins/_all-skins.css">
-
-
 <script src="${wmsUrl}/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="${wmsUrl}/plugins/jQueryUI/jquery-ui.js"></script>
 <script src="${wmsUrl}/plugins/layer/layer.js"></script>
 <script src="${wmsUrl}/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="${wmsUrl}/plugins/validator/js/bootstrapValidator.min.js"></script>
 <script src="${wmsUrl}/js/manager.js"></script>
 <script src="${wmsUrl}/js/syExtJquery.js"></script>
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>

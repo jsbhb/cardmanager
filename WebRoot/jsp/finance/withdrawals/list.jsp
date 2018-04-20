@@ -10,9 +10,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resource.jsp"%>
 <script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
 </head>
 <body>
 <section class="content-wrapper">

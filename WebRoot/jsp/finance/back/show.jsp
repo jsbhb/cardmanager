@@ -8,339 +8,196 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
 </head>
 
 <body>
-	<section class="content-wrapper">
-        <div class="content">
-        	<div class="box box-info">
-				<div class="box-header with-border">
-					<div class="box-header with-border">
-		            	<h5 class="box-title">订单基础信息</h5>
-		            	<div class="box-tools pull-right">
-								<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-		              	</div>
-		            </div>
-				</div>
-			    <div class="box-body">
-					<div class="row form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">订单编号</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly id="orderId" value="${order.orderId}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">供应商</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.supplierName}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">消费者编号</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.userId}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">状态</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <c:if test="${order.status==0}">待处理</c:if>
-				                  <c:if test="${order.status==1}">已付款</c:if>
-				                  <c:if test="${order.status==2}">支付单报关</c:if>
-				                  <c:if test="${order.status==3}">已发仓库</c:if>
-				                  <c:if test="${order.status==4}">已报海关</c:if>
-				                  <c:if test="${order.status==5}">单证放行</c:if>
-				                  <c:if test="${order.status==6}">已发货</c:if>
-				                  <c:if test="${order.status==7}">已收货</c:if>
-				                  <c:if test="${order.status==8}">退单</c:if>
-				                  <c:if test="${order.status==9}">超时取消</c:if>
-				                  <c:if test="${order.status==11}">资金池不足</c:if>
-				                  <c:if test="${order.status==12}">资金池已扣款</c:if>
-				                  <c:if test="${order.status==21}">退款中</c:if>
-				                  <c:if test="${order.status==99}">异常状态</c:if>
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">创建时间</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-			                    	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                	</div>
-				                  	<input type="text" class="form-control" name="area" readonly value="${order.createTime}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">所属店铺</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control"  readonly value="${order.shopName}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">所属区域</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-			                    	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                	</div>
-				                  	<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">推手编号</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-			                    	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                	</div>
-				                  	<input type="text" class="form-control" name="pushUserId" readonly value="${order.pushUserId}">
-				                </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="box box-info">
-				<div class="box-header with-border">
-					<div class="box-header with-border">
-		            	<h5 class="box-title">订单详情</h5>
-		            	<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						</div>
-		            </div>
-				</div>
-				<div class="box-body">
-					<div class="row form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">支付类型</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-									<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-									<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly  value="微信"></c:if>
-									<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly  value="支付宝"></c:if>
-									<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly  value="银联"></c:if>
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">支付金额</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payment}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">税费</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.taxFee}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">邮费</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.postFee}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">消费税</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.exciseTax}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">支付时间</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payTime}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">交易流水号</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payNo}">
-				                </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="box box-info">
-				<div class="box-header with-border">
-					<div class="box-header with-border">
-		            	<h5 class="box-title">物流信息</h5>
-		            	<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						</div>
-		            </div>
-				</div>
-				<div class="box-body">
-					<div class="row form-horizontal">
-						<c:if test="${order.orderExpressList!=null}">
-							<c:forEach var="express" items="${order.orderExpressList}">
-								<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right">快递公司</label>
-								<div class="col-sm-4">
-									<div class="input-group">
-										<div class="input-group-addon">
-					                    	<i class="fa fa-pencil"></i>
-					                  	</div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressName}">
-					                </div>
-								</div>
-								<label class="col-sm-1 control-label no-padding-right">快递单号</label>
-								<div class="col-sm-4">
-									<div class="input-group">
-					                  <div class="input-group-addon">
-					                    <i class="fa fa-pencil"></i>
-					                  </div>
-			                  			<input type="text" class="form-control" readonly  value="${express.expressId}">
-					                </div>
-								</div>
-						</div>
-							</c:forEach>
-						</c:if>
-					</div>
-				</div>
-			</div>
-			<div class="box box-info">
-				<div class="box-header with-border">
-					<div class="box-header with-border">
-		            	<h5 class="box-title">收货人信息</h5>
-		            	<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						</div>
-		            </div>
-				</div>
-				<div class="box-body">
-					<div class="row form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">名称</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-									<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveName}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">电话</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receivePhone}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">收获地址</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-								 	<div class="input-group-addon">
-				                    	<i class="fa fa-pencil"></i>
-				                  	</div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveProvince}${order.orderDetail.receiveCity}${order.orderDetail.receiveArea}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right">详细地址</label>
-							<div class="col-sm-4">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveAddress}">
-				                </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="box box-info">
-				<div class="box-header with-border">
-					<div class="box-header with-border">
-		            	<h5 class="box-title">订单商品</h5>
-		            	<div class="box-tools pull-right">
-							<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						</div>
-		            </div>
-				</div>
-				<div class="box-body">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="panel panel-default">
-								<table id="goodsTable" class="table table-hover">
-									<thead>
-										<tr>
-											<th>商品编号</th>
-											<th>商家编码</th>
-											<th>货号</th>
-											<th>商品名称</th>
-											<th>商品价格</th>
-											<th>实际价格</th>
-											<th>数量</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-								<div class="pagination-nav">
-									<ul id="pagination" class="pagination">
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="itemForm">
+		<div class="title">
+       		<h1>订单基础信息</h1>
+       	</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">订单编号</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderId}">
 			</div>
 		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">供应商</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.supplierName}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">消费者编号</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.userId}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">状态</div>
+			<div class="col-sm-9 item-right">
+				<c:if test="${order.status==0}">待支付</c:if>
+                <c:if test="${order.status==1}">已付款</c:if>
+                <c:if test="${order.status==2}">支付单报关</c:if>
+                <c:if test="${order.status==3}">已发仓库</c:if>
+                <c:if test="${order.status==4}">已报海关</c:if>
+                <c:if test="${order.status==5}">单证放行</c:if>
+                <c:if test="${order.status==6}">已发货</c:if>
+                <c:if test="${order.status==7}">已收货</c:if>
+                <c:if test="${order.status==8}">退单</c:if>
+                <c:if test="${order.status==9}">超时取消</c:if>
+                <c:if test="${order.status==11}">资金池不足</c:if>
+                <c:if test="${order.status==12}">已支付</c:if>
+                <c:if test="${order.status==21}">退款中</c:if>
+                <c:if test="${order.status==99}">异常状态</c:if>
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">创建时间</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" name="area" readonly value="${order.createTime}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">订单来源</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">所属分级</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" name="area" readonly value="${order.shopName}">
+			</div>
+		</div>
+		<div class="title">
+       		<h1>订单详情</h1>
+       	</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">支付类型</div>
+			<div class="col-sm-9 item-right">
+				<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly  value="微信"></c:if>
+				<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly  value="支付宝"></c:if>
+				<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly  value="银联"></c:if>
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">支付金额</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.payment}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">税费</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.taxFee}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">邮费</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.postFee}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">消费税</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.exciseTax}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">支付时间</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.payTime}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">交易流水号</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.payNo}">
+			</div>
+		</div>
+		<div class="title">
+       		<h1>物流信息</h1>
+       	</div>
+       	<c:if test="${orderExpressList!=null}">
+			<c:forEach var="express" items="${orderExpressList}">
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">快递公司</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" readonly  value="${express.expressName}">
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">快递单号</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" readonly  value="${express.expressId}">
+					</div>
+				</div>
+			</c:forEach>
+		</c:if>
+		<div class="title">
+       		<h1>收货人信息</h1>
+       	</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">名称</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveName}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">电话</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.receivePhone}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">收获地址</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveProvince}${order.orderDetail.receiveCity}${order.orderDetail.receiveArea}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">详细地址</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveAddress}">
+			</div>
+		</div>
+		<div class="title">
+       		<h1>订单商品</h1>
+       	</div>
+		<div class="list-content" style="padding-bottom:40px; min-height:0;">
+			<div class="row">
+				<div class="col-md-12">
+					<table id="goodsTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th>商品编号</th>
+								<th>商家编码</th>
+								<th>货号</th>
+								<th>商品名称</th>
+								<th>商品价格</th>
+								<th>实际价格</th>
+								<th>数量</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>	
+		<div class="pagination-nav">
+			<ul id="pagination" class="pagination">
+			</ul>
+		</div>
+		</form>
 	</section>
+	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/js/pagination.js"></script>
+	<%@include file="../../resource.jsp"%>
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 	<script type="text/javascript">
 	
@@ -348,12 +205,12 @@
 	 * 初始化分页信息
 	 */
 	var options = {
-				queryForm : ".query",
-				url :  "${wmsUrl}/admin/finance/orderBackMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
-				numPerPage:"20",
-				currentPage:"",
-				index:"1",
-				callback:rebuildTable
+		queryForm : ".query",
+		url :  "${wmsUrl}/admin/order/stockOutMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
+		numPerPage:"10",
+		currentPage:"",
+		index:"1",
+		callback:rebuildTable
 	}
 
 

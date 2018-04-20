@@ -8,9 +8,9 @@
 <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 <meta content="width=device-width,initial-scale=1,user-scalable=no" name="viewport">
 <title>供销贸易后台</title>
-<link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
-<link rel="icon" href="../img/icoLogo.png" type="image/x-icon"/>
+<link rel="stylesheet" href="${wmsUrl}/plugins/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="${wmsUrl}/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="icon" href="${wmsUrl}/img/logo_1.png" type="image/x-icon"/>
 <style>
 	body{
 		background: url("${wmsUrl}/img/background.jpg") no-repeat ;
@@ -156,10 +156,10 @@
         </div>
         
     
-	<script src="${wmsUrl}/js/jquery.min.js" type='text/javascript'></script>
-	<script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="${wmsUrl}/js/manager.js"></script>
-	<script type="text/javascript">
+	<script src="${wmsUrl}/plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="${wmsUrl}/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="${wmsUrl}/js/manager.js"></script>
+	<script>
 	
 	jQuery(document).ready(function() {
 		

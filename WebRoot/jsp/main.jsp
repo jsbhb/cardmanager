@@ -9,17 +9,16 @@
   <title>供销贸易后台</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="${wmsUrl}/layer/layer.css">
+  <link rel="stylesheet" href="${wmsUrl}/plugins/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="${wmsUrl}/plugins/layer/layer.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="${wmsUrl}/plugins/font-awesome/css/font-awesome.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="${wmsUrl}/adminLTE/css/AdminLTE.css">
   <link rel="stylesheet" href="${wmsUrl}/adminLTE/css/skins/_all-skins.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="${wmsUrl}/css/mainpage.css">
-  <link rel="stylesheet" href="${wmsUrl}/css/google-font.css">
-  <link rel="icon" href="../img/icoLogo.png" type="image/x-icon"/>
+  <link rel="icon" href="${wmsUrl}/img/logo_1.png" type="image/x-icon"/>
   <style>
   	.iframePage{
   		background: #f9f9f9;
@@ -62,15 +61,10 @@
   	.today-orders .today-orders-item p{
   		margin-top: 5px;
   	}
-  	.today-pie,
   	.week-line{
   		padding: 10px;
   		margin-top: 10px;
   		background: #fff;
-  	}
-  	.today-pie .today-pie-content{
-  		width: 100%;
-  		height: 250px;
   	}
   	.week-line .week-line-content{
   		width: 100%;
@@ -138,19 +132,6 @@
   </header>
   <aside class="main-sidebar">
     <section class="sidebar">
-      <!-- Sidebar user panel -->
-<!--       <div class="user-panel"> -->
-<!--         <div class="pull-left image"> -->
-<%--           <img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg" class="img-circle" alt="User Image"> --%>
-<!--         </div> -->
-<!--         <div class="pull-left info"> -->
-<%--           <p>${operator.optName}</p> --%>
-<!--           <a href="javascript:void(0);"><i class="fa fa-circle text-success"></i> Online</a> -->
-<!--         </div> -->
-<!--       </div> -->
-      <!-- search form -->
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <c:forEach var="item" items="${childList}">
         <li class="treeview">
@@ -193,9 +174,6 @@
 				<p>销售额</p>
 			</div>
 		</div>
-	<!-- 	<div class="today-pie"> -->
-	<!-- 		<div class="today-pie-content" id="today-pie-content"></div> -->
-	<!-- 	</div> -->
 		<div class="week-line">
 			<div class="week-line-content" id="week-line-content"></div>
 		</div>
@@ -204,12 +182,12 @@
 </div>
 
 <!-- jQuery 2.2.3 -->
-<script src="${wmsUrl}/jquery/jquery.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/mainpage.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/mainPageNav.js"></script>
+<script src="${wmsUrl}/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="${wmsUrl}/js/mainpage.js"></script>
+<script src="${wmsUrl}/js/mainPageNav.js"></script>
 <script src="${wmsUrl}/plugins/jQueryUI/jquery-ui.js"></script>
-<script src="${wmsUrl}/layer/layer.js"></script>
-<script src="${wmsUrl}/build/dist/echarts.js"></script>
+<script src="${wmsUrl}/plugins/layer/layer.js"></script>
+<script src="${wmsUrl}/plugins/build/dist/echarts.js"></script>
 <script>
   var option = {
      	    title : {
@@ -318,7 +296,7 @@
 	//创建图表
 	  require.config({
 	        paths: {
-	            echarts: '${wmsUrl}/build/dist'
+	            echarts: '${wmsUrl}/plugins/build/dist'
 	        }
 	    });
 	    require(
@@ -339,7 +317,7 @@
   
 </script>
 <!-- Bootstrap 3.3.6 -->
-<script src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
+<script src="${wmsUrl}/plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>
 </body>

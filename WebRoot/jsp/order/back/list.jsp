@@ -63,11 +63,11 @@
 				
 				<div class="col-xs-3">
 					<div class="searchItem">
-			            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" >
+			            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" >
 						<input type="hidden" class="form-control" name="gradeId" id="gradeId" >
 					</div>
 				</div>
-			    <div class="select-content" style="width: 200px;left: calc(50% + 46px);top: 105px;">
+			    <div class="select-content">
 	           		<ul class="first-ul" style="margin-left:10px;">
 	           			<c:forEach var="menu" items="${list}">
 	           				<c:set var="menu" value="${menu}" scope="request" />
@@ -311,7 +311,9 @@ $('.select-content').on('click','li span i.active',function(){
 
 //点击展开下拉列表
 $('#gradeName').click(function(){
-	
+	$('.select-content').css('width',$(this).outerWidth());
+	$('.select-content').css('left',$(this).offset().left);
+	$('.select-content').css('top',$(this).offset().top + $(this).height());
 	$('.select-content').stop();
 	$('.select-content').slideDown(300);
 });

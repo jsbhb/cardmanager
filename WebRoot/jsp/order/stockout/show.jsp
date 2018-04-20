@@ -168,7 +168,7 @@
 		<div class="title">
        		<h1>订单商品</h1>
        	</div>
-		<div class="list-content" style="padding-bottom:40px;">
+		<div class="list-content" style="padding-bottom:40px; min-height:0;">
 			<div class="row">
 				<div class="col-md-12">
 					<table id="goodsTable" class="table table-hover myClass">

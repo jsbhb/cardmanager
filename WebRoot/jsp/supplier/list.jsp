@@ -18,40 +18,38 @@
 	      </ol>
     </section>
 	<section class="content">
-		<section class="content">
-			<div class="list-content">
-				<div class="row">
-					<div class="col-md-10 list-btns">
-						<button type="button" onclick="toAdd()">新增供应商</button>
+		<div class="list-content">
+			<div class="row">
+				<div class="col-md-10 list-btns">
+					<button type="button" onclick="toAdd()">新增供应商</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table id="baseTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th>供应商名称</th>
+								<th>国家省市</th>
+								<th>地址</th>
+								<th>负责人</th>
+								<th>电话</th>
+								<th>邮箱</th>
+								<th>传真</th>
+								<th>创建时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<table id="baseTable" class="table table-hover myClass">
-							<thead>
-								<tr>
-									<th>供应商名称</th>
-									<th>国家省市</th>
-									<th>地址</th>
-									<th>负责人</th>
-									<th>电话</th>
-									<th>邮箱</th>
-									<th>传真</th>
-									<th>创建时间</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
-						<div class="pagination-nav">
-							<ul id="pagination" class="pagination">
-							</ul>
-						</div>
-					</div>
-				</div>	
 			</div>
-		</section>
+		</div>
 	</section>
 	</section>
 	

@@ -162,19 +162,20 @@ body.hold-transition .main-header .logo {
   overflow: hidden;
 /*   padding-bottom: 50px; */
 }
-.content > .moreSearchContent{
+.moreSearchContent{
 	background: #f9f9f9;
 	display: none;
 	margin-bottom: 10px;
 }
-.content > .moreSearchContent.active{
+.moreSearchContent.active{
 	display:block;
 }
-.content > .moreSearchContent > .list-content{
+.moreSearchContent > .list-content{
     padding: 16px 0 3px 0;
+    min-height: 0 ;
 }
-.content > .moreSearchContent > .list-content > div > .searchItem > input,
-.content > .moreSearchContent > .list-content > div > .searchItem > select{
+.moreSearchContent > .list-content > div > .searchItem > input,
+.moreSearchContent > .list-content > div > .searchItem > select{
 	outline: none;
 	font-size:12px;
 	border: 1px solid #d9d9d9;
@@ -184,14 +185,14 @@ body.hold-transition .main-header .logo {
 	padding: 0 0 0 10px;
 	margin-bottom: 10px;
 }
-.content > .moreSearchContent > .list-content > div > .searchBtns > div{
+.moreSearchContent > .list-content > div > .searchBtns > div{
 	float: left;
     color: #76a7e5;
     font-size: 12px;
     margin: 6px 10px 0 30px;
     cursor: pointer;
 }
-.content > .moreSearchContent > .list-content > div > .searchBtns > button{
+.moreSearchContent > .list-content > div > .searchBtns > button{
 	border-radius: 2px;
     padding: 2.5px 15px;
     outline: none;
@@ -201,19 +202,19 @@ body.hold-transition .main-header .logo {
     border: 1px solid #5491de;
     color: #fff;
 }
-.content > .moreSearchContent > .list-content > div > .searchBtns > .clear{
+.moreSearchContent > .list-content > div > .searchBtns > .clear{
 	background: #f7f7f7;
     border: 1px solid #d9d9d9;
     color: #666;
     margin-left: 5px;
 }
-.content > .moreSearchContent > .list-content > div > .searchBtns > .add{
+.moreSearchContent > .list-content > div > .searchBtns > .add{
 	background: #f7f7f7;
     border: 1px solid #d9d9d9;
     color: #666;
     margin-left: 5px;
 }
-.content > .list-content{
+.list-content{
 	padding-bottom: 40px;
 	overflow: hidden;
 	min-height: 500px;
@@ -396,61 +397,61 @@ body.hold-transition .main-header .logo {
 .content-iframe > form{
 	position: relative;
 }
-.content-iframe > form > .list-item{
+.list-item{
 	overflow: hidden;
 	margin-bottom: 10px;
 }
-.content-iframe > form > .list-item > .item-left{
+.list-item > .item-left{
 	text-align: right;
 	padding: 7px 0;	
 }
-.content-iframe > form > .list-item > .item-right{
+.list-item > .item-right{
 	overflow: hidden;
 }
-.content-iframe > form > .list-item > .item-right > i{
+.list-item > .item-right > i{
 	top: -2px;
     left: 400px;
 }
-.content-iframe > form > .list-item > .item-right > i.glyphicon-ok,
-.content-iframe > form > .list-item > .item-right > .right-item > i.glyphicon-ok{
+.list-item > .item-right > i.glyphicon-ok,
+.list-item > .item-right > .right-item > i.glyphicon-ok{
 	color: green;
 }
-.content-iframe > form > .list-item > .item-right > i.glyphicon-remove,
-.content-iframe > form > .list-item > .item-right > .right-item > i.glyphicon-remove{
+.list-item > .item-right > i.glyphicon-remove,
+.list-item > .item-right > .right-item > i.glyphicon-remove{
 	color: red;
 }
-.content-iframe > form > .list-item > .item-right > small{
+.list-item > .item-right > small{
     color: red;
 	margin-top: 35px;
 }
-.content-iframe > form > .list-item > .item-right > small[data-bv-validator=regexp]{
+.list-item > .item-right > small[data-bv-validator=regexp]{
 	margin-top: 0;
 }
-.content-iframe > form > .list-item > .item-right > small[data-bv-validator=numeric]{
+.list-item > .item-right > small[data-bv-validator=numeric]{
 	margin-top: 0;
 }
-.content-iframe > form > .list-item > .label-content > small{
+.list-item > .label-content > small{
 	float: left;
     position: relative;
     left: 15px;
     width: 200px;
     margin: 0;
 }
-.content-iframe > form > .list-item > .item-right > .right-item{
+.list-item > .item-right > .right-item{
 	position: relative;
 }
-.content-iframe > form > .list-item > .item-right > .right-item > i{
+.list-item > .item-right > .right-item > i{
 	top: -2px;
     left: 160px;
 }
-.content-iframe > form > .list-item > .item-right > select,
-.content-iframe > form > .list-item > .item-right > input{
+.list-item > .item-right > select,
+.list-item > .item-right > input{
 	height: 31px;
 	width: 420px;
 	float: left;
 	font-size: 12px;
 }
-.content-iframe > form > .list-item > .item-right > .item-content{
+.list-item > .item-right > .item-content{
 	color:#999;
 	float: left;
     line-height: 31px;
@@ -523,36 +524,36 @@ body.hold-transition .main-header .logo {
 .select-content ul li span{
 	cursor:pointer;
 }
-.content-iframe > form > .list-item > .item-right > div.right-item,
-.content-iframe > form > .list-item > .item-right > div.right-items{
+.list-item > .item-right > div.right-item,
+.list-item > .item-right > div.right-items{
 	padding: 0;
 	float:left;
 }
-.content-iframe > form > .list-item > .item-right > div.right-items > input,
-.content-iframe > form > .list-item > .item-right > div.right-items > select{
+.list-item > .item-right > div.right-items > input,
+.list-item > .item-right > div.right-items > select{
 	width: 130px;
 	height: 31px;
 	margin-right: 15px;
 	font-size: 12px;
 }
-.content-iframe > form > .list-item > .item-right > div.right-item > input,
-.content-iframe > form > .list-item > .item-right > div.right-item > select{
+.list-item > .item-right > div.right-item > input,
+.list-item > .item-right > div.right-item > select{
 	width: 200px;
 	height: 31px;
 	margin-right: 20px;
 	font-size: 12px;
 }
-.content-iframe > form > .list-item > .item-right > div.last-items > input,
-.content-iframe > form > .list-item > .item-right > div.last-items > select,
-.content-iframe > form > .list-item > .item-right > div.last-item > input,
-.content-iframe > form > .list-item > .item-right > div.last-item > select{
+.list-item > .item-right > div.last-items > input,
+.list-item > .item-right > div.last-items > select,
+.list-item > .item-right > div.last-item > input,
+.list-item > .item-right > div.last-item > select{
 	margin-right: 0;
 }
-.content-iframe > form > .list-item > .item-right > .label-content{
+.list-item > .item-right > .label-content{
 	overflow: hidden;
 	float: left;
 }
-.content-iframe > form > .list-item > .item-right > .label-content > li{
+.list-item > .item-right > .label-content > li{
 	float: left;
 	display: inline-block;
     line-height: 20px;
@@ -566,16 +567,16 @@ body.hold-transition .main-header .logo {
     margin: 4px 8px 4px 0;
     cursor: pointer;
 }
-.content-iframe > form > .list-item > .item-right > .label-content > li.active{
+.list-item > .item-right > .label-content > li.active{
 	background-color: #5491de;
 	border-color: #5491de;
 	color: #fff;
 }
-.content-iframe > form > .list-item > .item-right > .addBtn{
+.list-item > .item-right > .addBtn{
 	line-height: 31px;
     margin-left: 20px;
 }
-.content-iframe > form > .list-item > .item-right > .item-img{
+.list-item > .item-right > .item-img{
 	float: left;
 	width: 62px;
 	height: 62px;
@@ -585,22 +586,22 @@ body.hold-transition .main-header .logo {
 	margin-right: 5px;
 	position: relative;
 }
-.content-iframe > form > .list-item > .item-right > .choose{
+.list-item > .item-right > .choose{
 	border: 1px solid #d9d9d9;
 }
-.content-iframe > form > .list-item > .item-right > .item-img > .bgColor{
+.list-item > .item-right > .item-img > .bgColor{
 	position: absolute;
     background: rgba(0,0,0,.5);
     width: 100%;
     height: 100%;
     display: none;
 }
-.content-iframe > form > .list-item > .item-right > .item-img > .bgColor > i{
+.list-item > .item-right > .item-img > .bgColor > i{
 	font-size: 18px;
     color: #fff;
     cursor: pointer;
 }
-.content-iframe > form > .list-item > .item-right > .item-img > input[type=file]{
+.list-item > .item-right > .item-img > input[type=file]{
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -608,39 +609,39 @@ body.hold-transition .main-header .logo {
 	height:62px;
 	opacity: 0;
 }
-.content-iframe > form > .list-item > .item-right > .item-img:hover{
+.list-item > .item-right > .item-img:hover{
 	border-color: #5491de;
 	color: #5491de;
 }
-.content-iframe > form > .list-item > .item-right > .choose:hover{
+.list-item > .item-right > .choose:hover{
 	border-color: #d9d9d9;
 }
-.content-iframe > form > .list-item > .item-right > .choose:hover > .bgColor{
+.list-item > .item-right > .choose:hover > .bgColor{
 	display: block;
 }
-.content-iframe > form > .list-item > .item-right > .item-img > img{
+.list-item > .item-right > .item-img > img{
 	float: left;
 	width: 100%;
 	height: 100%;
 }
-.content-iframe > form > .title{
+.title{
 	margin: 15px 20px 24px 20px;
     padding-bottom: 10px;
     font-size: 14px;
     line-height: 16px;
     border-bottom: 1px solid #e9e9e9;
 }
-.content-iframe > form > .title > h1{
+.title > h1{
 	font-size:14px;
 	padding-left: 10px;
     margin: 0 5px 0 0;
     border-left: 3px solid #5491de;
 }
-.content-iframe > form > .submit-btn{
+.submit-btn{
 	text-align: center;
 	margin-bottom: 20px;
 }
-.content-iframe > form > .submit-btn > button{
+.submit-btn > button{
 	display: inline-block;
     margin-top: 10px;
 	margin-right: 60px;

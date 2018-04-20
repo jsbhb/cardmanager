@@ -256,7 +256,7 @@
 	       	</div>
 			<div class="list-item">
 				<div class="col-sm-12">
-					<script id="editor" type="text/plain" name="ueditor" style="height:320px;" align=center></script>
+					<div id="editor" type="text/plain" name="ueditor" style="height:320px;" align=center></div>
 				</div>
 			</div>
 	        <div class="submit-btn">
@@ -271,7 +271,6 @@
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
 	<script type="text/javascript">	 
  	$("#brandId").change(function(){
 		$("#brand").val($("#brandId").find("option:selected").text());

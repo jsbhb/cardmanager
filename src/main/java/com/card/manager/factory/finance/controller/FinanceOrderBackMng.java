@@ -1,6 +1,7 @@
 package com.card.manager.factory.finance.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,16 +21,19 @@ import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
+import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.TreePackUtil;
 
 @Controller
 @RequestMapping("/admin/finance/orderBackMng")
@@ -44,8 +48,15 @@ public class FinanceOrderBackMng extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
-		context.put("centerId", CachePoolComponent.getCenter(opt.getToken()));
-		context.put("shopId", CachePoolComponent.getShop(opt.getToken()));
+		Map<Integer, GradeBO> map = CachePoolComponent.getGrade(opt.getToken());
+		List<GradeBO> list = new ArrayList<GradeBO>();
+		List<GradeBO> result = new ArrayList<>();
+		for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
+			list.add(entry.getValue());
+		}
+		result = TreePackUtil.packGradeChildren(list, opt.getGradeId());
+		Collections.sort(result);
+		context.put("list", result);
 		return forword("finance/back/list", context);
 	}
 
@@ -233,6 +244,8 @@ public class FinanceOrderBackMng extends BaseController {
 					break;
 				}
 			}
+			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());
+			context.put("orderExpressList", orderExpressList);
 			return forword("finance/back/show", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
