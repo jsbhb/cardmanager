@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
+<%@include file="../../resourceLink.jsp"%>
 <script src="${wmsUrl}/js/mytree.js"></script>
 
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
@@ -122,8 +122,8 @@
             </div>
         </div>
 	</section>
+	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
-	
 	 function btnSubmit(){
 		 
 		 var roleName = $('#roleName').val();

@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
+<%@include file="../../resourceLink.jsp"%>
 </head>
 
 <body>
@@ -272,7 +273,7 @@
 			</div>
 		</form>
 	</section>
-	<%@include file="../../resource.jsp"%>
+	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script src="${wmsUrl}/js/pagination.js"></script>
 	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>

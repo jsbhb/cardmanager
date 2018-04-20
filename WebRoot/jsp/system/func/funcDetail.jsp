@@ -9,13 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>子模块</title>
-<link rel="stylesheet" href="${wmsUrl}/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="${wmsUrl}/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="${wmsUrl}/css/core.css">
-<script type="text/javascript" src="${wmsUrl}/js/jquery.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="${wmsUrl}/js/pagination.js"></script>
+<%@include file="../../resourceLink.jsp"%>
 </head>
 
 <body>
@@ -91,7 +85,7 @@
 	      </div>
 		</div>
 	</div>
-	
+<%@include file="../../resourceScript.jsp"%>
 <script type="text/javascript">
 
 /**
