@@ -34,7 +34,7 @@
 					<div class="row">
 						<div class="col-md-10 list-btns">
 							<button type="button" onclick="toAdd()">新增模块</button>
-							<button id="backBtn" type="button" onclick="back()">返回上级菜单</button>
+							<button id="backBtn" type="button" onclick="back()" style="display:none">返回上级菜单</button>
 						</div>
 					</div>
 					<div class="col-md-12">
@@ -65,7 +65,6 @@
 <script type="text/javascript">
 
 $(function(){
-	$("#backBtn").hide();
 })
 /**
  * 初始化分页信息
