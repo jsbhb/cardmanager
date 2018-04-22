@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@include file="../../resourceLink.jsp"%>
 
 <section class="content-wrapper">
 	<section class="content-header">
@@ -61,8 +62,7 @@
 	</section>
 </section>
 
- <!-- Bootstrap 3.3.6 -->
-<%@include file="../../resource.jsp" %>
+<%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/js/mytree.js"></script>
 <script type="text/javascript">
 

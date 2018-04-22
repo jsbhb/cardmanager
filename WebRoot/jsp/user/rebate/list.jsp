@@ -8,13 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
-<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
-<script src="${wmsUrl}/js/pagination.js"></script>
-<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
-
+<%@include file="../../resourceLink.jsp"%>
 </head>
 
 <body>
@@ -115,6 +109,8 @@
 			</div>
 		</div>
 	</section>
+	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
+	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
 	
 	/**

@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>密码修改</title>
-<%@include file="../resource.jsp"%>
+<%@include file="../resourceLink.jsp"%>
 </head>
 <body>
 	<div id="page-wrapper">
@@ -34,6 +34,7 @@
 			</div>
 		</div>
 	</div>
+	<%@include file="../resourceScript.jsp"%>
 	<script type="text/javascript">
 		function ConfirmChange() {
 			if(!comparePwd()){

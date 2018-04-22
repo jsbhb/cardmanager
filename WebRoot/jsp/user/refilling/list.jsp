@@ -8,11 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-
-
-
+<%@include file="../../resourceLink.jsp"%>
 </head>
 <body>
 <section class="content-wrapper">
@@ -113,7 +109,7 @@
 		</div>	
 	</section>
 	</section>
-	
+	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 

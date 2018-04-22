@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="${wmsUrl}/adminLTE/css/style.css">
-
+<%@include file="../../resourceLink.jsp"%>
 </head>
 <body>
 
@@ -39,8 +39,7 @@
 	<span>保存设置</span>
 </div>
 	
-<%@include file="../../resource.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
+<%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 

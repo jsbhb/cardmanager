@@ -8,6 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%@include file="../../resourceLink.jsp"%>
 </head>
 <body>
 	<section class="content-header">
@@ -45,7 +46,7 @@
 	       	</div>
 		</form>
 	</section>
-	<%@include file="../../resource.jsp"%>
+	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
 	function downLoadFile(path){
 		location.href="${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26");

@@ -1,6 +1,7 @@
 package com.card.manager.factory.finance.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.finance.model.CapitalPool;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -29,6 +31,7 @@ import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.TreePackUtil;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONArray;
@@ -46,7 +49,16 @@ public class CapitalPoolMng extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		context.put("centers", CachePoolComponent.getCenter(opt.getToken()));
+		Integer gradeId = opt.getGradeId();
+		List<GradeBO> list = new ArrayList<GradeBO>();
+		List<GradeBO> result = new ArrayList<>();
+		Map<Integer, GradeBO> map = CachePoolComponent.getGrade(opt.getToken());
+		for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
+			list.add(entry.getValue());
+		}
+		result = TreePackUtil.packGradeChildren(list, gradeId);
+		Collections.sort(result);
+		context.put("list", result);
 		return forword("finance/poolcharge/list", context);
 	}
 	
@@ -57,7 +69,7 @@ public class CapitalPoolMng extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 
-			String centerId = req.getParameter("centerId");
+			String centerId = req.getParameter("gradeId");
 			if (!StringUtil.isEmpty(centerId)) {
 				entity.setCenterId(Integer.parseInt(centerId));
 			}

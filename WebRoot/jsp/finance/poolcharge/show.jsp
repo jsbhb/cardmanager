@@ -8,66 +8,39 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<%@include file="../../resource.jsp"%>
-
-<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
-<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+<%@include file="../../resourceLink.jsp"%>
 </head>
-
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="gradeForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>基本信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">区域中心名称</label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-		                  			<input type="text" readonly class="form-control" name="centerName" id="centerName" value="${centerName}">
-				                  	<input type="hidden" readonly class="form-control" name="centerId" id="centerId" value="${centerId}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">充值金额<font style="color:red">*</font> </label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="money" id="money">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">交易流水号<font style="color:red">*</font> </label>
-							<div class="col-sm-6">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-pencil"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="payNo" id="payNo">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-	                            <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-iframe content">
+		<form class="form-horizontal" role="form" id="gradeForm">
+			<div class="title">
+	       		<h1>分级信息</h1>
+	       	</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">分级名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" readonly class="form-control" name="centerName" id="centerName" value="${centerName}">
+                  	<input type="hidden" readonly class="form-control" name="centerId" id="centerId" value="${centerId}">
 				</div>
 			</div>
-		</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">充值金额</div>
+				<div class="col-sm-9 item-right">
+                	<input type="text" class="form-control" name="money" id="money">
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">交易流水号</div>
+				<div class="col-sm-9 item-right">
+                	<input type="text" class="form-control" name="payNo" id="payNo">
+				</div>
+			</div>
+			<div class="submit-btn">
+	           	<button type="button" id="submitBtn">提交</button>
+	       	</div>
+		</form>
 	</section>
+	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
@@ -145,9 +118,6 @@
 	  	  }
       }
   });
-	
-	
-	
 	</script>
 </body>
 </html>

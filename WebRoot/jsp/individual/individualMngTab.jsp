@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>个人管理</title>
-<%@include file="../resource.jsp"%>
+<%@include file="../resourceLink.jsp"%>
 </head>
 <body>
 	<div class="row nav-row">
@@ -20,6 +20,7 @@
 	</div>
 	<div id="page-wrapper">
 	</div>
+	<%@include file="../resourceScript.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/navPage.js"></script>
 	<script type="text/javascript">
 		$(function(){
