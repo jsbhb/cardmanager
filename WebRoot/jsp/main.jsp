@@ -70,6 +70,33 @@
   		width: 100%;
   		height: 500px;
   	}
+  	.customer-service{
+  		position: fixed;
+  		bottom: 30%;
+  		right: 20px;
+  	}
+  	.customer-service li{
+  		margin-bottom: 5px;
+  		position: relative;
+  	}
+  	.customer-service li span{
+  		position: absolute;
+	    bottom: 0;
+	    left: -77px;
+	    display: inline-block;
+	    margin: 7px 0;
+	    padding: 2px 5px;
+	    background: #fff;
+	    border: 1px solid #d9d9d9;
+	    display: none;
+  	}
+  	.customer-service li:hover > span{
+  		display: block;
+  	}
+  	.customer-service img{
+  		width: 40px;
+  		height: 40px;
+  	}
   </style>
   
 
@@ -179,6 +206,23 @@
 		</div>
 	</div>
    </div>
+</div>
+
+<div class="customer-service">
+	<ul>
+		<li>
+			<a href="http://wpa.qq.com/msgrd?v=3&uin=610139553&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
+			<span>在线客服1</span>
+		</li>
+		<li>
+			<a href="http://wpa.qq.com/msgrd?v=3&uin=1990002080&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
+			<span>在线客服2</span>
+		</li>
+		<li>
+			<a href="http://wpa.qq.com/msgrd?v=3&uin=281388429&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
+			<span>在线客服3</span>
+		</li>
+	</ul>
 </div>
 
 <!-- jQuery 2.2.3 -->
