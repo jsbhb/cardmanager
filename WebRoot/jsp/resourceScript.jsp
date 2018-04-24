@@ -5,12 +5,15 @@
 <script src="${wmsUrl}/plugins/layer/layer.js"></script>
 <script src="${wmsUrl}/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="${wmsUrl}/plugins/validator/js/bootstrapValidator.min.js"></script>
+<script src="${wmsUrl}/plugins/build/dist/echarts.js"></script>
 <script src="${wmsUrl}/js/manager.js"></script>
 <script src="${wmsUrl}/js/syExtJquery.js"></script>
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>
 <script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/js/commond.js"></script>
 <script src="${wmsUrl}/js/jump-list.js"></script>
+<script src="${wmsUrl}/js/use-chart.js"></script>
+
 <script>
 $(function(){
 	 $.ajaxSetup({

@@ -121,4 +121,51 @@ $('.sidebar-menu').on('click','.treeview',function(){
 //    	},300);
 //    }
 	
-})
+});
+$('.sidebar-toggle').click(function(){
+	if( $('body').hasClass('sidebar-collapse')){
+		$('body').removeClass('sidebar-collapse');
+	}else{
+		$('body').addClass('sidebar-collapse');
+	}
+    setTimeout(function(){
+        $("#page-wrapper").css("width",window.innerWidth - $('.main-sidebar').width());
+        setCharts('week-line-content',option);
+    },300);
+});
+
+function modifyPwd(){
+    var index = layer.open({
+        title:"修改密码",
+        type: 2,
+        content: '${wmsUrl}/admin/modifyPwd.shtml',
+        maxmin: true
+    });
+    layer.full(index);
+}
+
+$('.type-bar').on('click','.type-bar-item',function(){
+    $('.type-bar .type-bar-item').removeClass('active');
+    $(this).addClass('active');
+});
+
+window.onload = function(){
+    var id = GetQueryString('id');
+    $('.type-bar-item[data-id='+id+']').addClass('active');
+}
+
+$('.type-bar').on('click','.type-bar-item',function(){
+    var id = $(this).attr('data-id');//获取id
+    var url = window.location.href;
+    if(url.indexOf('id') != -1){
+        url = url.split('?id')[0];
+    }
+    window.location.href = url + '?id=' + id;
+
+});
+
+function GetQueryString(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return  unescape(r[2]); return null;
+}

@@ -359,4 +359,19 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/rebate/recharge/audit";
 	public static final String FINANCE_CENTER_CENTER_LIQUIDATION = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/capitalpool/liquidation/{centerId}";
+	
+	/**
+	 * 调度器管理中心url
+	 */
+	/*------------------------调度器管理---------------------*/
+	public static final String TIMETASK_CENTER_QUERY_ALL_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
+			+ SERVER_CENTER_EDITION + "/timetask/queryAllTimeTask";
+	public static final String TIMETASK_CENTER_QUERY_TIMETASK_BY_ID = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
+			+ SERVER_CENTER_EDITION + "/timetask/queryTimeTaskById";
+	public static final String TIMETASK_CENTER_START_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
+			+ SERVER_CENTER_EDITION + "/timetask/start";
+	public static final String TIMETASK_CENTER_STOP_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
+			+ SERVER_CENTER_EDITION + "/timetask/stop";
+	public static final String TIMETASK_CENTER_UPDATE_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
+			+ SERVER_CENTER_EDITION + "/timetask/update";
 }
