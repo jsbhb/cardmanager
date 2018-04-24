@@ -34,6 +34,7 @@ public class RoleEntity {
 	private List<RoleEntity> children;
 	private int parentId;
 	private String parentName;
+	private String privilege;
 
 	public int getRoleId() {
 		return roleId;
@@ -129,6 +130,14 @@ public class RoleEntity {
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
+	}
+
+	public String getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(String privilege) {
+		this.privilege = privilege;
 	}
 
 }

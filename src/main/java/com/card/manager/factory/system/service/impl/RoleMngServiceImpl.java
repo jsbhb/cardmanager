@@ -7,15 +7,17 @@
  */
 package com.card.manager.factory.system.service.impl;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.system.mapper.RoleMapper;
 import com.card.manager.factory.system.model.RoleEntity;
 import com.card.manager.factory.system.service.RoleMngService;
@@ -72,18 +74,46 @@ public class RoleMngServiceImpl implements RoleMngService {
 		
 		if(needUpdateFunc){
 			String funcIds = role.getFuncId();
+			String privileges = role.getPrivilege();
 			
 			roleMapper.deleteAllFunc(role.getRoleId());
 			
-			if(funcIds == null||"".equals(funcIds)){
+			if(StringUtils.isEmpty(funcIds)){
 				return;
 			}
 			
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("roleId", role.getRoleId());
-			params.put("list", role.getFuncId().split(","));
-			params.put("opt", role.getOpt());
-			roleMapper.insertRoleFunc(params);
+			List<RoleEntity> rolesData = new ArrayList<RoleEntity>();
+			
+			String[] funcArray = funcIds.split(",");
+			String[] privilegeArray = privileges.split(",");
+			RoleEntity roleData;
+			boolean isDeal;
+			
+			for(String func:funcArray){
+				roleData = new RoleEntity();
+				roleData.setRoleId(role.getRoleId());
+				roleData.setOpt(role.getOpt());
+				roleData.setFuncId(func);
+				isDeal = false;
+				if(!StringUtils.isEmpty(privileges)){
+					for(String privilege:privilegeArray){
+						if(privilege.equals(func)){
+							roleData.setPrivilege(AuthCommon.PRIVILEGE_DEAL);
+							isDeal = true;
+							break;
+						}
+					}
+				}
+				if(!isDeal){
+					roleData.setPrivilege(AuthCommon.PRIVILEGE_QUERY);
+				}
+				
+				rolesData.add(roleData);
+			}
+			
+			
+			
+			roleMapper.insertRoleFunc(rolesData);
 					
 		}
 	}

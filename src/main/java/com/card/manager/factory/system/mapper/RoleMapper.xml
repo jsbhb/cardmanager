@@ -76,10 +76,10 @@
 
 	<insert id="insertRoleFunc" parameterType="object">
 		insert IGNORE into auth_rolefunc
-		(roleid,funcid,createTime,updateTime,opt) value
-		<foreach collection="list" item="funcId" index="index"
+		(roleid,funcid,privilege,createTime,updateTime,opt) value
+		<foreach collection="list" item="item" index="index"
 			separator=",">
-			(#{roleId},#{funcId},now(),now(),#{opt})
+			(#{item.roleId},#{item.funcId},#{item.privilege},now(),now(),#{item.opt})
 		</foreach>
 	</insert>
 

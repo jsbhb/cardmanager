@@ -158,8 +158,6 @@ public class RoleMngController extends BaseController {
 		return forword("system/role/list", context);
 	}
 
-	
-
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {

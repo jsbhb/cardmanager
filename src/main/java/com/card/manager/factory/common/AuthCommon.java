@@ -35,6 +35,9 @@ public class AuthCommon {
 	public static final int EARA_ADMIN = 2;
 	public static final int SHOP_ADMIN = 3;
 
+	public static final String PRIVILEGE_DEAL = "1";
+	public static final String PRIVILEGE_QUERY = "2";
+
 	public static List<AuthInfo> treeAuthInfo(List<AuthInfo> authInfos) {
 		if (authInfos == null || authInfos.size() == 0) {
 			return null;
@@ -91,7 +94,7 @@ public class AuthCommon {
 
 		return menuList;
 	}
-	
+
 	public static List<AuthInfo> treeAuthInfo2(List<AuthInfo> authInfos) {
 		if (authInfos == null || authInfos.size() == 0) {
 			return null;

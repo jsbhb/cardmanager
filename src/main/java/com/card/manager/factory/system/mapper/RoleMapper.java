@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.card.manager.factory.base.BaseMapper;
 import com.card.manager.factory.system.model.GradeTypeRole;
+import com.card.manager.factory.system.model.RoleEntity;
 import com.github.pagehelper.Page;
 
 /**  
@@ -65,7 +66,7 @@ public interface RoleMapper<T> extends BaseMapper<T>{
 	 * @param param  
 	 * @since JDK 1.7
 	 */
-	void insertRoleFunc(Map<String,Object> param);
+	void insertRoleFunc(List<RoleEntity> entity);
 
 	/**  
 	 * deleteAllFunc:删除该角色所有功能. <br/>   

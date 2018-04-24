@@ -15,10 +15,12 @@ $(function(){
     
     $('.tree input[type="checkbox"]').change(function (e) {
     	
+    	
+    	if(!($(this).parent().hasClass('parent_li'))&&$(this).hasClass("ccheck")){
+    		dealChild($(this));
+    	}
     	if($(this).parent().hasClass('parent_li')){
     		dealParent($(this));
-    	}else{
-    		dealChild($(this));
     	}
     	
         e.stopPropagation();
@@ -26,11 +28,17 @@ $(function(){
     
     function dealParent(node){
     	if(node.is(':checked')){
-    		node.parent('li.parent_li').find("ul input[type='checkbox']").each(function(){
+    		node.parent('li.parent_li').find(".ccheck").each(function(){
+            	$(this).prop("checked",true);
+            });
+    		node.parent('li.parent_li').find(".pcheck").each(function(){
             	$(this).prop("checked",true);
             });
     	}else{
-    		node.parent('li.parent_li').find("ul input[type='checkbox']").each(function(){
+    		node.parent('li.parent_li').find(".ccheck").each(function(){
+            	$(this).prop("checked",false);
+            });
+    		node.parent('li.parent_li').find(".pcheck").each(function(){
             	$(this).prop("checked",false);
             });
     	}
@@ -39,7 +47,7 @@ $(function(){
     function dealChild(node){
     	if(node.is(':checked')){
     		node.parent().parent().parent('li.parent_li').find(".pcheck").prop("checked",true);
-    		node.parent().parent().parent().parent().parent('li.parent_li').find(".pcheck").prop("checked",true);
+    		node.parent().parent().parent().parent().parent('li.parent_li').find(".ppcheck").prop("checked",true);
     	}
     }
 });
