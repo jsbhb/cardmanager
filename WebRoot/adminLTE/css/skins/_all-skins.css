@@ -1826,3 +1826,97 @@
     border-left: 1px solid #d2d6de;
   }
 }
+.iframePage{
+  background: #f9f9f9;
+  color: #333;
+  overflow: auto;
+  width: calc(100% - 136px);
+}
+.default-content{
+  padding: 10px;
+}
+.today-orders{
+  background: #fff;
+  padding: 15px;
+  overflow: hidden;
+}
+.today-orders h1{
+  font-size: 14px;
+  margin: 10px 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.today-orders .today-orders-item{
+  float: left;
+  width: calc(100% / 3 - 1px);
+  height: 80px;
+  padding: 10px 20px;
+  text-align: center;
+  border-right: 1px dashed #e9e9e9;
+}
+.today-orders .today-orders-item:last-child{
+  border-right:none;
+}
+.today-orders .today-orders-item a{
+  font-size: 22px;
+  line-height: 35px;
+  font-weight: normal;
+  color: #f47162;
+}
+.today-orders .today-orders-item p{
+  margin-top: 5px;
+}
+.week-line{
+  padding: 10px;
+  margin-top: 10px;
+  background: #fff;
+}
+.week-line .week-line-content{
+  width: 100%;
+  height: 500px;
+}
+.week-line .timer-btns ul{
+  overflow: hidden;
+  margin-left: 2%;
+}
+.week-line .timer-btns ul li{
+  float: left;
+  margin-right: 5px;
+  cursor: pointer;
+  color: #666;
+  border: 1px solid #d9d9d9;
+  padding: 0 5px;
+}
+.week-line .timer-btns ul li.active{
+  border-color: #5491de;
+  background-color: #5491de;
+  color: #fff;
+}
+.customer-service{
+  position: fixed;
+  bottom: 5%;
+  right: 10px;
+}
+.customer-service li{
+  margin-bottom: 5px;
+  position: relative;
+}
+.customer-service li span{
+  position: absolute;
+  bottom: 0;
+  left: -77px;
+  display: inline-block;
+  margin: 7px 0;
+  padding: 2px 5px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  display: none;
+}
+.customer-service li:hover > span{
+  display: block;
+}
+.customer-service img{
+  width: 40px;
+  height: 40px;
+}

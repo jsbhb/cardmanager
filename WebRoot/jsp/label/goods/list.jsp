@@ -29,7 +29,7 @@
 			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="itemCode" placeholder="请输入商品编码">
+	                  	<input type="text" class="form-control" name="goodsId" placeholder="请输入商品编码">
 					</div>
 				</div>
 				<div class="col-xs-3">
