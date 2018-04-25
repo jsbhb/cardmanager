@@ -32,82 +32,61 @@
 				</c:forEach>
            	</ul>
        	</div>
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="gradeForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>返佣明细</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分级名称</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="glyphicon glyphicon-user"></i>
-				                  </div>
-		                  			<input type="text" readonly class="form-control" name="gradeName_1" id = "gradeName_1" value="" style="background:#fff;">
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">可提现金额</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-cny fa-fw"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="" style="background:#fff;">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">已提现金额</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-cny fa-fw"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="" style="background:#fff;">
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">待到账金额</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-cny fa-fw"></i>
-				                  </div>
-				                  <input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="" style="background:#fff;">
-				                </div>
-							</div>
-						</div>
-                       <div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>明细列表</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1"></label>
-							<div class="col-sm-10">
-							<div class="box box-warning">
-									<table id="staffTable" class="table table-hover">
-										<thead>
-											<tr>
-												<th>订单号</th>
-												<th>返佣金额</th>
-												<th>完成时间</th>
-											</tr>
-										</thead>
-										<tbody>
-										</tbody>
-									</table>
-									<div class="pagination-nav">
-										<ul id="pagination" class="pagination">
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
+       	<section class="content-iframe content">
+	       	<form class="form-horizontal" role="form" id="gradeForm" >
+	       		<div class="title">
+		       		<h1>返佣明细</h1>
+		       	</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">分级名称</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" readonly class="form-control" name="gradeName_1" id = "gradeName_1" value="" style="background:#fff;">
+					</div>
 				</div>
-			</div>
-		</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">可提现金额</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="" style="background:#fff;">
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">已提现金额</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="" style="background:#fff;">
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">待到账金额</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="" style="background:#fff;">
+					</div>
+				</div>
+	       		<div class="title">
+		       		<h1>明细列表</h1>
+		       	</div>
+		       	<div class="list-content">
+		       		<div class="row content-container">
+		       			<div class="col-md-12 container-right active">
+							<table id="staffTable" class="table table-hover myClass">
+								<thead>
+									<tr>
+										<th>订单号</th>
+										<th>返佣金额</th>
+										<th>完成时间</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<div class="pagination-nav">
+								<ul id="pagination" class="pagination">
+								</ul>
+							</div>
+						</div>
+		       		</div>
+		       	</div>
+	       	</form>
+       	</section>
 	</section>
 	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 	<%@include file="../../resourceScript.jsp"%>

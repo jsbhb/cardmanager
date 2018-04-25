@@ -284,6 +284,16 @@ $('.timer-btns').on('click','li',function(){
 
 });
 
+function modifyPwd(){
+    var index = layer.open({
+        title:"修改密码",
+        type: 2,
+        area:['50%','40%'],
+        content: '${wmsUrl}/admin/modifyPwd.shtml',
+        maxmin: false
+    });
+}
+
 </script>
 </body>
 </html>
