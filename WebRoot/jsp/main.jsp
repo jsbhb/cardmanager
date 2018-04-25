@@ -92,18 +92,14 @@
 	<div class="default-content">
 		<div class="today-orders">
 			<h1>当日统计</h1>
-			<div class="today-orders-item">
-				<a href="javascript:void(0);">0</a>
-				<p>出库单数</p>
-			</div>
-			<div class="today-orders-item">
-				<a href="javascript:void(0);">0</a>
-				<p>入库单数</p>
-			</div>
-			<div class="today-orders-item">
-				<a href="javascript:void(0);">0</a>
-				<p>销售额</p>
-			</div>
+			<c:if test="${id!=35}">
+				<c:forEach var="item" items="${title_data}">
+					<div class="today-orders-item">
+						<a href="javascript:void(0);">${item.value}</a>
+						<p>${item.name}</p>
+					</div>
+				</c:forEach>
+			</c:if>
 		</div>
 		<div class="week-line">
 			<div class="timer-btns">
