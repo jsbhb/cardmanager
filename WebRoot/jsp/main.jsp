@@ -106,7 +106,6 @@
 			</div>
 		</div>
 		<div class="week-line">
-			<div class="week-line-content" id="week-line-content"></div>
 			<div class="timer-btns">
 				<ul>
 					<li class="active">周统计</li>
@@ -114,6 +113,7 @@
 					<li>年统计</li>
 				</ul>
 			</div>
+			<div class="week-line-content" id="week-line-content"></div>
 		</div>
 	</div>
    </div>
@@ -283,6 +283,16 @@ $('.timer-btns').on('click','li',function(){
 	//重新绘制图表
 
 });
+
+function modifyPwd(){
+    var index = layer.open({
+        title:"修改密码",
+        type: 2,
+        area:['50%','40%'],
+        content: '${wmsUrl}/admin/modifyPwd.shtml',
+        maxmin: false
+    });
+}
 
 </script>
 </body>

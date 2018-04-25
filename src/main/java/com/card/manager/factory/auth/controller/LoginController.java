@@ -1,6 +1,8 @@
 package com.card.manager.factory.auth.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.annotation.Auth;
 import com.card.manager.factory.auth.model.AuthInfo;
+import com.card.manager.factory.auth.model.DiagramPojo;
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
@@ -32,15 +35,19 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.ftp.service.SftpService;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.TreePackUtil;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONObject;
@@ -60,6 +67,9 @@ public class LoginController extends BaseController {
 
 	@Resource
 	SysLogger sysLogger;
+
+	private final String TITLE_DATA = "title_data";
+	private final String GOODS_DATA_DIAGRAM = "goods_diagram_data";
 
 	@RequestMapping(value = "/toLogin")
 	@Auth(verifyLogin = false, verifyURL = false)
@@ -259,9 +269,9 @@ public class LoginController extends BaseController {
 		List<AuthInfo> menuList = SessionUtils.getMenuList(req);
 		if (menuList != null) {
 			context.put("menuList", menuList);
-			context.put("id", id);
 			if (StringUtil.isEmpty(id)) {
 				context.put("childList", menuList.get(0).getChildren());
+				id = menuList.get(0).getFuncId();
 			} else {
 				for (AuthInfo auth : menuList) {
 					if (id.equals(auth.getFuncId())) {
@@ -269,10 +279,100 @@ public class LoginController extends BaseController {
 					}
 				}
 			}
+			context.put("id", id);
+		}
+
+		switch (id) {
+		case AuthCommon.OPERATION_DIAGRAM:
+			operationDiagram(operator, context);
+			break;
+		case AuthCommon.ORDER_DIAGRAM:
+			orderDiagram(operator, context);
+			break;
+		case AuthCommon.FINANCIAL_DIAGRAM:
+			financialDiagram(operator, context);
+			break;
+		default:
+			break;
 		}
 
 		context.put("operator", operator);
 		return forword("main", context);
+	}
+
+	/**
+	 * operationDiagram:运营中心. <br/>
+	 * 
+	 * @author hebin
+	 * @param operator
+	 * @param context
+	 * @since JDK 1.7
+	 */
+	private void operationDiagram(StaffEntity operator, Map<String, Object> context) {
+		List<GradeBO> list = new ArrayList<GradeBO>();
+		Map<Integer, GradeBO> gradeMap = CachePoolComponent.getGrade(operator.getToken());
+		Map<Integer, GradeTypeDTO> gradeTypeMap = CachePoolComponent.getGradeType(operator.getToken());
+
+		for (Map.Entry<Integer, GradeBO> entry : gradeMap.entrySet()) {
+			list.add(entry.getValue());
+		}
+		List<GradeBO> gradeTree = TreePackUtil.packGradeChildren(list, operator.getGradeId());
+
+		List<DiagramPojo> diagramList = new ArrayList<DiagramPojo>();
+
+		Map<Integer, Integer> gradeSumMap = new HashMap<Integer, Integer>();
+
+		for (GradeBO gradeBO : gradeTree) {
+			List<GradeBO> children = gradeBO.getChildren();
+			staticGrade(gradeSumMap, children);
+		}
+
+		for (Map.Entry<Integer, Integer> entry : gradeSumMap.entrySet()) {
+			if (gradeTypeMap.get(entry.getKey()) != null) {
+				diagramList.add(new DiagramPojo(gradeTypeMap.get(entry.getKey()).getName(), entry.getValue()));
+			}
+		}
+
+		context.put(TITLE_DATA, diagramList);
+
+	}
+
+	private void staticGrade(Map<Integer, Integer> gradeSumMap, List<GradeBO> children) {
+		if (children == null || children.size() == 0) {
+			return;
+		}
+		for (GradeBO child : children) {
+			if (gradeSumMap.containsKey(child.getGradeType())) {
+				gradeSumMap.put(child.getGradeType(), gradeSumMap.get(child.getGradeType()) + 1);
+			} else {
+				gradeSumMap.put(child.getGradeType(), 1);
+			}
+			staticGrade(gradeSumMap, child.getChildren());
+		}
+	}
+
+	/**
+	 * financialDiagram:财务中心图标. <br/>
+	 * 
+	 * @author hebin
+	 * @param operator
+	 * @param context
+	 * @since JDK 1.7
+	 */
+	private void financialDiagram(StaffEntity operator, Map<String, Object> context) {
+
+	}
+
+	/**
+	 * orderDiagram:订单中心图标. <br/>
+	 * 
+	 * @author hebin
+	 * @param operator
+	 * @param context
+	 * @since JDK 1.7
+	 */
+	private void orderDiagram(StaffEntity operator, Map<String, Object> context) {
+
 	}
 
 	@RequestMapping("/modifyPwd")

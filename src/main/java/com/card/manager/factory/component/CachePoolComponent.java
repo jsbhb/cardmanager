@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.model.GradeBO;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
@@ -48,7 +49,7 @@ import net.sf.json.JSONObject;
  * @since JDK 1.7
  */
 
-@Component 
+@Component
 public class CachePoolComponent {
 
 	private static List<BrandEntity> BRANDS = new ArrayList<BrandEntity>();
@@ -63,21 +64,22 @@ public class CachePoolComponent {
 	private static List<ThirdCatalogEntity> THIRDCATALOG = new ArrayList<ThirdCatalogEntity>();
 	private static List<TagFuncEntity> TAGFUNC = new ArrayList<TagFuncEntity>();
 	private static Map<Integer, GradeBO> GRADEMAP = new HashMap<Integer, GradeBO>();
+	private static Map<Integer, GradeTypeDTO> GRADE_TYPE_CACHE = new HashMap<Integer, GradeTypeDTO>();
 
 	private static String HEAD = "1";
 	private static String CENTER = "2";
 	private static String SHOP = "3";
-	
+
 	@Resource
 	StaffMngService staffMngService;
-	
+
 	private static CachePoolComponent component;
-	
-	@PostConstruct  
-    public void init() {  
-		component = this;  
-    }
-	
+
+	@PostConstruct
+	public void init() {
+		component = this;
+	}
+
 	/**
 	 * @fun 获取grade信息
 	 * @param token
@@ -89,7 +91,7 @@ public class CachePoolComponent {
 		}
 		return GRADEMAP;
 	}
-	
+
 	/**
 	 * @fun 获取grade信息
 	 * @param token
@@ -103,7 +105,7 @@ public class CachePoolComponent {
 		JSONArray obj = JSONArray.fromObject(query_result.getBody());
 
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
@@ -114,10 +116,67 @@ public class CachePoolComponent {
 			grade = JSONUtilNew.parse(jObj.toString(), GradeBO.class);
 			GRADEMAP.put(grade.getId(), grade);
 		}
-		
+
 	}
-	
-	public static void addGrade(GradeBO grade){
+
+	/**
+	 * @fun 获取gradeType信息
+	 * @param token
+	 * @return
+	 */
+	public static Map<Integer, GradeTypeDTO> getGradeType(String token) {
+		if (GRADE_TYPE_CACHE.size() == 0) {
+			syncGradeType(token);
+		}
+		return GRADE_TYPE_CACHE;
+	}
+
+	/**
+	 * @fun 获取gradeType信息
+	 * @param token
+	 */
+	public static void syncGradeType(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_TYPE;
+		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		if (obj == null || obj.size() == 0) {
+			return;
+		}
+
+		GradeTypeDTO gradeType;
+		for (int i = 0; i < obj.size(); i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			gradeType = JSONUtilNew.parse(jObj.toString(), GradeTypeDTO.class);
+
+			List<GradeTypeDTO> children = gradeType.getChildern();
+
+			capGradeType(children);
+
+			GRADE_TYPE_CACHE.put(gradeType.getId(), gradeType);
+		}
+	}
+
+	/**
+	 * capGradeType:封装客户类型. <br/>
+	 * 
+	 * @author hebin
+	 * @param children
+	 * @since JDK 1.7
+	 */
+	private static void capGradeType(List<GradeTypeDTO> children) {
+		if(children == null){
+			return;
+		}
+		for (GradeTypeDTO child : children) {
+			GRADE_TYPE_CACHE.put(child.getId(), child);
+			capGradeType(child.getChildern());
+		}
+	}
+
+	public static void addGrade(GradeBO grade) {
 		GRADEMAP.put(grade.getId(), grade);
 	}
 
@@ -154,11 +213,11 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		BRANDS.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
@@ -200,11 +259,11 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		SUPPLIERS.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
@@ -222,9 +281,9 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static List<StaffEntity> getCenter(String token) {
-//		if (CENTERS.size() == 0) {
-//			syncCenter(token);
-//		}
+		// if (CENTERS.size() == 0) {
+		// syncCenter(token);
+		// }
 		syncCenter(token);
 		return CENTERS;
 	}
@@ -237,32 +296,33 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static void syncCenter(String token) {
-//		RestCommonHelper helper = new RestCommonHelper();
-//		ResponseEntity<String> query_result = helper.request(
-//				URLUtils.get("gateway") + ServerCenterContants.SUPPLIER_CENTER_QUERY_ALL, token, true, null,
-//				HttpMethod.POST);
-//
-//		JSONObject json = JSONObject.fromObject(query_result.getBody());
-//
-//		JSONArray obj = json.getJSONArray("obj");
-//		int index = obj.size();
-//		
-//		if (index == 0) {
-//			return;
-//		}
-//		
-//		CENTERS.clear();
-//		for (int i = 0; i < index; i++) {
-//			JSONObject jObj = obj.getJSONObject(i);
-//			CENTERS.add(JSONUtilNew.parse(jObj.toString(), StaffEntity.class));
-//		}
-		
+		// RestCommonHelper helper = new RestCommonHelper();
+		// ResponseEntity<String> query_result = helper.request(
+		// URLUtils.get("gateway") +
+		// ServerCenterContants.SUPPLIER_CENTER_QUERY_ALL, token, true, null,
+		// HttpMethod.POST);
+		//
+		// JSONObject json = JSONObject.fromObject(query_result.getBody());
+		//
+		// JSONArray obj = json.getJSONArray("obj");
+		// int index = obj.size();
+		//
+		// if (index == 0) {
+		// return;
+		// }
+		//
+		// CENTERS.clear();
+		// for (int i = 0; i < index; i++) {
+		// JSONObject jObj = obj.getJSONObject(i);
+		// CENTERS.add(JSONUtilNew.parse(jObj.toString(), StaffEntity.class));
+		// }
+
 		CENTERS.clear();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("gradelevel", CENTER);
 		CENTERS = component.staffMngService.queryByParam(params);
 	}
-	
+
 	/**
 	 * 
 	 * getSupplier:获取全局供应商信息. <br/>
@@ -273,9 +333,9 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static List<StaffEntity> getGradePersoninCharge(String token) {
-//		if (GRADEPERSONINCHARGE.size() == 0) {
-//			syncGradePersoninCharge(token);
-//		}
+		// if (GRADEPERSONINCHARGE.size() == 0) {
+		// syncGradePersoninCharge(token);
+		// }
 		syncGradePersoninCharge(token);
 		return GRADEPERSONINCHARGE;
 	}
@@ -288,32 +348,34 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static void syncGradePersoninCharge(String token) {
-//		RestCommonHelper helper = new RestCommonHelper();
-//		ResponseEntity<String> query_result = helper.request(
-//				URLUtils.get("gateway") + ServerCenterContants.SUPPLIER_CENTER_QUERY_ALL, token, true, null,
-//				HttpMethod.POST);
-//
-//		JSONObject json = JSONObject.fromObject(query_result.getBody());
-//
-//		JSONArray obj = json.getJSONArray("obj");
-//		int index = obj.size();
-//		
-//		if (index == 0) {
-//			return;
-//		}
-//		
-//		GRADEPERSONINCHARGE.clear();
-//		for (int i = 0; i < index; i++) {
-//			JSONObject jObj = obj.getJSONObject(i);
-//			GRADEPERSONINCHARGE.add(JSONUtilNew.parse(jObj.toString(), StaffEntity.class));
-//		}
-		
+		// RestCommonHelper helper = new RestCommonHelper();
+		// ResponseEntity<String> query_result = helper.request(
+		// URLUtils.get("gateway") +
+		// ServerCenterContants.SUPPLIER_CENTER_QUERY_ALL, token, true, null,
+		// HttpMethod.POST);
+		//
+		// JSONObject json = JSONObject.fromObject(query_result.getBody());
+		//
+		// JSONArray obj = json.getJSONArray("obj");
+		// int index = obj.size();
+		//
+		// if (index == 0) {
+		// return;
+		// }
+		//
+		// GRADEPERSONINCHARGE.clear();
+		// for (int i = 0; i < index; i++) {
+		// JSONObject jObj = obj.getJSONObject(i);
+		// GRADEPERSONINCHARGE.add(JSONUtilNew.parse(jObj.toString(),
+		// StaffEntity.class));
+		// }
+
 		GRADEPERSONINCHARGE.clear();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("gradelevel", HEAD);
 		GRADEPERSONINCHARGE = component.staffMngService.queryByParam(params);
 	}
-	
+
 	/**
 	 * 
 	 * getSupplier:获取全局供应商信息. <br/>
@@ -324,9 +386,9 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static List<StaffEntity> getShop(String token) {
-//		if (SHOPS.size() == 0) {
-//			syncShop(token);
-//		}
+		// if (SHOPS.size() == 0) {
+		// syncShop(token);
+		// }
 		syncShop(token);
 		return SHOPS;
 	}
@@ -339,32 +401,33 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static void syncShop(String token) {
-//		RestCommonHelper helper = new RestCommonHelper();
-//		ResponseEntity<String> query_result = helper.request(
-//				URLUtils.get("gateway") + ServerCenterContants.SUPPLIER_CENTER_QUERY_ALL, token, true, null,
-//				HttpMethod.POST);
-//
-//		JSONObject json = JSONObject.fromObject(query_result.getBody());
-//
-//		JSONArray obj = json.getJSONArray("obj");
-//		int index = obj.size();
-//		
-//		if (index == 0) {
-//			return;
-//		}
-//		
-//		SHOPS.clear();
-//		for (int i = 0; i < index; i++) {
-//			JSONObject jObj = obj.getJSONObject(i);
-//			SHOPS.add(JSONUtilNew.parse(jObj.toString(), StaffEntity.class));
-//		}
-		
+		// RestCommonHelper helper = new RestCommonHelper();
+		// ResponseEntity<String> query_result = helper.request(
+		// URLUtils.get("gateway") +
+		// ServerCenterContants.SUPPLIER_CENTER_QUERY_ALL, token, true, null,
+		// HttpMethod.POST);
+		//
+		// JSONObject json = JSONObject.fromObject(query_result.getBody());
+		//
+		// JSONArray obj = json.getJSONArray("obj");
+		// int index = obj.size();
+		//
+		// if (index == 0) {
+		// return;
+		// }
+		//
+		// SHOPS.clear();
+		// for (int i = 0; i < index; i++) {
+		// JSONObject jObj = obj.getJSONObject(i);
+		// SHOPS.add(JSONUtilNew.parse(jObj.toString(), StaffEntity.class));
+		// }
+
 		SHOPS.clear();
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("gradelevel", SHOP);
 		SHOPS = component.staffMngService.queryByParam(params);
 	}
-	
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>
@@ -375,9 +438,9 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static List<PushUser> getPushUsers(String token) {
-//		if (PUSHUSER.size() == 0) {
-//			syncPushUser(token);
-//		}
+		// if (PUSHUSER.size() == 0) {
+		// syncPushUser(token);
+		// }
 		syncPushUser(token);
 		return PUSHUSER;
 	}
@@ -399,18 +462,18 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		PUSHUSER.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
 			PUSHUSER.add(JSONUtilNew.parse(jObj.toString(), PushUser.class));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>
@@ -421,9 +484,9 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	public static List<UserDetail> getCustomers(String token) {
-//		if (CUSTOMER.size() == 0) {
-//			syncCustomer(token);
-//		}
+		// if (CUSTOMER.size() == 0) {
+		// syncCustomer(token);
+		// }
 		syncCustomer(token);
 		return CUSTOMER;
 	}
@@ -445,18 +508,18 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		CUSTOMER.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
 			CUSTOMER.add(JSONUtilNew.parse(jObj.toString(), UserDetail.class));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>
@@ -488,18 +551,18 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		FIRSTCATALOG.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
 			FIRSTCATALOG.add(JSONUtilNew.parse(jObj.toString(), FirstCatalogEntity.class));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>
@@ -531,18 +594,18 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		SECONDCATALOG.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
 			SECONDCATALOG.add(JSONUtilNew.parse(jObj.toString(), SecondCatalogEntity.class));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>
@@ -574,18 +637,18 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		THIRDCATALOG.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);
 			THIRDCATALOG.add(JSONUtilNew.parse(jObj.toString(), ThirdCatalogEntity.class));
 		}
 	}
-	
+
 	/**
 	 * 
 	 * getBrands:获取全局品牌信息. <br/>
@@ -618,11 +681,11 @@ public class CachePoolComponent {
 
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
-		
+
 		if (index == 0) {
 			return;
 		}
-		
+
 		TAGFUNC.clear();
 		for (int i = 0; i < index; i++) {
 			JSONObject jObj = obj.getJSONObject(i);

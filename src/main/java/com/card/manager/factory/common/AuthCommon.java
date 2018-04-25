@@ -37,6 +37,11 @@ public class AuthCommon {
 
 	public static final String PRIVILEGE_DEAL = "1";
 	public static final String PRIVILEGE_QUERY = "2";
+	public static final String OPERATION_DIAGRAM = "1";
+	public static final String ORDER_DIAGRAM = "17";
+	public static final String FINANCIAL_DIAGRAM = "22";
+	public static final String PERSONAL_DIAGRAM = "35";
+	
 
 	public static List<AuthInfo> treeAuthInfo(List<AuthInfo> authInfos) {
 		if (authInfos == null || authInfos.size() == 0) {
