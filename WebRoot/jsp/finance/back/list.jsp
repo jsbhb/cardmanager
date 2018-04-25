@@ -130,12 +130,12 @@ $('.searchBtn').on('click',function(){
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/order/stockOutMng/dataList.shtml",
-			numPerPage:"20",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/order/stockOutMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -269,10 +269,10 @@ function toAudit(orderId){
 	var index = layer.open({
 		  title:"审核订单退款",		
 		  type: 2,
+		  area:['60%','40%'],
 		  content: '${wmsUrl}/admin/finance/orderBackMng/toAudit.shtml?orderId='+orderId,
-		  maxmin: true
+		  maxmin: false
 		});
-		layer.full(index);
 }
 
 //点击展开

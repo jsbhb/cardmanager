@@ -162,18 +162,6 @@ function toAdd(){
 		layer.full(index);
 }
 
-//搜索类型切换
-$('.moreSearchBtn').click(function(){
-	$('.moreSearchContent').slideDown(300);
-	$('.search').hide();
-});
-$('.lessSearchBtn').click(function(){
-	$('.moreSearchContent').slideUp(300);
-	setTimeout(function(){
-		$('.search').show();
-	},300);
-});
-
 </script>
 </body>
 </html>

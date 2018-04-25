@@ -1878,7 +1878,8 @@
 }
 .week-line .timer-btns ul{
   overflow: hidden;
-  margin-left: 2%;
+  margin: 10px 0;
+  float: right;
 }
 .week-line .timer-btns ul li{
   float: left;

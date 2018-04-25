@@ -134,16 +134,6 @@ $('.sidebar-toggle').click(function(){
     },300);
 });
 
-function modifyPwd(){
-    var index = layer.open({
-        title:"修改密码",
-        type: 2,
-        content: '${wmsUrl}/admin/modifyPwd.shtml',
-        maxmin: true
-    });
-    layer.full(index);
-}
-
 $('.type-bar').on('click','.type-bar-item',function(){
     $('.type-bar .type-bar-item').removeClass('active');
     $(this).addClass('active');

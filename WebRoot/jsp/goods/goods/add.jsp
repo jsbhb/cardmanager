@@ -342,6 +342,8 @@
 		var thirdSelect = $("#thirdCatalogId");
 		secondSelect.empty();
 		secondSelect.append("<option value='-1'>选择分类</option>")
+		thirdSelect.empty();
+		thirdSelect.append("<option value='-1'>选择分类</option>")
 		$.ajax({
 			 url:"${wmsUrl}/admin/goods/catalogMng/querySecondCatalogByFirstId.shtml?firstId="+firstId,
 			 type:'post',

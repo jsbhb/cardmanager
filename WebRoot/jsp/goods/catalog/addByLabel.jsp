@@ -35,7 +35,7 @@
 	           				<span data-id="${first.firstId}" data-type="2" data-name="${first.name}"><i class="fa fa-caret-right fa-fw active"></i>${first.name}</span>
 	           				<ul class="second-ul">
 	           					<c:forEach var="second" items="${first.seconds}">
-									<li><span data-id="${second.secondId}" data-type="3" data-name="${second.name}">${second.name}</span></li>
+									<li><span data-id="${second.secondId}" data-type="3" data-name="${second.name}" class="no-child">${second.name}</span></li>
 								</c:forEach>
 	           				</ul>
 	           			</li>
