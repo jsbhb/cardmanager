@@ -12,60 +12,26 @@
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="catalogForm" >
-					
-						<c:if  test="${type==1}">
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>一级分类</h4></label>
-							</div>
-						</c:if>
-						<c:if  test="${type==2}">
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>二级级分类</h4></label>
-							</div>
-						</c:if>
-						<c:if  test="${type==3}">
-							<div class="form-group">
-								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>三级级分类</h4></label>
-							</div>
-						</c:if>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">分类编号<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" readonly class="form-control" name="id" value="${id}">
-		                  			<input type="hidden"  class="form-control" name="type" value="${type}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">名称<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="name" value="${name}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-	                            <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-	                        </div>
-                       </div>
-					</form>
-				</div>
+	<section class="content-iframe">
+		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
+        	<div class="list-item">
+				<div class="col-sm-3 item-left">分类编号</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" readonly class="form-control" name="id" value="${id}">
+           			<input type="hidden"  class="form-control" name="type" value="${type}">
+	             </div>
 			</div>
-		</div>
+        	<div class="list-item">
+				<div class="col-sm-3 item-left">分类名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="name" value="${name}">
+	             </div>
+			</div>
+			<div class="submit-btn">
+            	<button type="button" id="submitBtn">确定</button>
+            	<button type="button" id="resetBtn">重置</button>
+             </div>
+		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
