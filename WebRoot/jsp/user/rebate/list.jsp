@@ -39,7 +39,7 @@
 			<div class="default-content">
 				<div class="today-orders">
 						<div class="today-orders-item">
-							<a href="javascript:void(0);" id="canBePresented">￥0.00</a>
+							<a href="javascript:void(0);" id="canBePresented" onclick="toAdd()">￥0.00</a>
 							<p>可提现</p>
 						</div>
 						<div class="today-orders-item">
@@ -198,6 +198,17 @@
 			  title:"查看订单详情",		
 			  type: 2,
 			  content: '${wmsUrl}/admin/user/rebateMng/toShow.shtml?orderId='+orderId,
+			  maxmin: true
+			});
+			layer.full(index);
+	}
+	
+	function toAdd(){
+		
+		var index = layer.open({
+			  type: 2,
+			  content: '${wmsUrl}/admin/user/userWithdrawalsMng/toAdd.shtml',
+			  area: ['320px', '195px'],
 			  maxmin: true
 			});
 			layer.full(index);

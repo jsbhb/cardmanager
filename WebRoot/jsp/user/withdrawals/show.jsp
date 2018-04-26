@@ -45,7 +45,7 @@
 				<div class="col-sm-9 item-right">
            			<select class="form-control" name="cardId" id="cardId">
                    	  <c:forEach var="card" items="${cards}">
-           	  			<option value="${card.cardNo}#${card.cardName}#${card.cardBank}">${card.cardBank}</option>
+           	  			<option value="${card.cardNo}#${card.cardName}#${card.cardBank}">${card.cardBank}---${card.cardNo}</option>
                    	  </c:forEach>
 	              	</select>
 				</div>
