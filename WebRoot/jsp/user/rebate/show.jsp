@@ -181,6 +181,7 @@
 								<th>商品价格</th>
 								<th>实际价格</th>
 								<th>数量</th>
+								<th>返佣金额</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -204,7 +205,7 @@
 	 */
 	var options = {
 		queryForm : ".query",
-		url :  "${wmsUrl}/admin/order/stockOutMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}",
+		url :  "${wmsUrl}/admin/user/rebateMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}&shopId="+"${order.shopId}",
 		numPerPage:"10",
 		currentPage:"",
 		index:"1",
@@ -232,10 +233,10 @@
 		}
 		
 		var list = data.obj;
-
 		var str = "";
+		
 		if (list == null || list.length == 0) {
-			str = "<tr style='text-align:center'><td colspan=7><h5>没有查到数据</h5></td></tr>";
+			str = "<tr style='text-align:center'><td colspan=8><h5>没有查到数据</h5></td></tr>";
 			$("#goodsTable tbody").html(str);
 			return;
 		}
@@ -249,6 +250,7 @@
 			str += "</td><td>" + list[i].itemPrice;
 			str += "</td><td>" + list[i].actualPrice;
 			str += "</td><td>" + list[i].itemQuantity;
+			str += "</td><td>" + list[i].remark;
 			str += "</td></tr>";
 		}
 

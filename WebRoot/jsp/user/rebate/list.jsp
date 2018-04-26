@@ -33,46 +33,36 @@
            	</ul>
        	</div>
        	<section class="content-iframe content">
+       		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+			</div>
+			<div class="default-content">
+				<div class="today-orders">
+						<div class="today-orders-item">
+							<a href="javascript:void(0);" id="canBePresented">￥0.00</a>
+							<p>可提现</p>
+						</div>
+						<div class="today-orders-item">
+							<a href="javascript:void(0);" id="alreadyPresented">￥0.00</a>
+							<p>已提现</p>
+						</div>
+						<div class="today-orders-item">
+							<a href="javascript:void(0);" id="stayToAccount">￥0.00</a>
+							<p>待到账</p>
+						</div>
+				</div>
+			</div>
 	       	<form class="form-horizontal" role="form" id="gradeForm" >
-	       		<div class="title">
-		       		<h1>返佣明细</h1>
-		       	</div>
-		       	<div class="list-item">
-					<div class="col-sm-3 item-left">分级名称</div>
-					<div class="col-sm-9 item-right">
-						<input type="text" readonly class="form-control" name="gradeName_1" id = "gradeName_1" value="" style="background:#fff;">
-					</div>
-				</div>
-		       	<div class="list-item">
-					<div class="col-sm-3 item-left">可提现金额</div>
-					<div class="col-sm-9 item-right">
-						<input type="text" readonly class="form-control" name="canBePresented" id = "canBePresented" value="" style="background:#fff;">
-					</div>
-				</div>
-		       	<div class="list-item">
-					<div class="col-sm-3 item-left">已提现金额</div>
-					<div class="col-sm-9 item-right">
-						<input type="text" readonly class="form-control" name="alreadyPresented" id = "alreadyPresented" value="" style="background:#fff;">
-					</div>
-				</div>
-		       	<div class="list-item">
-					<div class="col-sm-3 item-left">待到账金额</div>
-					<div class="col-sm-9 item-right">
-						<input type="text" readonly class="form-control" name="stayToAccount" id = "stayToAccount" value="" style="background:#fff;">
-					</div>
-				</div>
-	       		<div class="title">
-		       		<h1>明细列表</h1>
-		       	</div>
 		       	<div class="list-content">
 		       		<div class="row content-container">
-		       			<div class="col-md-12 container-right active">
+		       			<div class="col-md-10 col-md-offset-1 container-right active">
 							<table id="staffTable" class="table table-hover myClass">
 								<thead>
 									<tr>
-										<th>订单号</th>
+										<th>订单编号</th>
 										<th>返佣金额</th>
 										<th>完成时间</th>
+										<th>操作</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -90,18 +80,19 @@
 	</section>
 	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 	<%@include file="../../resourceScript.jsp"%>
+	<script src="${wmsUrl}/js/mainpage.js"></script>
 	<script type="text/javascript">
 	
 	/**
 	 * 初始化分页信息
 	 */
 	var options = {
-				queryForm : ".query",
-				url :  "${wmsUrl}/admin/user/rebateMng/dataList.shtml",
-				numPerPage:"20",
-				currentPage:"",
-				index:"1",
-				callback:rebuildTable
+		queryForm : ".query",
+		url :  "${wmsUrl}/admin/user/rebateMng/dataList.shtml",
+		numPerPage:"10",
+		currentPage:"",
+		index:"1",
+		callback:rebuildTable
 	}
 
 	$(function(){
@@ -128,26 +119,30 @@
 		var gradeName = $("#gradeName").val();
 		$("#gradeName_1").val(gradeName);
 		if(rebate != null){
-			$("#canBePresented").val(rebate.canBePresented == null ? 0 : rebate.canBePresented);
-			$("#alreadyPresented").val(rebate.alreadyPresented == null ? 0 : rebate.alreadyPresented);
-			$("#stayToAccount").val(rebate.stayToAccount == null ? 0 : rebate.stayToAccount);
+			$("#canBePresented").html(rebate.canBePresented == null ? "￥0.00" : "￥"+rebate.canBePresented);
+			$("#alreadyPresented").html(rebate.alreadyPresented == null ? "￥0.00" : "￥"+rebate.alreadyPresented);
+			$("#stayToAccount").html(rebate.stayToAccount == null ? "￥0.00" : "￥"+rebate.stayToAccount);
 		} else {
-			$("#canBePresented").val(0);
-			$("#alreadyPresented").val(0);
-			$("#stayToAccount").val(0);
+			$("#canBePresented").html("￥0.00");
+			$("#alreadyPresented").html("￥0.00");	
+			$("#stayToAccount").html("￥0.00");
 		}
 		
+		var str = "";
+		
 		if (list == null || list.length == 0) {
-			layer.alert("没有查到数据");
+			str = "<tr style='text-align:center'><td colspan=4><h5>没有查到数据</h5></td></tr>";
+			$("#staffTable tbody").html(str);
 			return;
 		}
 
-		var str = "";
+		
 		for (var i = 0; i < list.length; i++) {
-			str += "<tr>";
-			str += "<td>" + list[i].orderId;
+			str += "<tr><td>";
+			str += list[i].orderId;
 			str += "</td><td>" + list[i].rebateMoney;
 			str += "</td><td>" + list[i].createTime;
+			str += "</td><td><a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>查看详情</a>";
 			str += "</td></tr>";
 		}
 
@@ -197,6 +192,16 @@
 			$('.select-content').slideUp(300);
 		}
 	});
+	
+	function toShow(orderId){
+		var index = layer.open({
+			  title:"查看订单详情",		
+			  type: 2,
+			  content: '${wmsUrl}/admin/user/rebateMng/toShow.shtml?orderId='+orderId,
+			  maxmin: true
+			});
+			layer.full(index);
+	}
 	</script>
 </body>
 </html>

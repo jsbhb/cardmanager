@@ -225,14 +225,15 @@
 		}
 		
 		var list = data.obj;
+		var str = "";
 		
 		if (list == null || list.length == 0) {
-			layer.alert("没有查到数据");
+			str = "<tr style='text-align:center'><td colspan=4><h5>没有查到数据</h5></td></tr>";
+			$("#rebateRecordTable tbody").html(str);
 			return;
 		}
 
 		var optType = data.type;
-		var str = "";
 		for (var i = 0; i < list.length; i++) {
 			str += "<tr><td>";
 			if (optType == "0") {

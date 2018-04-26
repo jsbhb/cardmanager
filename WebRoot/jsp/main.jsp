@@ -90,6 +90,20 @@
 
    <div id="page-wrapper" class="iframePage">
 	<div class="default-content">
+		<div class="use-center">
+			<div class="use-center-left">
+				<ul>
+					<li>18405817534</li>
+					<li>已实名认证</li>
+				</ul>
+			</div>
+			<div class="use-center-right">
+				<ul>
+					<li>推广收益</li>
+					<li>￥0</li>
+				</ul>
+			</div>
+		</div>
 		<div class="today-orders">
 			<h1>当日统计</h1>
 			<c:if test="${id!=35}">

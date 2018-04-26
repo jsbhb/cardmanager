@@ -3,10 +3,8 @@ package com.card.manager.factory.user.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,11 +18,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.finance.model.RebateSearchModel;
+import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.order.model.OrderGoods;
+import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.order.model.ThirdOrderInfo;
+import com.card.manager.factory.order.service.OrderService;
+import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.user.model.CenterRebate;
@@ -32,7 +37,9 @@ import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.RebateDetail;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
+import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
 
 @Controller
@@ -44,6 +51,12 @@ public class RebateMngController extends BaseController {
 
 	@Resource
 	StaffMngService staffMngService;
+	
+	@Resource
+	OrderService orderService;
+	
+	@Resource
+	GoodsService goodsService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
@@ -97,6 +110,102 @@ public class RebateMngController extends BaseController {
 			pcb.setErrTrace(e.getMessage());
 			pcb.setSuccess(false);
 			pcb.setObject(rebate);
+			return pcb;
+		}
+
+		return pcb;
+	}
+
+	@RequestMapping(value = "/toShow")
+	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String orderId = req.getParameter("orderId");
+			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
+			context.put("order", entity);
+			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
+			for(SupplierEntity sup : supplier) {
+				if (entity.getSupplierId() == null) {
+					break;
+				}
+				if (sup.getId() == entity.getSupplierId()) {
+					entity.setSupplierName(sup.getSupplierName());
+					break;
+				}
+			}
+			List<StaffEntity> center = CachePoolComponent.getCenter(opt.getToken());
+			for(StaffEntity cen : center) {
+				if (entity.getCenterId() == null) {
+					break;
+				}
+				if (cen.getGradeId() == entity.getCenterId()) {
+					entity.setCenterName(cen.getGradeName());
+					break;
+				}
+			}
+			List<StaffEntity> shop = CachePoolComponent.getShop(opt.getToken());
+			for(StaffEntity sh : shop) {
+				if (entity.getShopId() == null) {
+					break;
+				}
+				if (sh.getShopId() == entity.getShopId()) {
+					entity.setShopName(sh.getGradeName());
+					break;
+				}
+			}
+			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());
+			context.put("orderExpressList", orderExpressList);
+			return forword("user/rebate/show", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/dataListForOrderGoods", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack dataListForOrderGoods(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+
+			String orderId = req.getParameter("orderId");
+			String shopId = req.getParameter("shopId");
+			if (StringUtil.isEmpty(orderId)) {
+				params.put("orderId", "");
+			} else {
+				params.put("orderId", orderId);
+			}
+
+			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
+					ServerCenterContants.ORDER_CENTER_QUERY_GOODS_FOR_PAGE, OrderGoods.class);
+			
+			if (pcb != null) {
+				List<Object> list = (ArrayList<Object>) pcb.getObj();
+				OrderGoods orderGoods = null;
+				Map<String, String> rebateMap = null;
+				Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
+				for (Object info : list) {
+					orderGoods = (OrderGoods) info;
+					rebateMap = goodsService.getGoodsRebate(orderGoods.getItemId(), staffEntity.getToken());
+					String rebateStr = rebateMap.get(map.get(Integer.parseInt(shopId)).getGradeType().toString());
+					double rebate = Double.valueOf(rebateStr == null ? "0" : rebateStr);
+					orderGoods.setRemark(
+							CalculationUtils.round(2,CalculationUtils.mul(
+							CalculationUtils.mul(orderGoods.getActualPrice(), rebate),
+							Double.valueOf(orderGoods.getItemQuantity().toString()).doubleValue()))+"");
+				}
+				pcb.setObj(list);
+			}
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
 			return pcb;
 		}
 

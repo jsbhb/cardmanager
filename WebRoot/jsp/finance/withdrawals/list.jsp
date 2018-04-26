@@ -138,13 +138,14 @@ function rebuildTable(data){
 	}
 	
 	var list = data.obj;
+	var str = "";
 	
 	if (list == null || list.length == 0) {
-		layer.alert("没有查到数据");
+		str = "<tr style='text-align:center'><td colspan=9><h5>没有查到数据</h5></td></tr>";
+		$("#orderTable tbody").html(str);
 		return;
 	}
 
-	var str = "";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		str += "<td>" + list[i].operatorName;

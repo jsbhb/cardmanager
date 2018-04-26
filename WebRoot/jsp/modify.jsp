@@ -15,20 +15,20 @@
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="modifyForm"  style="margin-top:20px;">
 			<div class="list-item">
-				<div class="col-sm-3 item-left">旧密码</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">旧密码</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="oldPwd">
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">新密码</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">新密码</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="newPwd">
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">确认密码</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">确认密码</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="chkPwd">
 				</div>
 			</div>

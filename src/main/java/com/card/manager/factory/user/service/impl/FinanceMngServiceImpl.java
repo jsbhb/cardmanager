@@ -21,10 +21,10 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.finance.model.AuditModel;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
-import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
 import com.card.manager.factory.user.model.Rebate;
@@ -192,30 +192,10 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		}
 		
 		if (Detail != null) {
-			if (Detail.getOperatorType() == 0) {
-				List<StaffEntity> center = CachePoolComponent.getCenter(staffEntity.getToken());
-				for(StaffEntity ce : center) {
-					if (Detail.getOperatorId() == ce.getGradeId()) {
-						Detail.setOperatorName(ce.getGradeName());
-						break;
-					}
-				}
-			} else if (Detail.getOperatorType() == 1) {
-				List<StaffEntity> shop = CachePoolComponent.getShop(staffEntity.getToken());
-				for(StaffEntity sh : shop) {
-					if (Detail.getOperatorId() == sh.getShopId()) {
-						Detail.setOperatorName(sh.getGradeName());
-						break;
-					}
-				}
-			} else if (Detail.getOperatorType() == 2) {
-				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
-				for(PushUser pu : push) {
-					if (Detail.getOperatorId().toString().equals(pu.getUserId().toString())) {
-						Detail.setOperatorName(pu.getName());
-						break;
-					}
-				}
+			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
+			GradeBO grade = map.get(Detail.getOperatorId());
+			if (grade != null) {
+				Detail.setOperatorName(grade.getName());
 			}
 		}
 		return Detail;
@@ -311,12 +291,10 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 			Detail = JSONUtilNew.parse(json.getJSONObject("obj").toString(), Refilling.class);
 		}
 		if (Detail != null) {
-			List<StaffEntity> center = CachePoolComponent.getCenter(staffEntity.getToken());
-			for(StaffEntity ce : center) {
-				if (Detail.getCenterId() == ce.getGradeId()) {
-					Detail.setOperatorName(ce.getGradeName());
-					break;
-				}
+			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
+			GradeBO grade = map.get(Detail.getCenterId());
+			if (grade != null) {
+				Detail.setOperatorName(grade.getName());
 			}
 		}
 		return Detail;

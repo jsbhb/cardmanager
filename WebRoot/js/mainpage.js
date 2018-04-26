@@ -3,6 +3,8 @@
 // Sets the min-height of #page-wrapper to window size
 $(function() {
 	
+	$('.today-orders .today-orders-item').css('width','calc(100% / '+ $('.today-orders .today-orders-item').length +' - 1px)');
+	
 	var newIframeObject=document.createElement("IFRAME");
 	
     $(window).bind("load resize", function() {
