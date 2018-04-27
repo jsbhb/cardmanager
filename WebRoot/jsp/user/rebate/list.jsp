@@ -149,8 +149,8 @@
 				case 1:str += "</td><td>已到账";break;
 				default : str += "</td><td>错误状态："+status;
 			}
-			str += "</td><td>" + list[i].createTime;
-			str += "</td><td>" + list[i].updateTime;
+			str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
+			str += "</td><td>" + (list[i].updateTime == null ? "" : list[i].updateTime);
 			str += "</td><td><a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>查看详情</a>";
 			str += "</td></tr>";
 		}

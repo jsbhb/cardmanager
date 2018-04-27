@@ -91,6 +91,15 @@ public class RebateMngController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		Integer gradeId = pagination.getGradeId();
 		Rebate rebate = financeMngService.queryRebate(gradeId, staffEntity.getToken());
+		if (rebate.getCanBePresented() != null) {
+			rebate.setCanBePresented((double)Math.round(rebate.getCanBePresented()*100)/100);
+		}
+		if (rebate.getAlreadyPresented() != null) {
+			rebate.setAlreadyPresented((double)Math.round(rebate.getAlreadyPresented()*100)/100);
+		}
+		if (rebate.getStayToAccount() != null) {
+			rebate.setStayToAccount((double)Math.round(rebate.getStayToAccount()*100)/100);
+		}
 		try {
 			pcb = financeMngService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.FINANCE_CENTER_REBATE_DETAIL_QUERY, RebateDetail.class);
