@@ -61,6 +61,8 @@
 									<tr>
 										<th>订单编号</th>
 										<th>返佣金额</th>
+										<th>返佣状态</th>
+										<th>创建时间</th>
 										<th>完成时间</th>
 										<th>操作</th>
 									</tr>
@@ -131,7 +133,7 @@
 		var str = "";
 		
 		if (list == null || list.length == 0) {
-			str = "<tr style='text-align:center'><td colspan=4><h5>没有查到数据</h5></td></tr>";
+			str = "<tr style='text-align:center'><td colspan=6><h5>没有查到数据</h5></td></tr>";
 			$("#staffTable tbody").html(str);
 			return;
 		}
@@ -141,7 +143,14 @@
 			str += "<tr><td>";
 			str += list[i].orderId;
 			str += "</td><td>" + list[i].rebateMoney;
+			var status = list[i].status;
+			switch(status) {
+				case 0:str += "</td><td>待到账";break;
+				case 1:str += "</td><td>已到账";break;
+				default : str += "</td><td>错误状态："+status;
+			}
 			str += "</td><td>" + list[i].createTime;
+			str += "</td><td>" + list[i].updateTime;
 			str += "</td><td><a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>查看详情</a>";
 			str += "</td></tr>";
 		}

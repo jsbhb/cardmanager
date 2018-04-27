@@ -8,7 +8,9 @@ public class RebateDetail extends Pagination {
 	private String orderId;
 	private Integer gradeId;
 	private Double rebateMoney;
+	private Integer status;
 	private String createTime;
+	private String updateTime;
 	private String remark;
 	private String opt;
 	
@@ -53,6 +55,18 @@ public class RebateDetail extends Pagination {
 	}
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
 	}
 	
 }
