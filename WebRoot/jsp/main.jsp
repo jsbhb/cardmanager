@@ -199,7 +199,7 @@ var option_week = {
 			boundaryGap : false,
 			data : [
 			<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_week.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
-			<c:if test="${id==33}"><c:forEach var="node" items="${finance_diagram_data_week.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>]
+			<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_week.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>]
 		}
 	],
 	yAxis : [
@@ -259,7 +259,7 @@ var option_month = {
 					option:{},
 					onclick:function() {//点击事件,这里的option1是chart的option信息
 						//这里可以加入自己的处理代码，切换不同的图形
-						setCharts('week-line-content',option_chart_week);
+						setCharts('week-line-content',option_chart_month);
 					}
 				},
 				restore : {show: true},
@@ -371,7 +371,7 @@ var option_chart_week = {
 	]
 };
 
-var option_chart_week = {
+var option_chart_month = {
 		title : {
 			text: '<c:if test="${id==1||id==17||id==22}">分区统计</c:if>',
 		//	subtext: '纯属虚构',
@@ -413,7 +413,7 @@ var option_chart_week = {
 					option:{},
 					onclick:function() {//点击事件,这里的option1是chart的option信息
 						//这里可以加入自己的处理代码，切换不同的图形
-						setCharts('week-line-content',option_week);
+						setCharts('week-line-content',option_month);
 					}
 				},
 				restore : {show: true},
