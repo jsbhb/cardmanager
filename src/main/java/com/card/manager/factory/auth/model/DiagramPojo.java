@@ -20,7 +20,10 @@ public class DiagramPojo {
 	private String name;
 	private Object value;
 
-	public DiagramPojo(String name,Object value){
+	public DiagramPojo() {
+	}
+
+	public DiagramPojo(String name, Object value) {
 		this.name = name;
 		this.value = value;
 	}

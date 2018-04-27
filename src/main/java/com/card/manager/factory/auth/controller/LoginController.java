@@ -31,6 +31,7 @@ import com.card.manager.factory.auth.model.DiagramPojo;
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
+import com.card.manager.factory.auth.service.StatisticMngService;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ResourceContants;
@@ -68,8 +69,15 @@ public class LoginController extends BaseController {
 	@Resource
 	SysLogger sysLogger;
 
+	@Resource
+	StatisticMngService statisticMngService;
+
 	private final String TITLE_DATA = "title_data";
-	private final String GOODS_DATA_DIAGRAM = "goods_diagram_data";
+	private final String ORDER_DATA_DIAGRAM_WEEK = "order_diagram_data_week";
+	private final String ORDER_DATA_DIAGRAM_MONTH = "order_diagram_data_month";
+	private final String FINANCE_DATA_DIAGRAM_WEEK = "finance_diagram_data_week";
+	private final String FINANCE_DATA_DIAGRAM_MONTH = "finance_diagram_data_month";
+	// private final String GOODS_DATA_DIAGRAM = "goods_diagram_data";
 
 	@RequestMapping(value = "/toLogin")
 	@Auth(verifyLogin = false, verifyURL = false)
@@ -257,47 +265,54 @@ public class LoginController extends BaseController {
 	@RequestMapping("/main")
 	@Auth(verifyLogin = false, verifyURL = false)
 	public ModelAndView main(HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+
 		Map<String, Object> context = getRootMap();
+		try {
 
-		StaffEntity operator = SessionUtils.getOperator(req);
-		if (operator == null) {
-			return forword("login", context);
-		}
+			StaffEntity operator = SessionUtils.getOperator(req);
+			if (operator == null) {
+				return forword("login", context);
+			}
 
-		String id = req.getParameter("id");
+			String id = req.getParameter("id");
 
-		List<AuthInfo> menuList = SessionUtils.getMenuList(req);
-		if (menuList != null) {
-			context.put("menuList", menuList);
-			if (StringUtil.isEmpty(id)) {
-				context.put("childList", menuList.get(0).getChildren());
-				id = menuList.get(0).getFuncId();
-			} else {
-				for (AuthInfo auth : menuList) {
-					if (id.equals(auth.getFuncId())) {
-						context.put("childList", auth.getChildren());
+			List<AuthInfo> menuList = SessionUtils.getMenuList(req);
+			if (menuList != null) {
+				context.put("menuList", menuList);
+				if (StringUtil.isEmpty(id)) {
+					context.put("childList", menuList.get(0).getChildren());
+					id = menuList.get(0).getFuncId();
+				} else {
+					for (AuthInfo auth : menuList) {
+						if (id.equals(auth.getFuncId())) {
+							context.put("childList", auth.getChildren());
+						}
 					}
 				}
+				context.put("id", id);
 			}
-			context.put("id", id);
+
+			switch (id) {
+			case AuthCommon.OPERATION_DIAGRAM:
+				operationDiagram(operator, context);
+				break;
+			case AuthCommon.ORDER_DIAGRAM:
+				orderDiagram(operator, context);
+				break;
+			case AuthCommon.FINANCIAL_DIAGRAM:
+				financialDiagram(operator, context);
+				break;
+			default:
+				break;
+			}
+
+			context.put("operator", operator);
+			return forword("main", context);
+		} catch (Exception e) {
+			context.put(MSG, e.getMessage());
+			return forword("error", context);
 		}
 
-		switch (id) {
-		case AuthCommon.OPERATION_DIAGRAM:
-			operationDiagram(operator, context);
-			break;
-		case AuthCommon.ORDER_DIAGRAM:
-			orderDiagram(operator, context);
-			break;
-		case AuthCommon.FINANCIAL_DIAGRAM:
-			financialDiagram(operator, context);
-			break;
-		default:
-			break;
-		}
-
-		context.put("operator", operator);
-		return forword("main", context);
 	}
 
 	/**
@@ -335,6 +350,11 @@ public class LoginController extends BaseController {
 
 		context.put(TITLE_DATA, diagramList);
 
+		context.put(ORDER_DATA_DIAGRAM_WEEK, statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+				StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		context.put(ORDER_DATA_DIAGRAM_MONTH,
+				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+						StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
 	}
 
 	private void staticGrade(Map<Integer, Integer> gradeSumMap, List<GradeBO> children) {
@@ -360,6 +380,14 @@ public class LoginController extends BaseController {
 	 * @since JDK 1.7
 	 */
 	private void financialDiagram(StaffEntity operator, Map<String, Object> context) {
+		context.put(TITLE_DATA, statisticMngService.queryStaticHead(StatisticMngService.DATA_TYPE_HEAD,
+				StatisticMngService.MODEL_TYPE_FINANCE, operator));
+		context.put(FINANCE_DATA_DIAGRAM_WEEK,
+				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+						StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_FINANCE, operator));
+		context.put(FINANCE_DATA_DIAGRAM_MONTH,
+				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+						StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_FINANCE, operator));
 
 	}
 
@@ -372,6 +400,13 @@ public class LoginController extends BaseController {
 	 * @since JDK 1.7
 	 */
 	private void orderDiagram(StaffEntity operator, Map<String, Object> context) {
+		context.put(TITLE_DATA, statisticMngService.queryStaticHead(StatisticMngService.DATA_TYPE_HEAD,
+				StatisticMngService.MODEL_TYPE_ORDER, operator));
+		context.put(ORDER_DATA_DIAGRAM_WEEK, statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+				StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		context.put(ORDER_DATA_DIAGRAM_MONTH,
+				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+						StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
 
 	}
 

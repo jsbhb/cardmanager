@@ -268,6 +268,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/backcancel/{orderId}";
 	public static final String ORDER_CENTER_QUERY_THIRD_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryThirdInfo";
+	public static final String ORDER_CENTER_CACHE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/cache?gradeId={gradeId}&dataType={dataType}&time={time}&modelType={modelType}";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";
@@ -374,4 +376,5 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/timetask/stop";
 	public static final String TIMETASK_CENTER_UPDATE_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
 			+ SERVER_CENTER_EDITION + "/timetask/update";
+	
 }

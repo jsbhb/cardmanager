@@ -90,20 +90,24 @@
 
    <div id="page-wrapper" class="iframePage">
 	<div class="default-content">
-		<div class="use-center">
-			<div class="use-center-left">
-				<ul>
-					<li>18405817534</li>
-					<li>已实名认证</li>
-				</ul>
+		<c:choose>
+			<c:when test="${id==35}">
+			<div class="use-center">
+				<div class="use-center-left">
+					<ul>
+						<li>18405817534</li>
+						<li>已实名认证</li>
+					</ul>
+				</div>
+				<div class="use-center-right">
+					<ul>
+						<li>推广收益</li>
+						<li>￥0</li>
+					</ul>
+				</div>
 			</div>
-			<div class="use-center-right">
-				<ul>
-					<li>推广收益</li>
-					<li>￥0</li>
-				</ul>
-			</div>
-		</div>
+		</c:when>
+		<c:otherwise>
 		<div class="today-orders">
 			<h1>当日统计</h1>
 			<c:if test="${id!=35}">
@@ -118,13 +122,15 @@
 		<div class="week-line">
 			<div class="timer-btns">
 				<ul>
-					<li class="active">周统计</li>
-					<li>月统计</li>
-					<li>年统计</li>
+					<li id="week" class="active">周统计</li>
+					<li id="month">月统计</li>
 				</ul>
 			</div>
 			<div class="week-line-content" id="week-line-content"></div>
 		</div>
+		</c:otherwise>
+		</c:choose>
+		
 	</div>
    </div>
 </div>
@@ -153,16 +159,18 @@
 
 $.widget.bridge('uibutton', $.ui.button);
 
-var option = {
+var option_week = {
 	title : {
-		 text: '一周订单销售量变化',
+		
+		 text: <c:if test="${id==1||id==17}">"周统计订单"</c:if><c:if test="${id==22}">"周统计销售额"</c:if>,
+		
 	//       subtext: '纯属虚构'
 	},
 	tooltip : {
 		 trigger: 'axis'
 	},
 	legend: {
-		 data:['销售量']
+		 data:[<c:if test="${id==1||id==17}">"订单数量"</c:if><c:if test="${id==22}">"销售额"</c:if>]
 	},
 	toolbox: {
 		show : true,
@@ -177,7 +185,7 @@ var option = {
 				option:{},
 				onclick:function() {//点击事件,这里的option1是chart的option信息
 					//这里可以加入自己的处理代码，切换不同的图形
-					setCharts('week-line-content',option2);
+					setCharts('week-line-content',option_chart_week);
 				}
 			},
 			restore : {show: true},
@@ -189,22 +197,27 @@ var option = {
 		{
 			type : 'category',
 			boundaryGap : false,
-			data : ['周一','周二','周三','周四','周五','周六','周日']
+			data : [
+			<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_week.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+			<c:if test="${id==33}"><c:forEach var="node" items="${finance_diagram_data_week.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>]
 		}
 	],
 	yAxis : [
 		{
 			type : 'value',
 			axisLabel : {
-				formatter: '{value} 件'
+				formatter: '{value}'
 			}
 		}
 	],
 	series : [
 		{
-			name:'销售量',
+			name:'<c:if test="${id==1||id==17}">订单数量</c:if><c:if test="${id==22}">销售额</c:if>',
 			type:'line',
-			data:[5, 8, 2, 18, 12, 13, 4],
+			data:[
+			<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_week.diagramData}" varStatus="index">"${node.value}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+			<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_week.diagramData}" varStatus="index">"${node.value}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+			],
 			markPoint : {
 				data : [
 							{type : 'max', name: '最大值'},
@@ -220,9 +233,83 @@ var option = {
 	]
 };
 
-var option2 = {
+var option_month = {
+		title : {
+			
+			 text: <c:if test="${id==1||id==17}">"月统计订单"</c:if><c:if test="${id==22}">"月统计销售额"</c:if>,
+			
+		//       subtext: '纯属虚构'
+		},
+		tooltip : {
+			 trigger: 'axis'
+		},
+		legend: {
+			 data:[<c:if test="${id==1||id==17}">"订单数量"</c:if><c:if test="${id==22}">"销售额"</c:if>]
+		},
+		toolbox: {
+			show : true,
+			feature : {
+				mark : {show: false},
+				dataView : {show: true, readOnly: false},
+				magicType : {show: true, type: ['line', 'bar']},
+				selfButtons: {//自定义按钮 danielinbiti,这里增加，selfbuttons可以随便取名字
+					show:true,//是否显示
+					title:'饼状图切换', //鼠标移动上去显示的文字
+					icon:'${wmsUrl}/img/icon_pie.png', //图标
+					option:{},
+					onclick:function() {//点击事件,这里的option1是chart的option信息
+						//这里可以加入自己的处理代码，切换不同的图形
+						setCharts('week-line-content',option_chart_week);
+					}
+				},
+				restore : {show: true},
+				saveAsImage : {show: false}
+			}
+		},
+		calculable : true,
+		xAxis : [
+			{
+				type : 'category',
+				boundaryGap : false,
+				data : [
+				      <c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_month.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+				      <c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_month.diagramData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+				      ]
+			}
+		],
+		yAxis : [
+			{
+				type : 'value',
+				axisLabel : {
+					formatter: '{value}'
+				}
+			}
+		],
+		series : [
+			{
+				name:'<c:if test="${id==1||id==17}">订单数量</c:if><c:if test="${id==22}">销售额</c:if>',
+				type:'line',
+				data:[
+				     <c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_month.diagramData}" varStatus="index">"${node.value}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+					<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_month.diagramData}" varStatus="index">"${node.value}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>],
+				markPoint : {
+					data : [
+								{type : 'max', name: '最大值'},
+								{type : 'min', name: '最小值'}
+							]
+				},
+				markLine : {
+					data : [
+						{type : 'average', name: '平均值'}
+							]
+						}
+				}
+		]
+	};
+
+var option_chart_week = {
 	title : {
-		text: '某站点用户访问来源',
+		text: '<c:if test="${id==1||id==17||id==22}">分区统计</c:if>',
 	//	subtext: '纯属虚构',
 		x:'center'
 	},
@@ -233,7 +320,10 @@ var option2 = {
 	legend: {
 		orient : 'vertical',
 		x : 'left',
-		data:['周一','周二','周三','周四','周五','周六','周日']
+		data:[
+		 	<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_week.chartData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+			<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_week.chartData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+			]
 	},
 	toolbox: {
 		show : true,
@@ -259,7 +349,7 @@ var option2 = {
 				option:{},
 				onclick:function() {//点击事件,这里的option1是chart的option信息
 					//这里可以加入自己的处理代码，切换不同的图形
-					setCharts('week-line-content',option);
+					setCharts('week-line-content',option_week);
 				}
 			},
 			restore : {show: true},
@@ -269,29 +359,97 @@ var option2 = {
 	calculable : true,
 	series : [
 		{
-			name:'访问来源',
+			name:'<c:if test="${id==1||id==17||id==22}">统计来源</c:if>',
 			type:'pie',
 			radius : '55%',
 			center: ['50%', '60%'],
 			data:[
-				{value:5, name:'周一'},
-				{value:8, name:'周二'},
-				{value:2, name:'周三'},
-				{value:18, name:'周四'},
-				{value:12, name:'周五'},
-				{value:13, name:'周六'},
-				{value:4, name:'周日'}
+				<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_week.chartData}" varStatus="index">{value:"${node.value}",name:"${node.name}"}<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+				<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_week.chartData}" varStatus="index">{value:"${node.value}",name:"${node.name}"}<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
 			]
 		}
 	]
 };
 
-setCharts('week-line-content',option);
+var option_chart_week = {
+		title : {
+			text: '<c:if test="${id==1||id==17||id==22}">分区统计</c:if>',
+		//	subtext: '纯属虚构',
+			x:'center'
+		},
+		tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+		legend: {
+			orient : 'vertical',
+			x : 'left',
+			data:[
+			 	<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_month.chartData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+				<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_month.chartData}" varStatus="index">"${node.name}"<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+				]
+		},
+		toolbox: {
+			show : true,
+			feature : {
+				mark : {show: false},
+				dataView : {show: true, readOnly: false},
+				magicType : {
+					show: true,
+					type: ['pie', 'funnel'],
+					option: {
+						funnel: {
+							x: '25%',
+							width: '50%',
+							funnelAlign: 'left',
+							max: 1548
+						}
+					}
+				},
+				selfButtons: {//自定义按钮 danielinbiti,这里增加，selfbuttons可以随便取名字
+					show:true,//是否显示
+					title:'折线图切换', //鼠标移动上去显示的文字
+					icon:'${wmsUrl}/img/icon_line.png', //图标
+					option:{},
+					onclick:function() {//点击事件,这里的option1是chart的option信息
+						//这里可以加入自己的处理代码，切换不同的图形
+						setCharts('week-line-content',option_week);
+					}
+				},
+				restore : {show: true},
+				saveAsImage : {show: false}
+			}
+		},
+		calculable : true,
+		series : [
+			{
+				name:'<c:if test="${id==1||id==17||id==22}">统计来源</c:if>',
+				type:'pie',
+				radius : '55%',
+				center: ['50%', '60%'],
+				data:[
+					<c:if test="${id==1||id==17}"><c:forEach var="node" items="${order_diagram_data_month.chartData}" varStatus="index">{value:"${node.value}",name:"${node.name}"}<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+					<c:if test="${id==22}"><c:forEach var="node" items="${finance_diagram_data_month.chartData}" varStatus="index">{value:"${node.value}",name:"${node.name}"}<c:if test="${index.last==false}">,</c:if></c:forEach></c:if>
+				]
+			}
+		]
+	};
+
+
+
+setCharts('week-line-content',option_week);
 
 $('.timer-btns').on('click','li',function(){
 	$(this).addClass('active').siblings('.active').removeClass('active');
 	//重新绘制图表
-
+	var id = $(this).attr('id');
+	if(id == "week"){
+		setCharts('week-line-content',option_week);
+	}
+	
+	if(id == "month"){
+		setCharts('week-line-content',option_month);
+	}
 });
 
 function modifyPwd(){
