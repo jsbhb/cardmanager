@@ -16,7 +16,7 @@ package com.card.manager.factory.auth.model;
  * @version
  * @since JDK 1.7
  */
-public class DiagramPojo {
+public class DiagramPojo implements Comparable<DiagramPojo>{
 	private String name;
 	private Object value;
 
@@ -42,6 +42,11 @@ public class DiagramPojo {
 
 	public void setValue(Object value) {
 		this.value = value;
+	}
+
+	@Override
+	public int compareTo(DiagramPojo o) {
+		return name.compareTo(o.getName());
 	}
 
 }
