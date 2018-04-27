@@ -18,6 +18,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
@@ -77,6 +78,14 @@ public class StatisticMngServceImpl implements StatisticMngService {
 			tempList = new ArrayList<DiagramPojo>();
 			for (int i = 0; i < json.size(); i++) {
 				tempList.add(JSONUtilNew.parse(json.getJSONObject(i).toString(), DiagramPojo.class));
+			}
+		}
+		//四舍五入取两位小数
+		if (tempList != null) {
+			if ("finance".equals(modelType)) {
+				for (DiagramPojo pojo:tempList) {
+					pojo.setValue(CalculationUtils.round(2, Double.valueOf(pojo.getValue().toString())));
+				}
 			}
 		}
 
