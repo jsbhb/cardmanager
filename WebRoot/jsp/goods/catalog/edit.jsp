@@ -15,15 +15,15 @@
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
         	<div class="list-item">
-				<div class="col-sm-3 item-left">分类编号</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">分类编号</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" readonly class="form-control" name="id" value="${id}">
            			<input type="hidden"  class="form-control" name="type" value="${type}">
 	             </div>
 			</div>
         	<div class="list-item">
-				<div class="col-sm-3 item-left">分类名称</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">分类名称</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="name" value="${name}">
 	             </div>
 			</div>

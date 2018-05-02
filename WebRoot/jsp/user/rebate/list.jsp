@@ -147,6 +147,7 @@
 			switch(status) {
 				case 0:str += "</td><td>待到账";break;
 				case 1:str += "</td><td>已到账";break;
+				case 2:str += "</td><td>返佣已退回";break;
 				default : str += "</td><td>错误状态："+status;
 			}
 			str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);

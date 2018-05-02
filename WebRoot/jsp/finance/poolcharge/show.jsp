@@ -17,21 +17,21 @@
 	       		<h1>分级信息</h1>
 	       	</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">分级名称</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">分级名称</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" readonly class="form-control" name="centerName" id="centerName" value="${centerName}">
                   	<input type="hidden" readonly class="form-control" name="centerId" id="centerId" value="${centerId}">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">充值金额</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">充值金额</div>
+				<div class="col-xs-9 item-right">
                 	<input type="text" class="form-control" name="money" id="money">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">交易流水号</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">交易流水号</div>
+				<div class="col-xs-9 item-right">
                 	<input type="text" class="form-control" name="payNo" id="payNo">
 				</div>
 			</div>

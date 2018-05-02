@@ -17,31 +17,31 @@
         	<c:choose>
 				<c:when  test="${type==1}">
 					<div class="list-item">
-						<div class="col-sm-3 item-left">一级分类</div>
-						<div class="col-sm-9 item-right">
+						<div class="col-xs-3 item-left">一级分类</div>
+						<div class="col-xs-9 item-right">
 							<input type="hidden" readonly class="form-control" name="type" value="${type}">
 			             </div>
 					</div>
 				</c:when>
 				<c:otherwise>
 					<div class="list-item">
-						<div class="col-sm-3 item-left">上级分类编号</div>
-						<div class="col-sm-9 item-right">
+						<div class="col-xs-3 item-left">上级分类编号</div>
+						<div class="col-xs-9 item-right">
 							<input type="text" readonly class="form-control" name="parentId" value="${parentId}">
                   			<input type="hidden" readonly class="form-control" name="type" value="${type}">
 			             </div>
 					</div>
 					<div class="list-item">
-						<div class="col-sm-3 item-left">上级分类名称</div>
-						<div class="col-sm-9 item-right">
+						<div class="col-xs-3 item-left">上级分类名称</div>
+						<div class="col-xs-9 item-right">
 							<input type="text" readonly class="form-control" value="${parentName}">
 			             </div>
 					</div>
 				</c:otherwise>
 			</c:choose>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">分类名称</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">分类名称</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="name" placeholder="请输入分类名称">
 	             </div>
 			</div>

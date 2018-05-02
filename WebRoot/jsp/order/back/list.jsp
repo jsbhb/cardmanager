@@ -257,7 +257,7 @@ function rebuildTable(data){
 // 		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
-		var arr = [1,2,3,4,5,6,7,11,12,99];
+		var arr = [1,2,3,4,5,6,11,12,99];
 		var index = $.inArray(status,arr);
 		str += "<td align='left'>";
 		if(index >= 0){
