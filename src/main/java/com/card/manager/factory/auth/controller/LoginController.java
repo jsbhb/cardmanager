@@ -208,7 +208,7 @@ public class LoginController extends BaseController {
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
 
 				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
-						&& !".jpeg".equalsIgnoreCase(suffix)) {
+						&& !".jpeg".equalsIgnoreCase(suffix) && !".gif".equalsIgnoreCase(suffix)) {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
@@ -469,7 +469,7 @@ public class LoginController extends BaseController {
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
 
 				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
-						&& !".jpeg".equalsIgnoreCase(suffix)) {
+						&& !".jpeg".equalsIgnoreCase(suffix) && !".gif".equalsIgnoreCase(suffix)) {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
@@ -518,7 +518,7 @@ public class LoginController extends BaseController {
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
 
 				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
-						&& !".jpeg".equalsIgnoreCase(suffix)) {
+						&& !".jpeg".equalsIgnoreCase(suffix) && !".gif".equalsIgnoreCase(suffix)) {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
