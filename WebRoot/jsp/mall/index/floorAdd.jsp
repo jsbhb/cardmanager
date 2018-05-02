@@ -77,9 +77,11 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">楼层大图</div>
 				<div class="col-sm-9 item-right addContent">
-					<div class="item-img">
+					<div class="item-img" id="content">
 						+
-						<input type="file" id="pic1"/>
+<!-- 						<input type="file" id="pic1"/> -->
+						<input type="file" id="pic" name="pic" />
+						<input type="hidden" class="form-control" name="picPath1" id="picPath1"> 
 					</div>
 				</div>
 			</div>
@@ -159,17 +161,28 @@
 		
 		//点击上传图片
 		$('.item-right').on('change','.item-img input[type=file]',function(){
-			alert(1);
-			var ht = '<div class="item-img">+<input type="file"/></div>';
-			var imgHt = '<img src="${wmsUrl}/adminLTE/img/user2-160x160.jpg"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
-			$('.addContent').append(ht);
-			$(this).parent().addClass('choose');
-			$(this).parent().html(imgHt);
+			$.ajaxFileUpload({
+				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+				secureuri : false,
+				fileElementId : "pic",
+				dataType : 'json',
+				success : function(data) {
+					if (data.success) {
+						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath1" name="picPath1">'
+						$("#content").html(imgPath);
+						$("#content").addClass('choose');
+					} else {
+						layer.alert(data.msg);
+					}
+				}
+			})
 		});
 		//删除主图
 		$('.item-right').on('click','.bgColor i',function(){
-			alert(111);
-			$(this).parent().parent().remove();
+			var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="picPath1" id="picPath1" value=""></div>';
+			$(this).parent().parent().removeClass("choose");
+			$(this).parent().parent().parent().html(ht);
 		});
 	</script>
 </body>

@@ -645,6 +645,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setWeight(entity.getWeight());
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setStatus(entity.getItemStatus());
+		goodsItem.setConversion(entity.getConversion());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());
