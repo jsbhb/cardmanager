@@ -79,10 +79,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	public void addEntity(GoodsPojo entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-		int goodsId = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
+		int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
 
 		GoodsEntity goods = new GoodsEntity();
-		goods.setGoodsId(SequeceRule.getGoodsId(goodsId));
+		goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
 		goods.setTemplateId(entity.getTemplateId());
 		goods.setGoodsName(entity.getName());
 		goods.setSupplierId(entity.getSupplierId());
@@ -471,10 +471,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsBase.setId(0);
 		}
 
-		int goodsId = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
+		int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
 
 		GoodsEntity goods = new GoodsEntity();
-		goods.setGoodsId(SequeceRule.getGoodsId(goodsId));
+		goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
 		goods.setSupplierId(entity.getSupplierId());
 		goods.setSupplierName(entity.getSupplierName());
 		if (entity.getBaseId() == 0) {
@@ -505,8 +505,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
 		SftpService service = (SftpService) wac.getBean("sftpService");
 		service.login();
-		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, "");
-		goods.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
+		service.uploadFile(savePath, goods.getGoodsId() + ResourceContants.HTML_SUFFIX, is, "");
+		goods.setDetailPath(invitePath + goods.getGoodsId() + ResourceContants.HTML_SUFFIX);
 		// -------------------保存商品详情---------------------//
 		// goods.setDetailPath(entity.getDetailInfo());
 
