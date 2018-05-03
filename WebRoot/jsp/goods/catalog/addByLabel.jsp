@@ -15,7 +15,7 @@
 	<section class="content-iframe">
        	<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px;">
        		<div class="list-item">
-				<div class="col-xs-3 item-left" for="form-field-1">上级分类<font style="color:red">*</font> </div>
+				<div class="col-xs-3 item-left">上级分类<font style="color:red">*</font> </div>
 				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="category" id="category" readonly style="background:#fff;">
 					<input type="hidden" class="form-control" name="parentId" id="parentId">
@@ -43,7 +43,7 @@
            		</ul>
            	</div>
 			<div class="list-item">
-				<div class="col-xs-3 item-left" for="form-field-1">分类名称<font style="color:red">*</font> </div>
+				<div class="col-xs-3 item-left">分类名称<font style="color:red">*</font> </div>
 				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="name" id="name">
 	            	<div class="item-content">

@@ -15,7 +15,7 @@
 	<section class="content-iframe">
        	<form class="form-horizontal" role="form" id="brandForm" style="margin-top:20px;">
 			<div class="list-item">
-				<div class="col-xs-3 item-left" for="form-field-1">品牌名称<font style="color:red">*</font> </div>
+				<div class="col-xs-3 item-left">品牌名称<font style="color:red">*</font> </div>
 				<div class="col-xs-9 item-right">
            		    <input type="hidden" class="form-control" name="id" value="${brand.id}">
                     <input type="hidden" class="form-control" name="brandId" value="${brand.brandId}">

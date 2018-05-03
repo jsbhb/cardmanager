@@ -60,9 +60,10 @@
 				<div class="list-item">
 					<div class="col-sm-3 item-left">大图 H5:(224*224px)PC:(309*148px)</div>
 					<div class="col-sm-9 item-right addContent">
-						<div class="item-img">
+						<div class="item-img" id="content">
 							+
-							<input type="file" id="picPath"/>
+							<input type="file" id="pic" name="pic" />
+							<input type="hidden" class="form-control" name="picPath" id="picPath"> 
 						</div>
 					</div>
 				</div>
@@ -179,7 +180,31 @@
       }
   });
 	
-
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic",
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath" name="picPath">'
+					$("#content").html(imgPath);
+					$("#content").addClass('choose');
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="picPath" id="picPath" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
 	</script>
 </body>
 </html>

@@ -119,12 +119,12 @@
 	 * 初始化分页信息
 	 */
 	var options = {
-				queryForm : ".query",
-				url :  "${wmsUrl}/admin/mall/indexMng/dataListForData.shtml?dictId=${dict.id}",
-				numPerPage:"20",
-				currentPage:"",
-				index:"1",
-				callback:rebuildTable
+		queryForm : ".query",
+		url :  "${wmsUrl}/admin/mall/indexMng/dataListForData.shtml?dictId=${dict.id}",
+		numPerPage:"20",
+		currentPage:"",
+		index:"1",
+		callback:rebuildTable
 	}
 	
 	

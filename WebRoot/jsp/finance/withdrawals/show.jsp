@@ -18,21 +18,21 @@
 	       		<h1>提现审核信息</h1>
 	       	</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">角色名称</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">角色名称</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" readonly class="form-control" name="operatorName"value="${Detail.operatorName}">
                   	<input type="hidden" readonly class="form-control" name="id" id="id" value="${Detail.id}">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">提现金额</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">提现金额</div>
+				<div class="col-xs-9 item-right">
                 	<input type="text" readonly class="form-control" name="outMoney" value="${Detail.outMoney}">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">审核结果</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">审核结果</div>
+				<div class="col-xs-9 item-right">
                 	<label>
 	                  	同意<input type="radio" name="pass" id="pass" value="true" class="flat-red">
 	                </label>
@@ -42,14 +42,14 @@
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">交易流水号</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">交易流水号</div>
+				<div class="col-xs-9 item-right">
                 	<input type="text" class="form-control" name="payNo" id="payNo">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">备注</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">备注</div>
+				<div class="col-xs-9 item-right">
                 	<input type="text" class="form-control" name="remark" id="remark">
 				</div>
 			</div>

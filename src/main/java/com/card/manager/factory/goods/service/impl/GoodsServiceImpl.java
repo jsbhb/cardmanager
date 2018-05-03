@@ -79,10 +79,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	public void addEntity(GoodsPojo entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-		int goodsId = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
+		int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
 
 		GoodsEntity goods = new GoodsEntity();
-		goods.setGoodsId(SequeceRule.getGoodsId(goodsId));
+		goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
 		goods.setTemplateId(entity.getTemplateId());
 		goods.setGoodsName(entity.getName());
 		goods.setSupplierId(entity.getSupplierId());
@@ -272,16 +272,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String savePath;
 		String invitePath;
 
-		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
-
-		} else {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
-					+ staffEntity.getGradeId() + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId() + "	/";
-
-		}
+		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
 		ReadIniInfo.getInstance();
 
 		// long maxSize = ((Long) conf.get("maxSize")).longValue();
@@ -471,10 +463,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsBase.setId(0);
 		}
 
-		int goodsId = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
+		int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
 
 		GoodsEntity goods = new GoodsEntity();
-		goods.setGoodsId(SequeceRule.getGoodsId(goodsId));
+		goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
 		goods.setSupplierId(entity.getSupplierId());
 		goods.setSupplierName(entity.getSupplierName());
 		if (entity.getBaseId() == 0) {
@@ -490,14 +482,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// -------------------保存商品详情---------------------//
 		String savePath;
 		String invitePath;
-		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
-		} else {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
-					+ staffEntity.getGradeId() + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId() + "	/";
-		}
+		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
 		ReadIniInfo.getInstance();
 		savePath = PathFormat.parse(savePath);
 		invitePath = PathFormat.parse(invitePath);
@@ -505,8 +491,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
 		SftpService service = (SftpService) wac.getBean("sftpService");
 		service.login();
-		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, "");
-		goods.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
+		service.uploadFile(savePath, goods.getGoodsId() + ResourceContants.HTML_SUFFIX, is, "");
+		goods.setDetailPath(invitePath + goods.getGoodsId() + ResourceContants.HTML_SUFFIX);
 		// -------------------保存商品详情---------------------//
 		// goods.setDetailPath(entity.getDetailInfo());
 
@@ -634,17 +620,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/") + 1);
 			pathId = pathId.substring(0, pathId.lastIndexOf("."));
 		}
-		if (!pathId.equals(entity.getGoodsId()+"")) {
-			pathId = entity.getGoodsId()+"";
+		if (!pathId.equals(entity.getGoodsId() + "")) {
+			pathId = entity.getGoodsId() + "";
 		}
-		if (ServerCenterContants.FIRST_GRADE == staffEntity.getGradeLevel()) {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
-		} else {
-			savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/"
-					+ staffEntity.getGradeId() + "/";
-			invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/" + staffEntity.getGradeId() + "/";
-		}
+		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
 		ReadIniInfo.getInstance();
 		savePath = PathFormat.parse(savePath);
 		invitePath = PathFormat.parse(invitePath);
@@ -665,6 +645,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setWeight(entity.getWeight());
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setStatus(entity.getItemStatus());
+		goodsItem.setConversion(entity.getConversion());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());

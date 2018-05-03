@@ -15,14 +15,14 @@
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="gradeForm" style="margin-top:20px;">
         	<div class="list-item">
-				<div class="col-sm-3 item-left">订单编号</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">订单编号</div>
+				<div class="col-xs-9 item-right">
                 	<input type="text" readonly class="form-control" name="orderId" id="orderId" value="${orderId}">
 	            </div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">交易流水号</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">交易流水号</div>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="payNo" id="payNo">
 	            </div>
 			</div>
