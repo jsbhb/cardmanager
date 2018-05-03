@@ -96,15 +96,16 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
+								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="27%">商品名称</th>
+								<th width="10%">商品编号</th>
 								<th width="10%">商家编码</th>
 								<th width="10%">供应商</th>
 								<th width="5%">商品标签</th>
 								<th width="10%">商品价格</th>
 								<th width="10%">商品库存</th>
 								<th width="5%">商品状态</th>
-								<th width="10%">商品编号</th>
 								<th width="10%">操作</th>
 							</tr>
 						</thead>
@@ -176,6 +177,7 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		str += "</td><td>" + list[i].goodsName;
+		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		str += "</td><td>" + list[i].supplierName;
 		if (list[i].tagBindEntity != null) {
@@ -205,7 +207,6 @@ function rebuildTable(data){
 			case 1:str += "</td><td>已上架";break;
 			default:str += "</td><td>状态错误："+status;
 		}
-		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>";
 		if(status == 0){
 			str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")'>上架</a>";
@@ -224,7 +225,7 @@ function puton(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(6).text() == "未上架") {
+	    	if ($(this).parent().siblings().eq(7).text() == "未上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -259,7 +260,7 @@ function putoff(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(6).text() == "已上架") {
+	    	if ($(this).parent().siblings().eq(7).text() == "已上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 

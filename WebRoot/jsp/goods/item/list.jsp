@@ -233,7 +233,7 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		str += "</td><td>" + list[i].goodsName;
-		str += "</td><td>" + list[i].itemId;
+		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
 			str += "</td><td>";
