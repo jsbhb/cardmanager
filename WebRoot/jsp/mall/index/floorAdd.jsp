@@ -75,6 +75,12 @@
 				</div>
 			</div>
 			<div class="list-item">
+				<div class="col-sm-3 item-left">楼层顺序</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="sort">
+				</div>
+			</div>
+			<div class="list-item">
 				<div class="col-sm-3 item-left">楼层大图</div>
 				<div class="col-sm-9 item-right addContent">
 					<div class="item-img" id="content">

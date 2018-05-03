@@ -31,6 +31,7 @@
 								<th width="10%">页面类型</th>
 								<th width="10%">页面类型</th>
 								<th width="10%">是否显示</th>
+								<th width="10%">显示顺序</th>
 								<th width="15%">操作</th>
 							</tr>
 						</thead>
@@ -119,6 +120,7 @@ function rebuildTable(data){
 		}else{
 			str += "</td><td>显示";
 		}
+		str += "</td><td>" + (list[i].layout.sort == null ? "0" : list[i].layout.sort);
 		
 		str += "</td><td>";
 		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].id+")'>编辑</a>";

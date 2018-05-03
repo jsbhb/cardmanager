@@ -182,8 +182,9 @@
     		            		alert(data.msg);
     		            	}
 	    		         } ,
-	    		         error : function(data) {   
-	    		            	alert("网络异常，请稍后登录");	
+	    		         error : function(data) {
+	    		        	 $('#submitBtn').click();
+// 	    		            	alert("网络异常，请稍后登录");	
 	    		       	 }
     				}
     			)
@@ -208,8 +209,9 @@
 	    		            		alert(data.msg);
 	    		            	}
 		    		         } ,
-		    		         error : function(data) {   
-		    		            	alert("网络异常，请稍后登录");	
+		    		         error : function(data) {
+		    		        	 $('#submitBtn').click();
+// 		    		            	alert("网络异常，请稍后登录");	
 		    		       	 }
 	    				}
 	    			)

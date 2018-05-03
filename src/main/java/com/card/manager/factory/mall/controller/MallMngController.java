@@ -314,6 +314,14 @@ public class MallMngController extends BaseController {
 		dict.setOpt(staffEntity.getOptid());
 		dict.setCenterId(staffEntity.getGradeId());
 		try {
+			if (dict.getLayout() == null) {
+				Layout layout = new Layout();
+				layout.setId(dict.getLayoutId());
+				layout.setSort(dict.getSort());
+				dict.setLayout(layout);
+			} else {
+				dict.getLayout().setSort(dict.getSort());
+			}
 			mallService.updateDict(dict, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());

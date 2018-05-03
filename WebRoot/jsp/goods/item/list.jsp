@@ -141,6 +141,7 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
+								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="15%">商品名称</th>
 								<th width="5%">商品编号</th>
@@ -333,7 +334,7 @@ function beUse(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(10).text() == "初始化") {
+	    	if ($(this).parent().siblings().eq(11).text() == "初始化") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -369,7 +370,7 @@ function beFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(10).text() == "可用") {
+	    	if ($(this).parent().siblings().eq(11).text() == "可用") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -405,7 +406,7 @@ function noBeFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(10).text() == "可分销") {
+	    	if ($(this).parent().siblings().eq(11).text() == "可分销") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 

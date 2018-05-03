@@ -20,6 +20,7 @@ public class PopularizeDict{
 	private String href;
 	private Layout layout;
 	private int centerId;
+	private int sort;
 
 	public String getHref() {
 		return href;
@@ -262,6 +263,14 @@ public class PopularizeDict{
 				+ enname + ", firstCategory=" + firstCategory + ", picPath1=" + picPath1 + ", picPath2=" + picPath2
 				+ ", picPath3=" + picPath3 + ", description=" + description + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + ", opt=" + opt + "]";
+	}
+
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
 	}
 
 	

@@ -1,10 +1,7 @@
 package com.card.manager.factory.goods.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Layout {
 
-	@JsonIgnore
 	private Integer id;
 
 	private String page;
@@ -28,6 +25,8 @@ public class Layout {
 	private int pageType;
 
 	private int centerId;
+
+	private int sort;
 
 	public Integer getType() {
 		return type;
@@ -130,6 +129,14 @@ public class Layout {
 		return "Layout [id=" + id + ", page=" + page + ", code=" + code + ", config=" + config + ", show=" + show
 				+ ", description=" + description + ", createTime=" + createTime + ", updateTime=" + updateTime
 				+ ", opt=" + opt + "]";
+	}
+
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
 	}
 
 }

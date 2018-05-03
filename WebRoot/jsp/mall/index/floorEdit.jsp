@@ -19,6 +19,7 @@
 					<div class="col-sm-3 item-left">楼层编号</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" readonly name="id" value="${dict.id}"> 
+						<input type="hidden" class="form-control" readonly name="layoutId" value="${dict.layoutId}"> 
 					</div>
 				</div>
 				<div class="list-item">
@@ -52,6 +53,12 @@
 					<div class="col-sm-3 item-left">楼层描述</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="description" value="${dict.description}"> 
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">楼层顺序</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="sort" value="${dict.layout.sort}"> 
 					</div>
 				</div>
 				<div class="list-item">
