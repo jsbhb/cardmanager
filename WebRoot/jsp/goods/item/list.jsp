@@ -104,7 +104,7 @@
 					<span class="all-classfiy">所有分类</span>
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
-				<c:if test="${opt.gradeId == 0}">
+				<c:if test="${opt.gradeId == 0 || opt.gradeId == 2}">
 					<div class="col-md-10 list-btns">
 						<button type="button" onclick="jump(9)">新增商品</button>
 						<button type="button" onclick = "beUse('')">批量可用</button>
