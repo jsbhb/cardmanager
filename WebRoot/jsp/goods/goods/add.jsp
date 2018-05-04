@@ -92,7 +92,7 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">增值税率</div>
 				<div class="col-sm-9 item-right">
-                	<input type="text" class="form-control" name="incrementTax" id="incrementTax" value="0.17"/>
+                	<input type="text" class="form-control" name="incrementTax" id="incrementTax" value="0.16"/>
 					<div class="item-content">
 		             	（请按小数格式输入，例：0.17）
 		            </div>
