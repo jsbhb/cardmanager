@@ -76,16 +76,6 @@
 						</c:forEach>
 	           		</ul>
 	           	</div>
-<!-- 				<div class="col-xs-3"> -->
-<!-- 					<div class="searchItem"> -->
-<!-- 			            <select class="form-control" name="shopId" id="shopId"> -->
-<!-- 	                   	  <option selected="selected" value="">店铺选择</option> -->
-<%-- 	                   	  <c:forEach var="shop" items="${shopId}"> --%>
-<%--                   	  			<option value="${shop.gradeId}">${shop.gradeName}</option> --%>
-<%-- 	                   	  </c:forEach> --%>
-<!-- 		              	</select> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
 				<div class="col-xs-3">
 					<div class="searchItem">
 						<input type="text" class="form-control" name="orderId" placeholder="请输入订单号">
@@ -111,12 +101,13 @@
             </div>
 		</div>
 		<div class="list-content">
-<!-- 			<div class="row"> -->
-<!-- 				<div class="col-md-12 list-btns"> -->
-<!-- 					<button type="button" onclick="">订单导出</button> -->
-<!-- 					<button type="button" onclick="">订单导出</button> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
+			<c:if test="${privilege == 1}">
+				<div class="row">
+					<div class="col-md-12 list-btns">
+						<button type="button" onclick="excelExport()">订单导出</button>
+					</div>
+				</div>
+			</c:if>
 			<div class="row">
 				<div class="col-md-12">
 					<table id="baseTable" class="table table-hover myClass">
@@ -331,6 +322,19 @@ $('.select-content').on('click','span',function(event){
 		$('.select-content').slideUp(300);
 	}
 });
+
+function excelExport(){
+	var index = layer.open({
+	  title:"订单导出任务",		
+	  type: 2,
+	  content: '${wmsUrl}/admin/order/stockOutMng/excelExport.shtml',
+	  maxmin: false
+	});
+}
+
+function downLoadExcel(){
+	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml"; 
+}
 
 </script>
 </body>

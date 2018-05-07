@@ -1,5 +1,11 @@
 package com.card.manager.factory.order.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,13 +13,17 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
@@ -31,6 +41,7 @@ import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
@@ -65,6 +76,9 @@ public class OrderMngController extends BaseController {
 		result = TreePackUtil.packGradeChildren(list, opt.getGradeId());
 		Collections.sort(result);
 		context.put("list", result);
+		
+		//set page privilege
+		context.put("privilege", req.getParameter("privilege"));
 		return forword("order/stockout/list", context);
 	}
 
@@ -266,6 +280,56 @@ public class OrderMngController extends BaseController {
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/excelExport")
+	public ModelAndView excelExport(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		return forword("order/stockout/excelExport", context);
+	}
+	
+	@RequestMapping(value = "/downLoadExcel")
+	public void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+			String fileName = df.format(System.currentTimeMillis()) + ".xlsx";
+			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
+			
+			List<OrderInfo> ReportList = new ArrayList<OrderInfo>();
+			String[] nameArray = new String[]{"订单号","状态","区域中心","供应商","货号"};
+			String[] colArray = new String[]{"OptId","OptName","TelCount","FieldCount","SignBillCount"};
+			SXSSFWorkbook swb = new SXSSFWorkbook(100);
+			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, "sheet1", swb);
+			ExcelUtil.writeToExcel(swb, filePath);
+			
+			req.setCharacterEncoding("UTF-8");
+		    //第一步：设置响应类型
+		    resp.setContentType("application/force-download");//应用程序强制下载
+		    InputStream in = new FileInputStream(filePath);
+		    //设置响应头，对文件进行url编码
+		    fileName = URLEncoder.encode(fileName, "UTF-8");
+		    resp.setHeader("Content-Disposition", "attachment;filename="+fileName);   
+		    resp.setContentLength(in.available());
+		    
+		    //第三步：老套路，开始copy
+		    OutputStream out = resp.getOutputStream();
+		    byte[] b = new byte[4096];
+		    int len = 0;
+		    while((len = in.read(b))!=-1){
+		      out.write(b, 0, len);
+		    }
+		    out.flush();
+		    out.close();
+		    in.close();
+		} catch (Exception e) {
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().print("下载失败，请重试!");
+			return;
 		}
 	}
 }
