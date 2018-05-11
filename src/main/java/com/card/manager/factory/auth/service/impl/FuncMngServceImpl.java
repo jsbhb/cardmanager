@@ -87,4 +87,9 @@ public class FuncMngServceImpl implements FuncMngService {
 		return funcEntityMapper.queryById(params);
 	}
 
+	@Override
+	public List<AuthInfo> queryFuncByRoleIdParam(Map<String, Object> params) {
+		return funcMapper.selectFuncByRoleIdParam(params);
+	}
+
 }

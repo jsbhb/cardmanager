@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +38,11 @@ import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.model.UserDetail;
+import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -76,9 +78,13 @@ public class OrderMngController extends BaseController {
 		result = TreePackUtil.packGradeChildren(list, opt.getGradeId());
 		Collections.sort(result);
 		context.put("list", result);
-		
-		//set page privilege
-		context.put("privilege", req.getParameter("privilege"));
+
+		// set page privilege
+		if (opt.getRoleId() == 1) {
+			context.put("prilvl", "1");
+		} else {
+			context.put("prilvl", req.getParameter("privilege"));
+		}
 		return forword("order/stockout/list", context);
 	}
 
@@ -135,50 +141,51 @@ public class OrderMngController extends BaseController {
 				pagination.setShopId(Integer.parseInt(shopId));
 			}
 
-//			int gradeLevel = staffEntity.getGradeLevel();
-//			if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
-//			} else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
-//				pagination.setCenterId(staffEntity.getGradeId());
-//				pagination.setShopId(staffEntity.getShopId());
-//			} else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
-//				pagination.setCenterId(staffEntity.getParentGradeId());
-//				pagination.setShopId(staffEntity.getShopId());
-//			} else {
-//				if (pcb == null) {
-//					pcb = new PageCallBack();
-//				}
-//				pcb.setPagination(pagination);
-//				pcb.setSuccess(true);
-//				return pcb;
-//			}
+			// int gradeLevel = staffEntity.getGradeLevel();
+			// if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
+			// } else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
+			// pagination.setCenterId(staffEntity.getGradeId());
+			// pagination.setShopId(staffEntity.getShopId());
+			// } else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
+			// pagination.setCenterId(staffEntity.getParentGradeId());
+			// pagination.setShopId(staffEntity.getShopId());
+			// } else {
+			// if (pcb == null) {
+			// pcb = new PageCallBack();
+			// }
+			// pcb.setPagination(pagination);
+			// pcb.setSuccess(true);
+			// return pcb;
+			// }
 			Integer gradeId = staffEntity.getGradeId();
-			if(gradeId != 0 && gradeId != null){
+			if (gradeId != 0 && gradeId != null) {
 				pagination.setShopId(gradeId);
 			}
 			String gradeIdStr = req.getParameter("gradeId");
-			if(gradeIdStr != null){
+			if (gradeIdStr != null) {
 				pagination.setShopId(Integer.valueOf(gradeIdStr));
 			}
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
-			
+
 			if (pcb != null) {
 				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
 				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
-				List<Object> list = (ArrayList<Object>)pcb.getObj();
+				List<Object> list = (ArrayList<Object>) pcb.getObj();
 				OrderInfo orderInfo = null;
-				for(Object info : list){
+				for (Object info : list) {
 					orderInfo = (OrderInfo) info;
-					for(UserDetail ud : user) {
+					for (UserDetail ud : user) {
 						if (orderInfo.getUserId().toString().equals(ud.getUserId().toString())) {
 							orderInfo.setCustomerName(ud.getName());
 							break;
 						}
 					}
 					if (orderInfo.getPushUserId() != null) {
-						for(PushUser pu : push) {
-							if (orderInfo.getShopId().toString().equals(pu.getGradeId().toString()) && orderInfo.getPushUserId().toString().equals(pu.getUserId().toString())) {
+						for (PushUser pu : push) {
+							if (orderInfo.getShopId().toString().equals(pu.getGradeId().toString())
+									&& orderInfo.getPushUserId().toString().equals(pu.getUserId().toString())) {
 								orderInfo.setPushUserName(pu.getName());
 								break;
 							}
@@ -245,7 +252,7 @@ public class OrderMngController extends BaseController {
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
-			for(SupplierEntity sup : supplier) {
+			for (SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {
 					break;
 				}
@@ -255,7 +262,7 @@ public class OrderMngController extends BaseController {
 				}
 			}
 			List<StaffEntity> center = CachePoolComponent.getCenter(opt.getToken());
-			for(StaffEntity cen : center) {
+			for (StaffEntity cen : center) {
 				if (entity.getCenterId() == null) {
 					break;
 				}
@@ -265,7 +272,7 @@ public class OrderMngController extends BaseController {
 				}
 			}
 			List<StaffEntity> shop = CachePoolComponent.getShop(opt.getToken());
-			for(StaffEntity sh : shop) {
+			for (StaffEntity sh : shop) {
 				if (entity.getShopId() == null) {
 					break;
 				}
@@ -288,44 +295,108 @@ public class OrderMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		return forword("order/stockout/excelExport", context);
 	}
-	
+
 	@RequestMapping(value = "/downLoadExcel")
 	public void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			String dateType = req.getParameter("dateType");
+			String startTime = req.getParameter("startTime");
+			String endTime = req.getParameter("endTime");
+			Date date = new Date();
+			// 当选择了指定日期时
+			if ("1".equals(dateType)) {
+				startTime = DateUtil.getDateBetween_String(date, -7, "yyyy-MM-dd");
+				endTime = DateUtil.getNowFormateDate();
+			} else if ("2".equals(dateType)) {
+				startTime = DateUtil.getDateBetween_String(date, -31, "yyyy-MM-dd");
+				endTime = DateUtil.getNowFormateDate();
+			}
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("startTime", startTime);
+			param.put("endTime", endTime);
+			param.put("gradeId", staffEntity.getGradeId());
+
+			List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
+			ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());
+
+			String tmpOrderId = "";
+			String TmpExpressInfo = "";
+			for (OrderInfoListForDownload oi : ReportList) {
+				switch (oi.getStatus()) {
+				case 0:	oi.setStatusName("待支付");break;
+				case 1:	oi.setStatusName("已付款");break;
+				case 2:	oi.setStatusName("支付单报关");break;
+				case 3:	oi.setStatusName("已发仓库");	break;
+				case 4:	oi.setStatusName("已报海关");	break;
+				case 5:	oi.setStatusName("单证放行");	break;
+				case 6:	oi.setStatusName("已发货");break;
+				case 7:	oi.setStatusName("已收货");break;
+				case 8:	oi.setStatusName("退单");break;
+				case 9:	oi.setStatusName("超时取消");	break;
+				case 11:oi.setStatusName("资金池不足");break;
+				case 12:oi.setStatusName("已支付");break;
+				case 21:oi.setStatusName("退款中");break;
+				case 99:oi.setStatusName("异常状态");	break;
+				}
+
+				if (!tmpOrderId.equals(oi.getOrderId())) {
+					tmpOrderId = oi.getOrderId();
+					TmpExpressInfo = "";
+					Map<String, Object> express = new HashMap<String, Object>();
+					for (ThirdOrderInfo toi : oi.getOrderExpressList()) {
+						if (express.containsKey(toi.getExpressName())) {
+							express.put(toi.getExpressName(),
+									express.get(toi.getExpressName()) + "," + toi.getExpressId());
+						} else {
+							express.put(toi.getExpressName(), toi.getExpressId());
+						}
+					}
+					for (Map.Entry<String, Object> entry : express.entrySet()) {
+						TmpExpressInfo += entry.getKey() + ":" + entry.getValue() + "|";
+					}
+					if (TmpExpressInfo.length() > 0) {
+						TmpExpressInfo = TmpExpressInfo.substring(0, TmpExpressInfo.length() - 1);
+					}
+				}
+				oi.setExpressInfo(TmpExpressInfo);
+			}
+
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
 
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-			String fileName = df.format(System.currentTimeMillis()) + ".xlsx";
+			String fileName = DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
-			
-			List<OrderInfo> ReportList = new ArrayList<OrderInfo>();
-			String[] nameArray = new String[]{"订单号","状态","区域中心","供应商","货号"};
-			String[] colArray = new String[]{"OptId","OptName","TelCount","FieldCount","SignBillCount"};
+
+			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目",
+					"二级类目", "三级类目", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
+			String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
+					"RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "Payment",
+					"PayType", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
+					"ReceiveAddress", "CreateTime", "ExpressInfo" };
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
-			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, "sheet1", swb);
+			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);
 			ExcelUtil.writeToExcel(swb, filePath);
-			
+
 			req.setCharacterEncoding("UTF-8");
-		    //第一步：设置响应类型
-		    resp.setContentType("application/force-download");//应用程序强制下载
-		    InputStream in = new FileInputStream(filePath);
-		    //设置响应头，对文件进行url编码
-		    fileName = URLEncoder.encode(fileName, "UTF-8");
-		    resp.setHeader("Content-Disposition", "attachment;filename="+fileName);   
-		    resp.setContentLength(in.available());
-		    
-		    //第三步：老套路，开始copy
-		    OutputStream out = resp.getOutputStream();
-		    byte[] b = new byte[4096];
-		    int len = 0;
-		    while((len = in.read(b))!=-1){
-		      out.write(b, 0, len);
-		    }
-		    out.flush();
-		    out.close();
-		    in.close();
+			// 第一步：设置响应类型
+			resp.setContentType("application/force-download");// 应用程序强制下载
+			InputStream in = new FileInputStream(filePath);
+			// 设置响应头，对文件进行url编码
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+			resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+			resp.setContentLength(in.available());
+
+			// 第三步：老套路，开始copy
+			OutputStream out = resp.getOutputStream();
+			byte[] b = new byte[4096];
+			int len = 0;
+			while ((len = in.read(b)) != -1) {
+				out.write(b, 0, len);
+			}
+			out.flush();
+			out.close();
+			in.close();
 		} catch (Exception e) {
 			resp.setContentType("text/html;charset=utf-8");
 			resp.getWriter().print("下载失败，请重试!");

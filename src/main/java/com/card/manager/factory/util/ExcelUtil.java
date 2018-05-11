@@ -67,7 +67,7 @@ public class ExcelUtil {
 				row = sheet.createRow(j);
 				for (int i = 0; i < nameArray.length; i++) {
 					Cell cell = row.createCell(i);
-					cell.setCellValue(methods[i].invoke(o, null) + "");
+					cell.setCellValue(methods[i].invoke(o, null)==null ? "" :methods[i].invoke(o, null) + "");
 				}
 				j++;
 			} 

@@ -25,6 +25,7 @@ import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseSer
 import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
+import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -136,5 +137,31 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("发起订单取消功能操作失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public List<OrderInfoListForDownload> queryOrderInfoListForDownload(Map<String,Object> param, String token) {
+
+		List<OrderInfoListForDownload> list = new ArrayList<OrderInfoListForDownload>();
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_QUERY_ORDERLISTFORDOWNLOAD, token, true, null,
+				HttpMethod.POST,param);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		
+		if (!json.getBoolean("success")) {
+			return list;
+		}
+		
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), OrderInfoListForDownload.class));
+		}
+		
+		return list;
 	}
 }

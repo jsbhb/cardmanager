@@ -59,5 +59,14 @@
 		</if> 
 		where funcid = #{funcId}
     </insert>
+	
+	<select id="selectFuncByRoleIdParam" resultMap="authInfo">
+		select c.*,fp.privilege 
+		from auth_role r 
+		right join auth_rolefunc f on f.roleid = r.roleid 
+		right join auth_func c on c.funcid = f.funcid 
+		left join auth_rolefunc fp on f.funcid = fp.funcid and fp.roleid = #{roleId} 
+		where f.roleid = #{parentId};
+	</select>
 
 </mapper>

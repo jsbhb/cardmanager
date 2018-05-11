@@ -96,18 +96,14 @@
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
                          <button type="button" class="clear">清除选项</button>
+                         <c:if test="${prilvl == 1}">
+                         	<button type="button" class="add" onclick="excelExport()">导出</button>
+						</c:if>
                     </div>
                 </div>
             </div>
 		</div>
 		<div class="list-content">
-			<c:if test="${privilege == 1}">
-				<div class="row">
-					<div class="col-md-12 list-btns">
-						<button type="button" onclick="excelExport()">订单导出</button>
-					</div>
-				</div>
-			</c:if>
 			<div class="row">
 				<div class="col-md-12">
 					<table id="baseTable" class="table table-hover myClass">
@@ -122,7 +118,8 @@
 								<th>消费者</th>
 								<th>订单来源</th>
 								<th>所属分级</th>
-								<th>交易时间</th>
+<!-- 								<th>交易时间</th> -->
+								<th>创建时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -151,12 +148,12 @@ $('.searchBtn').on('click',function(){
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/order/stockOutMng/dataList.shtml",
-			numPerPage:"10",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/order/stockOutMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -230,32 +227,17 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
 		str += "</td><td>" + list[i].customerName;
-		var tmpCenterId = list[i].centerId;
-		var tmpCenterName = "";
-		if (tmpCenterId == -1) {
-			tmpCenterName = "订货平台";
+		var tmpOrderSource = list[i].orderSource;
+		switch(tmpOrderSource){
+			case 0:str += "</td><td>PC商城";break;
+			case 1:str += "</td><td>手机商城";break;
+			case 2:str += "</td><td>订货平台";break;
+			default:str += "</td><td>";
 		}
-// 		var centerSelect = document.getElementById("centerId");
-// 		var options = centerSelect.options;
-// 		for(var j=0;j<options.length;j++){
-// 			if (tmpCenterId==options[j].value) {
-// 				tmpCenterName = options[j].text;
-// 				break;
-// 			}
-// 		}
-		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
-		var tmpShopId = list[i].shopId;
-// 		var tmpShopName = "";
-// 		var shopSelect = document.getElementById("shopId");
-// 		var soptions = shopSelect.options;
-// 		for(var j=0;j<soptions.length;j++){
-// 			if (tmpShopId==soptions[j].value) {
-// 				tmpShopName = soptions[j].text;
-// 				break;
-// 			}
-// 		}
+// 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
-		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
+// 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
+		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		if (true) {
 			str += "<td align='left'>";
 			str += "<a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
@@ -325,15 +307,12 @@ $('.select-content').on('click','span',function(event){
 
 function excelExport(){
 	var index = layer.open({
-	  title:"订单导出任务",		
+	  title:"订单导出",		
 	  type: 2,
+	  area: ['50%','50%'],
 	  content: '${wmsUrl}/admin/order/stockOutMng/excelExport.shtml',
 	  maxmin: false
 	});
-}
-
-function downLoadExcel(){
-	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml"; 
 }
 
 </script>

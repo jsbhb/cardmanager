@@ -105,7 +105,7 @@
 			    	return;
 		    	}
 	    	}
-	    	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType; 
+	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType; 
 	    }
 	</script>
 </body>

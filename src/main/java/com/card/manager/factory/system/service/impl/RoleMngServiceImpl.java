@@ -84,8 +84,14 @@ public class RoleMngServiceImpl implements RoleMngService {
 			
 			List<RoleEntity> rolesData = new ArrayList<RoleEntity>();
 			
-			String[] funcArray = funcIds.split(",");
-			String[] privilegeArray = privileges.split(",");
+			String[] funcArray = null;
+			String[] privilegeArray = null;
+			if (funcIds != null) {
+				funcArray = funcIds.split(",");
+			}
+			if (privileges != null) {
+				privilegeArray = privileges.split(",");
+			}
 			RoleEntity roleData;
 			boolean isDeal;
 			

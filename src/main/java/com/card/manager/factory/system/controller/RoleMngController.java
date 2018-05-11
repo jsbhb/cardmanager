@@ -101,9 +101,11 @@ public class RoleMngController extends BaseController {
 				optMenuList = funcMngService.queryFunc();
 				menuList = AuthCommon.treeAuthInfo(optMenuList, roleMenuList);
 			} else {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("parentId", (role.getParentId() == 0 ? role.getRoleId() : role.getParentId()));
+				params.put("roleId", roleId);
 				// 获取当前用户可操作所有功能菜单
-				optMenuList = funcMngService
-						.queryFuncByRoleId((role.getParentId() == 0 ? role.getRoleId() : role.getParentId()));
+				optMenuList = funcMngService.queryFuncByRoleIdParam(params);
 				menuList = AuthCommon.treeAuthInfo(optMenuList, roleMenuList);
 			}
 

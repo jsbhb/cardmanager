@@ -23,8 +23,11 @@
 				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 			  </div>
+			  <c:if test="${prilvl == 1}">
+		      	<button class="default-btn position-btn" type="button" onclick="excelExport()">订单导出</button>
+		      </c:if>
 	    </section>
-		 <div class="select-content">
+		<div class="select-content">
             <ul class="first-ul" style="margin-left:10px;">
            		<c:forEach var="menu" items="${list}">
            			<c:set var="menu" value="${menu}" scope="request" />
@@ -222,6 +225,16 @@
 			  maxmin: true
 			});
 			layer.full(index);
+	}
+
+	function excelExport(){
+		var index = layer.open({
+		  title:"订单导出",		
+		  type: 2,
+		  area: ['50%','50%'],
+		  content: '${wmsUrl}/admin/user/rebateMng/excelExport.shtml',
+		  maxmin: false
+		});
 	}
 	</script>
 </body>

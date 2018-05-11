@@ -78,6 +78,8 @@ public class OrderInfo extends Pagination{
 	private String itemCode;
 	
 	private Integer tagFun;
+	
+	private Integer orderSource;
 
 	public boolean check() {
 		if (orderDetail == null || orderGoodsList == null || orderFlag == null || createType == null || userId == null
@@ -365,6 +367,14 @@ public class OrderInfo extends Pagination{
 
 	public void setTagFun(Integer tagFun) {
 		this.tagFun = tagFun;
+	}
+
+	public Integer getOrderSource() {
+		return orderSource;
+	}
+
+	public void setOrderSource(Integer orderSource) {
+		this.orderSource = orderSource;
 	}
 
 	@Override

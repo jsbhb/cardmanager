@@ -8,11 +8,13 @@
 package com.card.manager.factory.order.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
+import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.system.model.StaffEntity;
 
 /**
@@ -55,4 +57,15 @@ public interface OrderService extends ServerCenterService {
 	List<ThirdOrderInfo> queryThirdOrderInfoByOrderId(String orderId, String token);
 
 	void cancleTagFuncOrder(List<String> orderIds, StaffEntity staff) throws Exception;
+
+	/**  
+	 * queryByOrderId:根据编号查询订单信息. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param orderId
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<OrderInfoListForDownload> queryOrderInfoListForDownload(Map<String,Object> param, String token);
 }

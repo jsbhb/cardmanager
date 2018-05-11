@@ -132,7 +132,8 @@
 								<th>消费者</th>
 								<th>订单来源</th>
 								<th>所属分级</th>
-								<th>交易时间</th>
+<!-- 								<th>交易时间</th> -->
+								<th>创建时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -242,34 +243,17 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
 		str += "</td><td>" + list[i].customerName;
-		var tmpCenterId = list[i].centerId;
-		var tmpCenterName = "";
-		if (tmpCenterId == -1) {
-			tmpCenterName = "订货平台";
+		var tmpOrderSource = list[i].orderSource;
+		switch(tmpOrderSource){
+			case 0:str += "</td><td>PC商城";break;
+			case 1:str += "</td><td>手机商城";break;
+			case 2:str += "</td><td>订货平台";break;
+			default:str += "</td><td>";
 		}
-// 		var centerSelect = document.getElementById("centerId");
-// 		var options = centerSelect.options;
-// 		for(var j=0;j<options.length;j++){
-// 			if (tmpCenterId==options[j].value) {
-// 				tmpCenterName = options[j].text;
-// 				break;
-// 			}
-// 		}
-// 		str += "</td><td>" + (tmpCenterName == "" ? "" : tmpCenterName);
-		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
-// 		var tmpShopId = list[i].shopId;
-// 		var tmpShopName = "";
-// 		var shopSelect = document.getElementById("shopId");
-// 		var soptions = shopSelect.options;
-// 		for(var j=0;j<soptions.length;j++){
-// 			if (tmpShopId==soptions[j].value) {
-// 				tmpShopName = soptions[j].text;
-// 				break;
-// 			}
-// 		}
-// 		str += "</td><td>" + (tmpShopName == "" ? "" : tmpShopName);
+// 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
-		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
+// 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
+		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		if (true) {
 			str += "<td align='left'>";
 			str += "<a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";

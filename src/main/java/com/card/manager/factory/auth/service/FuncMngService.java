@@ -127,5 +127,16 @@ public interface FuncMngService {
 	 * @since JDK 1.7  
 	 */
 	FuncEntity queryById(Map<String, Object> params);
+	
+	/**
+	 * 
+	 * queryFuncById:根据菜单编号查询. <br/>
+	 * 
+	 * @author hebin
+	 * @param id
+	 * @return
+	 * @since JDK 1.7
+	 */
+	public List<AuthInfo> queryFuncByRoleIdParam(Map<String, Object> params);
 
 }
