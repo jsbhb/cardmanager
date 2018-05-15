@@ -1,10 +1,6 @@
 package com.card.manager.factory.order.controller;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -44,6 +40,7 @@ import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
+import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
@@ -378,28 +375,11 @@ public class OrderMngController extends BaseController {
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);
 			ExcelUtil.writeToExcel(swb, filePath);
 
-			req.setCharacterEncoding("UTF-8");
-			// 第一步：设置响应类型
-			resp.setContentType("application/force-download");// 应用程序强制下载
-			InputStream in = new FileInputStream(filePath);
-			// 设置响应头，对文件进行url编码
-			fileName = URLEncoder.encode(fileName, "UTF-8");
-			resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-			resp.setContentLength(in.available());
-
-			// 第三步：老套路，开始copy
-			OutputStream out = resp.getOutputStream();
-			byte[] b = new byte[4096];
-			int len = 0;
-			while ((len = in.read(b)) != -1) {
-				out.write(b, 0, len);
-			}
-			out.flush();
-			out.close();
-			in.close();
+			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
 		} catch (Exception e) {
 			resp.setContentType("text/html;charset=utf-8");
-			resp.getWriter().print("下载失败，请重试!");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
 			return;
 		}
 	}

@@ -110,6 +110,11 @@
 						<button type="button" onclick = "beUse('')">批量可用</button>
 						<button type="button" onclick = "beFx('')">批量可分销</button>
 						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
+						<button type="button" onclick = "excelExport(1)">商品导出</button>
+						<button type="button" onclick = "excelExport(2)">商品库存导出</button>
+						<c:if test="${prilvl == 1}">
+                         	<button type="button" onclick="excelExport(3)">商品信息导出</button>
+						</c:if>
 					</div>
 				</c:if>
 			</div>
@@ -494,6 +499,9 @@ function queryDataByLabelTouch(typeId,categoryId,tabId){
 	reloadTable();
 }
 
+function excelExport(type){
+	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type;
+}
 
 </script>
 </body>

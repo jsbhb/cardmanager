@@ -24,6 +24,7 @@ import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseSer
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
+import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
@@ -370,6 +371,32 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		if (!json.getBoolean("success")) {
 			throw new Exception("更新商品明细价格信息操作失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(String token) {
+
+		List<GoodsInfoListForDownload> list = new ArrayList<GoodsInfoListForDownload>();
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true, null,
+				HttpMethod.POST);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		
+		if (!json.getBoolean("success")) {
+			return list;
+		}
+		
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), GoodsInfoListForDownload.class));
+		}
+		
+		return list;
 	}
 
 }

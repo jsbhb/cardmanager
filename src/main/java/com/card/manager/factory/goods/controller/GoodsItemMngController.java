@@ -1,18 +1,24 @@
 package com.card.manager.factory.goods.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
@@ -32,6 +38,7 @@ import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
+import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
@@ -39,6 +46,9 @@ import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.CalculationUtils;
+import com.card.manager.factory.util.DateUtil;
+import com.card.manager.factory.util.ExcelUtil;
+import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 
@@ -83,6 +93,12 @@ public class GoodsItemMngController extends BaseController {
 		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
 		if (grade != null) {
 			context.put("gradeType", grade.getGradeType());
+		}
+		// set page privilege
+		if (opt.getRoleId() == 1) {
+			context.put("prilvl", "1");
+		} else {
+			context.put("prilvl", req.getParameter("privilege"));
 		}
 		return forword("goods/item/list", context);
 	}
@@ -252,7 +268,7 @@ public class GoodsItemMngController extends BaseController {
 			} else if ("third".equals(tabId)) {
 				item.setStatus("5");
 			}
-			
+
 			String typeId = item.getTypeId();
 			String categoryId = item.getCategoryId();
 			if (!StringUtil.isEmpty(typeId) && !StringUtil.isEmpty(categoryId)) {
@@ -586,5 +602,74 @@ public class GoodsItemMngController extends BaseController {
 		}
 
 		return forword("goods/item/edit", context);
+	}
+
+	@RequestMapping(value = "/downLoadExcel")
+	public void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String type = req.getParameter("type");
+
+			List<GoodsInfoListForDownload> ReportList = new ArrayList<GoodsInfoListForDownload>();
+			ReportList = goodsItemService.queryGoodsInfoListForDownload(staffEntity.getToken());
+
+			for (GoodsInfoListForDownload gi : ReportList) {
+				switch (gi.getGoodsStatus()) {
+				case 0:gi.setGoodsStatusName("初始状态");break;
+				case 1:gi.setGoodsStatusName("可用");break;
+				case 2:gi.setGoodsStatusName("可分销");break;
+				}
+
+				if (gi.getItemStatus() != null) {
+					switch (gi.getItemStatus()) {
+					case 0:gi.setItemStatusName("下架");break;
+					case 1:gi.setItemStatusName("上架");break;
+					}
+				}
+			}
+
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+
+			String fileType = "";
+			if ("1".equals(type)) {
+				fileType = "goods_";
+			} else if ("2".equals(type)) {
+				fileType = "goods_stock_";
+			} else if ("3".equals(type)) {
+				fileType = "goods_info_";
+			}
+			String fileName = fileType + DateUtil.getNowLongTime() + ".xlsx";
+			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
+
+			String[] nameArray = null;
+			String[] colArray = null;
+			if ("1".equals(type)) {
+				nameArray = new String[] { "商品编号", "货号", "商品名称", "一级类目", "二级类目", "三级类目", "零售价", "返佣比例" };
+				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "FirstName", "SecondName", "ThirdName",
+						"RetailPrice", "Proportion" };
+			} else if ("2".equals(type)) {
+				nameArray = new String[] { "商品编号", "货号", "商品名称", "状态", "上架状态", "供应商", "库存" };
+				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "GoodsStatusName", "ItemStatusName",
+						"SupplierName", "FxQty" };
+			} else if ("3".equals(type)) {
+				nameArray = new String[] { "商品编号", "货号", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
+						"成本价", "内供价", "零售价", "返佣比例" };
+				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "GoodsStatusName", "ItemStatusName",
+						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
+						"RetailPrice", "Proportion" };
+			}
+
+			SXSSFWorkbook swb = new SXSSFWorkbook(100);
+			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, "sheet1", swb);
+			ExcelUtil.writeToExcel(swb, filePath);
+
+			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
+		} catch (Exception e) {
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
+			return;
+		}
 	}
 }

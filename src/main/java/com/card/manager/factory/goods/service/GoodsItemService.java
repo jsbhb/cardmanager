@@ -7,9 +7,12 @@
  */
 package com.card.manager.factory.goods.service;
 
+import java.util.List;
+
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
+import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
 
@@ -168,5 +171,7 @@ public interface GoodsItemService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception;
+
+	List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(String token);
 
 }
