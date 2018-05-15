@@ -300,7 +300,7 @@ function rebuildTable(data){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
 			}
 			if(status==1||status==2){
-				if(list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
+				if(list[i].supplierName!="一般贸易仓"&&list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
 					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
 				}
 			}

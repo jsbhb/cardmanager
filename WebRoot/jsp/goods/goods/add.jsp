@@ -128,6 +128,16 @@
 	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
 				</div>
 			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">商品类型</div>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="type" id="type">
+                	  <option selected="selected" value="0">跨境商品</option>
+                	  <option value="2">一般贸易商品</option>
+	                </select>
+	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
+				</div>
+			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商家编码</div>
 				<div class="col-sm-9 item-right">
@@ -143,6 +153,15 @@
                		<input type="text" class="form-control" name="sku">
 					<div class="item-content">
 		             	（海关备案货号或商家编码）
+		            </div>
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">条形码</div>
+				<div class="col-sm-9 item-right">
+               		<input type="text" class="form-control" name="encode">
+					<div class="item-content">
+		             	（商品自带的条形码）
 		            </div>
 				</div>
 			</div>

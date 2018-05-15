@@ -33,9 +33,11 @@ public class CreateGoodsInfoEntity {
 	private String itemStatus;
 	private int supplierId;
 	private String supplierName;
+	private int type;
 	private String goodsName;
 	private String itemCode;
 	private String sku;
+	private String encode;
 	private double exciseFax;
 	private String origin;
 	private double weight;
@@ -243,6 +245,18 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setHscode(String hscode) {
 		this.hscode = hscode;
+	}
+	public String getEncode() {
+		return encode;
+	}
+	public void setEncode(String encode) {
+		this.encode = encode;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }

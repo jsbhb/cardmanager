@@ -63,13 +63,30 @@
        	<div class="list-item">
 			<div class="col-sm-3 item-left">订单来源</div>
 			<div class="col-sm-9 item-right">
-				<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
+				<c:choose>
+				<c:when test="${order.orderSource==0}">
+					<input type="text" class="form-control" name="area" readonly value="PC商城">
+				</c:when>
+				<c:when test="${order.orderSource==1}">
+					<input type="text" class="form-control" name="area" readonly value="手机商城">
+				</c:when>
+				<c:otherwise>
+					<input type="text" class="form-control" name="area" readonly value="订货平台">
+				</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
        	<div class="list-item">
 			<div class="col-sm-3 item-left">所属分级</div>
 			<div class="col-sm-9 item-right">
-				<input type="text" class="form-control" name="area" readonly value="${order.shopName}">
+				<c:choose>
+				<c:when test="${order.shopName!=null}">
+					<input type="text" class="form-control" name="area" readonly value="${order.shopName}">
+				</c:when>
+				<c:otherwise>
+					<input type="text" class="form-control" name="area" readonly value="${order.centerName}">
+				</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 		<div class="title">

@@ -478,6 +478,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setTemplateId(0);
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
+		goods.setType(entity.getType());
 
 		// -------------------保存商品详情---------------------//
 		String savePath;
@@ -506,6 +507,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
 		goodsItem.setConversion(entity.getConversion());
+		goodsItem.setEncode(entity.getEncode());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());
@@ -611,6 +613,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setTemplateId(0);
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
+		goods.setType(entity.getType());
 
 		// -------------------保存商品详情---------------------//
 		String savePath;
@@ -646,6 +649,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setExciseTax(entity.getExciseFax());
 		goodsItem.setStatus(entity.getItemStatus());
 		goodsItem.setConversion(entity.getConversion());
+		goodsItem.setEncode(entity.getEncode());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());
