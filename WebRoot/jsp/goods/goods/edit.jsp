@@ -541,7 +541,7 @@
 		function toTag(){
 			var index = layer.open({
 				  title:"新增标签",	
-				  area: ['40%', '30%'],	
+				  area: ['80%', '40%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/goodsMng/toTag.shtml',
 				  maxmin: false

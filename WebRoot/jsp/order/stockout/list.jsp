@@ -96,14 +96,18 @@
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
                          <button type="button" class="clear">清除选项</button>
-                         <c:if test="${prilvl == 1}">
-                         	<button type="button" class="add" onclick="excelExport()">导出</button>
-						</c:if>
                     </div>
                 </div>
             </div>
 		</div>
 		<div class="list-content">
+			<c:if test="${prilvl == 1}">
+				<div class="row">
+					<div class="col-md-12 list-btns">
+						<button type="button" class="add" onclick="excelExport()">订单导出</button>
+					</div>
+				</div>
+			</c:if>
 			<div class="row">
 				<div class="col-md-12">
 					<table id="baseTable" class="table table-hover myClass">
@@ -309,7 +313,7 @@ function excelExport(){
 	var index = layer.open({
 	  title:"订单导出",		
 	  type: 2,
-	  area: ['50%','50%'],
+	  area: ['55%','65%'],
 	  content: '${wmsUrl}/admin/order/stockOutMng/excelExport.shtml',
 	  maxmin: false
 	});

@@ -303,7 +303,7 @@
 	function toBrand(){
 		var index = layer.open({
 			  title:"新增品牌",	
-			  area: ['70%', '40%'],	
+			  area: ['80%', '40%'],	
 			  type: 2,
 			  content: '${wmsUrl}/admin/goods/brandMng/toAdd.shtml',
 			  maxmin: false
