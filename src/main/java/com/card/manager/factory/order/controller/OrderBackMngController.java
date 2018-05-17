@@ -26,6 +26,7 @@ import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
+import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
@@ -251,6 +252,8 @@ public class OrderBackMngController extends BaseController {
 					break;
 				}
 			}
+			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());
+			context.put("orderExpressList", orderExpressList);
 			return forword("order/back/show", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());

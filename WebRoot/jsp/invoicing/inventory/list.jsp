@@ -14,9 +14,8 @@
 <section class="content-wrapper query">
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);">首页</a></li>
-	        <li>商品管理</li>
-	        <li class="active">商品列表</li>
+	        <li>进销存管理</li>
+	        <li class="active">库存维护</li>
 	      </ol>
 	      <div class="search">
 	      	<input type="text" name="goodsName" placeholder="请输入商品名称">
@@ -43,10 +42,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
-		                	<option selected="selected" value="">--请选择供应商--</option>
-			                <c:forEach var="supplier" items="${suppliers}">
-			                <option value="${supplier.id}">${supplier.supplierName}</option>
-			                </c:forEach>
+		                	<option selected="selected" value="6">一般贸易仓</option>
 			            </select>
 					</div>
 				</div>
@@ -70,7 +66,6 @@
 					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入商品编号">
 					</div>
-           			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
            			<input type="hidden" class="form-control" name="typeId" id="typeId" value="">
            			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="">
 				</div>
@@ -89,15 +84,6 @@
             </div>
 		</div>
 		
-	
-		<div class="list-tabBar">
-			<ul>
-				<li data-id="first" class="active">在售中</li>
-				<li data-id="second">已售罄</li>
-				<li data-id="third">未分销</li>
-			</ul>
-		</div>
-	
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-2 goods-classify">
@@ -105,15 +91,8 @@
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick = "excelExport(1)">商品导出</button>
-					<button type="button" onclick = "excelExport(2)">商品库存导出</button>
-					<c:if test="${prilvl == 1}">
-						<button type="button" onclick="jump(9)">新增商品</button>
-						<button type="button" onclick = "beUse('')">批量可用</button>
-						<button type="button" onclick = "beFx('')">批量可分销</button>
-						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
-                        	<button type="button" onclick="excelExport(3)">商品信息导出</button>
-					</c:if>
+					<button type="button" onclick = "excelExport()">导出模板</button>
+					<input type="file" id="import" name="import" accept=".xlsx"/>
 				</div>
 			</div>
 			<div class="row content-container">
@@ -144,28 +123,16 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
-								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="15%">商品名称</th>
 								<th width="5%">商品编号</th>
 								<th width="10%">商家编码</th>
 								<th width="8%">商品品牌</th>
-								<th width="12%">商品分类</th>
 								<th width="5%">供应商</th>
 								<th width="5%">商品标签</th>
-								<th width="5%">增值税率</th>
-								<th width="5%">消费税率</th>
 								<th width="5%">商品价格</th>
 								<th width="5%">商品库存</th>
-								<th width="5%">商品状态</th>
-								<c:choose>
-									<c:when test="${prilvl == 1}">
-										<th width="12%">操作</th>
-									</c:when>
-									<c:otherwise>
-										<th width="12%">返佣</th>
-									</c:otherwise>
-								</c:choose>
+								<th width="5%">虚拟库存</th>
+								<th width="12%">操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -183,6 +150,7 @@
 	
 <%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
@@ -234,16 +202,13 @@ function rebuildTable(data){
 
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
-		str += "</td><td>" + list[i].goodsName;
+		str += "<td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
 			str += "</td><td>";
-			str += "</td><td>";
 		} else {
 			str += "</td><td>" + list[i].baseEntity.brand;
-			str += "</td><td>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
 		}
 		str += "</td><td>" + list[i].supplierName;
 		if (list[i].tagBindEntity != null) {
@@ -261,246 +226,115 @@ function rebuildTable(data){
 		} else {
 			str += "</td><td>普通";
 		}
-		if (list[i].baseEntity == null) {
-			str += "</td><td>";
-		} else {
-			str += "</td><td>" + list[i].baseEntity.incrementTax;
-		}
-		str += "</td><td>" + list[i].exciseTax;
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
 		} else {
 			str += "</td><td>无";
 		}
-		var status = list[i].status;
-		switch(status){
-			case '0':str += "</td><td>初始化";break;
-			case '1':str += "</td><td>可用";break;
-			case '2':str += "</td><td>可分销";break;
-			default:str += "</td><td>状态错误："+status;
-		}
-		var gradeId = "${opt.gradeId}";
-		if(gradeId == 0 ||gradeId == 2){
-			if (status != 2) {
-				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
-			} else {
-				str += "</td><td>";
-			}
-			if(status == 0){
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
-			}else if(status == 1){
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >可分销</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
-			}else if(status == 2){
-				str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
-			}
-			if(status==1||status==2){
-				if(list[i].supplierName!="一般贸易仓"&&list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
-					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
-				}
-			}
-		} else {
-			str += "</td><td>" + list[i].rebate;
-		}
+		str += "</td><td><input type='text' class='form-control' onkeyup=\"this.value=this.value.replace(/[^-?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^-?\\d]/g,'')\" value='1'>";
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' data-id='"+list[i].itemId+"'>维护虚拟库存</a>";
 		str += "</td></tr>";
 	}
 
 	$("#baseTable tbody").html(str);
 }
 	
-function toEdit(id){
-	var index = layer.open({
-		  title:"编辑商品信息",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/goodsMng/toEditGoodsInfo.shtml?itemId='+id,
-		  maxmin: true
-		});
-		layer.full(index);
-}
-
-
-function setRebate(id){
-	var index = layer.open({
-		  title:"设置商品返佣比例",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/itemMng/toSetRebate.shtml?id='+id,
-		  maxmin: true
-		});
-		layer.full(index);
-}
-
-function beUse(id){
-	if(id == ""){
-		var valArr = new Array; 
-		var itemIds;
-	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(11).text() == "初始化") {
-	 	        valArr[i] = $(this).val(); 
-	    	}
-	    }); 
-	    if(valArr.length==0){
-	    	layer.alert("请选择初始化状态的数据");
-	    	return;
-	    }
-	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-	} else {
-		itemIds = id;
-	}
+$('#baseTable').on('click','.table-btns',function(){
+	var itemId = $(this).attr('data-id');
+	var qty = $(this).parent().prev().find('input').val();
 	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+itemIds,
+		 url:"${wmsUrl}/admin/invoicing/inventoryMng/maintain.shtml?itemId="+itemId+"&qty="+qty,
 		 type:'post',
 		 contentType: "application/json; charset=utf-8",
 		 dataType:'json',
 		 success:function(data){
 			 if(data.success){	
-				 layer.alert("设置成功");
+				 layer.alert("维护成功");
 				 reloadTable();
 			 }else{
 				 layer.alert(data.msg);
 			 }
 		 },
 		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
+			 layer.alert("维护失败，请联系客服处理");
 		 }
 	 });
-}
-
-function beFx(id){
-	if(id == ""){
-		var valArr = new Array; 
-		var itemIds;
-	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(11).text() == "可用") {
-	 	        valArr[i] = $(this).val(); 
-	    	}
-	    }); 
-	    if(valArr.length==0){
-	    	layer.alert("请选择可用状态的数据");
-	    	return;
-	    }
-	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-	} else {
-		itemIds = id;
-	}
-	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+itemIds,
-		 type:'post',
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){	
-				 layer.alert("设置成功");
-				 reloadTable();
-			 }else{
-				 layer.alert(data.msg);
-			 }
-		 },
-		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	 });
-}
-
-function noBeFx(id){
-	if(id == ""){
-		var valArr = new Array; 
-		var itemIds;
-	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(11).text() == "可分销") {
-	 	        valArr[i] = $(this).val(); 
-	    	}
-	    }); 
-	    if(valArr.length==0){
-	    	layer.alert("请选择可分销状态的数据");
-	    	return;
-	    }
-	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-	} else {
-		itemIds = id;
-	}
-	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/noBeFx.shtml?itemId="+itemIds,
-		 type:'post',
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){	
-				 layer.alert("设置成功");
-				 reloadTable();
-			 }else{
-				 layer.alert(data.msg);
-			 }
-		 },
-		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	 });
-}
-
-function syncStock(id){
-	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/syncStock.shtml?itemId="+id,
-		 type:'post',
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){	
-				 layer.alert("开始同步。。稍后刷新查看");
-				 reloadTable();
-			 }else{
-				 layer.alert(data.msg);
-			 }
-		 },
-		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	 });
-}
-
-
-
+});
 
 //点击分类
 $('.container-left').on('click','span:not(.active)',function(){
 	var categoryId = $(this).attr("data-id");
 	var typeId = $(this).attr("data-type");
-	var tabId = $('.list-tabBar li.active').attr('data-id');
-	queryDataByLabelTouch(typeId,categoryId,tabId);
+	queryDataByLabelTouch(typeId,categoryId);
 });
 
 $('.container-left').on('click','span.active',function(){
-	var tabId = $('.list-tabBar li.active').attr('data-id');
-	queryDataByLabelTouch("","",tabId);
+	queryDataByLabelTouch("","");
 });
 //点击所有分类
 $('.goods-classify').on('click','.all-classfiy',function(){
 	$('.container-left span.active').removeClass('active');
-	var tabId = $('.list-tabBar li.active').attr('data-id');
-	queryDataByLabelTouch("","",tabId);
-});
-
-//切换tabBar
-$('.list-tabBar').on('click','ul li:not(.active)',function(){
-	var tabId = $(this).attr("data-id");
-	queryDataByLabelTouch($("#typeId").val(),$("#categoryId").val(),tabId);
+	queryDataByLabelTouch("","");
 });
 
 //点击分类标签及tab标签时做数据查询动作
-function queryDataByLabelTouch(typeId,categoryId,tabId){
+function queryDataByLabelTouch(typeId,categoryId){
 	$("#typeId").val(typeId);
 	$("#categoryId").val(categoryId);
-	$("#hidTabId").val(tabId);
 	
 	reloadTable();
 }
 
-function excelExport(type){
-	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type;
+function excelExport(){
+	var supplierId = $("#supplierId").val();
+	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId;
 }
 
+//点击上传文件
+$('.list-content').on('change','.list-btns input[type=file]',function(){
+	$.ajaxFileUpload({
+		url : '${wmsUrl}/admin/uploadExcelFile.shtml', //你处理上传文件的服务端
+		secureuri : false,
+		fileElementId : "import",
+		dataType : 'json',
+		beforeSend : function() {
+			$("#image").css({
+				display : "block",
+				position : "fixed",
+				zIndex : 99,
+			});
+		},
+		success : function(data) {
+			//文件上传成功，进行读取操作
+			var filePath = data.msg;
+			readExcelForMaintain(filePath);
+		},
+		complete : function(data) {
+			$("#image").hide();
+		}
+	})
+});
+
+function readExcelForMaintain(filePath){
+	$.ajax({
+		 url:"${wmsUrl}/admin/invoicing/inventoryMng/readExcelForMaintain.shtml?filePath="+filePath,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){
+				 $("#import").val();
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("处理失败，请联系客服处理");
+		 }
+	 });
+}
 </script>
 </body>
 </html>

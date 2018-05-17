@@ -70,25 +70,7 @@
 	</section>
 	<%@include file="../resourceScript.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
-	<script type="text/javascript">
-	function uploadFile() {
-		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/uploadFileForShop.shtml', //你处理上传文件的服务端
-			secureuri : false,
-			fileElementId : "pic1",
-			dataType : 'json',
-			success : function(data) {
-				if (data.success) {
-					$("#headImg").val(data.msg);
-					$("#img1").attr("src",data.msg);
-				} else {
-					layer.alert(data.msg);
-				}
-			}
-		})
-	}
-	
-	
+	<script type="text/javascript">	
 	//点击上传图片
 	$('.item-right').on('change','.item-img input[type=file]',function(){
 		$.ajaxFileUpload({

@@ -91,7 +91,7 @@
    <div id="page-wrapper" class="iframePage">
 	<div class="default-content">
 		<c:choose>
-			<c:when test="${id==35}">
+		<c:when test="${id==35}">
 			<div class="use-center">
 				<div class="use-center-left">
 					<ul>
@@ -105,6 +105,11 @@
 						<li>￥0</li>
 					</ul>
 				</div>
+			</div>
+		</c:when>
+		<c:when test="${id==51}">
+			<div class="use-center">
+				
 			</div>
 		</c:when>
 		<c:otherwise>

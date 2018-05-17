@@ -239,6 +239,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/queryForPageDownload?centerId={centerId}&gradeLevel={gradeLevel}";
 	public static final String GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsInfoListForDownload";
+	public static final String GOODS_CENTER_MAINTAIN_STOCK_BY_ITEMID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/maintainStockByItemId";
 	/*------------------------商品标签管理-----------------------*/
 	public static final String GOODS_CENTER_TAG_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/queryForPage";

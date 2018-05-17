@@ -89,10 +89,14 @@ public class CapitalPoolMng extends BaseController {
 				throw new ServerCenterNullDataException("没有查询到相关数据！");
 			}
 
+			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
 			List<Object> list = new ArrayList<Object>();
 			for (int i = 0; i < index; i++) {
 				JSONObject jObj = obj.getJSONObject(i);
-				list.add(JSONUtilNew.parse(jObj.toString(), CapitalPool.class));
+				CapitalPool pool = JSONUtilNew.parse(jObj.toString(), CapitalPool.class);
+				GradeBO grade = map.get(pool.getCenterId());
+				pool.setCenterName(grade.getName());
+				list.add(pool);
 			}
 			pcb = new PageCallBack();
 			pcb.setObj(list);

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
@@ -381,6 +383,45 @@ public class OrderMngController extends BaseController {
 			resp.getWriter().println("下载失败，请重试!");
 			resp.getWriter().println(e.getMessage());
 			return;
+		}
+	}
+
+	@RequestMapping(value = "/logistics")
+	public ModelAndView logistics(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String orderId = req.getParameter("orderId");
+			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
+			context.put("order", entity);
+			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
+			for (SupplierEntity sup : supplier) {
+				if (entity.getSupplierId() == null) {
+					break;
+				}
+				if (sup.getId() == entity.getSupplierId()) {
+					entity.setSupplierName(sup.getSupplierName());
+					break;
+				}
+			}
+			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());
+			context.put("orderExpressList", orderExpressList);
+			return forword("order/stockout/logistics", context);
+		}catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/updateLogistics")
+	public void updateLogistics(HttpServletRequest req, HttpServletResponse resp, @RequestBody List<ThirdOrderInfo> list) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		try {
+			sendSuccessMessage(resp, "保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(resp, e.getMessage());
 		}
 	}
 }

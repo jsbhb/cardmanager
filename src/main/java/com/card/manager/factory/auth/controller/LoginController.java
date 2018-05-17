@@ -1,5 +1,7 @@
 package com.card.manager.factory.auth.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -505,46 +510,42 @@ public class LoginController extends BaseController {
 
 	}
 
-	@RequestMapping(value = "/uploadFileForShop", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
 	@Auth(verifyLogin = false, verifyURL = false)
-	public void uploadFileForShop(@RequestParam("pic1") MultipartFile pic, HttpServletRequest req,
+	public void uploadExcelFile(@RequestParam("import") MultipartFile excel, HttpServletRequest req,
 			HttpServletResponse resp) {
 
 		try {
-			if (pic != null) {
-				String fileName = pic.getOriginalFilename();
+			if (excel != null) {
+				String fileName = excel.getOriginalFilename();
 				// 当前上传文件的文件后缀
 				String suffix = fileName.indexOf(".") != -1
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
 
-				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
-						&& !".jpeg".equalsIgnoreCase(suffix) && !".gif".equalsIgnoreCase(suffix)) {
+				if (!".xlsx".equalsIgnoreCase(suffix)) {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
+				
+				WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+				ServletContext servletContext = webApplicationContext.getServletContext();
 
-				// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
-				if (!StringUtils.isBlank(fileName)) {
-					// 重命名上传后的文件名
-					String saveFileName = UUID.randomUUID().toString() + suffix;
-					// 定义上传路径
-					// 当前上传文件信息
-
-					String descPath = "";
-					String remotePath = "";
-					String invitePath = "";
-
-					remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.MSHOP + "/";
-
-					sftpService.uploadFile(remotePath, saveFileName, pic.getInputStream(), descPath);
-
-					invitePath = URLUtils.get("static") + "/" + ResourceContants.MSHOP + "/" + saveFileName;
-
-					sendSuccessMessage(resp, invitePath);
-				} else {
-					sendFailureMessage(resp, "操作失败：没有文件信息");
+				String filePath = servletContext.getRealPath("/") + "UPLOADEXCEL/";
+		    	File obj = null;
+		    	obj = new File(filePath);
+				if (!obj.exists()) {
+					obj.mkdirs();
 				}
-
+				String saveFileName = UUID.randomUUID().toString() + suffix;
+				fileName = filePath + "/" + saveFileName;
+				
+				FileOutputStream fos = null;
+				byte[] fileData = excel.getBytes();
+				fos = new FileOutputStream(fileName);
+				fos.write(fileData);
+				fos.close();
+				
+				sendSuccessMessage(resp, fileName);
 			}
 
 		} catch (Exception e) {

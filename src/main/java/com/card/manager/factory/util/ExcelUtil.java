@@ -13,6 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,6 +22,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.card.manager.factory.goods.model.GoodsStockEntity;
 
 public class ExcelUtil {
 	/**
@@ -82,16 +85,17 @@ public class ExcelUtil {
 	}
 	
 	
-	private static <T> List<T> readExcel(String path, Class clazz) throws IOException {
+	private static List<GoodsStockEntity> readExcel(String path) throws IOException {
 		if (path == null || "".equals(path)) {
 			return null;
 		} else {
 			String postfix = path.substring(path.lastIndexOf(".") + 1, path.length());
 			if (!"".equals(postfix)) {
 				if ("xls".equals(postfix)) {
-					return readXls(path, clazz);
+//					return readXls(path);
+					return null;
 				} else if ("xlsx".equals(postfix)) {
-					return readXlsx(path, clazz);
+					return readXlsx(path);
 				}
 			} else {
 				return null;
@@ -108,36 +112,34 @@ public class ExcelUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	private static <T> List<T> readXlsx(String path, Class clazz) throws IOException {
-		List<T> list = new ArrayList<T>();
+	private static List<GoodsStockEntity> readXlsx(String path) throws IOException {
+		List<GoodsStockEntity> list = new ArrayList<GoodsStockEntity>();
 		InputStream is = new FileInputStream(path);
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-		T hSModel = null;
-		// Read the Sheet
 		XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
 		if (xssfSheet == null) {
 			return null;
 		}
-
+		GoodsStockEntity moodel = null;
 		// Read the Row
 		List<String> colNameList = new ArrayList<>();
 		for (int rowNum = 0; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
 			XSSFRow xssfRow = xssfSheet.getRow(rowNum);
 			if (xssfRow != null && rowNum == 0) {
-				Short start = xssfRow.getFirstCellNum();
-				Short end = xssfRow.getLastCellNum();
-				for (int i = start; i <= end; i++) {
-					colNameList.add(getValue(xssfRow.getCell(i)));
-				}
+//				Short start = xssfRow.getFirstCellNum();
+//				Short end = xssfRow.getLastCellNum();
+//				for (int i = start; i <= end; i++) {
+//					colNameList.add(getValue(xssfRow.getCell(i)));
+//				}
 			}else if(xssfRow != null && rowNum > 0){
 				try {
-					hSModel = (T) clazz.newInstance();
-					for(int i=0;i<colNameList.size();i++){
-						Method method = clazz.getMethod("set" + colNameList.get(i),String.class);
-						method.invoke(hSModel, getValue(xssfRow.getCell(i)));
+					if ("0".equals(getValue(xssfRow.getCell(7)))) {
+						continue;
 					}
-					list.add(hSModel);
+					moodel = new GoodsStockEntity();
+					moodel.setItemId(Integer.parseInt(getValue(xssfRow.getCell(1))));
+					moodel.setFxQty((int)Double.parseDouble(getValue(xssfRow.getCell(7))));
+					list.add(moodel);
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
@@ -154,13 +156,10 @@ public class ExcelUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	@SuppressWarnings("unchecked")
-	private static <T> List<T> readXls(String path, Class clazz) throws IOException {
+	private static List<T> readXls(String path) throws IOException {
 		List<T> list = new ArrayList<T>();
 		InputStream is = new FileInputStream(path);
 		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
-		T hSModel = null;
-		// Read the Sheet
 		HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
 		if (hssfSheet == null) {
 			return null;
@@ -176,17 +175,6 @@ public class ExcelUtil {
 				for (int i = start; i <= end; i++) {
 					colNameList.add(getValue(hssfRow.getCell(i)));
 				}
-			}else if(hssfRow != null && rowNum > 0){
-				try {
-					hSModel = (T) clazz.newInstance();
-					for(int i=0;i<colNameList.size();i++){
-						Method method = clazz.getMethod("set" + colNameList.get(i),String.class);
-						method.invoke(hSModel, getValue(hssfRow.getCell(i)));
-					}
-					list.add(hSModel);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
 			}
 		}
 		return list;
@@ -219,9 +207,9 @@ public class ExcelUtil {
 		}
 	}
 
-	public static <T> List<T> getCache(String path, Class clazz) {
+	public static List<GoodsStockEntity> getCache(String path) {
 		try {
-			return readExcel(path, clazz);
+			return readExcel(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

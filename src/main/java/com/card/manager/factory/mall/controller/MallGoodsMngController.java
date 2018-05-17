@@ -54,7 +54,10 @@ public class MallGoodsMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		//分级类型不是海外购时，提示无法使用功能
-		if (opt.getGradeType() != 1) {
+//		if (opt.getGradeType() != 1) {
+//			return forword("mall/goods/notice", context);
+//		}
+		if (opt.getGradeId() == 0) {
 			return forword("mall/goods/notice", context);
 		}
 		try {
@@ -62,6 +65,8 @@ public class MallGoodsMngController extends BaseController {
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 			context.put("tags", tags);
 		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
 		}
 		return forword("mall/goods/list", context);
 	}

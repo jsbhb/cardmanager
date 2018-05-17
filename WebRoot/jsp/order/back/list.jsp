@@ -223,6 +223,7 @@ function rebuildTable(data){
 			for(var j=0;j<express.length;j++){
 				expressName += (express[j].expressName == null ? "" : express[j].expressName);
 				expressId += (express[j].expressId == null ? "" : express[j].expressId);
+				break;
 			}
 		}
 		str += "</td><td>" + expressName;

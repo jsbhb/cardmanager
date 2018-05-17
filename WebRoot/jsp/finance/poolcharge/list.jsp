@@ -122,17 +122,7 @@ function rebuildTable(data){
 		} else {
 			str += "<tr>";
 		}
-		var tmpCenterId = list[i].centerId;
-		var tmpCenterName = "";
-		var centerSelect = document.getElementById("centerId");
-		var options = centerSelect.options;
-		for(var j=0;j<options.length;j++){
-			if (tmpCenterId==options[j].value) {
-				tmpCenterName = options[j].text;
-				break;
-			}
-		}
-		str += "<td>" + (tmpCenterName == "" ? "" : tmpCenterName);
+		str += "<td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		str += "</td><td>" + list[i].money;
 		str += "</td><td>" + list[i].preferential;
 		str += "</td><td>" + list[i].frozenPreferential;

@@ -231,7 +231,7 @@
 		var index = layer.open({
 		  title:"订单导出",		
 		  type: 2,
-		  area: ['50%','50%'],
+		  area: ['55%','65%'],
 		  content: '${wmsUrl}/admin/user/rebateMng/excelExport.shtml',
 		  maxmin: false
 		});

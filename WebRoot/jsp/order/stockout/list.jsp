@@ -101,15 +101,13 @@
             </div>
 		</div>
 		<div class="list-content">
-			<c:if test="${prilvl == 1}">
-				<div class="row">
-					<div class="col-md-12 list-btns">
-						<button type="button" class="add" onclick="excelExport()">订单导出</button>
-					</div>
-				</div>
-			</c:if>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12 list-btns">
+					<button type="button" class="add" onclick="excelExport()">订单导出</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 container-right">
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
@@ -242,12 +240,15 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
 // 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
-			str += "</td>";
+		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
+		var prilvl = "${prilvl}";
+		if(prilvl == 1 && list[i].supplierName=="一般贸易仓"){
+			var arr = [1,2,3,4,5,12,99];
+			var index = $.inArray(status,arr);
+			if(index >= 0){
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setExpress(\""+list[i].orderId+"\")' >维护物流</a>";
+			}
 		}
-		
 		str += "</td></tr>";
 	}
 		
@@ -317,6 +318,16 @@ function excelExport(){
 	  content: '${wmsUrl}/admin/order/stockOutMng/excelExport.shtml',
 	  maxmin: false
 	});
+}
+
+function setExpress(orderId){
+	var index = layer.open({
+	  title:"维护物流信息",		
+	  type: 2,
+	  content: '${wmsUrl}/admin/order/stockOutMng/logistics.shtml?orderId='+orderId,
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
 </script>
