@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -24,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.card.manager.factory.goods.model.GoodsStockEntity;
+import com.card.manager.factory.order.pojo.ExpressMaintenanceBO;
 
 public class ExcelUtil {
 	/**
@@ -84,18 +84,17 @@ public class ExcelUtil {
 		fileOut.close();
 	}
 	
-	
-	private static List<GoodsStockEntity> readExcel(String path) throws IOException {
+	private static List<Object> readExcel(String path, String type) throws IOException {
 		if (path == null || "".equals(path)) {
 			return null;
 		} else {
 			String postfix = path.substring(path.lastIndexOf(".") + 1, path.length());
 			if (!"".equals(postfix)) {
 				if ("xls".equals(postfix)) {
-//					return readXls(path);
+//					return readXls(path, clazz);
 					return null;
 				} else if ("xlsx".equals(postfix)) {
-					return readXlsx(path);
+					return readXlsx(path, type);
 				}
 			} else {
 				return null;
@@ -112,17 +111,19 @@ public class ExcelUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	private static List<GoodsStockEntity> readXlsx(String path) throws IOException {
-		List<GoodsStockEntity> list = new ArrayList<GoodsStockEntity>();
+	@SuppressWarnings("unchecked")
+	private static List<Object> readXlsx(String path, String type) throws IOException {
+		List<Object> list = new ArrayList<Object>();
 		InputStream is = new FileInputStream(path);
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
+		// Read the Sheet
 		XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(0);
 		if (xssfSheet == null) {
 			return null;
 		}
-		GoodsStockEntity moodel = null;
+
 		// Read the Row
-		List<String> colNameList = new ArrayList<>();
+//		List<String> colNameList = new ArrayList<>();
 		for (int rowNum = 0; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
 			XSSFRow xssfRow = xssfSheet.getRow(rowNum);
 			if (xssfRow != null && rowNum == 0) {
@@ -133,13 +134,35 @@ public class ExcelUtil {
 //				}
 			}else if(xssfRow != null && rowNum > 0){
 				try {
-					if ("0".equals(getValue(xssfRow.getCell(7)))) {
-						continue;
+					if ("stock".equals(type)) {
+						if ("0".equals(getValue(xssfRow.getCell(7)))) {
+							continue;
+						}
+						GoodsStockEntity model = new GoodsStockEntity();
+						model.setItemId(Integer.parseInt(getValue(xssfRow.getCell(1))));
+						if (getValue(xssfRow.getCell(7)).indexOf(".")>0) {
+							model.setFxQty(Integer.parseInt(getValue(xssfRow.getCell(7)).substring(0,getValue(xssfRow.getCell(7)).lastIndexOf("."))));
+						} else {
+							model.setFxQty(Integer.parseInt(getValue(xssfRow.getCell(7))));
+						}
+//						model.setFxQty((int)Double.parseDouble(getValue(xssfRow.getCell(7))));
+						list.add(model);
+					} else if ("order".equals(type)) {
+						if ("".equals(getValue(xssfRow.getCell(0)))
+								||"".equals(getValue(xssfRow.getCell(1)))
+								||"".equals(getValue(xssfRow.getCell(2)))) {
+							continue;
+						}
+						ExpressMaintenanceBO model = new ExpressMaintenanceBO();
+						model.setOrderId(getValue(xssfRow.getCell(0)));
+						model.setExpressName(getValue(xssfRow.getCell(1)));
+						if (getValue(xssfRow.getCell(2)).indexOf(".")>0) {
+							model.setExpressId(getValue(xssfRow.getCell(2)).substring(0,getValue(xssfRow.getCell(2)).lastIndexOf(".")));
+						} else {
+							model.setExpressId(getValue(xssfRow.getCell(2)));
+						}
+						list.add(model);
 					}
-					moodel = new GoodsStockEntity();
-					moodel.setItemId(Integer.parseInt(getValue(xssfRow.getCell(1))));
-					moodel.setFxQty((int)Double.parseDouble(getValue(xssfRow.getCell(7))));
-					list.add(moodel);
 				} catch (Exception e) {
 					e.printStackTrace();
 				} 
@@ -156,10 +179,13 @@ public class ExcelUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	private static List<T> readXls(String path) throws IOException {
+	@SuppressWarnings("unchecked")
+	private static <T> List<T> readXls(String path, Class clazz) throws IOException {
 		List<T> list = new ArrayList<T>();
 		InputStream is = new FileInputStream(path);
 		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
+		T hSModel = null;
+		// Read the Sheet
 		HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
 		if (hssfSheet == null) {
 			return null;
@@ -175,6 +201,17 @@ public class ExcelUtil {
 				for (int i = start; i <= end; i++) {
 					colNameList.add(getValue(hssfRow.getCell(i)));
 				}
+			}else if(hssfRow != null && rowNum > 0){
+				try {
+					hSModel = (T) clazz.newInstance();
+					for(int i=0;i<colNameList.size();i++){
+						Method method = clazz.getMethod("set" + colNameList.get(i),String.class);
+						method.invoke(hSModel, getValue(hssfRow.getCell(i)));
+					}
+					list.add(hSModel);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
 			}
 		}
 		return list;
@@ -207,9 +244,9 @@ public class ExcelUtil {
 		}
 	}
 
-	public static List<GoodsStockEntity> getCache(String path) {
+	public static List<Object> getCache(String path, String type) {
 		try {
-			return readExcel(path);
+			return readExcel(path, type);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

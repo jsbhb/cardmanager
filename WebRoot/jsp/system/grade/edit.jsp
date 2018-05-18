@@ -276,7 +276,7 @@
 	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script src="${wmsUrl}/js/pagination.js"></script>
-	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
+	<script src="${wmsUrl}/js/jquery.picker.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	$(".picker-country").picker();

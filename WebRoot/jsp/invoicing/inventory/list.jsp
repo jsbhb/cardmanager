@@ -91,8 +91,10 @@
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick = "excelExport()">导出模板</button>
-					<input type="file" id="import" name="import" accept=".xlsx"/>
+					<button style="float:left;" type="button" onclick = "excelExport()">导出模板</button>
+					<a href="javascript:void(0);" class="file">批量维护虚拟库存
+					    <input type="file" id="import" name="import" accept=".xlsx"/>
+					</a>
 				</div>
 			</div>
 			<div class="row content-container">

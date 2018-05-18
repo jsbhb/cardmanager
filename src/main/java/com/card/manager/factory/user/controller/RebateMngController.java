@@ -397,7 +397,7 @@ public class RebateMngController extends BaseController {
 				startTime = DateUtil.getDateBetween_String(date, -7, "yyyy-MM-dd");
 				endTime = DateUtil.getNowFormateDate();
 			} else if ("2".equals(dateType)) {
-				startTime = DateUtil.getDateBetween_String(date, -31, "yyyy-MM-dd");
+				startTime = DateUtil.getNowYear()+"-"+DateUtil.getNowMonth()+"-01";
 				endTime = DateUtil.getNowFormateDate();
 			}
 			Map<String, Object> param = new HashMap<String, Object>();
@@ -427,12 +427,27 @@ public class RebateMngController extends BaseController {
 				case 21:oi.setStatusName("退款中");break;
 				case 99:oi.setStatusName("异常状态");	break;
 				}
+				
+				switch (oi.getPayType()) {
+				case 1:	oi.setPayTypeName("微信");break;
+				case 2:	oi.setPayTypeName("支付宝");break;
+				}
+				
+				switch (oi.getOrderSource()) {
+				case 0:	oi.setOrderSourceName("PC商城");break;
+				case 1:	oi.setOrderSourceName("手机商城");break;
+				case 2:	oi.setOrderSourceName("订货平台");break;
+				}
 
 				if (!tmpOrderId.equals(oi.getOrderId())) {
 					tmpOrderId = oi.getOrderId();
 					TmpExpressInfo = "";
 					Map<String, Object> express = new HashMap<String, Object>();
 					for (ThirdOrderInfo toi : oi.getOrderExpressList()) {
+						if (toi.getExpressName() == null || toi.getExpressName() == ""
+								|| toi.getExpressId() == null || toi.getExpressId() == "") {
+							continue;
+						}
 						if (express.containsKey(toi.getExpressName())) {
 							express.put(toi.getExpressName(),
 									express.get(toi.getExpressName()) + "," + toi.getExpressId());
@@ -453,14 +468,14 @@ public class RebateMngController extends BaseController {
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
 
-			String fileName = DateUtil.getNowLongTime() + ".xlsx";
+			String fileName = "order_" + DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
-			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名", "成本价", "零售价", "数量", "一级类目",
-					"二级类目", "三级类目", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
+			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名", "成本价", "零售价", "数量", "一级类目", "二级类目", "三级类目",
+					"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
 			String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-					"ProxyPrice", "RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "Payment",
-					"PayType", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
+					"ProxyPrice", "RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+					"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
 					"ReceiveAddress", "CreateTime", "ExpressInfo" };
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);

@@ -37,6 +37,9 @@ public class OrderInfoListForDownload {
 	private String createTime;
 	private List<ThirdOrderInfo> orderExpressList;
 	private String expressInfo;
+	private String payTypeName;
+	private Integer orderSource;
+	private String orderSourceName;
 	
 	public String getOrderId() {
 		return orderId;
@@ -218,5 +221,22 @@ public class OrderInfoListForDownload {
 	public void setExpressInfo(String expressInfo) {
 		this.expressInfo = expressInfo;
 	}
-
+	public String getPayTypeName() {
+		return payTypeName;
+	}
+	public void setPayTypeName(String payTypeName) {
+		this.payTypeName = payTypeName;
+	}
+	public Integer getOrderSource() {
+		return orderSource;
+	}
+	public void setOrderSource(Integer orderSource) {
+		this.orderSource = orderSource;
+	}
+	public String getOrderSourceName() {
+		return orderSourceName;
+	}
+	public void setOrderSourceName(String orderSourceName) {
+		this.orderSourceName = orderSourceName;
+	}
 }

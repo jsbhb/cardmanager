@@ -30,13 +30,14 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
-import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.model.UserDetail;
+import com.card.manager.factory.order.pojo.ExpressMaintenanceBO;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
+import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -308,7 +309,7 @@ public class OrderMngController extends BaseController {
 				startTime = DateUtil.getDateBetween_String(date, -7, "yyyy-MM-dd");
 				endTime = DateUtil.getNowFormateDate();
 			} else if ("2".equals(dateType)) {
-				startTime = DateUtil.getDateBetween_String(date, -31, "yyyy-MM-dd");
+				startTime = DateUtil.getNowYear()+"-"+DateUtil.getNowMonth()+"-01";
 				endTime = DateUtil.getNowFormateDate();
 			}
 			Map<String, Object> param = new HashMap<String, Object>();
@@ -338,12 +339,27 @@ public class OrderMngController extends BaseController {
 				case 21:oi.setStatusName("退款中");break;
 				case 99:oi.setStatusName("异常状态");	break;
 				}
+				
+				switch (oi.getPayType()) {
+				case 1:	oi.setPayTypeName("微信");break;
+				case 2:	oi.setPayTypeName("支付宝");break;
+				}
+				
+				switch (oi.getOrderSource()) {
+				case 0:	oi.setOrderSourceName("PC商城");break;
+				case 1:	oi.setOrderSourceName("手机商城");break;
+				case 2:	oi.setOrderSourceName("订货平台");break;
+				}
 
 				if (!tmpOrderId.equals(oi.getOrderId())) {
 					tmpOrderId = oi.getOrderId();
 					TmpExpressInfo = "";
 					Map<String, Object> express = new HashMap<String, Object>();
 					for (ThirdOrderInfo toi : oi.getOrderExpressList()) {
+						if (toi.getExpressName() == null || toi.getExpressName() == ""
+								|| toi.getExpressId() == null || toi.getExpressId() == "") {
+							continue;
+						}
 						if (express.containsKey(toi.getExpressName())) {
 							express.put(toi.getExpressName(),
 									express.get(toi.getExpressName()) + "," + toi.getExpressId());
@@ -364,14 +380,14 @@ public class OrderMngController extends BaseController {
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
 
-			String fileName = DateUtil.getNowLongTime() + ".xlsx";
+			String fileName = "order_" + DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
-			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目",
-					"二级类目", "三级类目", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
+			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
+					"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
 			String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-					"RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "Payment",
-					"PayType", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
+					"RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+					"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
 					"ReceiveAddress", "CreateTime", "ExpressInfo" };
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);
@@ -415,13 +431,69 @@ public class OrderMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/updateLogistics")
-	public void updateLogistics(HttpServletRequest req, HttpServletResponse resp, @RequestBody List<ThirdOrderInfo> list) {
+	public void updateLogistics(HttpServletRequest req, HttpServletResponse resp, @RequestBody List<ExpressMaintenanceBO> list) {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		try {
-			sendSuccessMessage(resp, "保存成功");
+			if (list.size() <= 0) {
+				sendFailureMessage(resp, "操作失败：物流信息为空");
+				return;
+			}
+			List<OrderMaintenanceBO> orderMaintenanceBO = new ArrayList<OrderMaintenanceBO>();
+			OrderMaintenanceBO orderMaintenance = new OrderMaintenanceBO();
+			ExpressMaintenanceBO expressMaintenance = list.get(0);
+			orderMaintenance.setOrderId(expressMaintenance.getOrderId());
+			orderMaintenance.setSupplierId(expressMaintenance.getSupplierId());
+			orderMaintenance.setExpressList(list);
+			orderMaintenanceBO.add(orderMaintenance);
+			orderService.maintenanceExpress(orderMaintenanceBO, opt);
 		} catch (Exception e) {
-			e.printStackTrace();
 			sendFailureMessage(resp, e.getMessage());
+			return;
 		}
+		sendSuccessMessage(resp, "保存成功");
+	}
+
+	@RequestMapping(value = "/readExcelForMaintain", method = RequestMethod.POST)
+	public void readExcelForMaintain(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String filePath = req.getParameter("filePath");
+			if (StringUtil.isEmpty(filePath)) {
+				sendFailureMessage(resp, "操作失败：文件路径不正确");
+				return;
+			}
+			List<Object> list = ExcelUtil.getCache(filePath,"order");
+			if (list.size()<= 0) {
+				sendFailureMessage(resp, "操作失败：无订单需维护物流信息");
+				return;
+			}
+			List<OrderMaintenanceBO> orderList = new ArrayList<OrderMaintenanceBO>();
+			List<ExpressMaintenanceBO> expressList = new ArrayList<ExpressMaintenanceBO>();
+			OrderMaintenanceBO order = new OrderMaintenanceBO();
+			ExpressMaintenanceBO exp = null;
+			for (Object info : list) {
+				exp = (ExpressMaintenanceBO) info;
+				if (!exp.getOrderId().equals(order.getOrderId())) {
+					order.setExpressList(expressList);
+					orderList.add(order);
+					
+					order = new OrderMaintenanceBO();
+					order.setOrderId(exp.getOrderId());
+					expressList = new ArrayList<ExpressMaintenanceBO>();
+				}
+				expressList.add(exp);
+			}
+			order.setExpressList(expressList);
+			orderList.add(order);
+			//删除第一位空白数据
+			orderList.remove(0);
+
+			orderService.maintenanceExpress(orderList, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
 	}
 }

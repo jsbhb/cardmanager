@@ -266,10 +266,16 @@ public class InventoryMngController extends BaseController {
 				sendFailureMessage(resp, "操作失败：文件路径不正确");
 				return;
 			}
-			List<GoodsStockEntity> stocks = ExcelUtil.getCache(filePath);
-			if (stocks.size()<= 0) {
+			List<Object> list = ExcelUtil.getCache(filePath,"stock");
+			if (list.size()<= 0) {
 				sendFailureMessage(resp, "操作失败：无商品需维护虚拟库存");
 				return;
+			}
+			List<GoodsStockEntity> stocks = new ArrayList<GoodsStockEntity>();
+			GoodsStockEntity stock = null;
+			for (Object info : list) {
+				stock = (GoodsStockEntity) info;
+				stocks.add(stock);
 			}
 			inventoryService.maintainStock(stocks, staffEntity);
 		} catch (Exception e) {

@@ -276,6 +276,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/cache?gradeId={gradeId}&dataType={dataType}&time={time}&modelType={modelType}";
 	public static final String ORDER_CENTER_QUERY_ORDERLISTFORDOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}";
+	public static final String ORDER_CENTER_MAINTENANCEEXPRESS = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/stockOut/maintenance/express";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";

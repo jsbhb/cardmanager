@@ -26,6 +26,7 @@ import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
+import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -163,5 +164,19 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		
 		return list;
+	}
+
+	@Override
+	@Log(content = "订单物流信息回填操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void maintenanceExpress(List<OrderMaintenanceBO> list, StaffEntity staff) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_MAINTENANCEEXPRESS, staff.getToken(), true, list,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new Exception("订单物流信息回填操作失败:" + json.getString("errorMsg"));
+		}
 	}
 }

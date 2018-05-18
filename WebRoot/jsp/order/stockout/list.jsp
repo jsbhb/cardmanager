@@ -103,7 +103,12 @@
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-12 list-btns">
-					<button type="button" class="add" onclick="excelExport()">订单导出</button>
+					<button type="button" style="float:left;"  onclick="excelExport()">订单导出</button>
+					<c:if test="${prilvl == 1}">
+						<a href="javascript:void(0);" class="file">批量维护物流信息
+						    <input type="file" id="import" name="import" accept=".xlsx"/>
+						</a>
+					</c:if>
 				</div>
 			</div>
 			<div class="row">
@@ -140,6 +145,7 @@
 	
 <%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
@@ -243,7 +249,7 @@ function rebuildTable(data){
 		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
 		var prilvl = "${prilvl}";
 		if(prilvl == 1 && list[i].supplierName=="一般贸易仓"){
-			var arr = [1,2,3,4,5,12,99];
+			var arr = [1,2,3,4,5,6,12,99];
 			var index = $.inArray(status,arr);
 			if(index >= 0){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='setExpress(\""+list[i].orderId+"\")' >维护物流</a>";
@@ -328,6 +334,51 @@ function setExpress(orderId){
 	  maxmin: true
 	});
 	layer.full(index);
+}
+
+//点击上传文件
+$('.list-content').on('change','.list-btns input[type=file]',function(){
+	$.ajaxFileUpload({
+		url : '${wmsUrl}/admin/uploadExcelFile.shtml', //你处理上传文件的服务端
+		secureuri : false,
+		fileElementId : "import",
+		dataType : 'json',
+		beforeSend : function() {
+			$("#image").css({
+				display : "block",
+				position : "fixed",
+				zIndex : 99,
+			});
+		},
+		success : function(data) {
+			//文件上传成功，进行读取操作
+			var filePath = data.msg;
+			readExcelForMaintain(filePath);
+		},
+		complete : function(data) {
+			$("#image").hide();
+		}
+	})
+});
+
+function readExcelForMaintain(filePath){
+	$.ajax({
+		 url:"${wmsUrl}/admin/order/stockOutMng/readExcelForMaintain.shtml?filePath="+filePath,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){
+				 $("#import").val();
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("处理失败，请联系客服处理");
+		 }
+	 });
 }
 
 </script>

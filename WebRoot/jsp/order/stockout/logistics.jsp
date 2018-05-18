@@ -21,12 +21,13 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">订单编号</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" readonly name="orderId" value="${order.orderId}">
+					<input type="text" class="form-control" readonly id="orderId" name="orderId" value="${order.orderId}">
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">供应商</div>
 				<div class="col-sm-9 item-right">
+					<input type="hidden" class="form-control" readonly id="supplierId" value="${order.supplierId}">
 					<input type="text" class="form-control" readonly name="supplierName" value="${order.supplierName}">
 				</div>
 			</div>
@@ -78,8 +79,8 @@
 				       	<div class="list-item">
 							<div class="col-sm-3 item-left">快递公司</div>
 							<div class="col-sm-9 item-right">
-								<input type="text" class="form-control" name="expressName" value="${express.expressName}">
-								<input type="text" hidden="hidden" class="form-control" name="thirdInfoId" value="${express.id}">
+								<input type="text" class="form-control" name="expressName" readonly value="${express.expressName}">
+								<input type="hidden" class="form-control" name="thirdInfoId" value="${express.id}">
 							</div>
 						</div>
 				       	<div class="list-item">
@@ -122,16 +123,67 @@
 	 });
 	
 	$("#submitBtn").click(function(){
-		 
+		
+		var data = [];
+    	var orderId = $("#orderId").val();
+    	var supplierId = $("#supplierId").val();
+    	var tmpStr = "";
+    	$("input[name='thirdInfoId']").each(function(){
+    		tmpStr+=$(this).val()+',';
+	    });
+    	thirdInfoIdObj = tmpStr.substring(0,tmpStr.length-1).split(",");
+    	tmpStr = "";
+    	$("input[name='expressName']").each(function(){
+    		tmpStr+=$(this).val()+',';
+	    });
+    	expressNameObj = tmpStr.substring(0,tmpStr.length-1).split(",");
+    	tmpStr = "";
+    	$("input[name='expressId']").each(function(){
+    		tmpStr+=$(this).val()+',';
+	    });
+    	expressIdObj = tmpStr.substring(0,tmpStr.length-1).split(",");
+    	if (thirdInfoIdObj != "") {
+    		for(i=0;i<thirdInfoIdObj.length;i++){
+    	    	data.push({
+        			'id': thirdInfoIdObj[i],
+        			'orderId': orderId,
+        			'expressName': expressNameObj[i],
+        			'expressId': expressIdObj[i],
+        			'supplierId': supplierId
+        		});
+    	    }
+    	}
+    	tmpStr = "";
+	    $("select[name='expressNameK']").each(function(){
+	    	tmpStr+=$(this).find("option:selected").text()+',';
+	    });
+	    expressNameKObj = tmpStr.substring(0,tmpStr.length-1).split(",");
+    	tmpStr = "";
+	    $("input[name='expressIdV']").each(function(){
+	    	tmpStr+=$(this).val()+',';
+	    });
+	    expressIdVObj = tmpStr.substring(0,tmpStr.length-1).split(",");
+	    if (expressNameKObj != "") {
+	    	for(i=0;i<expressNameKObj.length;i++){
+		    	data.push({
+	    			'orderId': orderId,
+	    			'expressName': expressNameKObj[i],
+	    			'expressId': expressIdVObj[i],
+	    			'supplierId': supplierId
+	    		});
+		    }
+	    }
+	    
 		 $.ajax({
 			 url:"${wmsUrl}/admin/order/stockOutMng/updateLogistics.shtml",
 			 type:'post',
-			 data:JSON.stringify(sy.serializeObject($('#itemForm'))),
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
+	   		 contentType: "application/json; charset=utf-8",
+	   		 dataType:'json',
+	   		 data : JSON.stringify(data),
 			 success:function(data){
 				 if(data.success){
-					 
+					 parent.layer.closeAll();
+					 parent.location.reload();
 				 }else{
 					 layer.alert(data.msg);
 				 }

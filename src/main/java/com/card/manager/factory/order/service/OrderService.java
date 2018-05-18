@@ -15,6 +15,7 @@ import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
+import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
 import com.card.manager.factory.system.model.StaffEntity;
 
 /**
@@ -68,4 +69,6 @@ public interface OrderService extends ServerCenterService {
 	 * @since JDK 1.7  
 	 */
 	List<OrderInfoListForDownload> queryOrderInfoListForDownload(Map<String,Object> param, String token);
+
+	void maintenanceExpress(List<OrderMaintenanceBO> list, StaffEntity staff) throws Exception;
 }

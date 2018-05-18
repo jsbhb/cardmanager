@@ -162,6 +162,35 @@ body.hold-transition .main-header .logo {
   overflow: hidden;
 /*   padding-bottom: 50px; */
 }
+.content input[type=file]{
+	display: inline;
+}
+.file {
+    position: relative;
+    display: inline-block;
+    background: #f7f7f7;
+    border: 1px solid #d9d9d9;
+    margin-top: 8.5px;
+    outline: none;
+    margin-right: 5px;
+    padding: 2.5px 15px;
+    overflow: hidden;
+    color: #666;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    color: #666;
+    text-decoration: none;
+}
 .moreSearchContent{
 	background: #f9f9f9;
 	display: none;
