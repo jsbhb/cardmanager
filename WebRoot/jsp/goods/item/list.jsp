@@ -279,8 +279,8 @@ function rebuildTable(data){
 			case '2':str += "</td><td>可分销";break;
 			default:str += "</td><td>状态错误："+status;
 		}
-		var gradeId = "${opt.gradeId}";
-		if(gradeId == 0 ||gradeId == 2){
+		var prilvl = "${prilvl}";
+		if(prilvl == 1){
 			if (status != 2) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 			} else {
@@ -297,7 +297,11 @@ function rebuildTable(data){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
 			}
 			if(status==1||status==2){
-				if(list[i].supplierName!="一般贸易仓"&&list[i].supplierName!="天天仓"&&list[i].supplierName!=null){
+				if(list[i].supplierName!="一般贸易仓"
+					&&list[i].supplierName!="广州仓库"
+					&&list[i].supplierName!="广州仓gzc"
+					&&list[i].supplierName!="天天仓"
+					&&list[i].supplierName!=null){
 					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
 				}
 			}

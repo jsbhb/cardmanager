@@ -496,4 +496,22 @@ public class OrderMngController extends BaseController {
 
 		sendSuccessMessage(resp, null);
 	}
+
+	@RequestMapping(value = "/downLoadOrderModelExcel")
+	public void downLoadOrderModelExcel(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		try {
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+
+			String fileName = "order_model.xlsx";
+			String filePath = servletContext.getRealPath("/") + "WEB-INF/classes/" + fileName;
+
+			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
+		} catch (Exception e) {
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
+			return;
+		}
+	}
 }

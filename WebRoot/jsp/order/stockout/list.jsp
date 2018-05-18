@@ -105,6 +105,7 @@
 				<div class="col-md-12 list-btns">
 					<button type="button" style="float:left;"  onclick="excelExport()">订单导出</button>
 					<c:if test="${prilvl == 1}">
+						<button style="float:left;" type="button" onclick = "excelModelExport()">导出批量维护模板</button>
 						<a href="javascript:void(0);" class="file">批量维护物流信息
 						    <input type="file" id="import" name="import" accept=".xlsx"/>
 						</a>
@@ -248,7 +249,10 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
 		var prilvl = "${prilvl}";
-		if(prilvl == 1 && list[i].supplierName=="一般贸易仓"){
+		if(prilvl == 1 
+			&& list[i].supplierName=="一般贸易仓"
+			&&list[i].supplierName!="广州仓库"
+			&&list[i].supplierName!="广州仓gzc"){
 			var arr = [1,2,3,4,5,6,12,99];
 			var index = $.inArray(status,arr);
 			if(index >= 0){
@@ -324,6 +328,10 @@ function excelExport(){
 	  content: '${wmsUrl}/admin/order/stockOutMng/excelExport.shtml',
 	  maxmin: false
 	});
+}
+
+function excelModelExport(){
+	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadOrderModelExcel.shtml";
 }
 
 function setExpress(orderId){

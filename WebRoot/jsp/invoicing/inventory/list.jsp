@@ -42,6 +42,7 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
+		                	<option value="5">广州仓</option>
 		                	<option selected="selected" value="6">一般贸易仓</option>
 			            </select>
 					</div>
