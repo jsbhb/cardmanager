@@ -40,6 +40,11 @@ public class OrderInfoListForDownload {
 	private String payTypeName;
 	private Integer orderSource;
 	private String orderSourceName;
+	private String idnum;
+	private String orderName;
+	private String packing;
+	private Double actualPrice;
+	private String itemCode;
 	
 	public String getOrderId() {
 		return orderId;
@@ -239,4 +244,35 @@ public class OrderInfoListForDownload {
 	public void setOrderSourceName(String orderSourceName) {
 		this.orderSourceName = orderSourceName;
 	}
+	public String getIdnum() {
+		return idnum;
+	}
+	public void setIdnum(String idnum) {
+		this.idnum = idnum;
+	}
+	public String getOrderName() {
+		return orderName;
+	}
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
+	}
+	public String getPacking() {
+		return packing;
+	}
+	public void setPacking(String packing) {
+		this.packing = packing;
+	}
+	public Double getActualPrice() {
+		return actualPrice;
+	}
+	public void setActualPrice(Double actualPrice) {
+		this.actualPrice = actualPrice;
+	}
+	public String getItemCode() {
+		return itemCode;
+	}
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
+	}
+	
 }

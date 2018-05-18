@@ -24,6 +24,8 @@ public class GoodsInfoListForDownload {
 	private String goodsStatusName;
 	private String itemStatusName;
 	private String gradeTypeName;
+	private String remark;
+	private String attr;
 	
 	public String getGoodsId() {
 		return goodsId;
@@ -151,6 +153,18 @@ public class GoodsInfoListForDownload {
 	}
 	public void setGradeTypeName(String gradeTypeName) {
 		this.gradeTypeName = gradeTypeName;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public String getAttr() {
+		return attr;
+	}
+	public void setAttr(String attr) {
+		this.attr = attr;
 	}
 	
 }

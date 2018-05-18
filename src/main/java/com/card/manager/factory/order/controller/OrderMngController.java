@@ -292,7 +292,9 @@ public class OrderMngController extends BaseController {
 
 	@RequestMapping(value = "/excelExport")
 	public ModelAndView excelExport(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
 		Map<String, Object> context = getRootMap();
+		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("order/stockout/excelExport", context);
 	}
 
@@ -303,6 +305,7 @@ public class OrderMngController extends BaseController {
 			String dateType = req.getParameter("dateType");
 			String startTime = req.getParameter("startTime");
 			String endTime = req.getParameter("endTime");
+			String supplierId = req.getParameter("supplierId");
 			Date date = new Date();
 			// 当选择了指定日期时
 			if ("1".equals(dateType)) {
@@ -316,6 +319,7 @@ public class OrderMngController extends BaseController {
 			param.put("startTime", startTime);
 			param.put("endTime", endTime);
 			param.put("gradeId", staffEntity.getGradeId());
+			param.put("supplierId", supplierId);
 
 			List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
 			ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());
@@ -383,12 +387,25 @@ public class OrderMngController extends BaseController {
 			String fileName = "order_" + DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
-			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
-					"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
-			String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-					"RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
-					"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
-					"ReceiveAddress", "CreateTime", "ExpressInfo" };
+			String[] nameArray = null;
+			String[] colArray = null;
+			//广州仓
+			if ("5".equals(supplierId)) {
+				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
+						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息",
+						"订购人", "订购人身份证", "包装数", "商品购买价格"};
+				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
+						"RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
+						"ReceiveAddress", "CreateTime", "ExpressInfo", "OrderName", "Idnum", "Packing", "ActualPrice", "ExpressInfo" };
+			} else {
+				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
+						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
+				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
+						"RetailPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
+						"ReceiveAddress", "CreateTime", "ExpressInfo" };
+			}
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);
 			ExcelUtil.writeToExcel(swb, filePath);

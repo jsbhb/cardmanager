@@ -92,7 +92,7 @@
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button style="float:left;" type="button" onclick = "excelExport()">导出模板</button>
+					<button style="float:left;" type="button" onclick = "excelExport()">导出批量维护模板</button>
 					<a href="javascript:void(0);" class="file">批量维护虚拟库存
 					    <input type="file" id="import" name="import" accept=".xlsx"/>
 					</a>
@@ -134,7 +134,7 @@
 								<th width="5%">供应商</th>
 								<th width="5%">商品标签</th>
 								<th width="5%">商品价格</th>
-								<th width="5%">商品库存</th>
+								<th width="5%">现有库存</th>
 								<th width="5%">虚拟库存</th>
 								<th width="12%">操作</th>
 							</tr>

@@ -234,6 +234,11 @@ public class InventoryMngController extends BaseController {
 			}
 			List<GoodsInfoListForDownload> ReportList = new ArrayList<GoodsInfoListForDownload>();
 			ReportList = goodsItemService.queryGoodsInfoListForDownload(param, staffEntity.getToken());
+			GoodsInfoListForDownload info = new GoodsInfoListForDownload();
+			if (ReportList.size() > 0) {
+				info = ReportList.get(0);
+				info.setRemark("只需要修改商品的虚拟库存");
+			}
 
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
@@ -241,8 +246,8 @@ public class InventoryMngController extends BaseController {
 			String fileName = "inventory_" + DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
-			String[] nameArray = new String[] { "商品名称", "商品编号", "商家编码", "商品品牌", "供应商", "商品价格", "商品库存", "虚拟库存" };
-			String[] colArray = new String[] { "GoodsName", "ItemId", "Sku", "Brand", "SupplierName", "RetailPrice", "FxQty", "GradeType" };
+			String[] nameArray = new String[] { "商品名称", "商品编号", "商家编码", "商品品牌", "供应商", "商品价格", "现有库存", "虚拟库存", "", "商品虚拟库存维护说明：" };
+			String[] colArray = new String[] { "GoodsName", "ItemId", "Sku", "Brand", "SupplierName", "RetailPrice", "FxQty", "GradeType", "Attr", "Remark" };
 
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, "sheet1", swb);
