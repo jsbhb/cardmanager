@@ -389,7 +389,6 @@ function beFx(id){
 	} else {
 		itemIds = id;
 	}
-	return;
 	$.ajax({
 		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+itemIds,
 		 type:'post',

@@ -37,6 +37,17 @@
              	</div>
 			</div>
 		</div>
+		<div class="list-item">
+			<div class="col-xs-3 item-left">供应商</div>
+			<div class="col-xs-9 item-right">
+				<select class="form-control" name="supplierId" id="supplierId">
+                  	  <option selected="selected" value="-1">供应商</option>
+                  	  <c:forEach var="supplier" items="${supplierId}">
+                  	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+                  	  </c:forEach>
+                </select>
+			</div>
+		</div>
 		<div class="submit-btn">
            	<button type="button" onclick="downLoadExcel()">确认导出</button>
        	</div>
@@ -99,13 +110,14 @@
 	    	var startTime = $("#startTime").val();
 	    	var endTime = $("#endTime").val();
 	    	var dateType = $('#dateType li.active').attr('data-id');
+	    	var supplierId = $("#supplierId").val();
 	    	if (dateType == 0) {
 		    	if (startTime == "" || endTime == "") {
 		    		layer.alert("自定义日期不能为空，请选择");
 			    	return;
 		    	}
 	    	}
-	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType; 
+	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId; 
 	    }
 	</script>
 </body>

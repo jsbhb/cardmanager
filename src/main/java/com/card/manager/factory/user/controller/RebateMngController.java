@@ -380,7 +380,9 @@ public class RebateMngController extends BaseController {
 	
 	@RequestMapping(value = "/excelExport")
 	public ModelAndView excelExport(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
 		Map<String, Object> context = getRootMap();
+		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("user/rebate/excelExport", context);
 	}
 
@@ -391,6 +393,7 @@ public class RebateMngController extends BaseController {
 			String dateType = req.getParameter("dateType");
 			String startTime = req.getParameter("startTime");
 			String endTime = req.getParameter("endTime");
+			String supplierId = req.getParameter("supplierId");
 			Date date = new Date();
 			// 当选择了指定日期时
 			if ("1".equals(dateType)) {
@@ -404,6 +407,7 @@ public class RebateMngController extends BaseController {
 			param.put("startTime", startTime);
 			param.put("endTime", endTime);
 			param.put("gradeId", staffEntity.getGradeId());
+			param.put("supplierId", supplierId);
 
 			List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
 			ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());
