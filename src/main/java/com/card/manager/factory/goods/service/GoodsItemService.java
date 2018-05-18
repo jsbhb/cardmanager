@@ -13,6 +13,7 @@ import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
+import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
 
@@ -172,6 +173,6 @@ public interface GoodsItemService extends ServerCenterService {
 	 */
 	void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception;
 
-	List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(String token);
+	List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(GoodsListDownloadParam param, String token);
 
 }

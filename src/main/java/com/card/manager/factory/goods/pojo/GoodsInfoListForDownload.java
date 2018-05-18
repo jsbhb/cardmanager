@@ -23,6 +23,7 @@ public class GoodsInfoListForDownload {
 	private Double proportion;
 	private String goodsStatusName;
 	private String itemStatusName;
+	private String gradeTypeName;
 	
 	public String getGoodsId() {
 		return goodsId;
@@ -144,6 +145,12 @@ public class GoodsInfoListForDownload {
 	}
 	public void setItemStatusName(String itemStatusName) {
 		this.itemStatusName = itemStatusName;
+	}
+	public String getGradeTypeName() {
+		return gradeTypeName;
+	}
+	public void setGradeTypeName(String gradeTypeName) {
+		this.gradeTypeName = gradeTypeName;
 	}
 	
 }

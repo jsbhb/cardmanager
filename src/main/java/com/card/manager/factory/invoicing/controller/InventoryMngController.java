@@ -34,11 +34,11 @@ import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
+import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.invoicing.service.InventoryService;
-import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
@@ -216,24 +216,24 @@ public class InventoryMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String supplierId = req.getParameter("supplierId").trim();
-			String supplierName = "";
-			List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
-			for (SupplierEntity se : suppliers) {
-				if (se.getId() == Integer.parseInt(supplierId)) {
-					supplierName = se.getSupplierName();
-					break;
+			String itemIds = req.getParameter("itemIds").trim();
+			List<String> itemIdList = new ArrayList<String>();
+			if (!"".equals(itemIds)) {
+				for (String itemId : itemIds.split(",")) {
+					itemIdList.add(itemId);
 				}
+			}
+			GoodsListDownloadParam param = new GoodsListDownloadParam();
+			if (!"".equals(supplierId)) {
+				param.setSupplierId(Integer.parseInt(supplierId));
+			}
+			//指定分级类型 得到唯一记录
+			param.setGradeType(1);
+			if (itemIdList.size() > 0) {
+				param.setItemIdList(itemIdList);
 			}
 			List<GoodsInfoListForDownload> ReportList = new ArrayList<GoodsInfoListForDownload>();
-			List<GoodsInfoListForDownload> ReportList2 = new ArrayList<GoodsInfoListForDownload>();
-			ReportList = goodsItemService.queryGoodsInfoListForDownload(staffEntity.getToken());
-
-			for (GoodsInfoListForDownload gi : ReportList) {
-				if (supplierName.equals(gi.getSupplierName())) {
-					gi.setGradeType(0);
-					ReportList2.add(gi);
-				}
-			}
+			ReportList = goodsItemService.queryGoodsInfoListForDownload(param, staffEntity.getToken());
 
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
@@ -245,7 +245,7 @@ public class InventoryMngController extends BaseController {
 			String[] colArray = new String[] { "GoodsName", "ItemId", "Sku", "Brand", "SupplierName", "RetailPrice", "FxQty", "GradeType" };
 
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
-			ExcelUtil.createExcel(ReportList2, nameArray, colArray, filePath, 0, "sheet1", swb);
+			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, "sheet1", swb);
 			ExcelUtil.writeToExcel(swb, filePath);
 
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);

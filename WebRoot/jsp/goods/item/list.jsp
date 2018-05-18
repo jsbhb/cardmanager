@@ -361,6 +361,7 @@ function beUse(id){
 			 if(data.success){	
 				 layer.alert("设置成功");
 				 reloadTable();
+				 $("#theadInp").prop("checked", false);
 			 }else{
 				 layer.alert(data.msg);
 			 }
@@ -388,6 +389,7 @@ function beFx(id){
 	} else {
 		itemIds = id;
 	}
+	return;
 	$.ajax({
 		 url:"${wmsUrl}/admin/goods/itemMng/beFx.shtml?itemId="+itemIds,
 		 type:'post',
@@ -397,6 +399,7 @@ function beFx(id){
 			 if(data.success){	
 				 layer.alert("设置成功");
 				 reloadTable();
+				 $("#theadInp").prop("checked", false);
 			 }else{
 				 layer.alert(data.msg);
 			 }
@@ -433,6 +436,7 @@ function noBeFx(id){
 			 if(data.success){	
 				 layer.alert("设置成功");
 				 reloadTable();
+				 $("#theadInp").prop("checked", false);
 			 }else{
 				 layer.alert(data.msg);
 			 }
@@ -501,7 +505,15 @@ function queryDataByLabelTouch(typeId,categoryId,tabId){
 }
 
 function excelExport(type){
-	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type;
+	var valArr = new Array; 
+	var itemIds;
+    $("[name='check']:checked").each(function(i){
+    	valArr[i] = $(this).val();
+    }); 
+    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+    var supplierId = $("#supplierId").val();
+	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds;
+    $("#theadInp").prop("checked", false);
 }
 
 </script>

@@ -25,6 +25,7 @@ import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
+import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
@@ -374,12 +375,12 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	}
 
 	@Override
-	public List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(String token) {
+	public List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(GoodsListDownloadParam param, String token) {
 
 		List<GoodsInfoListForDownload> list = new ArrayList<GoodsInfoListForDownload>();
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true, null,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true, param,
 				HttpMethod.POST);
 		
 		JSONObject json = JSONObject.fromObject(query_result.getBody());

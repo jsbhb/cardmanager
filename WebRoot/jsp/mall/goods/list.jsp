@@ -246,6 +246,7 @@ function puton(id){
 			 if(data.success){	
 				 layer.alert("设置成功");
 				 reloadTable();
+				 $("#theadInp").prop("checked", false);
 			 }else{
 				 layer.alert(data.msg);
 			 }
@@ -281,6 +282,7 @@ function putoff(id){
 			 if(data.success){	
 				 layer.alert("设置成功");
 				 reloadTable();
+				 $("#theadInp").prop("checked", false);
 			 }else{
 				 layer.alert(data.msg);
 			 }

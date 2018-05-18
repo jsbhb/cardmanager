@@ -126,6 +126,7 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
+								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="15%">商品名称</th>
 								<th width="5%">商品编号</th>
 								<th width="10%">商家编码</th>
@@ -205,7 +206,8 @@ function rebuildTable(data){
 
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		str += "<td>" + list[i].goodsName;
+		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
+		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
@@ -290,8 +292,15 @@ function queryDataByLabelTouch(typeId,categoryId){
 }
 
 function excelExport(){
-	var supplierId = $("#supplierId").val();
-	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId;
+	var valArr = new Array; 
+	var itemIds;
+    $("[name='check']:checked").each(function(i){
+    	valArr[i] = $(this).val();
+    }); 
+    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+    var supplierId = $("#supplierId").val();
+	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds;
+	$("#theadInp").prop("checked", false);
 }
 
 //点击上传文件
