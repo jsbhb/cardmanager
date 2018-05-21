@@ -85,19 +85,23 @@
 		</div>
 	
 		<div class="list-content">
-			<div class="row">
-				<div class="col-md-12 list-btns">
-					<button type="button" onclick = "puton('')">批量上架</button>
-					<button type="button" onclick = "putoff('')">批量下架</button>
+			<c:if test="${prilvl == 1}">
+				<div class="row">
+					<div class="col-md-12 list-btns">
+						<button type="button" onclick = "puton('')">批量上架</button>
+						<button type="button" onclick = "putoff('')">批量下架</button>
+					</div>
 				</div>
-			</div>
+			</c:if>
 			<div class="row content-container">
 				<div class="col-md-12 container-right active">
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
 								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
+								<c:if test="${prilvl == 1}">
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
+								</c:if>
 								<th width="27%">商品名称</th>
 								<th width="10%">商品编号</th>
 								<th width="10%">商家编码</th>
@@ -106,7 +110,9 @@
 								<th width="10%">商品价格</th>
 								<th width="10%">商品库存</th>
 								<th width="5%">商品状态</th>
+								<c:if test="${prilvl == 1}">
 								<th width="10%">操作</th>
+								</c:if>
 							</tr>
 						</thead>
 						<tbody>
@@ -173,10 +179,13 @@ function rebuildTable(data){
 		return;
 	}
 
+	var prilvl = "${prilvl}";
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
-		str += "</td><td>" + list[i].goodsName;
+		if(prilvl == 1){
+			str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/></td>"
+		}
+		str += "<td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		str += "</td><td>" + list[i].supplierName;
@@ -207,11 +216,13 @@ function rebuildTable(data){
 			case 1:str += "</td><td>已上架";break;
 			default:str += "</td><td>状态错误："+status;
 		}
-		str += "</td><td>";
-		if(status == 0){
-			str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")'>上架</a>";
-		}else if(status == 1){
-			str += "<a href='javascript:void(0);' class='table-btns' onclick='putoff("+list[i].itemId+")'>下架</a>";
+		if(prilvl == 1){
+			str += "</td><td>";
+			if(status == 0){
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")'>上架</a>";
+			}else if(status == 1){
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='putoff("+list[i].itemId+")'>下架</a>";
+			}
 		}
 		str += "</td></tr>";
 	}

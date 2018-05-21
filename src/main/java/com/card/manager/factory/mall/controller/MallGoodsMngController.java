@@ -61,6 +61,12 @@ public class MallGoodsMngController extends BaseController {
 			return forword("mall/goods/notice", context);
 		}
 		try {
+			// set page privilege
+			if (opt.getRoleId() == 1) {
+				context.put("prilvl", "1");
+			} else {
+				context.put("prilvl", req.getParameter("privilege"));
+			}
 			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 			context.put("tags", tags);

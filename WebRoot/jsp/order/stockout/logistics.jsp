@@ -79,7 +79,7 @@
 				       	<div class="list-item">
 							<div class="col-sm-3 item-left">快递公司</div>
 							<div class="col-sm-9 item-right">
-								<input type="text" class="form-control" name="expressName" readonly value="${express.expressName}">
+								<input type="text" class="form-control" name="expressName" value="${express.expressName}">
 								<input type="hidden" class="form-control" name="thirdInfoId" value="${express.id}">
 							</div>
 						</div>

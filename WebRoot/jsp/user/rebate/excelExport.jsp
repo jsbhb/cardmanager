@@ -117,7 +117,8 @@
 			    	return;
 		    	}
 	    	}
-	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId; 
+	    	window.open("${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId);
+// 	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId;
 	    }
 	</script>
 </body>

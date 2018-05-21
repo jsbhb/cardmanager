@@ -49,7 +49,8 @@
 	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
 	function downLoadFile(path){
-		location.href="${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26");
+		window.open("${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26"));
+// 		location.href="${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26");
 	}
 	</script>
 </body>

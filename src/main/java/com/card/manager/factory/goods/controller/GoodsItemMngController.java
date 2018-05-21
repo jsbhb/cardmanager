@@ -411,6 +411,8 @@ public class GoodsItemMngController extends BaseController {
 		context.put(OPT, opt);
 
 		String id = req.getParameter("id");
+		String prilvl = req.getParameter("prilvl");
+		context.put("prilvl", prilvl);
 		if (StringUtil.isEmpty(id)) {
 			context.put(ERROR, "没有商品编号");
 			return forword("error", context);
