@@ -299,7 +299,8 @@ function excelExport(){
     }); 
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
     var supplierId = $("#supplierId").val();
-	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds;
+    window.open("${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds);
+// 	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds;
 	$("#theadInp").prop("checked", false);
 }
 

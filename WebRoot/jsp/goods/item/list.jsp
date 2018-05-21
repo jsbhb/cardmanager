@@ -280,6 +280,7 @@ function rebuildTable(data){
 			default:str += "</td><td>状态错误："+status;
 		}
 		var prilvl = "${prilvl}";
+		var gradeId = "${opt.gradeId}";
 		if(prilvl == 1){
 			if (status != 2) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
@@ -288,13 +289,13 @@ function rebuildTable(data){
 			}
 			if(status == 0){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
 			}else if(status == 1){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >可分销</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
 			}else if(status == 2){
 				str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+")' >返佣比例</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
 			}
 			if(status==1||status==2){
 				if(list[i].supplierName!="一般贸易仓"
@@ -306,7 +307,11 @@ function rebuildTable(data){
 				}
 			}
 		} else {
-			str += "</td><td>" + list[i].rebate;
+			if (gradeId == 0 || gradeId == 2) {
+				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+			} else {
+				str += "</td><td>" + list[i].rebate;
+			}
 		}
 		str += "</td></tr>";
 	}
@@ -325,11 +330,11 @@ function toEdit(id){
 }
 
 
-function setRebate(id){
+function setRebate(id,prilvl){
 	var index = layer.open({
 		  title:"设置商品返佣比例",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/goods/itemMng/toSetRebate.shtml?id='+id,
+		  content: '${wmsUrl}/admin/goods/itemMng/toSetRebate.shtml?id='+id+"&prilvl="+prilvl,
 		  maxmin: true
 		});
 		layer.full(index);
@@ -511,7 +516,8 @@ function excelExport(type){
     }); 
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
     var supplierId = $("#supplierId").val();
-	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds;
+    window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
+// 	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds;
     $("#theadInp").prop("checked", false);
 }
 
