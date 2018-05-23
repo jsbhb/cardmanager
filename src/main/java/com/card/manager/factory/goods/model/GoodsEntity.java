@@ -22,7 +22,7 @@ import net.sf.json.JSONObject;
  * @version
  * @since JDK 1.7
  */
-public class GoodsEntity extends Pagination{
+public class GoodsEntity extends Pagination {
 	private int id;
 	private String goodsId;// 商品ID
 	private Integer supplierId;// 商家ID
@@ -59,16 +59,23 @@ public class GoodsEntity extends Pagination{
 	public GoodsEntity() {
 	}
 
+	public boolean check() {
+		return goodsId != null && !"".equals(goodsId) && supplierId != null && supplierId != -1
+				&& supplierName != null && !"".equals(supplierName) && origin != null && !"".equals(origin)
+				&& type != -1;
+	}
+
 	public GoodsEntity(JSONObject obj) {
 		this.id = obj.getInt("id");
 		this.goodsId = obj.getString("goodsId");
-		this.supplierId = "".equals(obj.getString("supplierId")) ? null : Integer.valueOf(obj.getString("supplierId").toLowerCase());
+		this.supplierId = "".equals(obj.getString("supplierId")) ? null
+				: Integer.valueOf(obj.getString("supplierId").toLowerCase());
 		this.goodsName = obj.getString("goodsName");
 		this.createTime = obj.getString("createTime");
 		this.updateTime = obj.getString("updateTime");
 		this.opt = obj.getString("opt");
 	}
-	
+
 	public int getId() {
 		return id;
 	}

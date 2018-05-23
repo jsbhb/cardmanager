@@ -51,6 +51,11 @@ public class GoodsItemEntity extends Pagination {
 	private int conversion;
 	private double rebate;
 
+	public boolean check() {
+		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
+				&& !"".equals(sku) && encode != null && !"".equals(encode);
+	}
+
 	public double getRebate() {
 		return rebate;
 	}
@@ -298,5 +303,5 @@ public class GoodsItemEntity extends Pagination {
 	public void setEncode(String encode) {
 		this.encode = encode;
 	}
-	
+
 }

@@ -20,7 +20,7 @@ import net.sf.json.JSONObject;
  * @version
  * @since JDK 1.7
  */
-public class GoodsBaseEntity extends Pagination{
+public class GoodsBaseEntity extends Pagination {
 	private int id;
 	private String brandId;// 品牌ID
 	private String goodsName;// 商品名称
@@ -39,6 +39,13 @@ public class GoodsBaseEntity extends Pagination{
 	private String opt;// 操作人
 
 	public GoodsBaseEntity() {
+	}
+
+	public boolean check() {
+		return brandId != null && !"".equals(brandId) && goodsName != null && !"".equals(goodsName) && brand != null
+				&& !"".equals(brand) && unit != null && !"".equals(unit) && firstCatalogId != null
+				&& !"".equals(firstCatalogId) && secondCatalogId != null && !"".equals(secondCatalogId)
+				&& thirdCatalogId != null && !"".equals(thirdCatalogId);
 	}
 
 	public GoodsBaseEntity(JSONObject obj) {

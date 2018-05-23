@@ -8,14 +8,22 @@
 package com.card.manager.factory.goods.service.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,6 +39,7 @@ import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
@@ -40,6 +49,7 @@ import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
+import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
@@ -47,11 +57,14 @@ import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
+import com.card.manager.factory.goods.pojo.ImportGoodsBO;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.ExcelUtils;
+import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SequeceRule;
 import com.card.manager.factory.util.URLUtils;
@@ -792,4 +805,215 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), Map.class);
 	}
+
+	@Override
+	public Map<String, Object> importGoodsInfo(String filePath, StaffEntity staffEntity) {
+		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class);
+		StringBuilder sb = new StringBuilder();
+		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
+		Map<String, Object> result = new HashMap<String, Object>();
+		boolean success = true;
+		if (list != null && list.size() > 0) {
+			GoodsBaseEntity goodsBase = null;
+			GoodsEntity goods = null;
+			GoodsItemEntity goodsItem = null;
+			GoodsPrice goodsPrice = null;
+			GoodsRebateEntity goodsRebate = null;
+			GoodsStockEntity goodsStock = null;
+			Method method = null;
+			GoodsInfoEntity goodsInfo = null;
+			List<GoodsRebateEntity> rebateList = null;
+			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
+			for (ImportGoodsBO model : list) {
+				// 基础商品
+				goodsBase = new GoodsBaseEntity();
+				goodsBase.setBrandId(model.getBrandId());
+				goodsBase.setGoodsName(model.getGoodsName());
+				goodsBase.setBrand(model.getBrand());
+				goodsBase.setIncrementTax(model.getIncrementTax() == null ? "0.16" : model.getIncrementTax());
+				goodsBase.setTariff(model.getTariff() == null ? "0" : model.getTariff());
+				goodsBase.setUnit(model.getUnit());
+				goodsBase.setHscode(model.getHscode());
+				goodsBase.setFirstCatalogId(model.getFirstCatalogId());
+				goodsBase.setSecondCatalogId(model.getSecondCatalogId());
+				goodsBase.setThirdCatalogId(model.getThirdCatalogId());
+				goodsBase.setCenterId(staffEntity.getGradeId());
+				if (!goodsBase.check()) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+				int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
+				goodsBase.setId(baseId);
+
+				// goods表
+				goods = new GoodsEntity();
+				try {
+					goods.setSupplierId(model.getSupplierId() == null || "".equals(model.getSupplierId()) ? -1
+							: Integer.valueOf(model.getSupplierId()));
+					goods.setType(model.getType() == null || "".equals(model.getType()) ? -1
+							: Integer.valueOf(model.getType()));
+				} catch (Exception e) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+				goods.setSupplierName(model.getSupplierName());
+				goods.setBaseId(baseId);
+				// 规格手动编辑
+				goods.setTemplateId(0);
+				goods.setGoodsName(model.getGoodsName());
+				goods.setOrigin(model.getOrigin());
+				int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
+				goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
+
+				// goodsItem
+				goodsItem = new GoodsItemEntity();
+				goodsItem.setGoodsId(goods.getGoodsId());
+				goodsItem.setItemCode(model.getItemCode());
+				goodsItem.setSku(model.getSku());
+				try {
+					goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
+							: Integer.valueOf(model.getWeight()));
+					goodsItem.setExciseTax(model.getExciseFax() == null || "".equals(model.getExciseFax()) ? 0
+							: Double.valueOf(model.getExciseFax()));
+					goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
+							: Integer.valueOf(model.getConversion()));
+				} catch (Exception e) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+				goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+				goodsItem.setEncode(model.getEncode());
+				if (!goodsItem.check()) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
+				goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+
+				// goodsPrice
+				goodsPrice = new GoodsPrice();
+				goodsPrice.setItemId(goodsItem.getItemId());
+				if (model.getMin() == null || "".equals(model.getMin()) || model.getMax() == null
+						|| "".equals(model.getMax()) || model.getRetailPrice() == null
+						|| "".equals(model.getRetailPrice())) {
+					sb.append(model.getGoodsName() + ",");
+					success = false;
+					continue;
+				}
+				try {
+					goodsPrice.setMin(Integer.valueOf(model.getMin()));
+					goodsPrice.setMax("-1".equals(model.getMax()) ? null : Integer.valueOf(model.getMax()));
+					goodsPrice.setProxyPrice(model.getProxyPrice() == null || "".equals(model.getProxyPrice()) ? 0
+							: Double.valueOf(model.getProxyPrice()));
+					goodsPrice.setFxPrice(model.getFxPrice() == null || "".equals(model.getFxPrice()) ? 0
+							: Double.valueOf(model.getFxPrice()));
+					goodsPrice.setRetailPrice(Double.valueOf(model.getRetailPrice()));
+					goodsPrice.setOpt(staffEntity.getOptName());
+				} catch (Exception e) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+
+				goodsItem.setGoodsPrice(goodsPrice);
+				goodsItem.setOpt(staffEntity.getOptName());
+
+				goods.setGoodsItem(goodsItem);
+
+				// 库存设置
+				if (model.getStock() == null || "".equals(model.getStock())) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+				goodsStock = new GoodsStockEntity();
+				try {
+					goodsStock.setItemId(Integer.valueOf(goodsItem.getItemId()));
+					goodsStock.setFxQty(Integer.valueOf(model.getStock()));
+					goodsStock.setQpQty(Integer.valueOf(model.getStock()));
+				} catch (Exception e) {
+					success = false;
+					sb.append(model.getGoodsName() + ",");
+					continue;
+				}
+				goodsItem.setStock(goodsStock);
+
+				// 返佣设置
+				rebateList = new ArrayList<GoodsRebateEntity>();
+				for (Map.Entry<Integer, GradeTypeDTO> entry : map.entrySet()) {
+					try {
+						method = ImportGoodsBO.class.getMethod("getRebate_" + entry.getKey());
+						Object value = method.invoke(model);
+						if (value != null) {
+							goodsRebate = new GoodsRebateEntity();
+							goodsRebate.setProportion(Double.valueOf(value.toString()));
+							goodsRebate.setGradeType(entry.getKey());
+							goodsRebate.setItemId(goodsItem.getItemId());
+							rebateList.add(goodsRebate);
+						}
+					} catch (Exception e) {
+						success = false;
+						sb.append(model.getGoodsName() + ",");
+						break;
+					}
+				}
+				goodsInfo = new GoodsInfoEntity();
+				goodsInfo.setGoods(goods);
+				goodsInfo.setGoodsBase(goodsBase);
+				goodsInfo.setGoodsRebateList(rebateList);
+				goodsInfoList.add(goodsInfo);
+			}
+			if (success) {
+				RestCommonHelper helper = new RestCommonHelper();
+				ResponseEntity<String> usercenter_result = helper.request(
+						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_IMPORT_GOODSINFO,
+						staffEntity.getToken(), true, goodsInfoList, HttpMethod.POST);
+
+				JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+				result.put("sucess", json.get("success"));
+				result.put("msg", json.get("errorMsg"));
+				return result;
+			} else {
+				result.put("success", success);
+				result.put("msg", sb.append("以上商品信息不全或者有误").toString());
+				return result;
+			}
+		} else { // 没有读到数据
+			result.put("success", false);
+			result.put("msg", "没有商品信息");
+			return result;
+		}
+	}
+
+	private static final String TEMPLATE_PATH = "EXCEL/GOODSTEMPLATE";
+	private static final String FILE_NAME = "goodsTemplate.xlsx";
+
+	@Override
+	public void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp, StaffEntity staffEntity)
+			throws IOException {
+		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
+		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+		ServletContext servletContext = webApplicationContext.getServletContext();
+		String filePath = servletContext.getRealPath("/") + TEMPLATE_PATH + "/" + FILE_NAME;
+		String name = ExcelUtils.instance().getLastColumn(filePath, 1);
+		String id = name.split("_")[1];
+		Set<Integer> keySet = map.keySet();
+		List<Integer> keyList = new ArrayList<Integer>(keySet);
+		Collections.sort(keyList);
+		if (keyList.get(keyList.size() - 1) > Integer.valueOf(id)) {
+			List<GradeTypeDTO> gradeTypeList = new ArrayList<GradeTypeDTO>();
+			for (Integer typeId : keyList) {
+				if (typeId > Integer.valueOf(id)) {
+					gradeTypeList.add(map.get(typeId));
+				}
+			}
+			ExcelUtils.instance().addHead(filePath, gradeTypeList);
+		}
+		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
+	}
+
 }

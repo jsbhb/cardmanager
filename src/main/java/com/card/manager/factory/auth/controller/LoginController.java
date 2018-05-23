@@ -516,21 +516,25 @@ public class LoginController extends BaseController {
 			HttpServletResponse resp) {
 
 		try {
+			String path = req.getParameter("path");
 			if (excel != null) {
 				String fileName = excel.getOriginalFilename();
 				// 当前上传文件的文件后缀
 				String suffix = fileName.indexOf(".") != -1
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
 
-				if (!".xlsx".equalsIgnoreCase(suffix)) {
+				if (!".xlsx".equalsIgnoreCase(suffix) && !".xls".equalsIgnoreCase(suffix)) {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
 				
 				WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 				ServletContext servletContext = webApplicationContext.getServletContext();
-
+				
 				String filePath = servletContext.getRealPath("/") + "UPLOADEXCEL/";
+				if(path != null){
+					filePath += filePath + "path/";
+				}
 		    	File obj = null;
 		    	obj = new File(filePath);
 				if (!obj.exists()) {
