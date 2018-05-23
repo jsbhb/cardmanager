@@ -811,7 +811,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class);
 		StringBuilder sb = new StringBuilder();
 		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
+		Set<Integer> keySet = map.keySet();
 		Map<String, Object> result = new HashMap<String, Object>();
+		if(keySet.size() > 7){
+			result.put("success", false);
+			result.put("msg", "返佣等级超出数量限制，请联系技术人员");
+			return result;
+		}
+		
 		boolean success = true;
 		if (list != null && list.size() > 0) {
 			GoodsBaseEntity goodsBase = null;
@@ -820,8 +827,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			GoodsPrice goodsPrice = null;
 			GoodsRebateEntity goodsRebate = null;
 			GoodsStockEntity goodsStock = null;
-			Method method = null;
 			GoodsInfoEntity goodsInfo = null;
+			Method method = null;
 			List<GoodsRebateEntity> rebateList = null;
 			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
 			for (ImportGoodsBO model : list) {
@@ -840,7 +847,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsBase.setCenterId(staffEntity.getGradeId());
 				if (!goodsBase.check()) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 				int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
@@ -855,7 +862,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 							: Integer.valueOf(model.getType()));
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 				goods.setSupplierName(model.getSupplierName());
@@ -881,14 +888,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 							: Integer.valueOf(model.getConversion()));
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
 				goodsItem.setEncode(model.getEncode());
 				if (!goodsItem.check()) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
@@ -900,7 +907,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				if (model.getMin() == null || "".equals(model.getMin()) || model.getMax() == null
 						|| "".equals(model.getMax()) || model.getRetailPrice() == null
 						|| "".equals(model.getRetailPrice())) {
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					success = false;
 					continue;
 				}
@@ -915,7 +922,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goodsPrice.setOpt(staffEntity.getOptName());
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 
@@ -927,7 +934,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				// 库存设置
 				if (model.getStock() == null || "".equals(model.getStock())) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 				goodsStock = new GoodsStockEntity();
@@ -937,7 +944,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goodsStock.setQpQty(Integer.valueOf(model.getStock()));
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getGoodsName() + ",");
+					sb.append(model.getItemCode() + ",");
 					continue;
 				}
 				goodsItem.setStock(goodsStock);
@@ -948,16 +955,20 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					try {
 						method = ImportGoodsBO.class.getMethod("getRebate_" + entry.getKey());
 						Object value = method.invoke(model);
-						if (value != null) {
+						if (value != null && !"".equals(value)) {
 							goodsRebate = new GoodsRebateEntity();
 							goodsRebate.setProportion(Double.valueOf(value.toString()));
 							goodsRebate.setGradeType(entry.getKey());
 							goodsRebate.setItemId(goodsItem.getItemId());
 							rebateList.add(goodsRebate);
+						} else {
+							success = false;
+							sb.append(model.getItemCode() + ",");
+							break;
 						}
 					} catch (Exception e) {
 						success = false;
-						sb.append(model.getGoodsName() + ",");
+						sb.append(model.getItemCode() + ",");
 						break;
 					}
 				}
@@ -1002,6 +1013,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String name = ExcelUtils.instance().getLastColumn(filePath, 1);
 		String id = name.split("_")[1];
 		Set<Integer> keySet = map.keySet();
+		if(keySet.size() > 7){
+			throw new RuntimeException("超出返佣等级限制，请联系技术");
+		}
 		List<Integer> keyList = new ArrayList<Integer>(keySet);
 		Collections.sort(keyList);
 		if (keyList.get(keyList.size() - 1) > Integer.valueOf(id)) {

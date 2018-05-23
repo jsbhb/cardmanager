@@ -533,10 +533,12 @@ public class LoginController extends BaseController {
 				ServletContext servletContext = webApplicationContext.getServletContext();
 				
 				String filePath = servletContext.getRealPath("/") + "UPLOADEXCEL/";
-				String saveFileName = UUID.randomUUID().toString() + suffix;
+				String saveFileName;
 				if(path != null){
-					filePath += filePath + path;
-					saveFileName = DateUtil.getCurrDateTime() + "-" + entity.getOptName() + suffix;
+					filePath += path + "/";
+					saveFileName = DateUtil.getNowLongTime() + "-" + entity.getOptName() + suffix;
+				} else {
+					saveFileName = UUID.randomUUID().toString() + suffix;
 				}
 		    	File obj = null;
 		    	obj = new File(filePath);

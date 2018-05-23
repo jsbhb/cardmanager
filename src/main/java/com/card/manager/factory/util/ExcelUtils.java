@@ -1,5 +1,6 @@
 package com.card.manager.factory.util;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -100,9 +101,9 @@ public class ExcelUtils {
 			String postfix = path.substring(path.lastIndexOf(".") + 1, path.length());
 			if (!"".equals(postfix)) {
 				if ("xls".equals(postfix)) {
-					addHeadXlsx(path, list);
-				} else if ("xlsx".equals(postfix)) {
 					addHeadXls(path, list);
+				} else if ("xlsx".equals(postfix)) {
+					addHeadXlsx(path, list);
 				}
 			} else {
 				return;
@@ -112,9 +113,9 @@ public class ExcelUtils {
 	}
 
 	private void addHeadXls(String path, List<GradeTypeDTO> list) throws IOException {
-		InputStream is = this.getClass().getResourceAsStream(path);
 		HSSFWorkbook hssfWorkbook = null;
 		try {
+			InputStream is = new FileInputStream(path);
 			hssfWorkbook = new HSSFWorkbook(is);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -128,9 +129,9 @@ public class ExcelUtils {
 		HSSFRow row2 = hssfSheet.getRow(1);
 		int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 0; i < list.size(); i++) {
-			Cell cell = row1.createCell(coloumNum + i + 1);
+			Cell cell = row1.createCell(coloumNum + i);
 			cell.setCellValue(list.get(i).getName());
-			cell = row2.createCell(coloumNum + i + 1);
+			cell = row2.createCell(coloumNum + i);
 			cell.setCellValue("rebate_" + list.get(i).getId());
 		}
 		FileOutputStream excelFileOutPutStream = new FileOutputStream(path);//写数据到这个路径上  
@@ -140,9 +141,9 @@ public class ExcelUtils {
 	}
 
 	private void addHeadXlsx(String path, List<GradeTypeDTO> list) throws IOException {
-		InputStream is = this.getClass().getResourceAsStream(path);
 		XSSFWorkbook xssfWorkbook = null;
 		try {
+			InputStream is = new FileInputStream(path);
 			xssfWorkbook = new XSSFWorkbook(is);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -156,9 +157,9 @@ public class ExcelUtils {
 		XSSFRow row2 = xssfSheet.getRow(1);
 		int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 0; i < list.size(); i++) {
-			Cell cell = row1.createCell(coloumNum + i + 1);
+			Cell cell = row1.createCell(coloumNum + i);
 			cell.setCellValue(list.get(i).getName());
-			cell = row2.createCell(coloumNum + i + 1);
+			cell = row2.createCell(coloumNum + i);
 			cell.setCellValue("rebate_" + list.get(i).getId());
 		}
 		FileOutputStream excelFileOutPutStream = new FileOutputStream(path);//写数据到这个路径上  
@@ -191,9 +192,10 @@ public class ExcelUtils {
 	}
 
 	private String getLastColumnXlsx(String path, int rowNum) {
-		InputStream is = this.getClass().getResourceAsStream(path);
+		
 		XSSFWorkbook xssfWorkbook = null;
 		try {
+			InputStream is = new FileInputStream(path);
 			xssfWorkbook = new XSSFWorkbook(is);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -205,14 +207,15 @@ public class ExcelUtils {
 		}
 		int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
 		XSSFRow row = xssfSheet.getRow(rowNum);// 获取第二行
-		XSSFCell cell = row.getCell(coloumNum);// 获取第二行最后一列
+		XSSFCell cell = row.getCell(coloumNum - 1);// 获取第二行最后一列
 		return getValue(cell);
 	}
 
 	private String getLastColumnXls(String path, int rowNum) {
-		InputStream is = this.getClass().getResourceAsStream(path);
+		
 		HSSFWorkbook hssfWorkbook = null;
 		try {
+			InputStream is = new FileInputStream(path);
 			hssfWorkbook = new HSSFWorkbook(is);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -224,7 +227,7 @@ public class ExcelUtils {
 		}
 		int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
 		HSSFRow row = hssfSheet.getRow(rowNum);
-		HSSFCell cell = row.getCell(coloumNum);// 获取第二行最后一列
+		HSSFCell cell = row.getCell(coloumNum - 1);// 获取第二行最后一列
 		return getValue(cell);
 	}
 
@@ -239,9 +242,9 @@ public class ExcelUtils {
 	@SuppressWarnings("unchecked")
 	private <T> List<T> readXlsx(String path, Class<? extends Object> clazz) {
 		List<T> list = new ArrayList<T>();
-		InputStream is = this.getClass().getResourceAsStream(path);
 		XSSFWorkbook xssfWorkbook = null;
 		try {
+			InputStream is = new FileInputStream(path);
 			xssfWorkbook = new XSSFWorkbook(is);
 		} catch (IOException e2) {
 			e2.printStackTrace();
@@ -301,9 +304,9 @@ public class ExcelUtils {
 	@SuppressWarnings("unchecked")
 	private <T> List<T> readXls(String path, Class<? extends Object> clazz) {
 		List<T> list = new ArrayList<T>();
-		InputStream is = this.getClass().getResourceAsStream(path);
 		HSSFWorkbook hssfWorkbook = null;
 		try {
+			InputStream is = new FileInputStream(path);
 			hssfWorkbook = new HSSFWorkbook(is);
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block

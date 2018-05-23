@@ -21,6 +21,9 @@
 	      </ol>
     </section>
 	<section class="content">
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
 		<div class="uploadFile-status">
 			<div class="uploadFile-tail col-sm-8 col-sm-offset-2">
 				<i></i>
@@ -56,7 +59,7 @@
 				<ul>
 					<li>
 						<span class="btn-upload">上传文件</span>
-						<input type="file" id="file-upload">
+						<input type="file" id="import" name = "import" accept=".xls,.xlsx">
 					</li>
 				</ul>
 				<p>请选择.xlsx或.xls格式文件，若无已导出的商品文件，<a href="javascript:void(0);" onclick="excelModelExport()">请下载空白模板</a></p>
@@ -72,8 +75,7 @@
 		</div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
-	<!-- 文件上传调用js -->
-	<script src="${wmsUrl}/js/uploadFile.js"></script>
+	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	
 	function excelModelExport(){
@@ -81,7 +83,7 @@
 	}
 	
 	//点击上传文件
-	$('.file-upload').on('change','input[type=file]',function(){
+	$("#import").on('change',function(){
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadExcelFile.shtml?path=goodsImport', //你处理上传文件的服务端
 			secureuri : false,
@@ -100,7 +102,7 @@
 				readExcelForImport(filePath);
 			},
 			complete : function(data) {
-				$("#image").hide();
+				
 			}
 		})
 	});
@@ -120,8 +122,10 @@
 				 }else{
 					 layer.alert(data.msg);
 				 }
+				 $("#image").hide();
 			 },
 			 error:function(){
+				 $("#image").hide();
 				 layer.alert("处理失败，请联系客服处理");
 			 }
 		 });

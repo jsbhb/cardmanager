@@ -298,6 +298,15 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
+	
+	@RequestMapping(value = "/toAddBatch")
+	public ModelAndView toAddBatch(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		return forword("goods/goods/goodsImport", context);
+	}
+	
 	@RequestMapping(value = "/toShow")
 	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -449,7 +458,7 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "/exportGoodsInfoTemplate", method = RequestMethod.POST)
+	@RequestMapping(value = "/exportGoodsInfoTemplate", method = RequestMethod.GET)
 	public void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		try {
 			StaffEntity staffEntity = SessionUtils.getOperator(req);
