@@ -154,15 +154,15 @@
 								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="8%">商品图片</th>
-								<th width="8%">商品名称</th>
+								<th width="18%">商品名称</th>
 								<th width="5%">商品编号</th>
 								<th width="8%">商家编码</th>
 								<th width="8%">商品品牌</th>
 								<th width="10%">商品分类</th>
 								<th width="5%">供应商</th>
-								<th width="5%">商品标签</th>
-								<th width="5%">增值税率</th>
-								<th width="5%">消费税率</th>
+<!-- 								<th width="5%">商品标签</th> -->
+<!-- 								<th width="5%">增值税率</th> -->
+<!-- 								<th width="5%">消费税率</th> -->
 								<th width="5%">商品价格</th>
 								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
@@ -244,42 +244,42 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		if (list[i].goodsEntity.files == null) {
-			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/logo_1.png> ";
+			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/default_img.jpg> ";
 		} else {
 			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td>" + list[i].goodsName;
-		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
+		str += "</td><td style='text-align:left;'><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
 			str += "</td><td>";
 			str += "</td><td>";
 		} else {
-			str += "</td><td>" + list[i].baseEntity.brand;
-			str += "</td><td>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
+			str += "</td><td style='text-align:left;'>" + list[i].baseEntity.brand;
+			str += "</td><td style='text-align:left;'>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
 		}
-		str += "</td><td>" + list[i].supplierName;
-		if (list[i].tagBindEntity != null) {
-			var tmpTagId = list[i].tagBindEntity.tagId;
-			var tmpTagName = "普通";
-			var tagSelect = document.getElementById("tagId");
-			var options = tagSelect.options;
-			for(var j=0;j<options.length;j++){
-				if (tmpTagId==options[j].value) {
-					tmpTagName = options[j].text;
-					break;
-				}
-			}
-			str += "</td><td>" + tmpTagName;
-		} else {
-			str += "</td><td>普通";
-		}
-		if (list[i].baseEntity == null) {
-			str += "</td><td>";
-		} else {
-			str += "</td><td>" + list[i].baseEntity.incrementTax;
-		}
-		str += "</td><td>" + list[i].exciseTax;
+		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
+// 		if (list[i].tagBindEntity != null) {
+// 			var tmpTagId = list[i].tagBindEntity.tagId;
+// 			var tmpTagName = "普通";
+// 			var tagSelect = document.getElementById("tagId");
+// 			var options = tagSelect.options;
+// 			for(var j=0;j<options.length;j++){
+// 				if (tmpTagId==options[j].value) {
+// 					tmpTagName = options[j].text;
+// 					break;
+// 				}
+// 			}
+// 			str += "</td><td>" + tmpTagName;
+// 		} else {
+// 			str += "</td><td>普通";
+// 		}
+// 		if (list[i].baseEntity == null) {
+// 			str += "</td><td>";
+// 		} else {
+// 			str += "</td><td>" + list[i].baseEntity.incrementTax;
+// 		}
+// 		str += "</td><td>" + list[i].exciseTax;
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -359,7 +359,7 @@ function beUse(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(12).text() == "初始化") {
+	    	if ($(this).parent().siblings().eq(9).text() == "初始化") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -396,7 +396,7 @@ function beFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(12).text() == "可用") {
+	    	if ($(this).parent().siblings().eq(9).text() == "可用") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -433,7 +433,7 @@ function noBeFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(12).text() == "可分销") {
+	    	if ($(this).parent().siblings().eq(9).text() == "可分销") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 

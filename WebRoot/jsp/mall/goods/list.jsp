@@ -53,6 +53,15 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
+			            <select class="form-control" name="goodsType" id="goodsType">
+		                	<option selected="selected" value="">商品类型</option>
+		                	<option value="0">跨境商品</option>
+		                	<option value="2">一般贸易商品</option>
+			            </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemCode" placeholder="请输入商家编码">
 					</div>
 				</div>
@@ -106,13 +115,14 @@
 								<th width="17%">商品名称</th>
 								<th width="10%">商品编号</th>
 								<th width="10%">商家编码</th>
-								<th width="10%">供应商</th>
-								<th width="5%">商品标签</th>
+								<th width="5%">供应商</th>
+								<th width="5%">商品类型</th>
+								<th width="10%">条形码</th>
 								<th width="10%">商品价格</th>
 								<th width="10%">商品库存</th>
 								<th width="5%">商品状态</th>
 								<c:if test="${prilvl == 1}">
-								<th width="10%">操作</th>
+								<th width="5%">操作</th>
 								</c:if>
 							</tr>
 						</thead>
@@ -187,29 +197,37 @@ function rebuildTable(data){
 			str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/></td>"
 		}
 		if (list[i].goodsEntity.files == null) {
-			str += "<td><img style='width:50px;height:50px;' src=${wmsUrl}/img/logo_1.png>";
+			str += "<td><img style='width:50px;height:50px;' src=${wmsUrl}/img/default_img.jpg>";
 		} else {
 			str += "<td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td>" + list[i].goodsName;
-		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId;
+		str += "</td><td style='text-align:left;'><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
-		str += "</td><td>" + list[i].supplierName;
-		if (list[i].tagBindEntity != null) {
-			var tmpTagId = list[i].tagBindEntity.tagId;
-			var tmpTagName = "普通";
-			var tagSelect = document.getElementById("tagId");
-			var options = tagSelect.options;
-			for(var j=0;j<options.length;j++){
-				if (tmpTagId==options[j].value) {
-					tmpTagName = options[j].text;
-					break;
-				}
-			}
-			str += "</td><td>" + tmpTagName;
-		} else {
-			str += "</td><td>普通";
+		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
+// 		if (list[i].tagBindEntity != null) {
+// 			var tmpTagId = list[i].tagBindEntity.tagId;
+// 			var tmpTagName = "普通";
+// 			var tagSelect = document.getElementById("tagId");
+// 			var options = tagSelect.options;
+// 			for(var j=0;j<options.length;j++){
+// 				if (tmpTagId==options[j].value) {
+// 					tmpTagName = options[j].text;
+// 					break;
+// 				}
+// 			}
+// 			str += "</td><td>" + tmpTagName;
+// 		} else {
+// 			str += "</td><td>普通";
+// 		}
+
+		var goodsType = list[i].goodsEntity.type;
+		switch(goodsType){
+			case 0:str += "</td><td>跨境商品";break;
+			case 2:str += "</td><td>一般贸易商品";break;
+			default:str += "</td><td>状态类型："+goodsType;
 		}
+		str += "</td><td>" + list[i].encode;
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -242,7 +260,7 @@ function puton(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(8).text() == "未上架") {
+	    	if ($(this).parent().siblings().eq(9).text() == "未上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -278,7 +296,7 @@ function putoff(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(8).text() == "已上架") {
+	    	if ($(this).parent().siblings().eq(9).text() == "已上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
