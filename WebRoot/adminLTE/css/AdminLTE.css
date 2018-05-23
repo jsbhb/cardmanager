@@ -5721,3 +5721,6 @@ table.text-center th {
 	line-height: 24px;
 	margin-top: 8px;
 }
+table th,table td{
+	text-align:center;
+}
