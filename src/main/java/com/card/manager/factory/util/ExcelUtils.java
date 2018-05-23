@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -260,14 +259,14 @@ public class ExcelUtils {
 		XSSFCell temp = null;
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		if (xssfRow != null) {
-			Field[] fields = clazz.getDeclaredFields();
-			for (int i = 0; i < fields.length; i++) {
+			int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
+			for (int i = 0; i < coloumNum; i++) {
 				temp = xssfRow.getCell(i);
 				map.put(i, getValue(temp).trim());
 			}
 		}
 		// Read the Row
-		for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
+		for (int rowNum = 2; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
 			xssfRow = xssfSheet.getRow(rowNum);
 			if (xssfRow != null) {
 				try {
@@ -277,6 +276,9 @@ public class ExcelUtils {
 				}
 				for (Map.Entry<Integer, String> entry : map.entrySet()) {
 					temp = xssfRow.getCell(entry.getKey());
+					if(temp == null){
+						continue;
+					}
 					Method method;
 					try {
 						method = clazz.getMethod(
@@ -323,14 +325,14 @@ public class ExcelUtils {
 		HSSFCell temp = null;
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		if (xssfRow != null) {
-			Field[] fields = clazz.getDeclaredFields();
-			for (int i = 0; i < fields.length; i++) {
+			int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
+			for (int i = 0; i < coloumNum; i++) {
 				temp = xssfRow.getCell(i);
 				map.put(i, getValue(temp).trim());
 			}
 		}
 		// Read the Row
-		for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+		for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
 			xssfRow = hssfSheet.getRow(rowNum);
 			if (xssfRow != null) {
 				try {
@@ -340,6 +342,9 @@ public class ExcelUtils {
 				}
 				for (Map.Entry<Integer, String> entry : map.entrySet()) {
 					temp = xssfRow.getCell(entry.getKey());
+					if(temp == null){
+						continue;
+					}
 					Method method;
 					try {
 						method = clazz.getMethod(

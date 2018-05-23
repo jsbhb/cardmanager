@@ -83,7 +83,7 @@
 	}
 	
 	//点击上传文件
-	$("#import").on('change',function(){
+	$("body").on('change',"#import",function(){
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadExcelFile.shtml?path=goodsImport', //你处理上传文件的服务端
 			secureuri : false,
@@ -103,6 +103,9 @@
 			},
 			complete : function(data) {
 				
+			},
+			error:function(data){
+				console.log(data);
 			}
 		})
 	});

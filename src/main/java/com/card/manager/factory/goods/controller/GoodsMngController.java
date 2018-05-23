@@ -450,9 +450,10 @@ public class GoodsMngController extends BaseController {
 			if ((boolean) result.get("success")) {
 				sendSuccessMessage(resp, result.get("msg") == null ? null : result.get("msg").toString());
 			} else {
-				sendFailureMessage(resp, "error" + result.get("msg"));
+				sendFailureMessage(resp, result.get("msg")+"");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}

@@ -3,6 +3,7 @@ package com.card.manager.factory.auth.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -554,7 +555,7 @@ public class LoginController extends BaseController {
 				fos.write(fileData);
 				fos.close();
 				
-				sendSuccessMessage(resp, fileName);
+				sendSuccessMessage(resp, URLEncoder.encode(fileName,"UTF-8"));
 			}
 
 		} catch (Exception e) {

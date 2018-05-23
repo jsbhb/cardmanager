@@ -486,7 +486,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		} else {
 			goods.setBaseId(entity.getBaseId());
 		}
-		
+
 		goods.setTemplateId(Integer.parseInt(entity.getSpecsId()));
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
@@ -550,7 +550,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		String keys = entity.getKeys();
 		String values = entity.getValues();
-		
+
 		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
 		if ((keys != null && !"".equals(keys)) && (values != null) && !"".equals(values)) {
 			String[] keyArray = keys.split(";");
@@ -568,7 +568,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					specsPojos.add(itemSpecsPojo);
 				}
 			}
-		
+
 			JSONArray json = JSONArray.fromObject(specsPojos);
 			goodsItem.setInfo(json.toString());
 		}
@@ -692,7 +692,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		String keys = entity.getKeys();
 		String values = entity.getValues();
-		
+
 		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
 		if ((keys != null && !"".equals(keys)) && (values != null) && !"".equals(values)) {
 			String[] keyArray = keys.split(";");
@@ -710,7 +710,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					specsPojos.add(itemSpecsPojo);
 				}
 			}
-			
+
 			JSONArray json = JSONArray.fromObject(specsPojos);
 			goodsItem.setInfo(json.toString());
 		}
@@ -813,12 +813,12 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
 		Set<Integer> keySet = map.keySet();
 		Map<String, Object> result = new HashMap<String, Object>();
-		if(keySet.size() > 7){
+		if (keySet.size() > 7) {
 			result.put("success", false);
 			result.put("msg", "返佣等级超出数量限制，请联系技术人员");
 			return result;
 		}
-		
+
 		boolean success = true;
 		if (list != null && list.size() > 0) {
 			GoodsBaseEntity goodsBase = null;
@@ -857,9 +857,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goods = new GoodsEntity();
 				try {
 					goods.setSupplierId(model.getSupplierId() == null || "".equals(model.getSupplierId()) ? -1
-							: Integer.valueOf(model.getSupplierId()));
+							: convert(model.getSupplierId()));
 					goods.setType(model.getType() == null || "".equals(model.getType()) ? -1
-							: Integer.valueOf(model.getType()));
+							: convert(model.getType()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",");
@@ -881,11 +881,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setSku(model.getSku());
 				try {
 					goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
-							: Integer.valueOf(model.getWeight()));
+							: convert(model.getWeight()));
 					goodsItem.setExciseTax(model.getExciseFax() == null || "".equals(model.getExciseFax()) ? 0
 							: Double.valueOf(model.getExciseFax()));
 					goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
-							: Integer.valueOf(model.getConversion()));
+							: convert(model.getConversion()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",");
@@ -912,8 +912,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					continue;
 				}
 				try {
-					goodsPrice.setMin(Integer.valueOf(model.getMin()));
-					goodsPrice.setMax("-1".equals(model.getMax()) ? null : Integer.valueOf(model.getMax()));
+					goodsPrice.setMin(convert(model.getMin()));
+					goodsPrice.setMax(
+							"-1.0".equals(model.getMax()) || "-1".equals(model.getMax()) || null == model.getMax()
+									? null : convert(model.getMax()));
 					goodsPrice.setProxyPrice(model.getProxyPrice() == null || "".equals(model.getProxyPrice()) ? 0
 							: Double.valueOf(model.getProxyPrice()));
 					goodsPrice.setFxPrice(model.getFxPrice() == null || "".equals(model.getFxPrice()) ? 0
@@ -940,8 +942,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsStock = new GoodsStockEntity();
 				try {
 					goodsStock.setItemId(Integer.valueOf(goodsItem.getItemId()));
-					goodsStock.setFxQty(Integer.valueOf(model.getStock()));
-					goodsStock.setQpQty(Integer.valueOf(model.getStock()));
+					goodsStock.setFxQty(convert(model.getStock()));
+					goodsStock.setQpQty(convert(model.getStock()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",");
@@ -985,7 +987,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 						staffEntity.getToken(), true, goodsInfoList, HttpMethod.POST);
 
 				JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-				result.put("sucess", json.get("success"));
+				result.put("success", json.get("success"));
 				result.put("msg", json.get("errorMsg"));
 				return result;
 			} else {
@@ -1013,7 +1015,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String name = ExcelUtils.instance().getLastColumn(filePath, 1);
 		String id = name.split("_")[1];
 		Set<Integer> keySet = map.keySet();
-		if(keySet.size() > 7){
+		if (keySet.size() > 7) {
 			throw new RuntimeException("超出返佣等级限制，请联系技术");
 		}
 		List<Integer> keyList = new ArrayList<Integer>(keySet);
@@ -1028,6 +1030,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			ExcelUtils.instance().addHead(filePath, gradeTypeList);
 		}
 		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
+	}
+	
+	private Integer convert(String str){
+		if(str.contains(".")){
+			return Integer.valueOf(str.substring(0, str.indexOf(".")));
+		} else {
+			return Integer.valueOf(str);
+		}
 	}
 
 }
