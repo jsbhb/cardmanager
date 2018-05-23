@@ -884,7 +884,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					sb.append(model.getGoodsName() + ",");
 					continue;
 				}
-				goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
 				goodsItem.setEncode(model.getEncode());
 				if (!goodsItem.check()) {
 					success = false;
