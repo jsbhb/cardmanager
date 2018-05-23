@@ -102,7 +102,8 @@
 								<c:if test="${prilvl == 1}">
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								</c:if>
-								<th width="27%">商品名称</th>
+								<th width="10%">商品图片</th>
+								<th width="17%">商品名称</th>
 								<th width="10%">商品编号</th>
 								<th width="10%">商家编码</th>
 								<th width="10%">供应商</th>
@@ -185,7 +186,12 @@ function rebuildTable(data){
 		if(prilvl == 1){
 			str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/></td>"
 		}
-		str += "<td>" + list[i].goodsName;
+		if (list[i].goodsEntity.files == null) {
+			str += "<td><img src=${wmsUrl}/img/logo_1.png>";
+		} else {
+			str += "<td><img src="+list[i].goodsEntity.files[0].path+">";
+		}
+		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		str += "</td><td>" + list[i].supplierName;
@@ -236,7 +242,7 @@ function puton(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(7).text() == "未上架") {
+	    	if ($(this).parent().siblings().eq(8).text() == "未上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -272,7 +278,7 @@ function putoff(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(7).text() == "已上架") {
+	    	if ($(this).parent().siblings().eq(8).text() == "已上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 

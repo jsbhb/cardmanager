@@ -52,6 +52,11 @@ public class CreateGoodsInfoEntity {
 	private String detailInfo;
 	private String opt;
 	private String goodsDetailPath;
+	private String specsId;
+	private String keys;
+	private String values;
+	private String shelfLife;
+	private String carTon;
 	
 	
 	public int getBaseId() {
@@ -257,6 +262,36 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getKeys() {
+		return keys;
+	}
+	public void setKeys(String keys) {
+		this.keys = keys;
+	}
+	public String getValues() {
+		return values;
+	}
+	public void setValues(String values) {
+		this.values = values;
+	}
+	public String getSpecsId() {
+		return specsId;
+	}
+	public void setSpecsId(String specsId) {
+		this.specsId = specsId;
+	}
+	public String getShelfLife() {
+		return shelfLife;
+	}
+	public void setShelfLife(String shelfLife) {
+		this.shelfLife = shelfLife;
+	}
+	public String getCarTon() {
+		return carTon;
+	}
+	public void setCarTon(String carTon) {
+		this.carTon = carTon;
 	}
 
 }

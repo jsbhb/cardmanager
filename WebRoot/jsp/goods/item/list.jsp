@@ -63,6 +63,14 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
+			            <select class="form-control" name="goodsType" id="goodsType">
+		                	<option selected="selected" value="0">跨境商品</option>
+		                	<option value="2">一般贸易商品</option>
+			            </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
 			           <input type="text" class="form-control" name="hidGoodsName" placeholder="请输入商品名称">
 					</div>
 				</div>
@@ -145,6 +153,7 @@
 							<tr>
 								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
+								<th width="10%">商品图片</th>
 								<th width="15%">商品名称</th>
 								<th width="5%">商品编号</th>
 								<th width="10%">商家编码</th>
@@ -234,6 +243,11 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
+		if (list[i].goodsEntity.files == null) {
+			str += "</td><td><img src=${wmsUrl}/img/logo_1.png>";
+		} else {
+			str += "</td><td><img src="+list[i].goodsEntity.files[0].path+">";
+		}
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
 		str += "</td><td>" + list[i].itemCode;
@@ -345,7 +359,7 @@ function beUse(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(11).text() == "初始化") {
+	    	if ($(this).parent().siblings().eq(12).text() == "初始化") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -382,7 +396,7 @@ function beFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(11).text() == "可用") {
+	    	if ($(this).parent().siblings().eq(12).text() == "可用") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -419,7 +433,7 @@ function noBeFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(11).text() == "可分销") {
+	    	if ($(this).parent().siblings().eq(12).text() == "可分销") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 

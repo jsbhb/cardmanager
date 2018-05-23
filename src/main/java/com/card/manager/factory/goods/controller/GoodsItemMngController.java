@@ -32,6 +32,7 @@ import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
@@ -311,6 +312,12 @@ public class GoodsItemMngController extends BaseController {
 			String hidGoodsName = req.getParameter("hidGoodsName");
 			if (!StringUtil.isEmpty(hidGoodsName)) {
 				item.setGoodsName(hidGoodsName);
+			}
+			String goodsType = req.getParameter("goodsType");
+			if (!StringUtil.isEmpty(goodsType)) {
+				GoodsEntity goodsEntity = new GoodsEntity();
+				goodsEntity.setType(Integer.parseInt(goodsType));
+				item.setGoodsEntity(goodsEntity);
 			}
 
 			params.put("centerId", staffEntity.getGradeId());

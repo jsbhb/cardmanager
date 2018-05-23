@@ -8,7 +8,6 @@
 package com.card.manager.factory.goods.service.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -487,8 +486,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		} else {
 			goods.setBaseId(entity.getBaseId());
 		}
-		// 还未涉及规格修改暂时默认0
-		goods.setTemplateId(0);
+		
+		goods.setTemplateId(Integer.parseInt(entity.getSpecsId()));
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
@@ -521,6 +520,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
 		goodsItem.setConversion(entity.getConversion());
 		goodsItem.setEncode(entity.getEncode());
+		goodsItem.setShelfLife(entity.getShelfLife());
+		goodsItem.setCarTon(entity.getCarTon());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());
@@ -547,31 +548,30 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		goods.setFiles(files);
 
-		// 还未涉及规格修改暂时不调整
-		// String keys = entity.getKeys();
-		// String values = entity.getValues();
-		//
-		// List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		// if (keys != null && values != null) {
-		// String[] keyArray = keys.split(";");
-		// String[] valueArray = values.split(";");
-		// for (int i = 0; i < keyArray.length; i++) {
-		// ItemSpecsPojo itemSpecsPojo;
-		// if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-		// itemSpecsPojo = new ItemSpecsPojo();
-		// String[] kContesnts = keyArray[i].split(":");
-		// itemSpecsPojo.setSkId(kContesnts[0]);
-		// itemSpecsPojo.setSkV(kContesnts[1]);
-		// String[] vContants = valueArray[i].split(":");
-		// itemSpecsPojo.setSvId(vContants[0]);
-		// itemSpecsPojo.setSvV(vContants[1]);
-		// specsPojos.add(itemSpecsPojo);
-		// }
-		// }
-		//
-		// JSONArray json = JSONArray.fromObject(specsPojos);
-		// goodsItem.setInfo(json.toString());
-		// }
+		String keys = entity.getKeys();
+		String values = entity.getValues();
+		
+		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+		if (keys != null && values != null) {
+			String[] keyArray = keys.split(";");
+			String[] valueArray = values.split(";");
+			for (int i = 0; i < keyArray.length; i++) {
+				ItemSpecsPojo itemSpecsPojo;
+				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+					itemSpecsPojo = new ItemSpecsPojo();
+					String[] kContesnts = keyArray[i].split(":");
+					itemSpecsPojo.setSkId(kContesnts[0]);
+					itemSpecsPojo.setSkV(kContesnts[1]);
+					String[] vContants = valueArray[i].split(":");
+					itemSpecsPojo.setSvId(vContants[0]);
+					itemSpecsPojo.setSvV(vContants[1]);
+					specsPojos.add(itemSpecsPojo);
+				}
+			}
+		
+			JSONArray json = JSONArray.fromObject(specsPojos);
+			goodsItem.setInfo(json.toString());
+		}
 
 		goods.setGoodsItem(goodsItem);
 
@@ -622,8 +622,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setSupplierId(entity.getSupplierId());
 		goods.setSupplierName(entity.getSupplierName());
 		goods.setBaseId(entity.getBaseId());
-		// 还未涉及规格修改暂时默认0
-		goods.setTemplateId(0);
+		goods.setTemplateId(Integer.parseInt(entity.getSpecsId()));
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
@@ -663,6 +662,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setStatus(entity.getItemStatus());
 		goodsItem.setConversion(entity.getConversion());
 		goodsItem.setEncode(entity.getEncode());
+		goodsItem.setShelfLife(entity.getShelfLife());
+		goodsItem.setCarTon(entity.getCarTon());
 
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());
@@ -689,31 +690,30 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		goods.setFiles(files);
 
-		// 还未涉及规格修改暂时不调整
-		// String keys = entity.getKeys();
-		// String values = entity.getValues();
-		//
-		// List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		// if (keys != null && values != null) {
-		// String[] keyArray = keys.split(";");
-		// String[] valueArray = values.split(";");
-		// for (int i = 0; i < keyArray.length; i++) {
-		// ItemSpecsPojo itemSpecsPojo;
-		// if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-		// itemSpecsPojo = new ItemSpecsPojo();
-		// String[] kContesnts = keyArray[i].split(":");
-		// itemSpecsPojo.setSkId(kContesnts[0]);
-		// itemSpecsPojo.setSkV(kContesnts[1]);
-		// String[] vContants = valueArray[i].split(":");
-		// itemSpecsPojo.setSvId(vContants[0]);
-		// itemSpecsPojo.setSvV(vContants[1]);
-		// specsPojos.add(itemSpecsPojo);
-		// }
-		// }
-		//
-		// JSONArray json = JSONArray.fromObject(specsPojos);
-		// goodsItem.setInfo(json.toString());
-		// }
+		String keys = entity.getKeys();
+		String values = entity.getValues();
+		
+		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+		if (keys != null && values != null) {
+			String[] keyArray = keys.split(";");
+			String[] valueArray = values.split(";");
+			for (int i = 0; i < keyArray.length; i++) {
+				ItemSpecsPojo itemSpecsPojo;
+				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+					itemSpecsPojo = new ItemSpecsPojo();
+					String[] kContesnts = keyArray[i].split(":");
+					itemSpecsPojo.setSkId(kContesnts[0]);
+					itemSpecsPojo.setSkV(kContesnts[1]);
+					String[] vContants = valueArray[i].split(":");
+					itemSpecsPojo.setSvId(vContants[0]);
+					itemSpecsPojo.setSvV(vContants[1]);
+					specsPojos.add(itemSpecsPojo);
+				}
+			}
+			
+			JSONArray json = JSONArray.fromObject(specsPojos);
+			goodsItem.setInfo(json.toString());
+		}
 
 		goods.setGoodsItem(goodsItem);
 

@@ -11,89 +11,53 @@
 <%@include file="../../resourceLink.jsp"%>
 </head>
 <body>
-<section class="content-wrapper">
-	<section class="content">
-		<div class="box box-info">
-			<div class="box-header with-border">
-				<div class="box-header with-border">
-	            	<h5 class="box-title">搜索</h5>
-	            	<div class="box-tools pull-right">
-	                	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	              	</div>
-	            </div>
-			</div>
-		    <div class="box-body">
-			<div class="row form-horizontal">
-				<div class="col-xs-6">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">模板编号<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-book"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="id">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label class="col-sm-4 control-label no-padding-right" for="form-field-1">模板名称<font style="color:red">*</font> </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-book"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" name="brandName">
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<div class="col-sm-8">
-								<button type="button" class="btn btn-primary" id="submitBtn" name="signup">提交</button>
-                                <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-							</div>
-						</div>
-					</div>
+<section class="content">
+	<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+		<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+	</div>
+	<div class="moreSearchContent active">
+		<div class="row form-horizontal query list-content">
+			<div class="col-xs-3">
+				<div class="searchItem">
+		           <input type="text" class="form-control" name="specsId" placeholder="请输入模板编号">
 				</div>
+			</div>
+			<div class="col-xs-3">
+				<div class="searchItem">
+		           <input type="text" class="form-control" name="specsName" placeholder="请输入模板名称">
+				</div>
+			</div>
+			<div class="col-xs-3">
+				<div class="searchBtns">
+                        <button type="button" class="query" id="querybtns" name="signup">查询</button>
+                        <button type="button" class="clear">清除选项</button>
+                   </div>
+               </div>
+           </div>
+	</div>
+	<div class="list-content">
+		<div class="col-md-12 container-right" style="padding:0;">
+			<table id="specsTable" class="table table-hover myClass">
+				<thead>
+					<tr>
+						<th>模板编号</th>
+						<th>模板名称</th>
+						<th>创建时间</th>
+						<th>创建人</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<div class="pagination-nav">
+				<ul id="pagination" class="pagination">
+				</ul>
 			</div>
 		</div>
-		
-	
-		<div class="box box-warning">
-			<div class="box-body">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-default">
-							<table id="specsTable" class="table table-hover">
-								<thead>
-									<tr>
-										<th>模板编号</th>
-										<th>模板名称</th>
-										<th>创建时间</th>
-										<th>创建人</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-							<div class="pagination-nav">
-								<ul id="pagination" class="pagination">
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
-	</section>
-	</section>
-	
-	<%@include file="../../resourceScript.jsp"%>
-	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+	</div>	
+</section>
+<%@include file="../../resourceScript.jsp"%>
+<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
 
@@ -101,12 +65,12 @@
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/goods/specsMng/dataList.shtml",
-			numPerPage:"20",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/goods/specsMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -149,7 +113,6 @@ function rebuildTable(data){
 		str += "</td></tr>";
 	}
 		
-
 	$("#specsTable tbody").html(str);
 	trBind();
 }
@@ -162,17 +125,14 @@ function trBind() {
 };
 
 function sureSpecs(){
-		var selectTr = $(this);
+	var selectTr = $(this);
 
-		if ($(selectTr).parent().is('thead')) {
-			return;
-		}
-		var id =  selectTr.children("td").eq(0).text()
-		
-		parent.createSpecs(id);
-		
-		
-		parent.layer.closeAll();
+	if ($(selectTr).parent().is('thead')) {
+		return;
+	}
+	var id =  selectTr.children("td").eq(0).text()
+	parent.createSpecs(id);
+	parent.layer.closeAll();
 }
 
 

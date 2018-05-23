@@ -28,16 +28,25 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.SpecsEntity;
+import com.card.manager.factory.goods.model.SpecsTemplateEntity;
+import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/goods/goodsMng")
@@ -51,6 +60,9 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	CatalogService catalogService;
+	
+	@Resource
+	SpecsService specsService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -458,6 +470,29 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			context.put("goodsInfo", goodsInfo);
+			String info = goodsInfo.getGoods().getGoodsItem().getInfo();
+			JSONArray jsonArray = JSONArray.fromObject(info.substring(1, info.length()));
+			int index = jsonArray.size();
+			List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
+			for (int i = 0; i < index; i++) {
+				JSONObject jObj = jsonArray.getJSONObject(i);
+				list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+			}
+			
+			SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId()+"", staffEntity.getToken());
+			if (entity != null) {
+				for (ItemSpecsPojo isp : list) {
+					for(SpecsEntity se : entity.getSpecs()) {
+						for(SpecsValueEntity sve : se.getValues()) {
+							if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
+								isp.setSvV(sve.getValue());
+							}
+						}
+					}
+				}
+			}
+			context.put("specsInfo", list);
+			
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {
 				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
