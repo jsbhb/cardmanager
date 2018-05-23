@@ -470,28 +470,31 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			context.put("goodsInfo", goodsInfo);
-			String info = goodsInfo.getGoods().getGoodsItem().getInfo();
-			JSONArray jsonArray = JSONArray.fromObject(info.substring(1, info.length()));
-			int index = jsonArray.size();
-			List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
-			for (int i = 0; i < index; i++) {
-				JSONObject jObj = jsonArray.getJSONObject(i);
-				list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
-			}
 			
-			SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId()+"", staffEntity.getToken());
-			if (entity != null) {
-				for (ItemSpecsPojo isp : list) {
-					for(SpecsEntity se : entity.getSpecs()) {
-						for(SpecsValueEntity sve : se.getValues()) {
-							if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
-								isp.setSvV(sve.getValue());
+			String info = goodsInfo.getGoods().getGoodsItem().getInfo();
+			if (info != null && !"".equals(info)) {
+				JSONArray jsonArray = JSONArray.fromObject(info.substring(1, info.length()));
+				int index = jsonArray.size();
+				List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
+				for (int i = 0; i < index; i++) {
+					JSONObject jObj = jsonArray.getJSONObject(i);
+					list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+				}
+				
+				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId()+"", staffEntity.getToken());
+				if (entity != null) {
+					for (ItemSpecsPojo isp : list) {
+						for(SpecsEntity se : entity.getSpecs()) {
+							for(SpecsValueEntity sve : se.getValues()) {
+								if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
+									isp.setSvV(sve.getValue());
+								}
 							}
 						}
 					}
 				}
+				context.put("specsInfo", list);
 			}
-			context.put("specsInfo", list);
 			
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {

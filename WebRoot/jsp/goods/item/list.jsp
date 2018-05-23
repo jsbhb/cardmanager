@@ -153,12 +153,12 @@
 							<tr>
 								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
-								<th width="10%">商品图片</th>
-								<th width="15%">商品名称</th>
+								<th width="8%">商品图片</th>
+								<th width="8%">商品名称</th>
 								<th width="5%">商品编号</th>
-								<th width="10%">商家编码</th>
+								<th width="8%">商家编码</th>
 								<th width="8%">商品品牌</th>
-								<th width="12%">商品分类</th>
+								<th width="10%">商品分类</th>
 								<th width="5%">供应商</th>
 								<th width="5%">商品标签</th>
 								<th width="5%">增值税率</th>
@@ -168,10 +168,10 @@
 								<th width="5%">商品状态</th>
 								<c:choose>
 									<c:when test="${prilvl == 1}">
-										<th width="12%">操作</th>
+										<th width="10%">操作</th>
 									</c:when>
 									<c:otherwise>
-										<th width="12%">返佣</th>
+										<th width="10%">返佣</th>
 									</c:otherwise>
 								</c:choose>
 							</tr>
@@ -244,9 +244,9 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		if (list[i].goodsEntity.files == null) {
-			str += "</td><td><img src=${wmsUrl}/img/logo_1.png>";
+			str += "</td><td><img style='width:100px;height:100px;' src=${wmsUrl}/img/logo_1.png> ";
 		} else {
-			str += "</td><td><img src="+list[i].goodsEntity.files[0].path+">";
+			str += "</td><td><img style='width:100px;height:100px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
