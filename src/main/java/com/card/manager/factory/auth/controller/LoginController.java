@@ -50,6 +50,7 @@ import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -514,7 +515,7 @@ public class LoginController extends BaseController {
 	@Auth(verifyLogin = false, verifyURL = false)
 	public void uploadExcelFile(@RequestParam("import") MultipartFile excel, HttpServletRequest req,
 			HttpServletResponse resp) {
-
+		StaffEntity entity = SessionUtils.getOperator(req);
 		try {
 			String path = req.getParameter("path");
 			if (excel != null) {
@@ -532,15 +533,17 @@ public class LoginController extends BaseController {
 				ServletContext servletContext = webApplicationContext.getServletContext();
 				
 				String filePath = servletContext.getRealPath("/") + "UPLOADEXCEL/";
+				String saveFileName = UUID.randomUUID().toString() + suffix;
 				if(path != null){
-					filePath += filePath + "path/";
+					filePath += filePath + path;
+					saveFileName = DateUtil.getCurrDateTime() + "-" + entity.getOptName() + suffix;
 				}
 		    	File obj = null;
 		    	obj = new File(filePath);
 				if (!obj.exists()) {
 					obj.mkdirs();
 				}
-				String saveFileName = UUID.randomUUID().toString() + suffix;
+				
 				fileName = filePath + "/" + saveFileName;
 				
 				FileOutputStream fos = null;
