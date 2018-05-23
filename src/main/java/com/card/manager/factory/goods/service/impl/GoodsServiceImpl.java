@@ -552,7 +552,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String values = entity.getValues();
 		
 		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		if (keys != null && values != null) {
+		if ((keys != null && !"".equals(keys)) && (values != null) && !"".equals(values)) {
 			String[] keyArray = keys.split(";");
 			String[] valueArray = values.split(";");
 			for (int i = 0; i < keyArray.length; i++) {
@@ -694,7 +694,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String values = entity.getValues();
 		
 		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		if (keys != null && values != null) {
+		if ((keys != null && !"".equals(keys)) && (values != null) && !"".equals(values)) {
 			String[] keyArray = keys.split(";");
 			String[] valueArray = values.split(";");
 			for (int i = 0; i < keyArray.length; i++) {

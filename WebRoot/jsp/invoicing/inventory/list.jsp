@@ -224,9 +224,9 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		if (list[i].goodsEntity.files == null) {
-			str += "</td><td><img style='width:100px;height:100px;' src=${wmsUrl}/img/logo_1.png>";
+			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/logo_1.png>";
 		} else {
-			str += "</td><td><img style='width:100px;height:100px;' src="+list[i].goodsEntity.files[0].path+">";
+			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
@@ -240,9 +240,9 @@ function rebuildTable(data){
 			str += "</td><td>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
 			str += "</td><td>" + list[i].baseEntity.unit;
 		}
-		str += "</td><td>" + list[i].info;
-		str += "</td><td>" + list[i].carTon;
-		str += "</td><td>" + list[i].shelfLife;
+		str += "</td><td>" + (list[i].info == null ? "" : list[i].info);
+		str += "</td><td>" + (list[i].carTon == null ? "" : list[i].carTon);
+		str += "</td><td>" + (list[i].shelfLife == null ? "" : list[i].shelfLife);
 		str += "</td><td>" + list[i].goodsEntity.origin;
 		str += "</td><td>" + list[i].encode;
 		str += "</td><td>" + list[i].supplierName;

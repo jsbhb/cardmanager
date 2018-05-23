@@ -487,7 +487,7 @@ public class GoodsMngController extends BaseController {
 						for(SpecsEntity se : entity.getSpecs()) {
 							for(SpecsValueEntity sve : se.getValues()) {
 								if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
-									isp.setSvV(sve.getValue());
+									isp.setSvT(sve.getValue());
 								}
 							}
 						}

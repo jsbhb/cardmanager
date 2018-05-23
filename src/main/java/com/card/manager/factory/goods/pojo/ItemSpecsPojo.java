@@ -21,6 +21,7 @@ public class ItemSpecsPojo {
 	private String skV;
 	private String svId;
 	private String svV;
+	private String svT;
 	public String getSkId() {
 		return skId;
 	}
@@ -44,6 +45,12 @@ public class ItemSpecsPojo {
 	}
 	public void setSvV(String svV) {
 		this.svV = svV;
+	}
+	public String getSvT() {
+		return svT;
+	}
+	public void setSvT(String svT) {
+		this.svT = svT;
 	}
 
 }

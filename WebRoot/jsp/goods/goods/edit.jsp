@@ -230,8 +230,8 @@
 			       	<div class="list-item">
 						<div class="col-sm-3 item-left">${spec.skV}</div>
 						<div class="col-sm-9 item-right">
-							<label>${spec.svV}
-							<input type="radio" class="flat-red" checked="checked" name="${spec.svV}" value="${spec.svV}">
+							<label>${spec.svT}
+							<input type="radio" class="flat-red" checked="checked" name="${spec.skId}:${spec.skV}" value="${spec.svId}:${spec.svV}">
 							</label>
 						</div>
 					</div>
@@ -438,7 +438,7 @@
 			 
 			 newFormData["keys"] = key;
 			 newFormData["values"] = value;
-		
+			 
 			 $.ajax({
 				 url:url,
 				 type:'post',

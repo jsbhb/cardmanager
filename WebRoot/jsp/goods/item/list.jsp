@@ -244,9 +244,9 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
 		if (list[i].goodsEntity.files == null) {
-			str += "</td><td><img style='width:100px;height:100px;' src=${wmsUrl}/img/logo_1.png> ";
+			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/logo_1.png> ";
 		} else {
-			str += "</td><td><img style='width:100px;height:100px;' src="+list[i].goodsEntity.files[0].path+">";
+			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
 		str += "</td><td>" + list[i].goodsName;
 		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
