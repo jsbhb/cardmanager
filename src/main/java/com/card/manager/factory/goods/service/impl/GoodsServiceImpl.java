@@ -898,7 +898,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					continue;
 				}
 				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
-				goodsItem.setEncode(model.getEncode());
+				goodsItem.setEncode(removePoint(model.getEncode()));
 				if (!goodsItem.check()) {
 					success = false;
 					sb.append(model.getItemCode() + ",");
@@ -1056,6 +1056,15 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		} else {
 			return Integer.valueOf(str);
 		}
+	}
+	
+	private String removePoint(String str){
+		if(str != null){
+			if (str.contains(".")){
+				return str.substring(0, str.indexOf("."));
+			} 
+		}
+		return str;
 	}
 
 }
