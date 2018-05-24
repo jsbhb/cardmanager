@@ -146,7 +146,7 @@ public class ExcelUtils {
 		for (int i = 0; i < list.size(); i++) {
 			Cell cell = row1.createCell(coloumNum + i);
 			cell.setCellStyle(cellStyle);
-			cell.setCellValue(list.get(i).getName() + "*");
+			cell.setCellValue(list.get(i).getName() + "返佣比例(例0.15)*");
 			cell = row2.createCell(coloumNum + i);
 			cell.setCellValue("rebate_" + list.get(i).getId());
 		}
@@ -185,7 +185,7 @@ public class ExcelUtils {
 		for (int i = 0; i < list.size(); i++) {
 			Cell cell = row1.createCell(coloumNum + i);
 			cell.setCellStyle(cellStyle);
-			cell.setCellValue(list.get(i).getName() + "*");
+			cell.setCellValue(list.get(i).getName() + "返佣比例(例0.15)*");
 			cell = row2.createCell(coloumNum + i);
 			cell.setCellValue("rebate_" + list.get(i).getId());
 		}

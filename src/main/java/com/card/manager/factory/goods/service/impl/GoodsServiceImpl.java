@@ -851,7 +851,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsBase.setCenterId(staffEntity.getGradeId());
 				if (!goodsBase.check()) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",BASE基本信息不全,");
 					continue;
 				}
 				int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
@@ -866,7 +866,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 							model.getType() == null || "".equals(model.getType()) ? -1 : convert(model.getType()));
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",goods供应商ID或商品属性有误,");
 					continue;
 				}
 				goods.setSupplierName(model.getSupplierName());
@@ -894,14 +894,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 							: convert(model.getConversion()));
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",item重量、消费税、换算比例有误,");
 					continue;
 				}
 				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
 				goodsItem.setEncode(removePoint(model.getEncode()));
 				if (!goodsItem.check()) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",item信息不全,");
 					continue;
 				}
 				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
@@ -913,7 +913,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				if (model.getMin() == null || "".equals(model.getMin()) || model.getMax() == null
 						|| "".equals(model.getMax()) || model.getRetailPrice() == null
 						|| "".equals(model.getRetailPrice())) {
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",价格信息没有,");
 					success = false;
 					continue;
 				}
@@ -930,7 +930,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goodsPrice.setOpt(staffEntity.getOptName());
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",价格信息出错,");
 					continue;
 				}
 
@@ -942,7 +942,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				// 库存设置
 				if (model.getStock() == null || "".equals(model.getStock())) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",库存信息没有,");
 					continue;
 				}
 				goodsStock = new GoodsStockEntity();
@@ -952,7 +952,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goodsStock.setQpQty(convert(model.getStock()));
 				} catch (Exception e) {
 					success = false;
-					sb.append(model.getItemCode() + ",");
+					sb.append(model.getItemCode() + ",库存信息有误,");
 					continue;
 				}
 				goodsItem.setStock(goodsStock);
@@ -971,10 +971,15 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 								if (gradeType.getParentId() != 1 && gradeType.getParentId() != 0) {
 									if (Double.valueOf(value.toString()) > goodsRebate.getProportion()) {
 										success = false;
-										sb.append(model.getItemCode() + ",");
+										sb.append(model.getItemCode() + ",下级返佣不能大于上级返佣,");
 										break;
 									}
 								}
+							}
+							if(Double.valueOf(value.toString()) > 1){
+								success = false;
+								sb.append(model.getItemCode() + ",返佣比例设置不能大于1,");
+								break;
 							}
 							goodsRebate = new GoodsRebateEntity();
 							goodsRebate.setProportion(Double.valueOf(value.toString()));
@@ -984,12 +989,12 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 							tempMap.put(id, goodsRebate);
 						} else {
 							success = false;
-							sb.append(model.getItemCode() + ",");
+							sb.append(model.getItemCode() + ",返佣比例没有设置,");
 							break;
 						}
 					} catch (Exception e) {
 						success = false;
-						sb.append(model.getItemCode() + ",");
+						sb.append(model.getItemCode() + ",返佣比例没有设置,");
 						break;
 					}
 				}
@@ -1011,7 +1016,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				return result;
 			} else {
 				result.put("success", success);
-				result.put("msg", sb.append("以上商品信息不全或者有误").toString());
+				result.put("msg", sb.toString());
 				return result;
 			}
 		} else { // 没有读到数据

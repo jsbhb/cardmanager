@@ -55,7 +55,7 @@ public class GoodsItemEntity extends Pagination {
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
-				&& !"".equals(sku) && encode != null && !"".equals(encode);
+				&& !"".equals(sku);
 	}
 
 	public double getRebate() {
