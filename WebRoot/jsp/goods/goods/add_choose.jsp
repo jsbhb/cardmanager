@@ -27,7 +27,7 @@
 	    		<i class="fa fa-child fa-fw"></i>
 	    		<span>自助上货</span>
 	    	</a>
-	    	<a class="choose-content-item" href="javascript:void(0);" onclick="toWaitOpen()">
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAddBatch.shtml">
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量导入</span>
 	    	</a>
