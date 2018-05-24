@@ -216,6 +216,46 @@
 				</div>
 			</div>
 			<div class="title">
+	       		<h1>规格信息</h1>
+	       	</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">商品规格</div>
+				<div class="col-sm-9 item-right">
+					<a class="addBtn" href="javascript:void(0);" onclick="showSpecsGoods()">规格模板</a>
+				</div>
+			</div>
+			<div id="specsInfo">
+				<input type="hidden" class="form-control" id="specsId" name="specsId" value="${goodsInfo.goods.templateId}">
+				<c:forEach var="spec" items="${specsInfo}">
+			       	<div class="list-item">
+						<div class="col-sm-3 item-left">${spec.skV}</div>
+						<div class="col-sm-9 item-right">
+							<label>${spec.svT}
+							<input type="radio" class="flat-red" checked="checked" name="${spec.skId}:${spec.skV}" value="${spec.svId}:${spec.svV}">
+							</label>
+						</div>
+					</div>
+				</c:forEach>
+	       	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">保质期</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="shelfLife" value="${goodsInfo.goods.goodsItem.shelfLife}">
+					<div class="item-content">
+						（商品的保质期，例：2年，18个月）
+		            </div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">箱规</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="carTon" value="${goodsInfo.goods.goodsItem.carTon}">
+					<div class="item-content">
+						（例：8组，24罐）
+		            </div>
+				</div>
+			</div>
+			<div class="title">
 	       		<h1>价格信息</h1>
 	       	</div>
 			<div class="list-item">
@@ -374,11 +414,35 @@
 			 formData["detailInfo"] = context;
 			 var tagId = $('#tagId li.active').attr('data-id');
 			 formData["tagId"] = tagId;
-		
+			 
+			 var newFormData;
+			 var key = "";
+			 var value = "";
+			 
+			 newFormData={};
+			 for(var json in formData){
+				 if(json.indexOf(":")!=-1){
+					 key +=json+";"
+					 value += formData[json]+";"
+				 }else{
+					 newFormData[json] = formData[json];
+				 }
+			 }
+			 
+			 if ($("#specsId").val() != 0) {
+				 if(key == ""||value == ""){
+					 layer.alert("请选择规格信息！");
+					 return;
+				 }
+			 }
+			 
+			 newFormData["keys"] = key;
+			 newFormData["values"] = value;
+			 
 			 $.ajax({
 				 url:url,
 				 type:'post',
-				 data:JSON.stringify(formData),
+				 data:JSON.stringify(newFormData),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
@@ -397,6 +461,54 @@
 			 layer.alert("信息填写有误");
 		 }
 	 });
+		
+		function showSpecsGoods(){
+			var index = layer.open({
+				  title:"查看商品规格模板",	
+				  area: ['90%', '90%'],
+				  type: 2,
+				  content: '${wmsUrl}/admin/goods/specsMng/listForAdd.shtml',
+				  maxmin: false
+				});
+		}
+		
+		function createSpecs(id){
+			 $.ajax({
+				 url:"${wmsUrl}/admin/goods/specsMng/queryById.shtml?id="+id,
+				 type:'post',
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 success:function(data){
+					 if(data.id == null){
+						 layer.alert("同步规格模板失败！");
+					 }else{
+						 $("#specsInfo").html('');
+						 var specs = data.specs;
+						 var ht = '';
+						 ht = ht + '<input type="hidden" class="form-control" id="specsId" name="specsId" value="'+id+'">';
+						 for(var i = 0 ;i<specs.length;i++){
+							 var spec = specs[i];
+							 ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">'+spec.name;
+							 ht = ht + '</div><div class="col-sm-9 item-right">';
+							 
+							 var values = spec.values;
+							 var radio;
+							 for(var j =0;j<values.length;j++){
+								 ht = ht + '<label>'+values[j].value;
+								 ht = ht + '<input type="radio" class="flat-red" name="'+spec.id+":"+spec.name+'" value="'+spec.id+":"+values[j].id+'">';
+								 ht = ht + '</label>';
+							 }
+							 ht = ht + '</div></div>';
+						 }
+						 $('#specsInfo').append(ht);
+					 }
+					 
+				 },
+				 error:function(){
+					 layer.alert("提交失败，请联系客服处理");
+				 }
+			 });
+		}
 		
 		$('#itemForm').bootstrapValidator({
 		//   live: 'disabled',

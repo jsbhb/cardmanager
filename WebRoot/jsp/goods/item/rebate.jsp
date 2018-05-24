@@ -34,10 +34,11 @@
 	</c:forEach>
 </ul>
 </div>
-
+<c:if test="${prilvl == 1}">
 <div class="submit-btn">
 	<span>保存设置</span>
 </div>
+</c:if>
 	
 <%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>

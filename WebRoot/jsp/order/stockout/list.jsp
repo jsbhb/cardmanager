@@ -250,9 +250,9 @@ function rebuildTable(data){
 		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
 		var prilvl = "${prilvl}";
 		if(prilvl == 1 
-			&& list[i].supplierName=="一般贸易仓"
-			&&list[i].supplierName!="广州仓库"
-			&&list[i].supplierName!="广州仓gzc"){
+			&& (list[i].supplierName=="一般贸易仓"
+			|| list[i].supplierName=="广州仓库"
+			|| list[i].supplierName=="广州仓gzc")){
 			var arr = [1,2,3,4,5,6,12,99];
 			var index = $.inArray(status,arr);
 			if(index >= 0){
@@ -331,7 +331,8 @@ function excelExport(){
 }
 
 function excelModelExport(){
-	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadOrderModelExcel.shtml";
+	window.open("${wmsUrl}/admin/order/stockOutMng/downLoadOrderModelExcel.shtml");
+// 	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadOrderModelExcel.shtml";
 }
 
 function setExpress(orderId){

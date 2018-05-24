@@ -7,8 +7,12 @@
  */
 package com.card.manager.factory.goods.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
@@ -244,5 +248,15 @@ public interface GoodsService extends ServerCenterService {
 	List<GradeTypeDTO> queryGradeTypeChildren(String id, String token);
 
 	Map<String, String> getGoodsRebate(String itemId, String token);
+
+	/**
+	 * @fun 批量导入
+	 * @param filePath
+	 * @param staffEntity
+	 */
+	Map<String, Object> importGoodsInfo(String filePath, StaffEntity staffEntity);
+
+	void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp, StaffEntity staffEntity)
+			throws IOException;
 
 }

@@ -60,6 +60,14 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
+			            <select class="form-control" name="goodsType" id="goodsType">
+		                	<option value="0">跨境商品</option>
+		                	<option selected="selected" value="2">一般贸易商品</option>
+			            </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
 			           <input type="text" class="form-control" name="hidGoodsName" placeholder="请输入商品名称">
 					</div>
 				</div>
@@ -127,16 +135,24 @@
 						<thead>
 							<tr>
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
-								<th width="15%">商品名称</th>
-								<th width="5%">商品编号</th>
-								<th width="10%">商家编码</th>
-								<th width="8%">商品品牌</th>
+								<th width="7%">商品图片</th>
+								<th width="17%">商品名称</th>
+<!-- 								<th width="5%">商品编号</th> -->
+								<th width="5%">商家编码</th>
+<!-- 								<th width="5%">商品品牌</th> -->
+								<th width="7%">商品分类</th>
+								<th width="5%">单位</th>
+								<th width="9%">规格</th>
+								<th width="5%">箱规</th>
+								<th width="5%">保质期</th>
+								<th width="5%">产地</th>
+								<th width="5%">条形码</th>
 								<th width="5%">供应商</th>
-								<th width="5%">商品标签</th>
+<!-- 								<th width="4%">商品标签</th> -->
 								<th width="5%">商品价格</th>
 								<th width="5%">现有库存</th>
 								<th width="5%">虚拟库存</th>
-								<th width="12%">操作</th>
+								<th width="7%">操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -166,7 +182,7 @@ $('.searchBtn').on('click',function(){
  */
 var options = {
 	queryForm : ".query",
-	url :  "${wmsUrl}/admin/goods/itemMng/dataList.shtml?gradeType=${gradeType}&type=1",
+	url :  "${wmsUrl}/admin/invoicing/inventoryMng/dataList.shtml?gradeType=${gradeType}&type=1",
 	numPerPage:"10",
 	currentPage:"",
 	index:"1",
@@ -207,30 +223,44 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
 		str += "<td><input type='checkbox' name='check' value='" + list[i].itemId + "'/>"
-		str += "</td><td>" + list[i].goodsName;
-		str += "</td><td><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].itemId + "</a>";
+		if (list[i].goodsEntity.files == null) {
+			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/default_img.jpg>";
+		} else {
+			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
+		}
+		str += "</td><td style='text-align:left;'><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+// 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
+// 			str += "</td><td>";
+			str += "</td><td>";
 			str += "</td><td>";
 		} else {
-			str += "</td><td>" + list[i].baseEntity.brand;
+// 			str += "</td><td>" + list[i].baseEntity.brand;
+			str += "</td><td style='text-align:left;'>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
+			str += "</td><td>" + list[i].baseEntity.unit;
 		}
-		str += "</td><td>" + list[i].supplierName;
-		if (list[i].tagBindEntity != null) {
-			var tmpTagId = list[i].tagBindEntity.tagId;
-			var tmpTagName = "普通";
-			var tagSelect = document.getElementById("tagId");
-			var options = tagSelect.options;
-			for(var j=0;j<options.length;j++){
-				if (tmpTagId==options[j].value) {
-					tmpTagName = options[j].text;
-					break;
-				}
-			}
-			str += "</td><td>" + tmpTagName;
-		} else {
-			str += "</td><td>普通";
-		}
+		str += "</td><td style='text-align:left;'>" + (list[i].info == null ? "" : list[i].info);
+		str += "</td><td>" + (list[i].carTon == null ? "" : list[i].carTon);
+		str += "</td><td>" + (list[i].shelfLife == null ? "" : list[i].shelfLife);
+		str += "</td><td>" + list[i].goodsEntity.origin;
+		str += "</td><td>" + list[i].encode;
+		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
+// 		if (list[i].tagBindEntity != null) {
+// 			var tmpTagId = list[i].tagBindEntity.tagId;
+// 			var tmpTagName = "普通";
+// 			var tagSelect = document.getElementById("tagId");
+// 			var options = tagSelect.options;
+// 			for(var j=0;j<options.length;j++){
+// 				if (tmpTagId==options[j].value) {
+// 					tmpTagName = options[j].text;
+// 					break;
+// 				}
+// 			}
+// 			str += "</td><td>" + tmpTagName;
+// 		} else {
+// 			str += "</td><td>普通";
+// 		}
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -299,7 +329,8 @@ function excelExport(){
     }); 
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
     var supplierId = $("#supplierId").val();
-	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds;
+    window.open("${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds);
+// 	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds;
 	$("#theadInp").prop("checked", false);
 }
 

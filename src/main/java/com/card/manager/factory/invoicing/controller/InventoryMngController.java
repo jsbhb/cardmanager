@@ -29,22 +29,34 @@ import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.SpecsEntity;
+import com.card.manager.factory.goods.model.SpecsTemplateEntity;
+import com.card.manager.factory.goods.model.SpecsValueEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.invoicing.service.InventoryService;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/invoicing/inventoryMng")
@@ -61,6 +73,9 @@ public class InventoryMngController extends BaseController {
 	
 	@Resource
 	InventoryService inventoryService;
+	
+	@Resource
+	SpecsService specsService;
 	
 	@RequestMapping(value = "/mng")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
@@ -160,6 +175,12 @@ public class InventoryMngController extends BaseController {
 			if (!StringUtil.isEmpty(hidGoodsName)) {
 				item.setGoodsName(hidGoodsName);
 			}
+			String goodsType = req.getParameter("goodsType");
+			if (!StringUtil.isEmpty(goodsType)) {
+				GoodsEntity goodsEntity = new GoodsEntity();
+				goodsEntity.setType(Integer.parseInt(goodsType));
+				item.setGoodsEntity(goodsEntity);
+			}
 
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());
@@ -167,6 +188,65 @@ public class InventoryMngController extends BaseController {
 
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_ITEM_QUERY_FOR_PAGE + "&type=" + type, GoodsItemEntity.class);
+			
+			if (pcb != null) {
+				List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
+				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+				GoodsBaseEntity goodsInfo = null;
+				for (GoodsItemEntity info : list) {
+					goodsInfo = info.getBaseEntity();
+					for (FirstCatalogEntity fce : first) {
+						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
+							goodsInfo.setFirstCatalogId(fce.getName());
+							break;
+						}
+					}
+					for (SecondCatalogEntity sce : second) {
+						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
+							goodsInfo.setSecondCatalogId(sce.getName());
+							break;
+						}
+					}
+					for (ThirdCatalogEntity tce : third) {
+						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
+							goodsInfo.setThirdCatalogId(tce.getName());
+							break;
+						}
+					}
+					
+					String infoStr = info.getInfo();
+					if (infoStr != null && !"".equals(infoStr)) {
+						JSONArray jsonArray = JSONArray.fromObject(infoStr.substring(1, infoStr.length()));
+						int index = jsonArray.size();
+						List<ItemSpecsPojo> specslist = new ArrayList<ItemSpecsPojo>();
+						for (int i = 0; i < index; i++) {
+							JSONObject jObj = jsonArray.getJSONObject(i);
+							specslist.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+						}
+						
+						SpecsTemplateEntity entity = specsService.queryById(info.getGoodsEntity().getTemplateId()+"", staffEntity.getToken());
+						if (entity != null) {
+							for (ItemSpecsPojo isp : specslist) {
+								for(SpecsEntity se : entity.getSpecs()) {
+									for(SpecsValueEntity sve : se.getValues()) {
+										if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
+											isp.setSvV(sve.getValue());
+										}
+									}
+								}
+							}
+						}
+						String tmpStr = "";
+						for (ItemSpecsPojo isp : specslist) {
+							tmpStr = tmpStr + isp.getSkV() + ":" + isp.getSvV() + "|";
+						}
+						info.setInfo(tmpStr.substring(0, tmpStr.length()-1));
+					}
+				}
+				pcb.setObj(list);
+			}
 
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {

@@ -3,6 +3,7 @@ package com.card.manager.factory.auth.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,7 @@ import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -514,29 +516,37 @@ public class LoginController extends BaseController {
 	@Auth(verifyLogin = false, verifyURL = false)
 	public void uploadExcelFile(@RequestParam("import") MultipartFile excel, HttpServletRequest req,
 			HttpServletResponse resp) {
-
+		StaffEntity entity = SessionUtils.getOperator(req);
 		try {
+			String path = req.getParameter("path");
 			if (excel != null) {
 				String fileName = excel.getOriginalFilename();
 				// 当前上传文件的文件后缀
 				String suffix = fileName.indexOf(".") != -1
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
 
-				if (!".xlsx".equalsIgnoreCase(suffix)) {
+				if (!".xlsx".equalsIgnoreCase(suffix) && !".xls".equalsIgnoreCase(suffix)) {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
 				
 				WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 				ServletContext servletContext = webApplicationContext.getServletContext();
-
+				
 				String filePath = servletContext.getRealPath("/") + "UPLOADEXCEL/";
+				String saveFileName;
+				if(path != null){
+					filePath += path + "/";
+					saveFileName = DateUtil.getNowLongTime() + "-" + entity.getOptName() + suffix;
+				} else {
+					saveFileName = UUID.randomUUID().toString() + suffix;
+				}
 		    	File obj = null;
 		    	obj = new File(filePath);
 				if (!obj.exists()) {
 					obj.mkdirs();
 				}
-				String saveFileName = UUID.randomUUID().toString() + suffix;
+				
 				fileName = filePath + "/" + saveFileName;
 				
 				FileOutputStream fos = null;
@@ -545,7 +555,7 @@ public class LoginController extends BaseController {
 				fos.write(fileData);
 				fos.close();
 				
-				sendSuccessMessage(resp, fileName);
+				sendSuccessMessage(resp, URLEncoder.encode(fileName,"UTF-8"));
 			}
 
 		} catch (Exception e) {

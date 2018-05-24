@@ -1,5 +1,6 @@
 package com.card.manager.factory.goods.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,16 +28,25 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.SpecsEntity;
+import com.card.manager.factory.goods.model.SpecsTemplateEntity;
+import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/goods/goodsMng")
@@ -47,9 +57,12 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	GoodsService goodsService;
-	
+
 	@Resource
 	CatalogService catalogService;
+	
+	@Resource
+	SpecsService specsService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -68,7 +81,7 @@ public class GoodsMngController extends BaseController {
 			context.put(ERROR, "没有商品id");
 			return forword("error", context);
 		}
-		
+
 		String html = req.getParameter("html");
 
 		if (!StringUtil.isEmpty(html)) {
@@ -81,13 +94,13 @@ public class GoodsMngController extends BaseController {
 
 	@RequestMapping(value = "/getDetailHtml", method = RequestMethod.POST)
 	public void getDetailHtml(HttpServletRequest req, HttpServletResponse resp) {
-		
+
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 
 		String html = req.getParameter("html");
@@ -242,37 +255,39 @@ public class GoodsMngController extends BaseController {
 			context.put("brands", CachePoolComponent.getBrands(opt.getToken()));
 			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 			context.put("firsts", catalogs);
-//			String type = req.getParameter("type");
-//			if (SYNC.equals(type)) {
-//				String id = req.getParameter("id");
-//				if (StringUtil.isEmpty(id)) {
-//					context.put(ERROR, "没有同步商品编码！");
-//					return forword(ERROR, context);
-//				}
-//				ThirdWarehouseGoods thirdGoods = goodsService.queryThirdById(id, opt.getToken());
-//				context.put("third", thirdGoods);
-//
-//			} else if (NORMAL.equals(type)) {
-//				 List<BrandEntity> brands =
-//				 CachePoolComponent.getBrands(opt.getToken());
-//				 if(brands.size() == 0){
-//				 context.put(ERROR,"没有品牌信息,无法查看基础商品！");
-//				 context.put(ERROR_CODE,"405！");
-//				 return forword("error", context);
-//				 }
-//				
-//				 context.put("brands", brands);
-//				
-//				 List<FirstCatalogEntity> catalogs =
-//				 catalogService.queryFirstCatalogs(opt.getToken());
-//				 context.put("firsts", catalogs);
-//				
-//				List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
-//				context.put("tags", tags);
-//			} else {
-//				context.put(ERROR, "没有新增类型，请联系管理员！");
-//				return forword(ERROR, context);
-//			}
+			// String type = req.getParameter("type");
+			// if (SYNC.equals(type)) {
+			// String id = req.getParameter("id");
+			// if (StringUtil.isEmpty(id)) {
+			// context.put(ERROR, "没有同步商品编码！");
+			// return forword(ERROR, context);
+			// }
+			// ThirdWarehouseGoods thirdGoods = goodsService.queryThirdById(id,
+			// opt.getToken());
+			// context.put("third", thirdGoods);
+			//
+			// } else if (NORMAL.equals(type)) {
+			// List<BrandEntity> brands =
+			// CachePoolComponent.getBrands(opt.getToken());
+			// if(brands.size() == 0){
+			// context.put(ERROR,"没有品牌信息,无法查看基础商品！");
+			// context.put(ERROR_CODE,"405！");
+			// return forword("error", context);
+			// }
+			//
+			// context.put("brands", brands);
+			//
+			// List<FirstCatalogEntity> catalogs =
+			// catalogService.queryFirstCatalogs(opt.getToken());
+			// context.put("firsts", catalogs);
+			//
+			// List<GoodsTagEntity> tags =
+			// goodsService.queryGoodsTags(opt.getToken());
+			// context.put("tags", tags);
+			// } else {
+			// context.put(ERROR, "没有新增类型，请联系管理员！");
+			// return forword(ERROR, context);
+			// }
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 			context.put("tags", tags);
 
@@ -283,6 +298,15 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
+	
+	@RequestMapping(value = "/toAddBatch")
+	public ModelAndView toAddBatch(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		return forword("goods/goods/goodsImport", context);
+	}
+	
 	@RequestMapping(value = "/toShow")
 	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -307,23 +331,26 @@ public class GoodsMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		goodsEntity.setOpt(staffEntity.getOptid());
 		try {
-			GoodsEntity entity = goodsService.queryById(goodsEntity.getId()+"", staffEntity.getToken());
+			GoodsEntity entity = goodsService.queryById(goodsEntity.getId() + "", staffEntity.getToken());
 			List<GoodsFile> fileList = new ArrayList<GoodsFile>();
 			int fs = entity.getFiles().size();
 			GoodsFile gf = new GoodsFile();
-			//要保存的主图数
+			// 要保存的主图数
 			int ufs = 0;
-			for(int index = 1; index < 5; index++) {
+			for (int index = 1; index < 5; index++) {
 				String fu = "getPicPath" + index;
-				if (goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}) != null 
-						&& !"".equals(goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}))) {
+				if (goodsEntity.getClass().getMethod(fu, new Class[] {}).invoke(goodsEntity, new Object[] {}) != null
+						&& !"".equals(goodsEntity.getClass().getMethod(fu, new Class[] {}).invoke(goodsEntity,
+								new Object[] {}))) {
 					if (index <= fs) {
 						gf = entity.getFiles().get(ufs);
-						gf.setPath(goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}).toString());
+						gf.setPath(goodsEntity.getClass().getMethod(fu, new Class[] {})
+								.invoke(goodsEntity, new Object[] {}).toString());
 					} else {
 						gf = new GoodsFile();
 						gf.setGoodsId(goodsEntity.getGoodsId());
-						gf.setPath(goodsEntity.getClass().getMethod(fu, new Class[]{}).invoke(goodsEntity, new Object[]{}).toString());
+						gf.setPath(goodsEntity.getClass().getMethod(fu, new Class[] {})
+								.invoke(goodsEntity, new Object[] {}).toString());
 						gf.setStoreType(0);
 						gf.setType(0);
 						gf.setOpt(staffEntity.getOpt());
@@ -334,19 +361,19 @@ public class GoodsMngController extends BaseController {
 			}
 			entity.setFiles(fileList);
 			entity.setGoodsName(goodsEntity.getGoodsName());
-			//判断是否需要更新商品标签
-//			if (!"".equals(goodsEntity.getTagId())) {
-//				GoodsTagBindEntity newTag = new GoodsTagBindEntity();
-//				newTag.setItemId(goodsEntity.getGoodsItem().getItemId());
-//				newTag.setTagId(Integer.parseInt(goodsEntity.getTagId()));
-//				entity.setGoodsTagBind(newTag);
-//			} else {
-//				if (goodsEntity.getGoodsTagBind() != null) {
-//					GoodsTagBindEntity newTag = goodsEntity.getGoodsTagBind();
-//					newTag.setTagId(Integer.parseInt(goodsEntity.getTagId()));
-//					entity.setGoodsTagBind(newTag);
-//				}
-//			}
+			// 判断是否需要更新商品标签
+			// if (!"".equals(goodsEntity.getTagId())) {
+			// GoodsTagBindEntity newTag = new GoodsTagBindEntity();
+			// newTag.setItemId(goodsEntity.getGoodsItem().getItemId());
+			// newTag.setTagId(Integer.parseInt(goodsEntity.getTagId()));
+			// entity.setGoodsTagBind(newTag);
+			// } else {
+			// if (goodsEntity.getGoodsTagBind() != null) {
+			// GoodsTagBindEntity newTag = goodsEntity.getGoodsTagBind();
+			// newTag.setTagId(Integer.parseInt(goodsEntity.getTagId()));
+			// entity.setGoodsTagBind(newTag);
+			// }
+			// }
 			goodsService.updEntity(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -396,7 +423,8 @@ public class GoodsMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/createGoodsInfo", method = RequestMethod.POST)
-	public void createGoodsInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody CreateGoodsInfoEntity entity) {
+	public void createGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody CreateGoodsInfoEntity entity) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		entity.setOpt(staffEntity.getOptid());
 		try {
@@ -409,6 +437,41 @@ public class GoodsMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
+	@RequestMapping(value = "/importGoodsInfo", method = RequestMethod.POST)
+	public void importGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String filePath = req.getParameter("filePath");
+			if (StringUtil.isEmpty(filePath)) {
+				sendFailureMessage(resp, "操作失败：文件路径不正确");
+				return;
+			}
+			Map<String, Object> result = goodsService.importGoodsInfo(filePath, staffEntity);
+			if ((boolean) result.get("success")) {
+				sendSuccessMessage(resp, result.get("msg") == null ? null : result.get("msg").toString());
+			} else {
+				sendFailureMessage(resp, result.get("msg")+"");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+	}
+
+	@RequestMapping(value = "/exportGoodsInfoTemplate", method = RequestMethod.GET)
+	public void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		try {
+			StaffEntity staffEntity = SessionUtils.getOperator(req);
+			goodsService.exportGoodsInfoTemplate(req, resp, staffEntity);
+		} catch (Exception e) {
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
+			return;
+		}
+	}
+
 	@RequestMapping(value = "/toEditGoodsInfo")
 	public ModelAndView toEditGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -417,14 +480,40 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			context.put("goodsInfo", goodsInfo);
+			
+			String info = goodsInfo.getGoods().getGoodsItem().getInfo();
+			if (info != null && !"".equals(info)) {
+				JSONArray jsonArray = JSONArray.fromObject(info.substring(1, info.length()));
+				int index = jsonArray.size();
+				List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
+				for (int i = 0; i < index; i++) {
+					JSONObject jObj = jsonArray.getJSONObject(i);
+					list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+				}
+				
+				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId()+"", staffEntity.getToken());
+				if (entity != null) {
+					for (ItemSpecsPojo isp : list) {
+						for(SpecsEntity se : entity.getSpecs()) {
+							for(SpecsValueEntity sve : se.getValues()) {
+								if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
+									isp.setSvT(sve.getValue());
+								}
+							}
+						}
+					}
+				}
+				context.put("specsInfo", list);
+			}
+			
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
-			for(FirstCatalogEntity first : catalogs) {
+			for (FirstCatalogEntity first : catalogs) {
 				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
 					context.put("firstName", first.getName());
-					for(SecondCatalogEntity second : first.getSeconds()) {
+					for (SecondCatalogEntity second : first.getSeconds()) {
 						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
 							context.put("secondName", second.getName());
-							for(ThirdCatalogEntity third : second.getThirds()) {
+							for (ThirdCatalogEntity third : second.getThirds()) {
 								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
 									context.put("thirdName", third.getName());
 									break;
@@ -436,20 +525,21 @@ public class GoodsMngController extends BaseController {
 					break;
 				}
 			}
-			
-			//初始化商详信息
+
+			// 初始化商详信息
 			String detailInfo = "";
-			//包含商详地址
-			if (goodsInfo.getGoods().getDetailPath() != null && goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
+			// 包含商详地址
+			if (goodsInfo.getGoods().getDetailPath() != null
+					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
 				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
 			}
 			context.put("detailInfo", detailInfo);
-			
+
 			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
 			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
 			context.put("tags", tags);
-			
+
 			return forword("goods/goods/edit", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -458,7 +548,8 @@ public class GoodsMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/editGoodsInfo", method = RequestMethod.POST)
-	public void editGoodsInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody CreateGoodsInfoEntity entity) {
+	public void editGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody CreateGoodsInfoEntity entity) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		entity.setOpt(staffEntity.getOptid());
 		try {

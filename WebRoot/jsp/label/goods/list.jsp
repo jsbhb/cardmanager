@@ -83,12 +83,12 @@ $('.searchBtn').on('click',function(){
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/label/goodsQRMng/dataList.shtml",
-			numPerPage:"20",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/label/goodsQRMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -158,9 +158,8 @@ function rebuildTable(data){
 // }
 
 function downLoadFile(id,path){
-// 	var left1 = 300;
-// 	var top1 = 200;
-	location.href="${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path;
+	window.open("${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path);
+// 	location.href="${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path;
 // 	window.open('${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId='+id+'&path='+path, "", "width=750,height=700,resizable=yes,location=no,scrollbars=yes,left=" + left1.toString() + ",top=" + top1.toString());
 }
 

@@ -32,6 +32,7 @@ import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
@@ -312,6 +313,12 @@ public class GoodsItemMngController extends BaseController {
 			if (!StringUtil.isEmpty(hidGoodsName)) {
 				item.setGoodsName(hidGoodsName);
 			}
+			String goodsType = req.getParameter("goodsType");
+			if (!StringUtil.isEmpty(goodsType)) {
+				GoodsEntity goodsEntity = new GoodsEntity();
+				goodsEntity.setType(Integer.parseInt(goodsType));
+				item.setGoodsEntity(goodsEntity);
+			}
 
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());
@@ -411,6 +418,8 @@ public class GoodsItemMngController extends BaseController {
 		context.put(OPT, opt);
 
 		String id = req.getParameter("id");
+		String prilvl = req.getParameter("prilvl");
+		context.put("prilvl", prilvl);
 		if (StringUtil.isEmpty(id)) {
 			context.put(ERROR, "没有商品编号");
 			return forword("error", context);

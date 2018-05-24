@@ -50,6 +50,13 @@ public class GoodsItemEntity extends Pagination {
 	private String tabId;
 	private int conversion;
 	private double rebate;
+	private String shelfLife;
+	private String carTon;
+
+	public boolean check() {
+		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
+				&& !"".equals(sku) && encode != null && !"".equals(encode);
+	}
 
 	public double getRebate() {
 		return rebate;
@@ -298,5 +305,21 @@ public class GoodsItemEntity extends Pagination {
 	public void setEncode(String encode) {
 		this.encode = encode;
 	}
-	
+
+	public String getShelfLife() {
+		return shelfLife;
+	}
+
+	public void setShelfLife(String shelfLife) {
+		this.shelfLife = shelfLife;
+	}
+
+	public String getCarTon() {
+		return carTon;
+	}
+
+	public void setCarTon(String carTon) {
+		this.carTon = carTon;
+	}
+
 }
