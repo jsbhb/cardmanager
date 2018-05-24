@@ -68,10 +68,10 @@
 		<div class="aside-footer-content">
 			<p class="content-title">温馨提示</p>
 			<p>1、建议商品条数≤500条，文件大小≤10M；</p>
-			<p>2、商品名称、商品类型、计量单位必填，且商品名称不可重复，否则将导入失败；</p>
-			<p>3、若无规格项,则不允许有规格值；</p>
-			<p>4、若店铺开启仓储部，商品可售库存、成本价将由系统自动计算，不支持该类字段导入修改；</p>
-			<p>5、若效期商品临期预警天数未填写，默认按20%计算，调整范围20%~80%；</p>
+			<p>2、excel第一行为说明，第二行为系统参数不要修改；</p>
+			<p>3、当分级类型新增货修改后请重新下载模板；</p>
+			<p>4、返佣设置都为必填，且下一级返佣比例不能高于上一级返佣比例；</p>
+			<p>5、其他相关问题请联系技术；</p>
 		</div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
@@ -84,28 +84,20 @@
 	
 	//点击上传文件
 	$("body").on('change',"#import",function(){
+		$("#image").css({
+			display : "block",
+			position : "fixed",
+			zIndex : 99,
+		});
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadExcelFile.shtml?path=goodsImport', //你处理上传文件的服务端
 			secureuri : false,
 			fileElementId : "import",
 			dataType : 'json',
-			beforeSend : function() {
-				$("#image").css({
-					display : "block",
-					position : "fixed",
-					zIndex : 99,
-				});
-			},
 			success : function(data) {
 				//文件上传成功，进行读取操作
 				var filePath = data.msg;
 				readExcelForImport(filePath);
-			},
-			complete : function(data) {
-				
-			},
-			error:function(data){
-				console.log(data);
 			}
 		})
 	});

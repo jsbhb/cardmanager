@@ -813,6 +813,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
 		Set<Integer> keySet = map.keySet();
 		Map<String, Object> result = new HashMap<String, Object>();
+		List<Integer> keyList = new ArrayList<Integer>(keySet);
+		Collections.sort(keyList);
 		if (keySet.size() > 7) {
 			result.put("success", false);
 			result.put("msg", "返佣等级超出数量限制，请联系技术人员");
@@ -829,8 +831,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			GoodsStockEntity goodsStock = null;
 			GoodsInfoEntity goodsInfo = null;
 			Method method = null;
+			GradeTypeDTO gradeType = null;
 			List<GoodsRebateEntity> rebateList = null;
 			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
+			Map<Integer, GoodsRebateEntity> tempMap = null;
 			for (ImportGoodsBO model : list) {
 				// 基础商品
 				goodsBase = new GoodsBaseEntity();
@@ -858,8 +862,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				try {
 					goods.setSupplierId(model.getSupplierId() == null || "".equals(model.getSupplierId()) ? -1
 							: convert(model.getSupplierId()));
-					goods.setType(model.getType() == null || "".equals(model.getType()) ? -1
-							: convert(model.getType()));
+					goods.setType(
+							model.getType() == null || "".equals(model.getType()) ? -1 : convert(model.getType()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",");
@@ -879,9 +883,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setGoodsId(goods.getGoodsId());
 				goodsItem.setItemCode(model.getItemCode());
 				goodsItem.setSku(model.getSku());
+				goodsItem.setShelfLife(model.getShelfLife());
+				goodsItem.setCarTon(model.getCarTon());
 				try {
-					goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
-							: convert(model.getWeight()));
+					goodsItem.setWeight(
+							model.getWeight() == null || "".equals(model.getWeight()) ? 0 : convert(model.getWeight()));
 					goodsItem.setExciseTax(model.getExciseFax() == null || "".equals(model.getExciseFax()) ? 0
 							: Double.valueOf(model.getExciseFax()));
 					goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
@@ -952,17 +958,30 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setStock(goodsStock);
 
 				// 返佣设置
+				tempMap = new HashMap<Integer, GoodsRebateEntity>();
 				rebateList = new ArrayList<GoodsRebateEntity>();
-				for (Map.Entry<Integer, GradeTypeDTO> entry : map.entrySet()) {
+				for (Integer id : keyList) {
 					try {
-						method = ImportGoodsBO.class.getMethod("getRebate_" + entry.getKey());
+						method = ImportGoodsBO.class.getMethod("getRebate_" + id);
 						Object value = method.invoke(model);
 						if (value != null && !"".equals(value)) {
+							gradeType = map.get(id);
+							goodsRebate = tempMap.get(gradeType.getParentId());
+							if (goodsRebate != null) {
+								if (gradeType.getParentId() != 1 && gradeType.getParentId() != 0) {
+									if (Double.valueOf(value.toString()) > goodsRebate.getProportion()) {
+										success = false;
+										sb.append(model.getItemCode() + ",");
+										break;
+									}
+								}
+							}
 							goodsRebate = new GoodsRebateEntity();
 							goodsRebate.setProportion(Double.valueOf(value.toString()));
-							goodsRebate.setGradeType(entry.getKey());
+							goodsRebate.setGradeType(id);
 							goodsRebate.setItemId(goodsItem.getItemId());
 							rebateList.add(goodsRebate);
+							tempMap.put(id, goodsRebate);
 						} else {
 							success = false;
 							sb.append(model.getItemCode() + ",");
@@ -1002,7 +1021,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 	}
 
-	private static final String TEMPLATE_PATH = "EXCEL/GOODSTEMPLATE";
 	private static final String FILE_NAME = "goodsTemplate.xlsx";
 
 	@Override
@@ -1011,7 +1029,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 		ServletContext servletContext = webApplicationContext.getServletContext();
-		String filePath = servletContext.getRealPath("/") + TEMPLATE_PATH + "/" + FILE_NAME;
+		String filePath = servletContext.getRealPath("/") + "WEB-INF/classes/" + FILE_NAME;
 		String name = ExcelUtils.instance().getLastColumn(filePath, 1);
 		String id = name.split("_")[1];
 		Set<Integer> keySet = map.keySet();
@@ -1031,9 +1049,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
 	}
-	
-	private Integer convert(String str){
-		if(str.contains(".")){
+
+	private Integer convert(String str) {
+		if (str.contains(".")) {
 			return Integer.valueOf(str.substring(0, str.indexOf(".")));
 		} else {
 			return Integer.valueOf(str);

@@ -26,6 +26,8 @@ public class ImportGoodsBO {
 	private String retailPrice;
 	private String min;
 	private String max;
+	private String shelfLife;
+	private String carTon;
 	private String rebate_1;
 	private String rebate_2;
 	private String rebate_3;
@@ -35,6 +37,18 @@ public class ImportGoodsBO {
 	private String rebate_7;
 	private String stock;
 	
+	public String getShelfLife() {
+		return shelfLife;
+	}
+	public void setShelfLife(String shelfLife) {
+		this.shelfLife = shelfLife;
+	}
+	public String getCarTon() {
+		return carTon;
+	}
+	public void setCarTon(String carTon) {
+		this.carTon = carTon;
+	}
 	public String getStock() {
 		return stock;
 	}
