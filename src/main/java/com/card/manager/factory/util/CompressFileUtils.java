@@ -53,7 +53,7 @@ public class CompressFileUtils {
         ZipFile zip = new ZipFile(zipFile);  
         for(Enumeration entries = zip.getEntries();entries.hasMoreElements();){  
             ZipEntry entry = (ZipEntry)entries.nextElement();  
-            String zipEntryName = entry.getName();  
+            String zipEntryName = "\\"+entry.getName();  
             InputStream in = zip.getInputStream(entry);  
             String outPath = (descDir+zipEntryName).replaceAll("\\*", "/");;  
             //判断路径是否存在,不存在则创建文件路径  
