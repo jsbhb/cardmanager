@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,13 +40,15 @@ public class ExcelUtils {
 
 		return instance;
 	}
-
+	
+	private static DecimalFormat df = new DecimalFormat("#.######");
+	
 	@SuppressWarnings("static-access")
 	private static String getValue(XSSFCell xssfRow) {
 		if (xssfRow.getCellType() == xssfRow.CELL_TYPE_BOOLEAN) {
 			return String.valueOf(xssfRow.getBooleanCellValue());
 		} else if (xssfRow.getCellType() == xssfRow.CELL_TYPE_NUMERIC) {
-			return String.valueOf(xssfRow.getNumericCellValue());
+			return String.valueOf(df.format(xssfRow.getNumericCellValue()));
 		} else {
 			return String.valueOf(xssfRow.getStringCellValue());
 		}
@@ -59,7 +62,7 @@ public class ExcelUtils {
 		if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
 			return String.valueOf(hssfCell.getBooleanCellValue());
 		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
-			return String.valueOf(hssfCell.getNumericCellValue());
+			return String.valueOf(df.format(hssfCell.getNumericCellValue()));
 		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_STRING) {
 			return String.valueOf(hssfCell.getStringCellValue());
 		} else {
