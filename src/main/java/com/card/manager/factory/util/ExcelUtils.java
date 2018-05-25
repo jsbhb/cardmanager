@@ -11,11 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -91,7 +97,7 @@ public class ExcelUtils {
 	 * @fun 增加头部列(头部包括第一行描述和第二行系统字段)
 	 * @param path
 	 * @param row
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void addHead(String path, List<GradeTypeDTO> list) throws IOException {
 		if (path == null || "".equals(path)) {
@@ -126,17 +132,28 @@ public class ExcelUtils {
 		}
 		HSSFRow row1 = hssfSheet.getRow(0);
 		HSSFRow row2 = hssfSheet.getRow(1);
+		//生成单元格样式
+        HSSFCellStyle cellStyle = hssfWorkbook.createCellStyle();
+        //新建font实体
+        HSSFFont hssfFont = hssfWorkbook.createFont();
+        hssfFont.setFontName("宋体");  
+        //设置字体颜色
+        hssfFont.setColor(HSSFColor.RED.index);
+        cellStyle.setFont(hssfFont);
+        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);//水平居中  
+        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中
 		int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 0; i < list.size(); i++) {
 			Cell cell = row1.createCell(coloumNum + i);
-			cell.setCellValue(list.get(i).getName());
+			cell.setCellStyle(cellStyle);
+			cell.setCellValue(list.get(i).getName() + "返佣比例(例0.15)*");
 			cell = row2.createCell(coloumNum + i);
 			cell.setCellValue("rebate_" + list.get(i).getId());
 		}
-		FileOutputStream excelFileOutPutStream = new FileOutputStream(path);//写数据到这个路径上  
-		hssfWorkbook.write(excelFileOutPutStream);  
-        excelFileOutPutStream.flush();  
-        excelFileOutPutStream.close();  
+		FileOutputStream excelFileOutPutStream = new FileOutputStream(path);// 写数据到这个路径上
+		hssfWorkbook.write(excelFileOutPutStream);
+		excelFileOutPutStream.flush();
+		excelFileOutPutStream.close();
 	}
 
 	private void addHeadXlsx(String path, List<GradeTypeDTO> list) throws IOException {
@@ -154,17 +171,28 @@ public class ExcelUtils {
 		}
 		XSSFRow row1 = xssfSheet.getRow(0);
 		XSSFRow row2 = xssfSheet.getRow(1);
+		//生成单元格样式
+        XSSFCellStyle cellStyle = xssfWorkbook.createCellStyle();
+        //新建font实体
+        XSSFFont xssfFont =xssfWorkbook.createFont();
+        xssfFont.setFontName("宋体");    
+        //设置字体颜色
+        xssfFont.setColor(HSSFColor.RED.index);
+        cellStyle.setFont(xssfFont);
+        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);//水平居中  
+        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中
 		int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 0; i < list.size(); i++) {
 			Cell cell = row1.createCell(coloumNum + i);
-			cell.setCellValue(list.get(i).getName());
+			cell.setCellStyle(cellStyle);
+			cell.setCellValue(list.get(i).getName() + "返佣比例(例0.15)*");
 			cell = row2.createCell(coloumNum + i);
 			cell.setCellValue("rebate_" + list.get(i).getId());
 		}
-		FileOutputStream excelFileOutPutStream = new FileOutputStream(path);//写数据到这个路径上  
-		xssfWorkbook.write(excelFileOutPutStream);  
-        excelFileOutPutStream.flush();  
-        excelFileOutPutStream.close();  
+		FileOutputStream excelFileOutPutStream = new FileOutputStream(path);// 写数据到这个路径上
+		xssfWorkbook.write(excelFileOutPutStream);
+		excelFileOutPutStream.flush();
+		excelFileOutPutStream.close();
 	}
 
 	/**
@@ -191,7 +219,7 @@ public class ExcelUtils {
 	}
 
 	private String getLastColumnXlsx(String path, int rowNum) {
-		
+
 		XSSFWorkbook xssfWorkbook = null;
 		try {
 			InputStream is = new FileInputStream(path);
@@ -211,7 +239,7 @@ public class ExcelUtils {
 	}
 
 	private String getLastColumnXls(String path, int rowNum) {
-		
+
 		HSSFWorkbook hssfWorkbook = null;
 		try {
 			InputStream is = new FileInputStream(path);
@@ -276,7 +304,7 @@ public class ExcelUtils {
 				}
 				for (Map.Entry<Integer, String> entry : map.entrySet()) {
 					temp = xssfRow.getCell(entry.getKey());
-					if(temp == null){
+					if (temp == null) {
 						continue;
 					}
 					Method method;
@@ -342,7 +370,7 @@ public class ExcelUtils {
 				}
 				for (Map.Entry<Integer, String> entry : map.entrySet()) {
 					temp = xssfRow.getCell(entry.getKey());
-					if(temp == null){
+					if (temp == null) {
 						continue;
 					}
 					Method method;
