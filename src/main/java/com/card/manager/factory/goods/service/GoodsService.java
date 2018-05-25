@@ -110,16 +110,16 @@ public interface GoodsService extends ServerCenterService {
 	 */
 	void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception;
 
-	// /**
-	// * saveHtml:保存html. <br/>
-	// *
-	// * @author hebin
-	// * @param html
-	// * @param html
-	// * @param staffEntity
-	// * @since JDK 1.7
-	// */
-	// String saveModelHtml(String itemCode, String html, StaffEntity staffEntity) throws Exception;
+	 /**
+	 * saveHtml:保存html. <br/>
+	 *
+	 * @author hebin
+	 * @param html
+	 * @param html
+	 * @param staffEntity
+	 * @since JDK 1.7
+	 */
+	 String saveModelHtml(String itemCode, String html, StaffEntity staffEntity) throws Exception;
 
 	/**
 	 * queryById:根据编号查询商品信息. <br/>
@@ -271,13 +271,13 @@ public interface GoodsService extends ServerCenterService {
 	void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp, StaffEntity staffEntity)
 			throws IOException;
 
-//	/**
-//	 * batchUploadPic:批量上传文件. <br/>
-//	 * 
-//	 * @author hebin
-//	 * @param bo
-//	 * @since JDK 1.7
-//	 */
-//	void batchUploadPic(List<GoodsFielsMaintainBO> boList, String token) throws Exception;
+	/**
+	 * batchUploadPic:批量上传文件. <br/>
+	 * 
+	 * @author hebin
+	 * @param bo
+	 * @since JDK 1.7
+	 */
+	void batchUploadPic(List<GoodsFielsMaintainBO> boList, String token) throws Exception;
 
 }

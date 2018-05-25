@@ -1,10 +1,18 @@
 package com.card.manager.factory.goods.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +22,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.card.manager.factory.annotation.Auth;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
@@ -34,6 +47,7 @@ import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
+import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
@@ -41,9 +55,11 @@ import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.CompressFileUtils;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -51,9 +67,6 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/admin/goods/goodsMng")
 public class GoodsMngController extends BaseController {
-
-	private final String SYNC = "sync";
-	private final String NORMAL = "normal";
 
 	@Resource
 	GoodsService goodsService;
@@ -63,6 +76,9 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	SpecsService specsService;
+
+	@Resource
+	SftpService sftpService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -600,5 +616,292 @@ public class GoodsMngController extends BaseController {
 			return;
 		}
 		sendSuccessMessage(resp, null);
+	}
+
+	private final int MAX_SIZE = 1024 * 50 * 1024; // 50MB
+	SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDDhhmmss");
+
+	@RequestMapping(value = "/toBatchUploadPic")
+	public ModelAndView toBatchUploadPic(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		return forword("goods/goods/goodsPicBatchImport", context);
+	}
+
+	@RequestMapping(value = "/uploadCompressedFile", method = RequestMethod.POST)
+	@Auth(verifyLogin = false, verifyURL = false)
+	public void uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+
+		if (file != null) {
+
+			if (file.getSize() > MAX_SIZE) {
+				sendFailureMessage(resp, "文件内容超过50M，请合理控制上传文件大小！");
+				return;
+			}
+
+			String fileName = file.getOriginalFilename();
+			// 文件后缀
+			String suffix = fileName.indexOf(".") != -1
+					? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
+
+			String itemCode = fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf(".")) : null;
+
+			// 源文件名称
+			String sourceNameWithoutSuffix = itemCode + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge();
+			// 源文件名称
+			String sourceName = sourceNameWithoutSuffix + suffix;
+
+			if (!".zip".equalsIgnoreCase(suffix) && !".rar".equalsIgnoreCase(suffix)) {
+				sendFailureMessage(resp, "文件格式有误！");
+				return;
+			}
+
+			try {
+				String compressedFilePath = req.getServletContext().getRealPath("upload") + "/";
+				// 后台保存文件
+				File descFiles = new File(compressedFilePath + sourceName);
+
+				if (!descFiles.exists()) {
+					descFiles.mkdirs();
+				}
+
+				file.transferTo(descFiles);
+
+				// 解压缩
+				if (".zip".equalsIgnoreCase(suffix)) {
+					CompressFileUtils.unZipFiles(compressedFilePath + sourceName,
+							compressedFilePath + sourceNameWithoutSuffix);
+				} else if (".rar".equalsIgnoreCase(suffix)) {
+					CompressFileUtils.unRarFile(compressedFilePath + sourceName,
+							compressedFilePath + sourceNameWithoutSuffix);
+				} else {
+					sendFailureMessage(resp, "没有指定压缩包！" + compressedFilePath + sourceName);
+					return;
+				}
+
+				File directory = new File(compressedFilePath + sourceNameWithoutSuffix);
+
+				String[] itemCodeList = directory.list();
+				if (itemCodeList == null || itemCodeList.length == 0) {
+					sendFailureMessage(resp, "没有商品信息！：");
+					return;
+				}
+
+				GoodsFielsMaintainBO bo;
+				List<GoodsFielsMaintainBO> list = new ArrayList<GoodsFielsMaintainBO>();
+				for (String itemCodeFile : itemCodeList) {
+					bo = dealGoodsPic(itemCodeFile, compressedFilePath + sourceNameWithoutSuffix, staffEntity);
+					if (bo == null) {
+						continue;
+					}
+					bo.setItemCode(itemCodeFile);
+					list.add(bo);
+				}
+
+				goodsService.batchUploadPic(list, staffEntity.getToken());
+
+				delAllFile(compressedFilePath + sourceNameWithoutSuffix);
+				descFiles.delete();
+
+				sendSuccessMessage(resp, "");
+
+			} catch (Exception e) {
+				sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			}
+		} else {
+			sendFailureMessage(resp, "没有文件内容！");
+
+		}
+
+	}
+
+	private static boolean delAllFile(String path) {
+		boolean flag = false;
+		File file = new File(path);
+		if (!file.exists()) {
+			return flag;
+		}
+		if (!file.isDirectory()) {
+			return flag;
+		}
+		String[] tempList = file.list();
+		File temp = null;
+		for (int i = 0; i < tempList.length; i++) {
+			if (path.endsWith(File.separator)) {
+				temp = new File(path + tempList[i]);
+			} else {
+				temp = new File(path + File.separator + tempList[i]);
+			}
+			if (temp.isFile()) {
+				temp.delete();
+			}
+			if (temp.isDirectory()) {
+				delAllFile(path + "/" + tempList[i]);// 先删除文件夹里面的文件
+				delFolder(path + "/" + tempList[i]);// 再删除空文件夹
+				flag = true;
+			}
+		}
+		return flag;
+	}
+
+	public static void delFolder(String folderPath) {
+		try {
+			delAllFile(folderPath); // 删除完里面所有内容
+			String filePath = folderPath;
+			filePath = filePath.toString();
+			java.io.File myFilePath = new java.io.File(filePath);
+			myFilePath.delete(); // 删除空文件夹
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String getNewFileName(String itemCode, String fileName, StaffEntity staffEntity) {
+		// 文件后缀
+		String suffix = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf("."), fileName.length())
+				: null;
+
+		// 源文件名称
+		String sourceNameWithoutSuffix = (fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf("."))
+				: null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge();
+		// 源文件名称
+		return itemCode + "_" + sourceNameWithoutSuffix + suffix;
+	}
+
+	/**
+	 * dealGoodsPic:(这里用一句话描述这个方法的作用). <br/>
+	 * 
+	 * @author hebin
+	 * @param string
+	 * @throws Exception
+	 * @since JDK 1.7
+	 */
+	private GoodsFielsMaintainBO dealGoodsPic(String itemCode, String path, StaffEntity staffEntity) throws Exception {
+		File file = new File(path + "\\" + itemCode);
+		List<String> coverList = new ArrayList<String>();
+		List<String> detailList = new ArrayList<String>();
+		GoodsFielsMaintainBO bo = new GoodsFielsMaintainBO();
+
+		if (!file.exists()) {
+			throw new Exception("没有文件信息!");
+		}
+
+		if (file.isDirectory()) {
+			System.out.println("文件夹！");
+			String[] fileList = file.list();
+			for (int i = 0; i < fileList.length; i++) {
+				File readFile = new File(path + "\\" + itemCode + "\\" + fileList[i]);
+				if (readFile.isDirectory()) {
+					String name = readFile.getName();
+					if ("detail".equals(name)) {
+						String[] detailFileList = readFile.list();
+						for (String detailFile : detailFileList) {
+							if (detailFile.endsWith(".png") || detailFile.endsWith(".jpg")
+									|| detailFile.endsWith(".gif") || detailFile.endsWith(".jpeg")) {
+								detailList.add(detailFile);
+							}
+						}
+					}
+				} else {
+					if (fileList[i].endsWith(".png") || fileList[i].endsWith(".jpg") || fileList[i].endsWith(".gif")
+							|| fileList[i].endsWith(".jpeg")) {
+						coverList.add(fileList[i]);
+					}
+
+				}
+			}
+
+			if (coverList.size() == 0) {
+				throw new Exception("没有主图信息");
+			} else {
+				bo.setPicPathList(dealCoverPic(itemCode, path + "\\" + itemCode, coverList, staffEntity));
+			}
+
+			if (detailList.size() != 0) {
+				bo.setGoodsDetailPath(
+						dealDetailPic(itemCode, path + "\\" + itemCode + "\\detail", detailList, staffEntity));
+			}
+
+		} else {
+			throw new Exception("文件格式出错");
+		}
+
+		return bo;
+
+	}
+
+	/**
+	 * dealCoverPic:处理主图图片. <br/>
+	 * 
+	 * @author hebin
+	 * @param coverList
+	 * @throws Exception
+	 * @since JDK 1.7
+	 */
+	private Set<String> dealCoverPic(String itemCode, String path, List<String> coverList, StaffEntity staffEntity)
+			throws Exception {
+		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
+
+		Set<String> coverInviteList = new HashSet<String>();
+		File file;
+		String newFileName;
+		for (String fileName : coverList) {
+			file = new File(path + "//" + fileName);
+			newFileName = getNewFileName(itemCode, fileName, staffEntity);
+			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
+			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/batchUpload/" + newFileName);
+		}
+
+		return coverInviteList;
+	}
+
+	/**
+	 * dealDetailPic:处理商品详情图片. <br/>
+	 * 
+	 * @author hebin
+	 * @param detailList
+	 * @throws Exception
+	 * @since JDK 1.7
+	 */
+	private String dealDetailPic(String itemCode, String path, List<String> detailList, StaffEntity staffEntity)
+			throws Exception {
+		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
+		File file;
+		String newFileName;
+		StringBuffer sb = new StringBuffer();
+
+		Collections.sort(detailList, new Comparator<String>() {
+
+			@Override
+			public int compare(String file0, String file1) {
+				try {
+					Integer num0 = Integer.parseInt(file0.substring(0, file0.lastIndexOf(".")));
+					Integer num1 = Integer.parseInt(file1.substring(0, file1.lastIndexOf(".")));
+					if (num0 < num1) {
+						return -1;
+					} else {
+						return 1;
+					}
+				} catch (Exception e) {
+					return 1;
+				}
+
+			}
+
+		});
+
+		for (String fileName : detailList) {
+			file = new File(path + "//" + fileName);
+			newFileName = getNewFileName(itemCode, fileName, staffEntity);
+			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
+			sb.append("<p style=\"text-align: center;\"><img src=\"");
+			sb.append(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/batchUpload/" + newFileName);
+			sb.append("\"></p>");
+		}
+
+		return goodsService.saveModelHtml(itemCode, sb.toString(), staffEntity);
 	}
 }

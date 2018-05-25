@@ -53,6 +53,7 @@ import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
+import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
@@ -976,7 +977,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 									}
 								}
 							}
-							if(Double.valueOf(value.toString()) > 1){
+							if (Double.valueOf(value.toString()) > 1) {
 								success = false;
 								sb.append(model.getItemCode() + ",返佣比例设置不能大于1,");
 								break;
@@ -1062,14 +1063,52 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			return Integer.valueOf(str);
 		}
 	}
-	
-	private String removePoint(String str){
-		if(str != null){
-			if (str.contains(".")){
+
+	private String removePoint(String str) {
+		if (str != null) {
+			if (str.contains(".")) {
 				return str.substring(0, str.indexOf("."));
-			} 
+			}
 		}
 		return str;
+	}
+
+	@Override
+	@Log(content = "保存商品详情信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public String saveModelHtml(String itemCode, String html, StaffEntity staffEntity) throws Exception {
+
+		String savePath;
+		String invitePath;
+
+		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
+		ReadIniInfo.getInstance();
+
+		savePath = PathFormat.parse(savePath);
+		invitePath = PathFormat.parse(invitePath);
+
+		InputStream is = new ByteArrayInputStream(html.getBytes("utf-8"));
+
+		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+		SftpService service = (SftpService) wac.getBean("sftpService");
+		service.login();
+		service.uploadFile(savePath, itemCode + ResourceContants.HTML_SUFFIX, is, "");
+
+		return invitePath + itemCode + ResourceContants.HTML_SUFFIX;
+	}
+
+	@Override
+	public void batchUploadPic(List<GoodsFielsMaintainBO> boList, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_PIC_BATCH_UPLOAD, token, true, boList,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("新增商品明细信息操作失败:" + json.getString("errorMsg"));
+		}
 	}
 
 }
