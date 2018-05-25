@@ -60,7 +60,7 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	CatalogService catalogService;
-	
+
 	@Resource
 	SpecsService specsService;
 
@@ -298,7 +298,6 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
-	
 	@RequestMapping(value = "/toAddBatch")
 	public ModelAndView toAddBatch(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -306,7 +305,7 @@ public class GoodsMngController extends BaseController {
 		context.put(OPT, opt);
 		return forword("goods/goods/goodsImport", context);
 	}
-	
+
 	@RequestMapping(value = "/toShow")
 	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -448,9 +447,10 @@ public class GoodsMngController extends BaseController {
 			}
 			Map<String, Object> result = goodsService.importGoodsInfo(filePath, staffEntity);
 			if ((boolean) result.get("success")) {
-				sendSuccessMessage(resp, result.get("msg") == null ? null : result.get("msg").toString());
+				sendSuccessMessage(resp, result.get("msg") == null || "".equals(result.get("msg")) ? null
+						: result.get("msg").toString() + "已经存在");
 			} else {
-				sendFailureMessage(resp, result.get("msg")+"");
+				sendFailureMessage(resp, result.get("msg") + "");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -480,7 +480,7 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			context.put("goodsInfo", goodsInfo);
-			
+
 			String info = goodsInfo.getGoods().getGoodsItem().getInfo();
 			if (info != null && !"".equals(info)) {
 				JSONArray jsonArray = JSONArray.fromObject(info.substring(1, info.length()));
@@ -490,13 +490,15 @@ public class GoodsMngController extends BaseController {
 					JSONObject jObj = jsonArray.getJSONObject(i);
 					list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
 				}
-				
-				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId()+"", staffEntity.getToken());
+
+				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId() + "",
+						staffEntity.getToken());
 				if (entity != null) {
 					for (ItemSpecsPojo isp : list) {
-						for(SpecsEntity se : entity.getSpecs()) {
-							for(SpecsValueEntity sve : se.getValues()) {
-								if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
+						for (SpecsEntity se : entity.getSpecs()) {
+							for (SpecsValueEntity sve : se.getValues()) {
+								if (isp.getSvId().equals(sve.getSpecsId() + "")
+										&& isp.getSvV().equals(sve.getId() + "")) {
 									isp.setSvT(sve.getValue());
 								}
 							}
@@ -505,7 +507,7 @@ public class GoodsMngController extends BaseController {
 				}
 				context.put("specsInfo", list);
 			}
-			
+
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {
 				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {

@@ -31,6 +31,10 @@
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量导入</span>
 	    	</a>
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toBatchUploadPic.shtml">
+	    		<i class="fa  fa-file-excel-o fa-fw"></i>
+	    		<span>批量图片导入</span>
+	    	</a>
 	    </div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
@@ -38,6 +42,7 @@
 		function toWaitOpen(){
 			layer.alert("功能暂未开放，敬请期待");
 		}
+		
 		
 		function jumpSrc(src){
 			var p = window;
