@@ -61,8 +61,9 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="goodsType" id="goodsType">
+		                	<option selected="selected" value="">商品类型</option>
 		                	<option value="0">跨境商品</option>
-		                	<option selected="selected" value="2">一般贸易商品</option>
+		                	<option value="2">一般贸易商品</option>
 			            </select>
 					</div>
 				</div>
@@ -244,7 +245,7 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].carTon == null ? "" : list[i].carTon);
 		str += "</td><td>" + (list[i].shelfLife == null ? "" : list[i].shelfLife);
 		str += "</td><td>" + list[i].goodsEntity.origin;
-		str += "</td><td>" + list[i].encode;
+		str += "</td><td>" + (list[i].encode == null ? "" : list[i].encode);
 		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
 // 		if (list[i].tagBindEntity != null) {
 // 			var tmpTagId = list[i].tagBindEntity.tagId;
