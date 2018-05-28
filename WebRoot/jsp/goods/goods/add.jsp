@@ -612,6 +612,7 @@
 					 if(data.id == null){
 						 layer.alert("同步规格模板失败！");
 					 }else{
+						 console.log(data);
 						 $("#specsInfo").html('');
 						 var specs = data.specs;
 						 var ht = '';
@@ -625,7 +626,7 @@
 							 var radio;
 							 for(var j =0;j<values.length;j++){
 								 ht = ht + '<label>'+values[j].value;
-								 ht = ht + '<input type="radio" class="flat-red" name="'+spec.id+":"+spec.name+'" value="'+spec.id+":"+values[j].id+'">';
+								 ht = ht + '<input type="radio" class="flat-red" name="'+spec.id+":"+spec.name+'" value="'+values[j].id+":"+values[j].value+'">';
 								 ht = ht + '</label>';
 							 }
 							 ht = ht + '</div></div>';

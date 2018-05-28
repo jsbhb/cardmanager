@@ -35,9 +35,6 @@ import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
-import com.card.manager.factory.goods.model.SpecsEntity;
-import com.card.manager.factory.goods.model.SpecsTemplateEntity;
-import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
@@ -226,18 +223,18 @@ public class InventoryMngController extends BaseController {
 							specslist.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
 						}
 						
-						SpecsTemplateEntity entity = specsService.queryById(info.getGoodsEntity().getTemplateId()+"", staffEntity.getToken());
-						if (entity != null) {
-							for (ItemSpecsPojo isp : specslist) {
-								for(SpecsEntity se : entity.getSpecs()) {
-									for(SpecsValueEntity sve : se.getValues()) {
-										if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
-											isp.setSvV(sve.getValue());
-										}
-									}
-								}
-							}
-						}
+//						SpecsTemplateEntity entity = specsService.queryById(info.getGoodsEntity().getTemplateId()+"", staffEntity.getToken());
+//						if (entity != null) {
+//							for (ItemSpecsPojo isp : specslist) {
+//								for(SpecsEntity se : entity.getSpecs()) {
+//									for(SpecsValueEntity sve : se.getValues()) {
+//										if (isp.getSvId().equals(sve.getSpecsId()+"") && isp.getSvV().equals(sve.getId()+"")) {
+//											isp.setSvV(sve.getValue());
+//										}
+//									}
+//								}
+//							}
+//						}
 						String tmpStr = "";
 						for (ItemSpecsPojo isp : specslist) {
 							tmpStr = tmpStr + isp.getSkV() + ":" + isp.getSvV() + "|";

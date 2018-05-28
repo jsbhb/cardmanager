@@ -230,7 +230,7 @@
 			       	<div class="list-item">
 						<div class="col-sm-3 item-left">${spec.skV}</div>
 						<div class="col-sm-9 item-right">
-							<label>${spec.svT}
+							<label>${spec.svV}
 							<input type="radio" class="flat-red" checked="checked" name="${spec.skId}:${spec.skV}" value="${spec.svId}:${spec.svV}">
 							</label>
 						</div>
@@ -495,7 +495,7 @@
 							 var radio;
 							 for(var j =0;j<values.length;j++){
 								 ht = ht + '<label>'+values[j].value;
-								 ht = ht + '<input type="radio" class="flat-red" name="'+spec.id+":"+spec.name+'" value="'+spec.id+":"+values[j].id+'">';
+								 ht = ht + '<input type="radio" class="flat-red" name="'+spec.id+":"+spec.name+'" value="'+values[j].id+":"+values[j].value+'">';
 								 ht = ht + '</label>';
 							 }
 							 ht = ht + '</div></div>';

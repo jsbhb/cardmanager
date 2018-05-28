@@ -41,9 +41,6 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
-import com.card.manager.factory.goods.model.SpecsEntity;
-import com.card.manager.factory.goods.model.SpecsTemplateEntity;
-import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
@@ -507,20 +504,20 @@ public class GoodsMngController extends BaseController {
 					list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
 				}
 
-				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId() + "",
-						staffEntity.getToken());
-				if (entity != null) {
-					for (ItemSpecsPojo isp : list) {
-						for (SpecsEntity se : entity.getSpecs()) {
-							for (SpecsValueEntity sve : se.getValues()) {
-								if (isp.getSvId().equals(sve.getSpecsId() + "")
-										&& isp.getSvV().equals(sve.getId() + "")) {
-									isp.setSvT(sve.getValue());
-								}
-							}
-						}
-					}
-				}
+//				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId() + "",
+//						staffEntity.getToken());
+//				if (entity != null) {
+//					for (ItemSpecsPojo isp : list) {
+//						for (SpecsEntity se : entity.getSpecs()) {
+//							for (SpecsValueEntity sve : se.getValues()) {
+//								if (isp.getSvId().equals(sve.getSpecsId() + "")
+//										&& isp.getSvV().equals(sve.getId() + "")) {
+//									isp.setSvT(sve.getValue());
+//								}
+//							}
+//						}
+//					}
+//				}
 				context.put("specsInfo", list);
 			}
 
