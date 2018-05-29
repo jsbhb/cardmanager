@@ -253,6 +253,13 @@ public class CapitalPoolMng extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		entity.setOpt(staffEntity.getOptName());
 		try {
+			if ("1".equals(entity.getPayType().toString())) {
+				CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(entity.getCustomerId().toString());
+				if (capitalManagement.getMoney() - entity.getMoney() < 0) {
+					sendFailureMessage(resp, "操作失败：客户："+entity.getCustomerName()+"可用金额("+capitalManagement.getMoney()+")小于本次消费金额("+entity.getMoney()+")");
+					return;
+				}
+			}
 			//自动产生业务流水号：账号+时间+4位随机数
 			//随机产生规定范围内数字[1000,9999]
 	        //规律:num=(int)(Math.random()*(y-x+1))+x;
