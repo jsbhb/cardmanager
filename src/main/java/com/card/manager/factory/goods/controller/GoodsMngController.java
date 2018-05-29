@@ -504,20 +504,22 @@ public class GoodsMngController extends BaseController {
 					list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
 				}
 
-//				SpecsTemplateEntity entity = specsService.queryById(goodsInfo.getGoods().getTemplateId() + "",
-//						staffEntity.getToken());
-//				if (entity != null) {
-//					for (ItemSpecsPojo isp : list) {
-//						for (SpecsEntity se : entity.getSpecs()) {
-//							for (SpecsValueEntity sve : se.getValues()) {
-//								if (isp.getSvId().equals(sve.getSpecsId() + "")
-//										&& isp.getSvV().equals(sve.getId() + "")) {
-//									isp.setSvT(sve.getValue());
-//								}
-//							}
-//						}
-//					}
-//				}
+				// SpecsTemplateEntity entity =
+				// specsService.queryById(goodsInfo.getGoods().getTemplateId() +
+				// "",
+				// staffEntity.getToken());
+				// if (entity != null) {
+				// for (ItemSpecsPojo isp : list) {
+				// for (SpecsEntity se : entity.getSpecs()) {
+				// for (SpecsValueEntity sve : se.getValues()) {
+				// if (isp.getSvId().equals(sve.getSpecsId() + "")
+				// && isp.getSvV().equals(sve.getId() + "")) {
+				// isp.setSvT(sve.getValue());
+				// }
+				// }
+				// }
+				// }
+				// }
 				context.put("specsInfo", list);
 			}
 
@@ -656,10 +658,11 @@ public class GoodsMngController extends BaseController {
 				return;
 			}
 
+			String compressedFilePath = req.getServletContext().getRealPath("upload") + "/";
+			File descFiles = new File(compressedFilePath + sourceName);
+
 			try {
-				String compressedFilePath = req.getServletContext().getRealPath("upload") + "/";
 				// 后台保存文件
-				File descFiles = new File(compressedFilePath + sourceName);
 
 				if (!descFiles.exists()) {
 					descFiles.mkdirs();
@@ -700,13 +703,13 @@ public class GoodsMngController extends BaseController {
 
 				goodsService.batchUploadPic(list, staffEntity.getToken());
 
-				delAllFile(compressedFilePath + sourceNameWithoutSuffix);
-				descFiles.delete();
-
 				sendSuccessMessage(resp, "");
 
 			} catch (Exception e) {
 				sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			} finally {
+				delAllFile(compressedFilePath + sourceNameWithoutSuffix);
+				descFiles.delete();
 			}
 		} else {
 			sendFailureMessage(resp, "没有文件内容！");
@@ -727,10 +730,10 @@ public class GoodsMngController extends BaseController {
 		String[] tempList = file.list();
 		File temp = null;
 		for (int i = 0; i < tempList.length; i++) {
-			if (path.endsWith(File.separator)) {
+			if (path.endsWith("/")) {
 				temp = new File(path + tempList[i]);
 			} else {
-				temp = new File(path + File.separator + tempList[i]);
+				temp = new File(path + "/" + tempList[i]);
 			}
 			if (temp.isFile()) {
 				temp.delete();
@@ -777,7 +780,7 @@ public class GoodsMngController extends BaseController {
 	 * @since JDK 1.7
 	 */
 	private GoodsFielsMaintainBO dealGoodsPic(String itemCode, String path, StaffEntity staffEntity) throws Exception {
-		File file = new File(path + "\\" + itemCode);
+		File file = new File(path + "/" + itemCode);
 		List<String> coverList = new ArrayList<String>();
 		List<String> detailList = new ArrayList<String>();
 		GoodsFielsMaintainBO bo = new GoodsFielsMaintainBO();
@@ -790,7 +793,7 @@ public class GoodsMngController extends BaseController {
 			System.out.println("文件夹！");
 			String[] fileList = file.list();
 			for (int i = 0; i < fileList.length; i++) {
-				File readFile = new File(path + "\\" + itemCode + "\\" + fileList[i]);
+				File readFile = new File(path + "/" + itemCode + "/" + fileList[i]);
 				if (readFile.isDirectory()) {
 					String name = readFile.getName();
 					if ("detail".equals(name)) {
@@ -814,12 +817,12 @@ public class GoodsMngController extends BaseController {
 			if (coverList.size() == 0) {
 				throw new Exception("没有主图信息");
 			} else {
-				bo.setPicPathList(dealCoverPic(itemCode, path + "\\" + itemCode, coverList, staffEntity));
+				bo.setPicPathList(dealCoverPic(itemCode, path + "/" + itemCode, coverList, staffEntity));
 			}
 
 			if (detailList.size() != 0) {
-				bo.setGoodsDetailPath(
-						dealDetailPic(itemCode, path + "\\" + itemCode + "\\detail", detailList, staffEntity));
+				bo.setGoodsDetailPath(dealDetailPic(itemCode,
+						path + "/" + itemCode + "/" + "detail", detailList, staffEntity));
 			}
 
 		} else {
@@ -846,10 +849,11 @@ public class GoodsMngController extends BaseController {
 		File file;
 		String newFileName;
 		for (String fileName : coverList) {
-			file = new File(path + "//" + fileName);
+			file = new File(path + "/" + fileName);
 			newFileName = getNewFileName(itemCode, fileName, staffEntity);
 			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
-			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/batchUpload/" + newFileName);
+			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload"
+					+ "/" + newFileName);
 		}
 
 		return coverInviteList;
@@ -891,11 +895,12 @@ public class GoodsMngController extends BaseController {
 		});
 
 		for (String fileName : detailList) {
-			file = new File(path + "//" + fileName);
+			file = new File(path + "/" + fileName);
 			newFileName = getNewFileName(itemCode, fileName, staffEntity);
 			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
 			sb.append("<p style=\"text-align: center;\"><img src=\"");
-			sb.append(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/batchUpload/" + newFileName);
+			sb.append(
+					URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload" + "/" + newFileName);
 			sb.append("\"></p>");
 		}
 
