@@ -156,10 +156,10 @@
     <select id="selectByParam" resultMap="operator">
 		select * from auth_operator where 1=1
 		<if test="gradelevel ==2 or gradelevel ==3">
-			and ifnull(gradelevel,0) = #{gradelevel}
+			and ifnull(grade_type,0) = #{gradelevel}
 		</if>
 		<if test="gradelevel ==1">
-			and ifnull(gradelevel,0) in ('1','2')
+			and ifnull(grade_type,0) in ('1','2')
 		</if>
 		<if test="parentGradeId !=all">
 			and parentGradeId = #{parentGradeId}

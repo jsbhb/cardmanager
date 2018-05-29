@@ -8,15 +8,21 @@
 package com.card.manager.factory.user.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.finance.model.AddCapitalPoolInfoEntity;
 import com.card.manager.factory.finance.model.AuditModel;
+import com.card.manager.factory.finance.model.CapitalManagement;
+import com.card.manager.factory.finance.model.CapitalManagementDetail;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.CardEntity;
 import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.ShopRebate;
+import com.github.pagehelper.Page;
 
 /**
  * ClassName: FinanceMngService <br/>
@@ -62,5 +68,33 @@ public interface FinanceMngService extends ServerCenterService {
 	void poolCharge(String centerId, String money, String payNo, StaffEntity staffEntity) throws Exception;
 	
 	void poolLiquidation(String centerId, String money, StaffEntity staffEntity) throws Exception;
+
+	/**
+	 * 
+	 * dataList:分页查询. <br/>
+	 * 
+	 * @author hebin
+	 * @param pagination
+	 * @param params
+	 * @return
+	 * @since JDK 1.7
+	 */
+	Page<CapitalManagement> dataListByType(Pagination pagination, Map<String, Object> params);
+	
+	void insertCapitalPoolInfo(AddCapitalPoolInfoEntity entity) throws Exception;
+	
+	CapitalManagement queryCapitalManagementByCustomerId(String customerId);
+
+	/**
+	 * 
+	 * dataList:分页查询. <br/>
+	 * 
+	 * @author hebin
+	 * @param pagination
+	 * @param params
+	 * @return
+	 * @since JDK 1.7
+	 */
+	Page<CapitalManagementDetail> dataListByCustomerId(Pagination pagination, Map<String, Object> params);
 
 }
