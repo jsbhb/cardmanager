@@ -837,6 +837,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
 			Map<Integer, GoodsRebateEntity> tempMap = null;
 			for (ImportGoodsBO model : list) {
+				model.setItemCode(removePoint(model.getItemCode()));
 				// 基础商品
 				goodsBase = new GoodsBaseEntity();
 				goodsBase.setBrandId(model.getBrandId());
@@ -883,7 +884,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem = new GoodsItemEntity();
 				goodsItem.setGoodsId(goods.getGoodsId());
 				goodsItem.setItemCode(model.getItemCode());
-				goodsItem.setSku(model.getSku());
+				goodsItem.setSku(removePoint(model.getSku()));
 				goodsItem.setShelfLife(model.getShelfLife());
 				goodsItem.setCarTon(model.getCarTon());
 				try {
@@ -1006,15 +1007,22 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsInfoList.add(goodsInfo);
 			}
 			if (success) {
-				RestCommonHelper helper = new RestCommonHelper();
-				ResponseEntity<String> usercenter_result = helper.request(
-						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_IMPORT_GOODSINFO,
-						staffEntity.getToken(), true, goodsInfoList, HttpMethod.POST);
+				try {
+					RestCommonHelper helper = new RestCommonHelper(1000000);
+					ResponseEntity<String> usercenter_result = helper.request(
+							URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_IMPORT_GOODSINFO,
+							staffEntity.getToken(), true, goodsInfoList, HttpMethod.POST);
 
-				JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-				result.put("success", json.get("success"));
-				result.put("msg", json.get("errorMsg"));
-				return result;
+					JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+					result.put("success", json.get("success"));
+					result.put("msg", json.get("errorMsg"));
+					return result;
+				} catch (Exception e) {
+					e.printStackTrace();
+					result.put("success", false);
+					result.put("msg", e);
+					return result;
+				}
 			} else {
 				result.put("success", success);
 				result.put("msg", sb.toString());

@@ -2,6 +2,7 @@ package com.card.manager.factory.finance.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,15 +26,21 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
+import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.finance.model.AddCapitalPoolInfoEntity;
+import com.card.manager.factory.finance.model.CapitalManagement;
+import com.card.manager.factory.finance.model.CapitalManagementDetail;
 import com.card.manager.factory.finance.model.CapitalPool;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.service.FinanceMngService;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
 import com.card.manager.factory.util.URLUtils;
+import com.github.pagehelper.Page;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -195,5 +203,126 @@ public class CapitalPoolMng extends BaseController {
 			return;
 		}
 		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/supplierList")
+	public ModelAndView supplierList(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		context.put("customerType", Constants.CUSTOMER_TYPE_SUPPLIER);
+		return forword("finance/capitalPool/list", context);
+	}
+	
+	@RequestMapping(value = "/dataListByType", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack dataListByType(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+		PageCallBack pcb = new PageCallBack();
+		try {
+			String customerType = req.getParameter("customerType");
+			Page<CapitalManagement> page = null;
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("customerType", customerType);
+			
+			page = financeMngService.dataListByType(pagination, params);
+			
+			pcb.setObj(page);
+			pcb.setSuccess(true);
+			pcb.setPagination(webPageConverter(page));
+		}catch (Exception e) {
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return pcb;
+		}
+		return pcb;
+	}
+
+	@RequestMapping(value = "/toSupplierAdd")
+	public ModelAndView toSupplierAdd(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
+		context.put("customerType", Constants.CUSTOMER_TYPE_SUPPLIER);
+		return forword("finance/capitalPool/add", context);
+	}
+
+	@RequestMapping(value = "/addCapitalPoolInfo", method = RequestMethod.POST)
+	public void addCapitalPoolInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody AddCapitalPoolInfoEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptName());
+		try {
+			//自动产生业务流水号：账号+时间+4位随机数
+			//随机产生规定范围内数字[1000,9999]
+	        //规律:num=(int)(Math.random()*(y-x+1))+x;
+	        Integer num=(int)(Math.random()*9000)+1000;
+			String businessNo = staffEntity.getBadge() + "-" + DateUtil.getNowPlusTimeMill() + "-" + num;
+			entity.setBusinessNo(businessNo);
+			financeMngService.insertCapitalPoolInfo(entity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/showCapitalManagementDetail")
+	public ModelAndView showCapitalManagementDetail(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		String customerId = req.getParameter("customerId");
+		context.put(OPT, opt);
+		CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(customerId);
+		context.put("CapitalManagement", capitalManagement);
+		return forword("finance/capitalPool/show", context);
+	}
+	
+	@RequestMapping(value = "/dataListByCustomerId", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack dataListByCustomerId(HttpServletRequest req, HttpServletResponse resp, Pagination pagination) {
+		PageCallBack pcb = new PageCallBack();
+		try {
+			String customerId = req.getParameter("customerId");
+			String payType = req.getParameter("payType");
+			String payNo = req.getParameter("payNo");
+			Page<CapitalManagementDetail> page = null;
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("customerId", customerId);
+			params.put("payType", payType);
+			params.put("payNo", payNo);
+			
+			page = financeMngService.dataListByCustomerId(pagination, params);
+			
+			pcb.setObj(page);
+			pcb.setSuccess(true);
+			pcb.setPagination(webPageConverter(page));
+		}catch (Exception e) {
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return pcb;
+		}
+		return pcb;
+	}
+
+	@RequestMapping(value = "/centerList")
+	public ModelAndView centerList(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		context.put("customerType", Constants.CUSTOMER_TYPE_CENTER);
+		return forword("finance/capitalPool/list", context);
+	}
+
+	@RequestMapping(value = "/toCenterAdd")
+	public ModelAndView toCenterAdd(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		context.put("centerId", CachePoolComponent.getCenter(opt.getToken()));
+		context.put("customerType", Constants.CUSTOMER_TYPE_CENTER);
+		return forword("finance/capitalPool/add", context);
 	}
 }

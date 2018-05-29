@@ -45,6 +45,7 @@ public class OrderInfoListForDownload {
 	private String packing;
 	private Double actualPrice;
 	private String itemCode;
+	private String receivePhone;
 	
 	public String getOrderId() {
 		return orderId;
@@ -273,6 +274,12 @@ public class OrderInfoListForDownload {
 	}
 	public void setItemCode(String itemCode) {
 		this.itemCode = itemCode;
+	}
+	public String getReceivePhone() {
+		return receivePhone;
+	}
+	public void setReceivePhone(String receivePhone) {
+		this.receivePhone = receivePhone;
 	}
 	
 }

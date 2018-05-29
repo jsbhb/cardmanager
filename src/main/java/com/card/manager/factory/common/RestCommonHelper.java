@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.card.manager.factory.base.Pagination;
@@ -42,6 +43,15 @@ public class RestCommonHelper {
 		this.pagination = pagination;
 		httpHeaders = new HttpHeaders();
 		restTemplate = new RestTemplate();
+	}
+
+	public RestCommonHelper(int timeout) {
+		httpHeaders = new HttpHeaders();
+		// 复杂构造函数的使用
+		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+		requestFactory.setConnectTimeout(timeout);// 设置超时
+		requestFactory.setReadTimeout(timeout);
+		restTemplate = new RestTemplate(requestFactory);
 	}
 
 	/**

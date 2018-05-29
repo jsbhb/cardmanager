@@ -259,4 +259,10 @@ public class Constants {
 	public static final String ST_CANCEL = "4";
 
 	public static final Double FIRST_VERSION = 1.0;
+	
+	/**
+	 * CUSTOMER_TYPE 客户类型0:供应商,1:区域中心
+	 */
+	public static final String CUSTOMER_TYPE_SUPPLIER = "0";
+	public static final String CUSTOMER_TYPE_CENTER = "1";
 }

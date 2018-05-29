@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.card.manager.factory.user.mapper.FinanceMapper">
+	<!-- Result Map -->
+	<resultMap id="capitalManagement" type="com.card.manager.factory.finance.model.CapitalManagement">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+		<result column="customer_type" property="customerType" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="use_money" property="useMoney" jdbcType="DECIMAL" />
+		<result column="count_money" property="countMoney" jdbcType="DECIMAL" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+		<result column="opt" property="opt" jdbcType="VARCHAR" />
+		<collection ofType="com.card.manager.factory.finance.model.CapitalManagementDetail"
+			property="managementDetailList">
+			<id column="detail_id" property="id" jdbcType="INTEGER" />
+			<result column="detail_customer_id" property="customerId" jdbcType="INTEGER" />
+			<result column="pay_type" property="payType" jdbcType="INTEGER" />
+			<result column="detail_money" property="money" jdbcType="DECIMAL" />
+			<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
+			<result column="business_no" property="businessNo" jdbcType="VARCHAR" />
+			<result column="detail_remark" property="remark" jdbcType="VARCHAR" />
+			<result column="detail_create_time" property="createTime" jdbcType="VARCHAR" />
+			<result column="detail_opt" property="opt" jdbcType="VARCHAR" />
+		</collection>
+		<collection ofType="com.card.manager.factory.finance.model.CapitalManagementBusinessItem"
+			property="managementBusinessItemList">
+			<id column="business_id" property="id" jdbcType="INTEGER" />
+			<result column="business_business_no" property="businessNo" jdbcType="VARCHAR" />
+			<result column="order_id" property="orderId" jdbcType="VARCHAR" />
+			<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+			<result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+			<result column="item_quantity" property="itemQuantity" jdbcType="INTEGER" />
+			<result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+			<result column="item_encode" property="itemEncode" jdbcType="VARCHAR" />
+			<result column="business_create_time" property="createTime" jdbcType="VARCHAR" />
+			<result column="business_opt" property="opt" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	
+	<resultMap id="capitalManagementBase" type="com.card.manager.factory.finance.model.CapitalManagement">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+		<result column="customer_type" property="customerType" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="use_money" property="useMoney" jdbcType="DECIMAL" />
+		<result column="count_money" property="countMoney" jdbcType="DECIMAL" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+		<result column="opt" property="opt" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="capitalManagementDetailBase" type="com.card.manager.factory.finance.model.CapitalManagementDetail">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<result column="pay_type" property="payType" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
+		<result column="business_no" property="businessNo" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="opt" property="opt" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="dataListByType" resultMap="capitalManagementBase">
+		select * from capitalmanagement where customer_type = #{customerType}
+	</select>
+
+	<select id="queryInfoByType" resultMap="capitalManagement">
+		select a.id,a.customer_id,a.customer_name,a.customer_type,a.money,
+		a.use_money,a.count_money,a.status,a.remark,a.create_time,a.update_time,
+		a.opt,b.id detail_id,b.customer_id detail_customer_id,b.pay_type,
+		b.money detail_money,b.pay_no,b.business_no,b.remark detail_remark,
+		b.create_time detail_create_time,b.opt detail_opt,c.id business_id,
+		c.business_no business_business_no,c.order_id,c.item_id,c.item_code,
+		c.item_quantity,c.item_price,c.item_encode,c.create_time business_create_time,
+		c.opt business_opt 
+		from capitalmanagement a
+		left join capitalmanagement_detail b on a.customer_id = b.customer_id
+		left join capitalmanagement_business_item c on b.business_no = c.business_no
+		where 1=1 and a.customer_type = #{customerType}
+	</select>
+	
+	<insert id="insertOrUpdateCapitalManagement" parameterType="object">
+		INSERT INTO capitalmanagement 
+		(customer_id,customer_name,customer_type,create_time,update_time,opt) 
+		VALUES (#{customerId},#{customerName},#{customerType},now(),now(),#{opt})
+		ON DUPLICATE KEY UPDATE update_time = now(),opt = #{opt}
+	</insert>
+
+	<insert id="insertCapitalManagementDetail" parameterType="object">
+		INSERT INTO capitalmanagement_detail 
+		(customer_id,pay_type,money,pay_no,business_no,remark,create_time,opt) 
+		VALUES (#{customerId},#{payType},#{money},#{payNo},#{businessNo},#{remark},now(),#{opt})
+	</insert>
+	
+	<insert id="insertCapitalManagementBusinessItem" parameterType="Object">
+		INSERT INTO capitalmanagement_business_item 
+		(business_no,order_id,item_id,item_code,item_quantity,item_price,item_encode,create_time,opt) 
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.businessNo},#{item.orderId},#{item.itemId},#{item.itemCode},
+			#{item.itemQuantity},#{item.itemPrice},#{item.itemEncode},now(),#{item.opt})
+		</foreach>
+	</insert>
+
+
+	<update id="updateCapitalManagementMoney" parameterType="object">
+		update capitalmanagement set update_time = now(),
+		opt = #{opt}
+		<if test="payType !=null and payType ==0">
+			,money = money + #{money}
+			,count_money = count_money + #{money}
+		</if>
+		<if test="payType !=null and payType ==1">
+			,money = money - #{money}
+			,use_money = use_money + #{money}
+		</if>
+		where customer_id = #{customerId}
+	</update>
+	
+	<select id="selectCapitalManagementByCustomerId" resultMap="capitalManagementBase">
+		select * from capitalmanagement where customer_id = #{customerId}
+	</select>
+
+	<select id="dataListByCustomerId" resultMap="capitalManagementDetailBase">
+		select * from capitalmanagement_detail where customer_id = #{customerId}
+		<if test="payType !=null and payType !=''">
+			and pay_type = #{payType}
+		</if>
+		<if test="payNo !=null and payNo !=''">
+			and pay_no = #{payNo}
+		</if>
+		order by pay_type asc,create_time desc
+	</select>
+
+</mapper>

@@ -12,20 +12,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.card.manager.factory.annotation.Log;
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
+import com.card.manager.factory.finance.model.AddCapitalPoolInfoEntity;
 import com.card.manager.factory.finance.model.AuditModel;
+import com.card.manager.factory.finance.model.CapitalManagement;
+import com.card.manager.factory.finance.model.CapitalManagementBusinessItem;
+import com.card.manager.factory.finance.model.CapitalManagementDetail;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.user.mapper.FinanceMapper;
 import com.card.manager.factory.user.model.CardEntity;
 import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.ShopRebate;
@@ -33,6 +43,8 @@ import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -48,6 +60,10 @@ import net.sf.json.JSONObject;
  */
 @Service
 public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService implements FinanceMngService {
+	
+	@Resource
+	FinanceMapper financeMapper;
+	
 	@Override
 	@Log(content = "更新账号绑定银行卡信息", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateCard(CardEntity cardInfo, StaffEntity staffEntity) throws Exception {
@@ -344,5 +360,58 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		if (!json.getBoolean("success")) {
 			throw new Exception("资金池清算失败，请联系技术人员！");
 		}
+	}
+	
+	@Override
+	public Page<CapitalManagement> dataListByType(Pagination pagination, Map<String, Object> params) {
+		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
+		return financeMapper.dataListByType(params);
+	}
+
+	@Override
+	@Log(content = "添加资金池记录", source = Log.BACK_PLAT, type = Log.ADD)
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public void insertCapitalPoolInfo(AddCapitalPoolInfoEntity entity) throws Exception {
+		CapitalManagement capitalManagement = new CapitalManagement();
+		capitalManagement.setCustomerId(entity.getCustomerId());
+		capitalManagement.setCustomerName(entity.getCustomerName());
+		capitalManagement.setCustomerType(entity.getCustomerType());
+		capitalManagement.setOpt(entity.getOpt());
+		
+		CapitalManagementDetail capitalManagementDetail = new CapitalManagementDetail();
+		capitalManagementDetail.setCustomerId(entity.getCustomerId());
+		capitalManagementDetail.setPayType(entity.getPayType());
+		capitalManagementDetail.setMoney(entity.getMoney());
+		capitalManagementDetail.setPayNo(entity.getPayNo());
+		capitalManagementDetail.setBusinessNo(entity.getBusinessNo());
+		capitalManagementDetail.setRemark(entity.getRemark());
+		capitalManagementDetail.setOpt(entity.getOpt());
+		
+		List<CapitalManagementBusinessItem> itemList = new ArrayList<CapitalManagementBusinessItem>();
+		for(CapitalManagementBusinessItem BusinessItem: entity.getItemList()) {
+			if (BusinessItem.check()) {
+				BusinessItem.setBusinessNo(entity.getBusinessNo());
+				BusinessItem.setOpt(entity.getOpt());
+				itemList.add(BusinessItem);
+			}
+		}
+		
+		financeMapper.insertOrUpdateCapitalManagement(capitalManagement);
+		financeMapper.insertCapitalManagementDetail(capitalManagementDetail);
+		if (itemList.size() > 0) {
+			financeMapper.insertCapitalManagementBusinessItem(itemList);
+		}
+		financeMapper.updateCapitalManagementMoney(capitalManagementDetail);
+	}
+	
+	@Override
+	public CapitalManagement queryCapitalManagementByCustomerId(String customerId) {
+		return financeMapper.selectCapitalManagementByCustomerId(customerId);
+	}
+	
+	@Override
+	public Page<CapitalManagementDetail> dataListByCustomerId(Pagination pagination, Map<String, Object> params) {
+		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
+		return financeMapper.dataListByCustomerId(params);
 	}
 }
