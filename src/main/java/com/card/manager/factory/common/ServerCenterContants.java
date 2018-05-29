@@ -94,6 +94,10 @@ public class ServerCenterContants {
 			+ "/grade/type/{id}";
 	public static final String USER_CENTER_CHILDREN_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/type/children";
+	public static final String USER_CENTER_SHOPKEEPER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/cooperation/shopkeeper";
+	public static final String USER_CENTER_PARTNER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/cooperation/partner";
 	/**
 	 * 商品中心url
 	 */
