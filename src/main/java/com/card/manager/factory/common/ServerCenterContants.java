@@ -276,6 +276,8 @@ public class ServerCenterContants {
 			+ "/order/stockOut/query";
 	public static final String ORDER_CENTER_APPLY_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/refunds/{orderId}";
+	public static final String ORDER_CENTER_IMPORT_ORDER = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/import";
 	public static final String ORDER_CENTER_AUDIT_ORDER_BACK = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/backcancel/{orderId}";
 	public static final String ORDER_CENTER_QUERY_THIRD_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")

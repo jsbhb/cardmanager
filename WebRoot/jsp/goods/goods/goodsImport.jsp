@@ -84,6 +84,9 @@
 	
 	//点击上传文件
 	$("body").on('change',"#import",function(){
+		if(!$(".uploadFile-step-right").hasClass("nextStep")){
+			$(".uploadFile-step-right").addClass("nextStep");
+		}
 		$("#image").css({
 			display : "block",
 			position : "fixed",

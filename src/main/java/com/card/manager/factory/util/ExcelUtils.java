@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -40,35 +43,6 @@ public class ExcelUtils {
 
 		return instance;
 	}
-	
-	private static DecimalFormat df = new DecimalFormat("#.######");
-	
-	@SuppressWarnings("static-access")
-	private static String getValue(XSSFCell xssfRow) {
-		if (xssfRow.getCellType() == xssfRow.CELL_TYPE_BOOLEAN) {
-			return String.valueOf(xssfRow.getBooleanCellValue());
-		} else if (xssfRow.getCellType() == xssfRow.CELL_TYPE_NUMERIC) {
-			return String.valueOf(df.format(xssfRow.getNumericCellValue()));
-		} else {
-			return String.valueOf(xssfRow.getStringCellValue());
-		}
-	}
-
-	@SuppressWarnings("static-access")
-	private static String getValue(HSSFCell hssfCell) {
-		if (hssfCell == null) {
-			return "";
-		}
-		if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
-			return String.valueOf(hssfCell.getBooleanCellValue());
-		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
-			return String.valueOf(df.format(hssfCell.getNumericCellValue()));
-		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_STRING) {
-			return String.valueOf(hssfCell.getStringCellValue());
-		} else {
-			return "";
-		}
-	}
 
 	/**
 	 * read the Excel file
@@ -78,16 +52,16 @@ public class ExcelUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public <T> List<T> readExcel(String path, Class<? extends Object> clazz) {
+	public <T> List<T> readExcel(String path, Class<? extends Object> clazz, boolean needConvert) {
 		if (path == null || "".equals(path)) {
 			return null;
 		} else {
 			String postfix = path.substring(path.lastIndexOf(".") + 1, path.length());
 			if (!"".equals(postfix)) {
 				if ("xls".equals(postfix)) {
-					return readXls(path, clazz);
+					return readXls(path, clazz, needConvert);
 				} else if ("xlsx".equals(postfix)) {
-					return readXlsx(path, clazz);
+					return readXlsx(path, clazz, needConvert);
 				}
 			} else {
 				return null;
@@ -120,6 +94,101 @@ public class ExcelUtils {
 		return;
 	}
 
+	/**
+	 * @fun 获取指定行最后一列
+	 * @param path
+	 * @return
+	 */
+	public String getLastColumn(String path, int row) {
+		if (path == null || "".equals(path)) {
+			return null;
+		} else {
+			String postfix = path.substring(path.lastIndexOf(".") + 1, path.length());
+			if (!"".equals(postfix)) {
+				if ("xls".equals(postfix)) {
+					return getLastColumnXls(path, row);
+				} else if ("xlsx".equals(postfix)) {
+					return getLastColumnXlsx(path, row);
+				}
+			} else {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	public <T> void createSheet(String filePath, String sheetName, List<T> list, String[] nameArray) {
+		if (filePath == null || "".equals(filePath)) {
+			return;
+		} else {
+			String postfix = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
+			if (!"".equals(postfix)) {
+				if ("xls".equals(postfix)) {
+					createSheetXls(filePath, sheetName, list, nameArray);
+				} else if ("xlsx".equals(postfix)) {
+					createSheetXlsx(filePath, sheetName, list, nameArray);
+				}
+			}
+		}
+	}
+
+	private <T> void createSheetXlsx(String filePath, String sheetName, List<T> list, String[] nameArray) {
+
+	}
+
+	private <T> void createSheetXls(String filePath, String sheetName, List<T> list, String[] nameArray) {
+		HSSFWorkbook hssfWorkbook = null;
+		Sheet sheet = null;// 工作表
+		Row row = null;
+		try {
+			InputStream is = new FileInputStream(filePath);
+			hssfWorkbook = new HSSFWorkbook(is);
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+		sheet = hssfWorkbook.getSheet(sheetName);
+		if (sheet == null) {
+			sheet = hssfWorkbook.createSheet(sheetName);
+			row = sheet.createRow(0);
+			for (int i = 0; i < nameArray.length; i++) {
+				Cell cell = row.createCell(i);
+				cell.setCellValue(nameArray[i]);
+			}
+		}
+	}
+
+	private ExcelUtils() {
+	}
+
+	private static DecimalFormat df = new DecimalFormat("#.######");
+
+	@SuppressWarnings("static-access")
+	private static String getValue(XSSFCell xssfRow) {
+		if (xssfRow.getCellType() == xssfRow.CELL_TYPE_BOOLEAN) {
+			return String.valueOf(xssfRow.getBooleanCellValue());
+		} else if (xssfRow.getCellType() == xssfRow.CELL_TYPE_NUMERIC) {
+			return String.valueOf(df.format(xssfRow.getNumericCellValue()));
+		} else {
+			return String.valueOf(xssfRow.getStringCellValue());
+		}
+	}
+
+	@SuppressWarnings("static-access")
+	private static String getValue(HSSFCell hssfCell) {
+		if (hssfCell == null) {
+			return "";
+		}
+		if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
+			return String.valueOf(hssfCell.getBooleanCellValue());
+		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
+			return String.valueOf(df.format(hssfCell.getNumericCellValue()));
+		} else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_STRING) {
+			return String.valueOf(hssfCell.getStringCellValue());
+		} else {
+			return "";
+		}
+	}
+
 	private void addHeadXls(String path, List<GradeTypeDTO> list) throws IOException {
 		HSSFWorkbook hssfWorkbook = null;
 		try {
@@ -135,16 +204,16 @@ public class ExcelUtils {
 		}
 		HSSFRow row1 = hssfSheet.getRow(0);
 		HSSFRow row2 = hssfSheet.getRow(1);
-		//生成单元格样式
-        HSSFCellStyle cellStyle = hssfWorkbook.createCellStyle();
-        //新建font实体
-        HSSFFont hssfFont = hssfWorkbook.createFont();
-        hssfFont.setFontName("宋体");  
-        //设置字体颜色
-        hssfFont.setColor(HSSFColor.RED.index);
-        cellStyle.setFont(hssfFont);
-        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);//水平居中  
-        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中
+		// 生成单元格样式
+		HSSFCellStyle cellStyle = hssfWorkbook.createCellStyle();
+		// 新建font实体
+		HSSFFont hssfFont = hssfWorkbook.createFont();
+		hssfFont.setFontName("宋体");
+		// 设置字体颜色
+		hssfFont.setColor(HSSFColor.RED.index);
+		cellStyle.setFont(hssfFont);
+		cellStyle.setAlignment(CellStyle.ALIGN_CENTER);// 水平居中
+		cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);// 垂直居中
 		int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 0; i < list.size(); i++) {
 			Cell cell = row1.createCell(coloumNum + i);
@@ -174,16 +243,16 @@ public class ExcelUtils {
 		}
 		XSSFRow row1 = xssfSheet.getRow(0);
 		XSSFRow row2 = xssfSheet.getRow(1);
-		//生成单元格样式
-        XSSFCellStyle cellStyle = xssfWorkbook.createCellStyle();
-        //新建font实体
-        XSSFFont xssfFont =xssfWorkbook.createFont();
-        xssfFont.setFontName("宋体");    
-        //设置字体颜色
-        xssfFont.setColor(HSSFColor.RED.index);
-        cellStyle.setFont(xssfFont);
-        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);//水平居中  
-        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);//垂直居中
+		// 生成单元格样式
+		XSSFCellStyle cellStyle = xssfWorkbook.createCellStyle();
+		// 新建font实体
+		XSSFFont xssfFont = xssfWorkbook.createFont();
+		xssfFont.setFontName("宋体");
+		// 设置字体颜色
+		xssfFont.setColor(HSSFColor.RED.index);
+		cellStyle.setFont(xssfFont);
+		cellStyle.setAlignment(CellStyle.ALIGN_CENTER);// 水平居中
+		cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);// 垂直居中
 		int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 0; i < list.size(); i++) {
 			Cell cell = row1.createCell(coloumNum + i);
@@ -196,29 +265,6 @@ public class ExcelUtils {
 		xssfWorkbook.write(excelFileOutPutStream);
 		excelFileOutPutStream.flush();
 		excelFileOutPutStream.close();
-	}
-
-	/**
-	 * @fun 获取指定行最后一列
-	 * @param path
-	 * @return
-	 */
-	public String getLastColumn(String path, int row) {
-		if (path == null || "".equals(path)) {
-			return null;
-		} else {
-			String postfix = path.substring(path.lastIndexOf(".") + 1, path.length());
-			if (!"".equals(postfix)) {
-				if ("xls".equals(postfix)) {
-					return getLastColumnXls(path, row);
-				} else if ("xlsx".equals(postfix)) {
-					return getLastColumnXlsx(path, row);
-				}
-			} else {
-				return null;
-			}
-		}
-		return null;
 	}
 
 	private String getLastColumnXlsx(String path, int rowNum) {
@@ -270,7 +316,7 @@ public class ExcelUtils {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	private <T> List<T> readXlsx(String path, Class<? extends Object> clazz) {
+	private <T> List<T> readXlsx(String path, Class<? extends Object> clazz, boolean needConvert) {
 		List<T> list = new ArrayList<T>();
 		XSSFWorkbook xssfWorkbook = null;
 		try {
@@ -284,20 +330,35 @@ public class ExcelUtils {
 		if (xssfSheet == null) {
 			return null;
 		}
+		Map<Integer, String> map = new HashMap<Integer, String>();
 		XSSFRow xssfRow = null;
 		T hSModel = null;
-		xssfRow = xssfSheet.getRow(1);
 		XSSFCell temp = null;
-		Map<Integer, String> map = new HashMap<Integer, String>();
-		if (xssfRow != null) {
-			int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
-			for (int i = 0; i < coloumNum; i++) {
-				temp = xssfRow.getCell(i);
-				map.put(i, getValue(temp).trim());
+		int startRow;
+		if(needConvert){
+			Map<String,String> convertMap = URLUtils.getExcelconvert();
+			xssfRow = xssfSheet.getRow(0);
+			if (xssfRow != null) {
+				int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
+				for (int i = 0; i < coloumNum; i++) {
+					temp = xssfRow.getCell(i);
+					map.put(i, StringToUtf8(convertMap.get(getValue(temp).trim()),"iso-8859-1"));
+				}
 			}
+			startRow = 1;
+		} else {
+			xssfRow = xssfSheet.getRow(1);
+			if (xssfRow != null) {
+				int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
+				for (int i = 0; i < coloumNum; i++) {
+					temp = xssfRow.getCell(i);
+					map.put(i, getValue(temp).trim());
+				}
+			}
+			startRow = 2;
 		}
 		// Read the Row
-		for (int rowNum = 2; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
+		for (int rowNum = startRow; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
 			xssfRow = xssfSheet.getRow(rowNum);
 			if (xssfRow != null) {
 				try {
@@ -335,7 +396,7 @@ public class ExcelUtils {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	private <T> List<T> readXls(String path, Class<? extends Object> clazz) {
+	private <T> List<T> readXls(String path, Class<? extends Object> clazz, boolean needConvert) {
 		List<T> list = new ArrayList<T>();
 		HSSFWorkbook hssfWorkbook = null;
 		try {
@@ -350,29 +411,44 @@ public class ExcelUtils {
 		if (hssfSheet == null) {
 			return null;
 		}
-		HSSFRow xssfRow = null;
-		T hSModel = null;
-		xssfRow = hssfSheet.getRow(1);
-		HSSFCell temp = null;
 		Map<Integer, String> map = new HashMap<Integer, String>();
-		if (xssfRow != null) {
-			int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
-			for (int i = 0; i < coloumNum; i++) {
-				temp = xssfRow.getCell(i);
-				map.put(i, getValue(temp).trim());
+		HSSFRow hssfRow = null;
+		T hSModel = null;
+		HSSFCell temp = null;
+		int startRow;
+		if(needConvert){
+			Map<String,String> convertMap = URLUtils.getExcelconvert();
+			hssfRow = hssfSheet.getRow(0);
+			if (hssfRow != null) {
+				int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
+				for (int i = 0; i < coloumNum; i++) {
+					temp = hssfRow.getCell(i);
+					map.put(i, StringToUtf8(convertMap.get(getValue(temp).trim()),"iso-8859-1"));
+				}
 			}
+			startRow = 1;
+		} else {
+			hssfRow = hssfSheet.getRow(1);
+			if (hssfRow != null) {
+				int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
+				for (int i = 0; i < coloumNum; i++) {
+					temp = hssfRow.getCell(i);
+					map.put(i, getValue(temp).trim());
+				}
+			}
+			startRow = 2;
 		}
 		// Read the Row
-		for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
-			xssfRow = hssfSheet.getRow(rowNum);
-			if (xssfRow != null) {
+		for (int rowNum = startRow; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+			hssfRow = hssfSheet.getRow(rowNum);
+			if (hssfRow != null) {
 				try {
 					hSModel = (T) clazz.newInstance();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 				for (Map.Entry<Integer, String> entry : map.entrySet()) {
-					temp = xssfRow.getCell(entry.getKey());
+					temp = hssfRow.getCell(entry.getKey());
 					if (temp == null) {
 						continue;
 					}
@@ -390,6 +466,15 @@ public class ExcelUtils {
 			}
 		}
 		return list;
+	}
+	
+	private String StringToUtf8(String str, String charsetName){
+		try {
+			return new String(str.getBytes(charsetName), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

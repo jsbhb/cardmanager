@@ -68,6 +68,7 @@ import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SequeceRule;
 import com.card.manager.factory.util.URLUtils;
+import com.card.manager.factory.util.Utils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -809,7 +810,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Override
 	public Map<String, Object> importGoodsInfo(String filePath, StaffEntity staffEntity) {
-		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class);
+		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class, false);
 		StringBuilder sb = new StringBuilder();
 		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
 		Set<Integer> keySet = map.keySet();
@@ -837,7 +838,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
 			Map<Integer, GoodsRebateEntity> tempMap = null;
 			for (ImportGoodsBO model : list) {
-				model.setItemCode(removePoint(model.getItemCode()));
+				model.setItemCode(Utils.removePoint(model.getItemCode()));
 				// 基础商品
 				goodsBase = new GoodsBaseEntity();
 				goodsBase.setBrandId(model.getBrandId());
@@ -863,9 +864,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goods = new GoodsEntity();
 				try {
 					goods.setSupplierId(model.getSupplierId() == null || "".equals(model.getSupplierId()) ? -1
-							: convert(model.getSupplierId()));
+							: Utils.convert(model.getSupplierId()));
 					goods.setType(
-							model.getType() == null || "".equals(model.getType()) ? -1 : convert(model.getType()));
+							model.getType() == null || "".equals(model.getType()) ? -1 : Utils.convert(model.getType()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",goods供应商ID或商品属性有误,");
@@ -884,23 +885,23 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem = new GoodsItemEntity();
 				goodsItem.setGoodsId(goods.getGoodsId());
 				goodsItem.setItemCode(model.getItemCode());
-				goodsItem.setSku(removePoint(model.getSku()));
+				goodsItem.setSku(Utils.removePoint(model.getSku()));
 				goodsItem.setShelfLife(model.getShelfLife());
 				goodsItem.setCarTon(model.getCarTon());
 				try {
 					goodsItem.setWeight(
-							model.getWeight() == null || "".equals(model.getWeight()) ? 0 : convert(model.getWeight()));
+							model.getWeight() == null || "".equals(model.getWeight()) ? 0 : Utils.convert(model.getWeight()));
 					goodsItem.setExciseTax(model.getExciseFax() == null || "".equals(model.getExciseFax()) ? 0
 							: Double.valueOf(model.getExciseFax()));
 					goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
-							: convert(model.getConversion()));
+							: Utils.convert(model.getConversion()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",item重量、消费税、换算比例有误,");
 					continue;
 				}
 				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
-				goodsItem.setEncode(removePoint(model.getEncode()));
+				goodsItem.setEncode(Utils.removePoint(model.getEncode()));
 				if (!goodsItem.check()) {
 					success = false;
 					sb.append(model.getItemCode() + ",item信息不全,");
@@ -920,10 +921,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					continue;
 				}
 				try {
-					goodsPrice.setMin(convert(model.getMin()));
+					goodsPrice.setMin(Utils.convert(model.getMin()));
 					goodsPrice.setMax(
 							"-1.0".equals(model.getMax()) || "-1".equals(model.getMax()) || null == model.getMax()
-									? null : convert(model.getMax()));
+									? null : Utils.convert(model.getMax()));
 					goodsPrice.setProxyPrice(model.getProxyPrice() == null || "".equals(model.getProxyPrice()) ? 0
 							: Double.valueOf(model.getProxyPrice()));
 					goodsPrice.setFxPrice(model.getFxPrice() == null || "".equals(model.getFxPrice()) ? 0
@@ -950,8 +951,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsStock = new GoodsStockEntity();
 				try {
 					goodsStock.setItemId(Integer.valueOf(goodsItem.getItemId()));
-					goodsStock.setFxQty(convert(model.getStock()));
-					goodsStock.setQpQty(convert(model.getStock()));
+					goodsStock.setFxQty(Utils.convert(model.getStock()));
+					goodsStock.setQpQty(Utils.convert(model.getStock()));
 				} catch (Exception e) {
 					success = false;
 					sb.append(model.getItemCode() + ",库存信息有误,");
@@ -1062,23 +1063,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			ExcelUtils.instance().addHead(filePath, gradeTypeList);
 		}
 		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
-	}
-
-	private Integer convert(String str) {
-		if (str.contains(".")) {
-			return Integer.valueOf(str.substring(0, str.indexOf(".")));
-		} else {
-			return Integer.valueOf(str);
-		}
-	}
-
-	private String removePoint(String str) {
-		if (str != null) {
-			if (str.contains(".")) {
-				return str.substring(0, str.indexOf("."));
-			}
-		}
-		return str;
 	}
 
 	@Override

@@ -22,12 +22,12 @@
     </section>
 	<section class="content-iframe content">
 	    <div class="choose-content">
-	    	<h1>选择订单维护方式</h1>
-	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAddBatch.shtml">
+	    	<h1>选择订单新增方式</h1>
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/order/stockOutMng/toAddBatch.shtml">
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量订单导入</span>
 	    	</a>
-	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toBatchUploadPic.shtml">
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/order/stockOutMng/toLogisticsBatch.shtml">
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量运单导入</span>
 	    	</a>

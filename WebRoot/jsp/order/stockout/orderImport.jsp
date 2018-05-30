@@ -16,8 +16,8 @@
 	<section class="content-header">
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">首页</a></li>
-	        <li>商品管理</li>
-	        <li class="active">商品导入</li>
+	        <li>订单管理</li>
+	        <li class="active">订单导入</li>
 	      </ol>
     </section>
 	<section class="content">
@@ -53,32 +53,39 @@
 		</div>
 		<div class="uploadBtns">
 			<div class="col-sm-5 uploadBtns-left">
-				<span>上传商品图片数据：</span>
+				<span>上传订单数据：</span>
 			</div>
 			<div class="col-sm-7 uploadBtns-right">
 				<ul>
 					<li>
 						<span class="btn-upload">上传文件</span>
-						<input type="file" id="file" name = "file" accept=".zip,.rar">
+						<input type="file" id="import" name = "import" accept=".xls,.xlsx">
 					</li>
 				</ul>
+				<p>请选择.xlsx或.xls格式文件，若无已导出的商品文件，<a href="javascript:void(0);" onclick="excelModelExport()">请下载空白模板</a></p>
 			</div>
 		</div>
 		<div class="aside-footer-content">
 			<p class="content-title">温馨提示</p>
-			<p>1、建议商品条数<font style="color:red">≤5</font>条，文件大小<font style="color:red">≤50M；</font></p>
-			<p>2、上传文件必须为<font style="color:red">zip、rar压缩文件；</font></p>
-			<p>3、图片及文件夹名称不要出现<font style="color:red">中文字符</font></p>
-			<p>4、目录结构为  xx.zip/xx.rar-->itemCode(商家编码/商品编号)-->detail文件夹+主图--->商详图片</p>
-			<p>5、图片名称请以数字开头，如需排序，请按照数字从小到大命名文件</p>
-			<p>6、其他相关问题请联系技术；</p>
+			<p>1、建议条数≤500条，文件大小≤5M</p>
+			<p>2、黄底为选填，其余为必填</p>
+			<p>3、如果订购人信息填写，请将订购人姓名，身份证，手机号全部填完整</p>
+			<p>4、区域中心，供应商，订单类型，订单来源，支付方式对应的参数请参考各个sheet，填写一定要准确</p>
+			<p>5、如果区域中心和供应商有新增或修改，请重新下载模板</p>
+			<p>6、订单如果多个商品，除了商品信息不一致其他信息请都保持一致</p>
+			<p>7、其他相关问题请联系技术；</p>
 		</div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	
-	$("body").on('change',"#file",function(){
+	function excelModelExport(){
+		window.open("${wmsUrl}/admin/order/stockOutMng/downLoadOrderImportExcel.shtml");
+	}
+	
+	//点击上传文件
+	$("body").on('change',"#import",function(){
 		if(!$(".uploadFile-step-right").hasClass("nextStep")){
 			$(".uploadFile-step-right").addClass("nextStep");
 		}
@@ -88,11 +95,25 @@
 			zIndex : 99,
 		});
 		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/goods/goodsMng/uploadCompressedFile.shtml', //你处理上传文件的服务端
+			url : '${wmsUrl}/admin/uploadExcelFile.shtml?path=orderImport', //你处理上传文件的服务端
 			secureuri : false,
-			fileElementId : "file",
+			fileElementId : "import",
 			dataType : 'json',
-			success:function(data){
+			success : function(data) {
+				//文件上传成功，进行读取操作
+				var filePath = data.msg;
+				readExcelForImport(filePath);
+			}
+		})
+	});
+	
+	function readExcelForImport(filePath){
+		$.ajax({
+			 url:"${wmsUrl}/admin/order/stockOutMng/importOrder.shtml?filePath="+filePath,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 success:function(data){
 				 if(data.success){
 					 $(".uploadFile-step-right").removeClass("nextStep");
 					 if(data.msg != '' && data.msg != null){
@@ -107,8 +128,9 @@
 				 $("#image").hide();
 				 layer.alert("处理失败，请联系客服处理");
 			 }
-		})
-	});
+		 });
+	}
+
 	</script>
 </body>
 </html>

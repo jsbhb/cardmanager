@@ -88,6 +88,7 @@ public class OrderMngController extends BaseController {
 		return forword("order/stockout/list", context);
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, OrderInfo pagination) {
@@ -531,4 +532,66 @@ public class OrderMngController extends BaseController {
 			return;
 		}
 	}
+	
+	@RequestMapping(value = "/downLoadOrderImportExcel")
+	public void downLoadOrderImportExcel(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		try {
+			StaffEntity staffEntity = SessionUtils.getOperator(req);
+			orderService.downLoadOrderImportExcel(req, resp, staffEntity);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
+			return;
+		}
+	}
+	
+	@RequestMapping(value = "/orderMaintain")
+	public ModelAndView orderMaintain(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put("opt", opt);
+		return forword("order/stockout/maintain_choose", context);
+	}
+	
+	@RequestMapping(value = "/toAddBatch")
+	public ModelAndView toAddBatch(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		return forword("order/stockout/orderImport", context);
+	}
+
+	
+	@RequestMapping(value = "/importOrder")
+	public void importOrder(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String filePath = req.getParameter("filePath");
+			if (StringUtil.isEmpty(filePath)) {
+				sendFailureMessage(resp, "操作失败：文件路径不正确");
+				return;
+			}
+			Map<String, Object> result = orderService.importOrder(filePath, staffEntity);
+			if ((boolean) result.get("success")) {
+				sendSuccessMessage(resp, result.get("msg") + "");
+			} else {
+				sendFailureMessage(resp, result.get("msg") + "");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+	}
+	
+	@RequestMapping(value = "/toLogisticsBatch")
+	public ModelAndView toLogisticsBatch(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		return forword("order/stockout/logisticsImport", context);
+	}
+
 }

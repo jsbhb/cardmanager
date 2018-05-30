@@ -15,8 +15,10 @@ public class URLUtils {
 
 	private static ResourceBundle res = ResourceBundle.getBundle("urls");
 	private static ResourceBundle conf = ResourceBundle.getBundle("conf");
+	private static ResourceBundle excelconvert = ResourceBundle.getBundle("excelConvertConf");
 	private static Map<String, String> urlsMap = null;
 	private static Map<String, String> confMap = null;
+	private static Map<String, String> excelconvertMap = null;
 
 	/**
 	 * 获取urlMap
@@ -36,6 +38,21 @@ public class URLUtils {
 			System.out.println(key + "---" + value);
 		}
 		return urlsMap;
+	}
+	
+	public static Map<String, String> getExcelconvert() {
+		if (excelconvertMap != null && !excelconvertMap.isEmpty()) {
+			return excelconvertMap;
+		}
+		excelconvertMap = new HashMap<String, String>();
+		Enumeration e = excelconvert.getKeys();
+		while (e.hasMoreElements()) {
+			String key = e.nextElement().toString();
+			String value = getExcelconvertMap(key);
+			excelconvertMap.put(key, value);
+			System.out.println(key + "---" + value);
+		}
+		return excelconvertMap;
 	}
 
 	public static Map<String, String> getConfMap() {
@@ -59,6 +76,10 @@ public class URLUtils {
 
 	public static String getConfMapKey(String key) {
 		return conf.getString(key);
+	}
+	
+	public static String getExcelconvertMap(String key) {
+		return excelconvert.getString(key);
 	}
 
 }

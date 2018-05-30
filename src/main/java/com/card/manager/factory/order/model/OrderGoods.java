@@ -1,5 +1,8 @@
 package com.card.manager.factory.order.model;
 
+import com.card.manager.factory.order.pojo.OrderImportBO;
+import com.card.manager.factory.util.Utils;
+
 /**
  * ClassName: OrderGoods <br/>
  * Function: TODO ADD FUNCTION. <br/>
@@ -23,6 +26,19 @@ public class OrderGoods {
 	private Double itemPrice;
 	private Double actualPrice;
 	private String remark;
+	
+	public OrderGoods(){}
+
+	public OrderGoods(OrderImportBO model) throws NumberFormatException{
+		orderId = Utils.removePoint(model.getOrderId());
+		itemId = Utils.removePoint(model.getItemId());
+		sku = Utils.removePoint(model.getSku());
+		itemName = model.getItemName();
+		itemCode = Utils.removePoint(model.getItemCode());
+		itemQuantity = Integer.valueOf(Utils.convert(model.getItemQuantity()));
+		itemPrice = Double.valueOf(model.getItemPrice());
+		actualPrice = Double.valueOf(model.getItemPrice());
+	}
 
 	public String getItemImg() {
 		return itemImg;

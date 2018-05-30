@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -35,7 +36,7 @@ public class ExcelUtil {
 	 * @param clazz list中对象的类型
 	 * @return 
 	 */
-	public static void createExcel(List dataList,String[] nameArray,String[] colArray,String filePath, int index, String sheetName, SXSSFWorkbook swb) throws Exception{
+	public static void createExcel(List dataList,String[] nameArray,String[] colArray,String filePath, int index, String sheetName, Workbook swb) throws Exception{
 		File dir = new File(filePath.substring(0,filePath.lastIndexOf("/")));
 		int size = dataList.size();//list长度
 		Class clazz = null;//list中数据类型
@@ -45,6 +46,11 @@ public class ExcelUtil {
 		
 		if(!dir.exists()){
 			dir.mkdirs();
+		}
+		
+		sheet = swb.getSheet(sheetName);
+		if(sheet != null){
+			swb.removeSheetAt(swb.getSheetIndex(sheetName));
 		}
 		
 		sheet = swb.getSheet(sheetName);
@@ -78,7 +84,7 @@ public class ExcelUtil {
 		
 	}
 	
-	public static void writeToExcel(SXSSFWorkbook swb, String filePath) throws Exception{
+	public static void writeToExcel(Workbook swb, String filePath) throws Exception{
 		FileOutputStream fileOut = new FileOutputStream(filePath);
 		swb.write(fileOut);
 		fileOut.close();

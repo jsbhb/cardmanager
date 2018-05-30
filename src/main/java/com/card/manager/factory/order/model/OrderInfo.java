@@ -3,6 +3,8 @@ package com.card.manager.factory.order.model;
 import java.util.List;
 
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.order.pojo.OrderImportBO;
+import com.card.manager.factory.util.Utils;
 
 public class OrderInfo extends Pagination{
 
@@ -80,6 +82,35 @@ public class OrderInfo extends Pagination{
 	private Integer tagFun;
 	
 	private Integer orderSource;
+	
+	private Integer manual;//是否手工单，0：自动；1手动
+	
+	private String phone;
+	
+	public OrderInfo(){}
+
+	public OrderInfo(OrderImportBO model) {
+		orderId = Utils.removePoint(model.getOrderId());
+		status = 3;
+		expressType = 0;
+		centerId = 2;
+		centerName = "中国供销海外购";
+		shopId = model.getShopId();
+		shopName = model.getShopName();
+		supplierId = model.getSupplierId();
+		supplierName = model.getSupplierName();
+		weight = 100;
+		orderFlag = model.getOrderFlag();
+		createType = 0;
+		tagFun = 0;
+		orderSource = model.getOrderSource();
+		manual = 1;
+		if(!"".equals(model.getPhone()) && !"".equals(model.getName()) && !"".equals(model.getIdNum())){
+			phone = Utils.removePoint(model.getPhone());
+		}else {
+			phone = Utils.removePoint(model.getReceivePhone());
+		}
+	}
 
 	public boolean check() {
 		if (orderDetail == null || orderGoodsList == null || orderFlag == null || createType == null || userId == null
@@ -89,6 +120,22 @@ public class OrderInfo extends Pagination{
 		return true;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Integer getManual() {
+		return manual;
+	}
+
+	public void setManual(Integer manual) {
+		this.manual = manual;
+	}
+	
 	public Integer getPushUserId() {
 		return pushUserId;
 	}

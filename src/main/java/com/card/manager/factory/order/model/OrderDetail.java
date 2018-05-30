@@ -1,5 +1,8 @@
 package com.card.manager.factory.order.model;
 
+import com.card.manager.factory.order.pojo.OrderImportBO;
+import com.card.manager.factory.util.Utils;
+
 /**
  * ClassName: OrderDetail <br/>
  * Function: TODO ADD FUNCTION. <br/>
@@ -60,6 +63,27 @@ public class OrderDetail {
 	private String receiveZipCode;
 
 	private String remark;
+	
+	public OrderDetail(){}
+
+	public OrderDetail(OrderImportBO model) throws NumberFormatException{
+		orderId = Utils.removePoint(model.getOrderId());
+		payType = model.getPayType();
+		payment = Double.valueOf(model.getPayment());
+		postFee = Double.valueOf(model.getPostFee());
+		taxFee = Double.valueOf(model.getTaxFee());
+		exciseTax = 0.0;
+		tariffTax = 0.0;
+		incrementTax = 0.0;
+		payNo = Utils.removePoint(model.getPayNo());
+		disAmount = 0.0;
+		receiveName = model.getReceiveName();
+		receivePhone = Utils.removePoint(model.getReceivePhone());
+		receiveProvince = model.getProvince();
+		receiveCity = model.getCity();
+		receiveArea = model.getArea();
+		receiveAddress = model.getAddress();
+	}
 
 	public Double getDisAmount() {
 		return disAmount;

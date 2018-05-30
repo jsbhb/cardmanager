@@ -18,6 +18,13 @@ public class CalculationUtils {
 		BigDecimal b2 = new BigDecimal(Double.valueOf(value2));
 		return b1.add(b2).doubleValue();
 	}
+	
+	public static double add(double value1, double value2, double value3) {
+		BigDecimal b1 = new BigDecimal(String.valueOf(value1));
+		BigDecimal b2 = new BigDecimal(String.valueOf(value2));
+		BigDecimal b3 = new BigDecimal(String.valueOf(value3));
+		return b1.add(b2).add(b3).doubleValue();
+	}
 
 	/**
 	 * 提供精确减法运算的sub方法
