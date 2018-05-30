@@ -347,6 +347,11 @@ function setExpress(orderId){
 
 //点击上传文件
 $('.list-content').on('change','.list-btns input[type=file]',function(){
+	var imagSize = document.getElementById("import").files[0].size;
+	if(imagSize>1024*1024*10) {
+		layer.alert("文件大小请控制在10M以内，当前文件为："+(imagSize/(1024*1024)).toFixed(2)+"M");
+		return true;
+	}
 	$.ajaxFileUpload({
 		url : '${wmsUrl}/admin/uploadExcelFile.shtml', //你处理上传文件的服务端
 		secureuri : false,

@@ -81,6 +81,11 @@
 	
 	//点击上传文件
 	$("body").on('change',"#import",function(){
+		var imagSize = document.getElementById("import").files[0].size;
+		if(imagSize>1024*1024*10) {
+			layer.alert("文件大小请控制在10M以内，当前文件为："+(imagSize/(1024*1024)).toFixed(2)+"M");
+			return true;
+		}
 		$("#finishTag").attr("class","uploadFile-step-right nextStep");
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadExcelFile.shtml', //你处理上传文件的服务端

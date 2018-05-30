@@ -703,6 +703,12 @@
 			var id = $(this).parent().attr("data-id");
 			var nextId =  parseInt(id)+1;
 			
+			var imagSize = document.getElementById("pic"+id).files[0].size;
+			if(imagSize>1024*1024*3) {
+				layer.alert("图片大小请控制在3M以内，当前图片为："+(imagSize/(1024*1024)).toFixed(2)+"M");
+				return true;
+			}
+			
 			$.ajaxFileUpload({
 				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
 				secureuri : false,
