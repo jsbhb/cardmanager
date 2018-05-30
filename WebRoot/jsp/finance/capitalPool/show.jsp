@@ -23,8 +23,8 @@
 					<div class="searchItem">
 					   	<select class="form-control" name="payType" id="payType">
 						  	<option selected="selected" value="">支付类型</option>
-						  	<option value="0">收入</option>
-						  	<option value="1">支出</option>
+						  	<option value="0">充值</option>
+						  	<option value="1">消费</option>
 					    </select>
 					</div>
 				</div>
@@ -150,8 +150,8 @@ function rebuildTable(data){
 		}
 		str += "<td>" + "${CapitalManagement.customerName}";
 		switch(payType){
-			case 0:str += "</td><td>收入";break;
-			case 1:str += "</td><td>支出";break;
+			case 0:str += "</td><td>充值";break;
+			case 1:str += "</td><td>消费";break;
 			default:str += "</td><td>其他";
 		}
 		str += "</td><td>" + list[i].money;

@@ -8,7 +8,7 @@ public class AddCapitalPoolInfoEntity {
 	private Integer customerId;//客户ID
 	private String customerName;//客户名称
 	private Integer customerType;//客户类型0:供应商,1:区域中心
-	private Integer payType;//支付类型0:收入,1:支出
+	private Integer payType;//支付类型0:充值,1:消费
 	private Double money;//金额
 	private String payNo;//支付流水号
 	private String businessNo;//业务流水号

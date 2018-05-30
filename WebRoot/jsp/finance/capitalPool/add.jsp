@@ -50,8 +50,8 @@
 				<div class="col-sm-3 item-left">支付类型</div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="payType" id="payType">
-                   	  <option selected="selected" value="0">收入</option>
-                   	  <option value="1">支出</option>
+                   	  <option selected="selected" value="0">充值</option>
+                   	  <option value="1">消费</option>
 	                </select>
 				</div>
 			</div>

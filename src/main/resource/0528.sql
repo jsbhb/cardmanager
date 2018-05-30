@@ -27,7 +27,7 @@ drop table if exists  `capitalmanagement_detail`;
 CREATE TABLE `coopback`.`capitalmanagement_detail` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `customer_id` INT NULL COMMENT '客户ID',
-  `pay_type` TINYINT UNSIGNED NULL COMMENT '支付类型0:收入,1:支出',
+  `pay_type` TINYINT UNSIGNED NULL COMMENT '支付类型0:充值,1:消费',
   `money` DECIMAL(12,2) NULL COMMENT '金额',
   `pay_no` VARCHAR(50) NULL COMMENT '支付流水号',
   `business_no` VARCHAR(50) NULL COMMENT '业务流水号',
