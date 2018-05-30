@@ -39,7 +39,7 @@
 						<div class="step-main-title">导入模板</div>
 					</div>
 				</div>
-				<div class="uploadFile-step-right nextStep" id="finishTag">
+				<div class="uploadFile-step-right nextStep">
 					<div class="uploadFile-step-header">
 						<div class="step-header-inner">
 							<span class="step-header-icon">2</span>
@@ -67,7 +67,7 @@
 		</div>
 		<div class="aside-footer-content">
 			<p class="content-title">温馨提示</p>
-			<p>1、建议运单条数≤500条，文件大小≤10M；</p>
+			<p>1、建议运单条数≤500条，文件大小≤5M；</p>
 			<p>2、其他相关问题请联系技术；</p>
 		</div>
 	</section>
@@ -81,12 +81,14 @@
 	
 	//点击上传文件
 	$("body").on('change',"#import",function(){
+		if(!$(".uploadFile-step-right").hasClass("nextStep")){
+			$(".uploadFile-step-right").addClass("nextStep");
+		}
 		var imagSize = document.getElementById("import").files[0].size;
-		if(imagSize>1024*1024*10) {
-			layer.alert("文件大小请控制在10M以内，当前文件为："+(imagSize/(1024*1024)).toFixed(2)+"M");
+		if(imagSize>1024*1024*5) {
+			layer.alert("文件大小请控制在5M以内，当前文件为："+(imagSize/(1024*1024)).toFixed(2)+"M");
 			return true;
 		}
-		$("#finishTag").attr("class","uploadFile-step-right nextStep");
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadExcelFile.shtml', //你处理上传文件的服务端
 			secureuri : false,
@@ -110,7 +112,6 @@
 		})
 	});
 	
-
 	function readExcelForMaintain(filePath){
 		$.ajax({
 			 url:"${wmsUrl}/admin/order/stockOutMng/readExcelForMaintain.shtml?filePath="+filePath,
@@ -119,8 +120,8 @@
 			 dataType:'json',
 			 success:function(data){
 				 if(data.success){
-					 $("#finishTag").attr("class","uploadFile-step-right");
-					 $("#import").val();
+					 $(".uploadFile-step-right").removeClass("nextStep");
+					 layer.alert("导入完成！");
 				 }else{
 					 layer.alert(data.msg);
 				 }
