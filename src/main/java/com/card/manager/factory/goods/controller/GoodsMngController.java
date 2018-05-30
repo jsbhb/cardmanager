@@ -693,12 +693,16 @@ public class GoodsMngController extends BaseController {
 				GoodsFielsMaintainBO bo;
 				List<GoodsFielsMaintainBO> list = new ArrayList<GoodsFielsMaintainBO>();
 				for (String itemCodeFile : itemCodeList) {
-					bo = dealGoodsPic(itemCodeFile, compressedFilePath + sourceNameWithoutSuffix, staffEntity);
-					if (bo == null) {
-						continue;
+					try{
+						bo = dealGoodsPic(itemCodeFile, compressedFilePath + sourceNameWithoutSuffix, staffEntity);
+						if (bo == null) {
+							continue;
+						}
+						bo.setItemCode(itemCodeFile);
+						list.add(bo);
+					}catch(Exception e){
+						sendFailureMessage(resp, "操作失败：" + e.getMessage());
 					}
-					bo.setItemCode(itemCodeFile);
-					list.add(bo);
 				}
 
 				goodsService.batchUploadPic(list, staffEntity.getToken());
