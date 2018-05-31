@@ -56,6 +56,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/supplier/query";
 	public static final String SUPPLIER_CENTER_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/suppliercenter/")
 			+ SERVER_CENTER_EDITION + "/supplier/queryAll";
+	public static final String SUPPLIER_CENTER_UPDATE = (TOKEN_NOT_NEED ? "/" : "/suppliercenter/")
+			+ SERVER_CENTER_EDITION + "/supplier/update";
 
 	/**
 	 * 用户中心url

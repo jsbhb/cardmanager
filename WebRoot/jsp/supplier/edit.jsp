@@ -8,150 +8,102 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <%@include file="../resourceLink.jsp"%>
 </head>
 
 <body>
-	<section class="content">
-        <div class="main-content">
-			<div class="row">
-				<div class="col-xs-12" >
-					<form class="form-horizontal" role="form" id="supplierForm" >
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>基本信息</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">供应商编号<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly name="id" value="${supplier.id}">
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">供应商名称<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-user-o"></i>
-				                  </div>
-		                  			<input type="text" class="form-control" readonly name="supplierName" readonly value="${supplier.supplierName}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">国家<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="country" placeholder="请输入..." readonly value="${supplier.country}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">省<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="province" placeholder="请输入..." readonly value="${supplier.province}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">市<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="city" placeholder="请输入..." readonly value="${supplier.city}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">区<font style="color:red">*</font> </label>
-							<div class="col-sm-2">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="area" placeholder="请输入..." readonly value="${supplier.area}">
-				                </div>
-							</div>
-							<label class="col-sm-1 control-label no-padding-right" for="form-field-1">地址<font style="color:red">*</font> </label>
-							<div class="col-sm-5">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-address-book"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="address" readonly value="${supplier.address}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1"><h4>联系方式</h4></label>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">负责人<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="operator" placeholder="请输入负责人名称" readonly value="${supplier.operator}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">电话<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="phone" placeholder="请输入..." readonly value="${supplier.phone}">
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">邮箱<font style="color:red">*</font> </label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="email" placeholder="请输入..." readonly value="${supplier.email}">
-				                </div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">qq</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="qq" placeholder="请输入..." readonly value="${supplier.qq}">
-				                </div>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="form-field-1">传真</label>
-							<div class="col-sm-3">
-								<div class="input-group">
-				                  <div class="input-group-addon">
-				                    <i class="fa fa-phone"></i>
-				                  </div>
-				                  <input type="text" class="form-control" name="fax" placeholder="请输入..." readonly value="${supplier.fax}">
-				                </div>
-							</div>
-						</div>
-						<div class="col-md-offset-3 col-md-9">
-							<div class="form-group">
-	                            <button type="button" disabled class="btn btn-primary" id="submitBtn">保存</button>
-	                        </div>
-                       </div>
-					</form>
+	<section class="content-iframe content">
+        <form class="form-horizontal" role="form" id="supplierForm">
+			<div class="title">
+	       		<h1>基本信息</h1>
+	       	</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">供应商编号</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" readonly name="id" value="${supplier.id}">
 				</div>
 			</div>
-		</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">供应商名称</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="supplierName" readonly value="${supplier.supplierName}">
+				</div>
+			</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">供应商代码</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="supplierCode" value="${supplier.supplierCode}">
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">国家</div>
+				<div class="col-sm-9 item-right">
+             		<input type="text" class="form-control" name="country" value="${supplier.country}">
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">省</div>
+				<div class="col-sm-9 item-right">
+               		<input type="text" class="form-control" name="province" value="${supplier.province}">
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">市</div>
+				<div class="col-sm-9 item-right">
+               		<input type="text" class="form-control" name="city" value="${supplier.city}">
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">区</div>
+				<div class="col-sm-9 item-right">
+               		<input type="text" class="form-control" name="area" value="${supplier.area}">
+				</div>
+			</div>
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">地址</div>
+				<div class="col-sm-9 item-right">
+               		<input type="text" class="form-control" name="address" value="${supplier.address}">
+				</div>
+			</div>
+			<div class="title">
+	       		<h1>联系方式</h1>
+	       	</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">负责人</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="operator" value="${supplier.operator}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">电话</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="phone" value="${supplier.phone}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">邮箱</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="email" value="${supplier.email}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">qq</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="qq" value="${supplier.qq}">
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">传真</div>
+				<div class="col-sm-9 item-right">
+	                <input type="text" class="form-control" name="fax" value="${supplier.fax}">
+				</div>
+			</div>
+			
+	        <div class="submit-btn">
+	           	<button type="button" id="submitBtn">保存信息</button>
+	       	</div>
+		</form>
 	</section>
 	<%@include file="../resourceScript.jsp"%>
 	<script type="text/javascript">
@@ -170,7 +122,6 @@
 						 parent.layer.closeAll();
 						 parent.reloadTable();
 					 }else{
-						 parent.reloadTable();
 						 layer.alert(data.msg);
 					 }
 				 },
