@@ -45,8 +45,8 @@ public class OrderImportBO {
 		orderSource = ParemeterConverUtil.getOrderSource(orderSourceName);
 		orderFlag = ParemeterConverUtil.getOrderFlag(orderFlagName);
 		payType = ParemeterConverUtil.getPayType(payTypeName);
-		taxFee = taxFee == null ? "0" : taxFee;
-		postFee = postFee == null ? "0" : postFee;
+		taxFee = taxFee == null || "".equals(taxFee) ? "0" : taxFee;
+		postFee = postFee == null || "".equals(postFee) ? "0" : postFee;
 		phone = phone == null ? "" : phone;
 		name = name == null ? "" : name;
 		idNum = idNum == null ? "" : idNum;

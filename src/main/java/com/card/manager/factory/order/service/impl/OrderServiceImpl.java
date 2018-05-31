@@ -296,7 +296,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				}
 			} catch (NumberFormatException e) {
 				result.put("success", false);
-				result.put("msg", "订单号：" + detail.getOrderId() + "数字类信息填写有误,请核对");
+				result.put("msg", "订单号：" + info.getOrderId() + "数字类信息填写有误,请核对");
 				return result;
 			}
 			userInfo = new UserInfoBO(model);
