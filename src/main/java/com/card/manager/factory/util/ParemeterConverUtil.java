@@ -22,8 +22,9 @@ public class ParemeterConverUtil {
 			put("PC商城", 0);
 			put("手机", 1);
 			put("有赞", 3);
-			put("B2B线下", 4);
+			put("线下", 4);
 			put("展厅", 5);
+			put("大客户", 6);
 		}
 	};
 	
