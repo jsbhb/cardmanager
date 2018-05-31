@@ -15,6 +15,7 @@ public class AddCapitalPoolInfoEntity {
 	private String remark;
 	private String opt;
 	private List<CapitalManagementBusinessItem> itemList;
+	private String customerCode;//客户代码
 	
 	public Integer getId() {
 		return id;
@@ -81,6 +82,12 @@ public class AddCapitalPoolInfoEntity {
 	}
 	public void setBusinessNo(String businessNo) {
 		this.businessNo = businessNo;
+	}
+	public String getCustomerCode() {
+		return customerCode;
+	}
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 	
 }

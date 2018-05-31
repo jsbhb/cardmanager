@@ -1,10 +1,13 @@
 package com.card.manager.factory.finance.model;
 
-public class CapitalManagementBusinessItem {
+import com.card.manager.factory.base.Pagination;
+
+public class CapitalManagementBusinessItem extends Pagination {
 
 	private Integer id;
 	private String businessNo;//业务流水号
 	private String orderId;//订单号
+	private String goodsName;//商品编号
 	private String itemId;//商品编号
 	private String itemCode;//商家编码
 	private Integer itemQuantity;//商品数量
@@ -73,8 +76,14 @@ public class CapitalManagementBusinessItem {
 	public void setOpt(String opt) {
 		this.opt = opt;
 	}
+	public String getGoodsName() {
+		return goodsName;
+	}
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
 	public boolean check() {
-		if ( "".equals(orderId) && "".equals(itemId) && "".equals(itemCode) 
+		if ( "".equals(orderId) && "".equals(goodsName) && "".equals(itemId) && "".equals(itemCode) 
 				&& itemQuantity == null && itemPrice == null && "".equals(itemEncode)) {
 			return false;
 		}

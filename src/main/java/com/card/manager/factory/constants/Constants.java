@@ -265,4 +265,5 @@ public class Constants {
 	 */
 	public static final String CUSTOMER_TYPE_SUPPLIER = "0";
 	public static final String CUSTOMER_TYPE_CENTER = "1";
+	public static final String CUSTOMER_WARNING_MONEY = "3000";
 }

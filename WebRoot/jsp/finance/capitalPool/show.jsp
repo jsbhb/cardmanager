@@ -37,6 +37,7 @@
 					<div class="searchBtns">
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
                          <button type="button" class="clear">清除选项</button>
+                         <button type="button" class="add" onclick="excelExport(${CapitalManagement.customerId})">导出记录</button>
                     </div>
                 </div>
             </div>
@@ -111,16 +112,13 @@ var options = {
 	callback:rebuildTable
 }
 
-
 $(function(){
 	 $(".pagination-nav").pagination(options);
 })
 
-
 function reloadTable(){
 	$.page.loadData(options);
 }
-
 
 /**
  * 重构table
@@ -156,13 +154,27 @@ function rebuildTable(data){
 		}
 		str += "</td><td>" + list[i].money;
 		str += "</td><td>" + list[i].payNo;
-		str += "</td><td>" + list[i].businessNo;
+		str += "</td><td>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toBusinessItem(\""+list[i].businessNo+"\")'>"+list[i].businessNo+"</a>";
 		str += "</td><td>" + list[i].remark;
 		str += "</td><td>" + list[i].createTime;
 		str += "</td><td>" + list[i].opt;
 		str += "</td></tr>";
 	}
 	$("#orderTable tbody").html(str);
+}
+
+function toBusinessItem(businessNo){
+	var index = layer.open({
+	  title:"查看业务信息",
+	  type: 2,
+	  content: '${wmsUrl}/admin/finance/capitalPoolMng/showCapitalManagementBusinessItem.shtml?businessNo='+businessNo
+	});
+	layer.full(index);
+}
+
+function excelExport(customerId){
+	window.open("${wmsUrl}/admin/finance/capitalPoolMng/downLoadCapitalPoolRecordExcel.shtml?customerId="+customerId);
 }
 </script>
 </body>

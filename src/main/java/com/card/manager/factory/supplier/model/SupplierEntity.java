@@ -37,6 +37,7 @@ public class SupplierEntity {
 	private String updateTime;
 	private String opt;
 	private boolean isDelete;
+	private String supplierCode;//供应商代码
 
 	public SupplierEntity() {
 	}
@@ -65,6 +66,7 @@ public class SupplierEntity {
 		this.updateTime = jObj.getString("updateTime");
 		this.opt = jObj.getString("opt");
 		this.isDelete = jObj.getBoolean("delete");
+		this.supplierCode = jObj.getString("supplierCode");
 	}
 
 	public int getId() {
@@ -209,6 +211,14 @@ public class SupplierEntity {
 
 	public void setDelete(boolean isDelete) {
 		this.isDelete = isDelete;
+	}
+
+	public String getSupplierCode() {
+		return supplierCode;
+	}
+
+	public void setSupplierCode(String supplierCode) {
+		this.supplierCode = supplierCode;
 	}
 
 }

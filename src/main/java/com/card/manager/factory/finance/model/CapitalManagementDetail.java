@@ -8,6 +8,7 @@ public class CapitalManagementDetail extends Pagination {
 
 	private Integer id;
 	private Integer customerId;//客户ID
+	private String customerName;
 	private Integer payType;//支付类型0:充值,1:消费
 	private Double money;//金额
 	private String payNo;//支付流水号
@@ -76,6 +77,12 @@ public class CapitalManagementDetail extends Pagination {
 	}
 	public void setManagementBusinessItemList(List<CapitalManagementBusinessItem> managementBusinessItemList) {
 		this.managementBusinessItemList = managementBusinessItemList;
+	}
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 	
 }

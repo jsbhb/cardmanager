@@ -15,6 +15,9 @@
 		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
 		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
 		<result column="opt" property="opt" jdbcType="VARCHAR" />
+		<result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+		<result column="total" property="total" jdbcType="VARCHAR" />
+		<result column="warning" property="warning" jdbcType="VARCHAR" />
 		<collection ofType="com.card.manager.factory.finance.model.CapitalManagementDetail"
 			property="managementDetailList">
 			<id column="detail_id" property="id" jdbcType="INTEGER" />
@@ -26,20 +29,48 @@
 			<result column="detail_remark" property="remark" jdbcType="VARCHAR" />
 			<result column="detail_create_time" property="createTime" jdbcType="VARCHAR" />
 			<result column="detail_opt" property="opt" jdbcType="VARCHAR" />
+			<collection ofType="com.card.manager.factory.finance.model.CapitalManagementBusinessItem"
+				property="managementBusinessItemList">
+				<id column="business_id" property="id" jdbcType="INTEGER" />
+				<result column="business_business_no" property="businessNo" jdbcType="VARCHAR" />
+				<result column="order_id" property="orderId" jdbcType="VARCHAR" />
+				<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+				<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+				<result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+				<result column="item_quantity" property="itemQuantity" jdbcType="INTEGER" />
+				<result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+				<result column="item_encode" property="itemEncode" jdbcType="VARCHAR" />
+				<result column="business_create_time" property="createTime" jdbcType="VARCHAR" />
+				<result column="business_opt" property="opt" jdbcType="VARCHAR" />
+			</collection>
 		</collection>
-		<collection ofType="com.card.manager.factory.finance.model.CapitalManagementBusinessItem"
-			property="managementBusinessItemList">
-			<id column="business_id" property="id" jdbcType="INTEGER" />
-			<result column="business_business_no" property="businessNo" jdbcType="VARCHAR" />
-			<result column="order_id" property="orderId" jdbcType="VARCHAR" />
-			<result column="item_id" property="itemId" jdbcType="VARCHAR" />
-			<result column="item_code" property="itemCode" jdbcType="VARCHAR" />
-			<result column="item_quantity" property="itemQuantity" jdbcType="INTEGER" />
-			<result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
-			<result column="item_encode" property="itemEncode" jdbcType="VARCHAR" />
-			<result column="business_create_time" property="createTime" jdbcType="VARCHAR" />
-			<result column="business_opt" property="opt" jdbcType="VARCHAR" />
-		</collection>
+	</resultMap>
+	
+	<resultMap id="capitalManagementDownLoad" type="com.card.manager.factory.finance.model.CapitalManagementDownLoadEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+		<result column="customer_type" property="customerType" jdbcType="INTEGER" />
+		<result column="money" property="money" jdbcType="DECIMAL" />
+		<result column="use_money" property="useMoney" jdbcType="DECIMAL" />
+		<result column="count_money" property="countMoney" jdbcType="DECIMAL" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+		<result column="pay_type" property="payType" jdbcType="INTEGER" />
+		<result column="detail_money" property="detailMoney" jdbcType="DECIMAL" />
+		<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
+		<result column="business_no" property="businessNo" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="opt" property="opt" jdbcType="VARCHAR" />
+		<result column="order_id" property="orderId" jdbcType="VARCHAR" />
+		<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+		<result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+		<result column="item_quantity" property="itemQuantity" jdbcType="INTEGER" />
+		<result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+		<result column="item_encode" property="itemEncode" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<resultMap id="capitalManagementBase" type="com.card.manager.factory.finance.model.CapitalManagement">
@@ -55,11 +86,15 @@
 		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
 		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
 		<result column="opt" property="opt" jdbcType="VARCHAR" />
+		<result column="customer_code" property="customerCode" jdbcType="VARCHAR" />
+		<result column="total" property="total" jdbcType="VARCHAR" />
+		<result column="warning" property="warning" jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<resultMap id="capitalManagementDetailBase" type="com.card.manager.factory.finance.model.CapitalManagementDetail">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<result column="customer_name" property="customerName" jdbcType="VARCHAR" />
 		<result column="pay_type" property="payType" jdbcType="INTEGER" />
 		<result column="money" property="money" jdbcType="DECIMAL" />
 		<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
@@ -68,30 +103,65 @@
 		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
 		<result column="opt" property="opt" jdbcType="VARCHAR" />
 	</resultMap>
+	
+	<resultMap id="capitalManagementBusinessItemBase" type="com.card.manager.factory.finance.model.CapitalManagementBusinessItem">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="business_no" property="businessNo" jdbcType="VARCHAR" />
+		<result column="order_id" property="orderId" jdbcType="VARCHAR" />
+		<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<result column="item_id" property="itemId" jdbcType="VARCHAR" />
+		<result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+		<result column="item_quantity" property="itemQuantity" jdbcType="INTEGER" />
+		<result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+		<result column="item_encode" property="itemEncode" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="opt" property="opt" jdbcType="VARCHAR" />
+	</resultMap>
 
 	<select id="dataListByType" resultMap="capitalManagementBase">
 		select * from capitalmanagement where customer_type = #{customerType}
+		<if test="customerName !=null and customerName !=''">
+			and customer_name like CONCAT('%',#{customerName,jdbcType=VARCHAR},'%') 
+		</if>
+		<if test="supplierId !=null and supplierId !=0">
+			and customer_id = #{supplierId}
+		</if>
+		<if test="customerCode !=null and customerCode !=''">
+			and customer_code like CONCAT('%',#{customerCode,jdbcType=VARCHAR},'%') 
+		</if>
+		<if test="centerId !=null and centerId !=0">
+			and customer_id = #{centerId}
+		</if>
+		<if test="customerStatus !=null and customerStatus !=0">
+			and money &lt; #{customerStatus}
+		</if>
+		order by money
 	</select>
 
-	<select id="queryInfoByType" resultMap="capitalManagement">
+	<select id="queryInfoByParam" resultMap="capitalManagementDownLoad">
 		select a.id,a.customer_id,a.customer_name,a.customer_type,a.money,
-		a.use_money,a.count_money,a.status,a.remark,a.create_time,a.update_time,
-		a.opt,b.id detail_id,b.customer_id detail_customer_id,b.pay_type,
-		b.money detail_money,b.pay_no,b.business_no,b.remark detail_remark,
-		b.create_time detail_create_time,b.opt detail_opt,c.id business_id,
-		c.business_no business_business_no,c.order_id,c.item_id,c.item_code,
-		c.item_quantity,c.item_price,c.item_encode,c.create_time business_create_time,
-		c.opt business_opt 
+		a.use_money,a.count_money,a.status,a.customer_code,b.pay_type,
+		b.money detail_money,b.pay_no,b.business_no,b.remark,
+		b.create_time,b.opt,c.order_id,c.goods_name,c.item_id,
+		c.item_code,c.item_quantity,c.item_price,c.item_encode
 		from capitalmanagement a
 		left join capitalmanagement_detail b on a.customer_id = b.customer_id
 		left join capitalmanagement_business_item c on b.business_no = c.business_no
-		where 1=1 and a.customer_type = #{customerType}
+		where 1=1 
+		<if test="customerType !=null and customerType !=''">
+			and a.customer_type = #{customerType}
+		</if>
+		
+		<if test="customerId !=null and customerId !=''">
+			and a.customer_id = #{customerId}
+		</if>
+		order by a.customer_type,a.customer_id,b.pay_type,b.business_no,b.create_time
 	</select>
 	
 	<insert id="insertOrUpdateCapitalManagement" parameterType="object">
 		INSERT INTO capitalmanagement 
-		(customer_id,customer_name,customer_type,create_time,update_time,opt) 
-		VALUES (#{customerId},#{customerName},#{customerType},now(),now(),#{opt})
+		(customer_id,customer_name,customer_type,create_time,update_time,opt,customer_code) 
+		VALUES (#{customerId},#{customerName},#{customerType},now(),now(),#{opt},#{customerCode})
 		ON DUPLICATE KEY UPDATE update_time = now(),opt = #{opt}
 	</insert>
 
@@ -103,14 +173,13 @@
 	
 	<insert id="insertCapitalManagementBusinessItem" parameterType="Object">
 		INSERT INTO capitalmanagement_business_item 
-		(business_no,order_id,item_id,item_code,item_quantity,item_price,item_encode,create_time,opt) 
+		(business_no,order_id,goods_name,item_id,item_code,item_quantity,item_price,item_encode,create_time,opt) 
 		VALUES
 		<foreach collection="list" item="item" separator=",">
-			(#{item.businessNo},#{item.orderId},#{item.itemId},#{item.itemCode},
+			(#{item.businessNo},#{item.orderId},#{item.goodsName},#{item.itemId},#{item.itemCode},
 			#{item.itemQuantity},#{item.itemPrice},#{item.itemEncode},now(),#{item.opt})
 		</foreach>
 	</insert>
-
 
 	<update id="updateCapitalManagementMoney" parameterType="object">
 		update capitalmanagement set update_time = now(),
@@ -139,6 +208,26 @@
 			and pay_no = #{payNo}
 		</if>
 		order by pay_type asc,create_time desc
+	</select>
+
+	<select id="totalCustomerByType" resultMap="capitalManagementBase">
+		select a.total,a.total2 money,b.warning from 
+		(select ifnull(count(1),0) total,ifnull(sum(money),0) total2 
+		from coopback.capitalmanagement where customer_type = #{customerType}) a ,
+		(select ifnull(count(1),0) warning 
+		from coopback.capitalmanagement where customer_type = #{customerType} and money &lt; #{money}) b
+	</select>
+
+	<select id="queryCapitalManagementDetailByParam" resultMap="capitalManagementDetailBase">
+		select cd.*,c.customer_name 
+		from capitalmanagement_detail cd
+		left join capitalmanagement c on c.customer_id = cd.customer_id
+		where business_no = #{businessNo}
+	</select>
+
+	<select id="dataListByBusinessNo" resultMap="capitalManagementBusinessItemBase">
+		select * from capitalmanagement_business_item where business_no = #{businessNo}
+		order by id
 	</select>
 
 </mapper>
