@@ -80,6 +80,8 @@ public class UserInfoBO {
 			userDetail.setIdNum(Utils.removePoint(model.getIdNum()));
 		} else {
 			phone = Utils.removePoint(model.getReceivePhone());
+			userDetail = new UserDetail();
+			userDetail.setName(model.getReceiveName());
 		}
 		centerId = 2;
 		shopId = model.getShopId();
