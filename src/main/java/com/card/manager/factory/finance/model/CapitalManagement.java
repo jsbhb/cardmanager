@@ -23,6 +23,9 @@ public class CapitalManagement extends Pagination{
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private String customerCode;//客户代码
+	private String total;
+	private String warning;
 	private List<CapitalManagementDetail> managementDetailList;
 	
 	public Integer getId() {
@@ -102,6 +105,24 @@ public class CapitalManagement extends Pagination{
 	}
 	public void setManagementDetailList(List<CapitalManagementDetail> managementDetailList) {
 		this.managementDetailList = managementDetailList;
+	}
+	public String getTotal() {
+		return total;
+	}
+	public void setTotal(String total) {
+		this.total = total;
+	}
+	public String getWarning() {
+		return warning;
+	}
+	public void setWarning(String warning) {
+		this.warning = warning;
+	}
+	public String getCustomerCode() {
+		return customerCode;
+	}
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 	
 }

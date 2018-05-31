@@ -59,6 +59,18 @@
 					<c:when test="${order.orderSource==1}">
 						<input type="text" class="form-control" readonly value="手机商城">
 					</c:when>
+					<c:when test="${order.orderSource==3}">
+						<input type="text" class="form-control" readonly value="有赞">
+					</c:when>
+					<c:when test="${order.orderSource==4}">
+						<input type="text" class="form-control" readonly value="线下">
+					</c:when>
+					<c:when test="${order.orderSource==5}">
+						<input type="text" class="form-control" readonly value="展厅">
+					</c:when>
+					<c:when test="${order.orderSource==6}">
+						<input type="text" class="form-control" readonly value="大客户">
+					</c:when>
 					<c:otherwise>
 						<input type="text" class="form-control" readonly value="订货平台">
 					</c:otherwise>

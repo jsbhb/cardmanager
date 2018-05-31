@@ -354,6 +354,10 @@ public class OrderMngController extends BaseController {
 				case 0:	oi.setOrderSourceName("PC商城");break;
 				case 1:	oi.setOrderSourceName("手机商城");break;
 				case 2:	oi.setOrderSourceName("订货平台");break;
+				case 3:	oi.setOrderSourceName("有赞");break;
+				case 4:	oi.setOrderSourceName("线下");break;
+				case 5:	oi.setOrderSourceName("展厅");break;
+				case 6:	oi.setOrderSourceName("大客户");break;
 				}
 
 				if (!tmpOrderId.equals(oi.getOrderId())) {

@@ -241,6 +241,10 @@ function rebuildTable(data){
 			case 0:str += "</td><td>PC商城";break;
 			case 1:str += "</td><td>手机商城";break;
 			case 2:str += "</td><td>订货平台";break;
+			case 3:str += "</td><td>有赞";break;
+			case 4:str += "</td><td>线下";break;
+			case 5:str += "</td><td>展厅";break;
+			case 6:str += "</td><td>大客户";break;
 			default:str += "</td><td>";
 		}
 // 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);

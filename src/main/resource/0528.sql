@@ -6,6 +6,7 @@ CREATE TABLE `coopback`.`capitalmanagement` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `customer_id` INT NULL COMMENT '客户ID',
   `customer_name` VARCHAR(50) NULL COMMENT '客户名称',
+  `customer_code` VARCHAR(50) NULL COMMENT '客户代码',
   `customer_type` TINYINT UNSIGNED NULL COMMENT '客户类型0:供应商,1:区域中心',
   `money` DECIMAL(12,2) DEFAULT 0 COMMENT '可用金额',
   `use_money` DECIMAL(12,2) DEFAULT 0 COMMENT '使用金额',
@@ -17,6 +18,7 @@ CREATE TABLE `coopback`.`capitalmanagement` (
   `opt` VARCHAR(20) NULL COMMENT '操作人',
   PRIMARY KEY (`id`),
   INDEX `idx_customer_id` (`customer_id`),
+  INDEX `idx_customer_type` (`customer_type`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   UNIQUE INDEX `customer_id_UNIQUE` (`customer_id` ASC)) 
   ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 
@@ -36,6 +38,7 @@ CREATE TABLE `coopback`.`capitalmanagement_detail` (
   `opt` VARCHAR(20) NULL COMMENT '操作人',
   PRIMARY KEY (`id`),
   INDEX `idx_customer_id` (`customer_id`),
+  INDEX `idx_business_no` (`business_no`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC)) 
   ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 
 COMMENT = '资金管理记录表';
@@ -46,6 +49,7 @@ CREATE TABLE `coopback`.`capitalmanagement_business_item` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `business_no` VARCHAR(50) NOT NULL COMMENT '业务流水号',
   `order_id` VARCHAR(50) NULL COMMENT '订单号',
+  `goods_name` VARCHAR(100) NULL COMMENT '商品名称',
   `item_id` VARCHAR(50) NULL COMMENT '商品编号',
   `item_code` VARCHAR(50) NULL COMMENT '商家编码',
   `item_quantity` INT UNSIGNED NULL COMMENT '商品数量',
