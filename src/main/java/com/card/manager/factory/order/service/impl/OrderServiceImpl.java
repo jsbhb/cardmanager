@@ -237,6 +237,10 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			result.put("msg", "没有订单信息");
 			return result;
 		}
+		String batchId = filePath.substring(filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
+		if(batchId.length() > 20){//数据库存储长度只有20
+			batchId = batchId.substring(0, 20);
+		}
 		OrderInfo info = null;
 		OrderGoods goods = null;
 		OrderDetail detail = null;
@@ -257,16 +261,16 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		// end
 		List<String> fields = new ArrayList<String>();
-		fields.add("payNo");//payNo可以为null
+		fields.add("payNo");// payNo可以为null
 		for (OrderImportBO model : list) {
 			// 初始化,并判断手机号和身份证是否正确
-			if(!model.init(gradeMapTemp, supplierMap)){
+			if (!model.init(gradeMapTemp, supplierMap)) {
 				result.put("success", false);
 				result.put("msg", "订单号：" + model.getOrderId() + "请确认手机号是否正确，如果有身份证请确认身份证是否正确");
 				return result;
 			}
 			// 判断是否有数据是空的
-			if (!Utils.isAllFieldNotNull(model,fields)) {
+			if (!Utils.isAllFieldNotNull(model, fields)) {
 				result.put("success", false);
 				result.put("msg", "订单号：" + model.getOrderId() + "订单信息数据不全");
 				return result;
@@ -320,13 +324,14 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			}
 			int userId = syncUserCenter(userMap.get(info.getPhone()), helper);
 			entry.getValue().setUserId(userId);
+			entry.getValue().setCombinationId(batchId);//设置批次号
 			infoList.add(entry.getValue());
 		}
-		//保存订单
+		// 保存订单
 		try {
 			ResponseEntity<String> usercenter_result = helper.request(
-					URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_IMPORT_ORDER,
-					staffEntity.getToken(), true, infoList, HttpMethod.POST);
+					URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_IMPORT_ORDER, staffEntity.getToken(),
+					true, infoList, HttpMethod.POST);
 
 			JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 			result.put("success", json.get("success"));
@@ -341,7 +346,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	private int syncUserCenter(UserInfoBO ucEntity, RestCommonHelper helper) {
-		if(ucEntity == null){
+		if (ucEntity == null) {
 			return 0;
 		}
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -350,4 +355,5 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 		return (int) json.get("obj");
 	}
+
 }
