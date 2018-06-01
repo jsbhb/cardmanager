@@ -1908,6 +1908,7 @@
 }
 .today-orders .today-orders-item p{
   margin-top: 5px;
+  font-size: 14px;
 }
 .week-line{
   padding: 10px;
@@ -1963,3 +1964,4 @@
   width: 40px;
   height: 40px;
 }
+
