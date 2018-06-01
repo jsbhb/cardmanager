@@ -105,7 +105,7 @@
 				</div>
 				<div class="today-orders-item">
 					<a href="javascript:void(0);" id="warning" onclick="warningCustomer()">${totalInfo.warning}</a>
-					<p>预警</p>
+					<p>预警</p>（可用金额低于3000）
 				</div>
 			</div>
 		</div>

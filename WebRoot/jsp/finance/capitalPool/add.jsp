@@ -71,6 +71,9 @@
 				<div class="col-sm-3 item-left">金额</div>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="money" name="money">
+	                <div class="item-content">
+		             	（当前业务产生的总金额，必填	）
+		            </div>
 				</div>
 			</div>
 	       	<div class="list-item">
@@ -87,42 +90,63 @@
 					<div class="col-sm-3 item-left">订单号</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="orderId">
+		                <div class="item-content">
+			             	（当前业务关联的订单号，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品名称</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="goodsName">
+		                <div class="item-content">
+			             	（当前业务关联的商品名称，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品编号</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemId">
+		                <div class="item-content">
+			             	（当前业务关联的商品编号，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商家编码</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemCode">
+		                <div class="item-content">
+			             	（当前业务关联的商家编码，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品数量</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemQuantity">
+		                <div class="item-content">
+			             	（当前业务关联的商品数量，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品价格</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemPrice">
+		                <div class="item-content">
+			             	（当前业务关联的商品价格，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品条形码</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemEncode">
+		                <div class="item-content">
+			             	（当前业务关联的商品条形码，没有可不填）
+			            </div>
 					</div>
 				</div>
 	       	</div>
@@ -157,7 +181,7 @@
 	
 	$("#newItemBtn").click(function(){
 		var ht = '<div class="title"></div>';
-		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">订单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="orderId"></div></div>';
+		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">订单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="orderId"><div class="item-content">（当前业务关联的订单号，重复可不填）</div></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商品名称</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="goodsName"></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商品编号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="itemId"></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商家编码</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="itemCode"></div></div>';
