@@ -70,6 +70,7 @@ import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.ExcelUtils;
 import com.card.manager.factory.util.FileDownloadUtil;
@@ -835,6 +836,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				specsNameMap, specsValueMap, helper);
 		// end
 		Map<String, GoodsInfoEntity> infoMap = new HashMap<String, GoodsInfoEntity>();
+		int i = 1;
 		if (list != null && list.size() > 0) {
 			StringBuilder sb = null;// 拼接规格信息
 			GoodsBaseEntity goodsBase = null;
@@ -860,6 +862,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				if (!(boolean) result.get("success")) {
 					return result;
 				}
+				String tempId = i + DateUtil.getintTimePlusString();
 				if (!infoMap.containsKey(model.getId())) {// 不存在新增base和goods
 					goodsInfo = new GoodsInfoEntity();
 					// 基础商品
@@ -875,7 +878,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goodsBase.setSecondCatalogId(model.getSecondCatalogId());
 					goodsBase.setThirdCatalogId(model.getThirdCatalogId());
 					goodsBase.setCenterId(staffEntity.getGradeId());
-					int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
+					int baseId = Integer.valueOf(tempId);
 					goodsBase.setId(baseId);
 					goodsInfo.setGoodsBase(goodsBase);
 
@@ -884,12 +887,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goods.setSupplierId(model.getSupplierId());
 					goods.setType(model.getType());
 					goods.setSupplierName(model.getSupplierName());
-					goods.setBaseId(baseId);
 					goods.setTemplateId(0);
 					goods.setGoodsName(model.getGoodsName());
 					goods.setOrigin(model.getOrigin());
-					int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
-					goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
+					goods.setGoodsId(tempId);
+					goods.setBaseId(baseId);
 					goodsInfo.setGoods(goods);
 					infoMap.put(model.getId(), goodsInfo);
 					goodsInfoList.add(goodsInfo);
@@ -952,8 +954,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 						return result;
 					}
 				}
-				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
-				goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+				goodsItem.setItemId(tempId);
 				if (goodsInfo.getGoods().getItems() == null) {
 					items = new ArrayList<GoodsItemEntity>();
 					items.add(goodsItem);
@@ -998,7 +999,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				// 库存设置
 				goodsStock = new GoodsStockEntity();
 				try {
-					goodsStock.setItemId(Integer.valueOf(goodsItem.getItemId()));
+					goodsStock.setItemId(goodsItem.getItemId());
 					goodsStock.setFxQty(Utils.convert(model.getStock()));
 					goodsStock.setQpQty(Utils.convert(model.getStock()));
 				} catch (Exception e) {
@@ -1045,7 +1046,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				}
 
 				goodsItem.setGoodsRebateList(rebateList);
-
+				i++;
 			}
 			try {
 				ResponseEntity<String> usercenter_result = helper.request(

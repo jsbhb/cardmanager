@@ -145,7 +145,7 @@ public class ExcelUtil {
 							continue;
 						}
 						GoodsStockEntity model = new GoodsStockEntity();
-						model.setItemId(Integer.parseInt(getValue(xssfRow.getCell(1))));
+						model.setItemId(Integer.parseInt(getValue(xssfRow.getCell(1)))+"");
 						if (getValue(xssfRow.getCell(7)).indexOf(".")>0) {
 							model.setFxQty(Integer.parseInt(getValue(xssfRow.getCell(7)).substring(0,getValue(xssfRow.getCell(7)).lastIndexOf("."))));
 						} else {

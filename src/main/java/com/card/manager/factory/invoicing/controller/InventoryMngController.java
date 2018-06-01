@@ -276,7 +276,7 @@ public class InventoryMngController extends BaseController {
 			String qty = req.getParameter("qty");
 			List<GoodsStockEntity> stocks = new ArrayList<GoodsStockEntity>();
 			GoodsStockEntity goodsStockEntity = new GoodsStockEntity();
-			goodsStockEntity.setItemId(Integer.parseInt(itemId));
+			goodsStockEntity.setItemId(Integer.parseInt(itemId)+"");
 			goodsStockEntity.setFxQty(Integer.parseInt(qty));
 			stocks.add(goodsStockEntity);
 			inventoryService.maintainStock(stocks, staffEntity);
