@@ -135,6 +135,9 @@
 		<if test="customerStatus !=null and customerStatus !=0">
 			and money &lt; #{customerStatus}
 		</if>
+		<if test="customerStatus2 !=null and customerStatus2 !=0">
+			and money &gt; #{customerStatus2}
+		</if>
 		order by money
 	</select>
 

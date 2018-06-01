@@ -260,6 +260,8 @@ public class CapitalPoolMng extends BaseController {
 			if (!StringUtil.isEmpty(customerStatus)) {
 				if ("2".equals(customerStatus)) {
 					params.put("customerStatus", Constants.CUSTOMER_WARNING_MONEY);
+				} else {
+					params.put("customerStatus2", Constants.CUSTOMER_WARNING_MONEY);
 				}
 			}
 			
