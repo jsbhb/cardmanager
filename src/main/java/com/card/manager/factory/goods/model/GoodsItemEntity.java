@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.goods.model;
 
+import java.util.List;
+
 import com.card.manager.factory.base.Pagination;
 
 /**
@@ -52,10 +54,19 @@ public class GoodsItemEntity extends Pagination {
 	private double rebate;
 	private String shelfLife;
 	private String carTon;
+	private List<GoodsRebateEntity> goodsRebateList; 
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
 				&& !"".equals(sku);
+	}
+
+	public List<GoodsRebateEntity> getGoodsRebateList() {
+		return goodsRebateList;
+	}
+
+	public void setGoodsRebateList(List<GoodsRebateEntity> goodsRebateList) {
+		this.goodsRebateList = goodsRebateList;
 	}
 
 	public double getRebate() {

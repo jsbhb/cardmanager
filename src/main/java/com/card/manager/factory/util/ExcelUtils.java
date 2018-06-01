@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
+import com.card.manager.factory.goods.pojo.ImportGoodsBO;
 
 public class ExcelUtils {
 
@@ -333,16 +333,17 @@ public class ExcelUtils {
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		XSSFRow xssfRow = null;
 		T hSModel = null;
+		T subModel = null;
 		XSSFCell temp = null;
 		int startRow;
-		if(needConvert){
-			Map<String,String> convertMap = URLUtils.getExcelconvert();
+		if (needConvert) {
+			Map<String, String> convertMap = URLUtils.getExcelconvert();
 			xssfRow = xssfSheet.getRow(0);
 			if (xssfRow != null) {
 				int coloumNum = xssfSheet.getRow(0).getPhysicalNumberOfCells();
 				for (int i = 0; i < coloumNum; i++) {
 					temp = xssfRow.getCell(i);
-					map.put(i, StringToUtf8(convertMap.get(getValue(temp).trim()),"iso-8859-1"));
+					map.put(i, Utils.StringToUtf8(convertMap.get(getValue(temp).trim()), "iso-8859-1"));
 				}
 			}
 			startRow = 1;
@@ -358,33 +359,74 @@ public class ExcelUtils {
 			startRow = 2;
 		}
 		// Read the Row
+		Map<String, Boolean> flagMap = new HashMap<String, Boolean>();
+		flagMap.put("isSub", false);
+		Class<?> subClazz = null;
 		for (int rowNum = startRow; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
 			xssfRow = xssfSheet.getRow(rowNum);
 			if (xssfRow != null) {
 				try {
 					hSModel = (T) clazz.newInstance();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				for (Map.Entry<Integer, String> entry : map.entrySet()) {
-					temp = xssfRow.getCell(entry.getKey());
-					if (temp == null) {
-						continue;
+					for (Map.Entry<Integer, String> entry : map.entrySet()) {
+						temp = xssfRow.getCell(entry.getKey());
+						if (temp == null) {
+							continue;
+						}
+						Method method;
+						if (entry.getValue().contains(".")) {
+							// 封装list属性
+							if (!flagMap.get("isSub")) {
+								subClazz = Utils.getGenericClazz(clazz, entry.getValue().split("\\.")[0]);
+								subModel = (T) subClazz.newInstance();
+							}
+							packSubList(flagMap, subClazz, subModel, hSModel, clazz, entry.getValue(), temp);
+						} else {
+							method = clazz.getMethod("set" + entry.getValue().substring(0, 1).toUpperCase()
+									+ entry.getValue().substring(1), String.class);
+							method.invoke(hSModel, getValue(temp).trim());
+						}
 					}
-					Method method;
-					try {
-						method = clazz.getMethod(
-								"set" + entry.getValue().substring(0, 1).toUpperCase() + entry.getValue().substring(1),
-								String.class);
-						method.invoke(hSModel, getValue(temp).trim());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+
+					list.add(hSModel);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				list.add(hSModel);
 			}
+
 		}
 		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> void packSubList(Map<String, Boolean> flagMap, Class<?> subClazz, T subModel, T hSModel, Class<?> clazz,
+			String value, Cell temp) throws Exception {
+		Method method = null;
+		List<T> tempList = null;
+
+		method = subClazz.getMethod(
+				"set" + value.split("\\.")[1].substring(0, 1).toUpperCase() + value.split("\\.")[1].substring(1),
+				String.class);
+		if(temp instanceof XSSFCell){
+			method.invoke(subModel, getValue((XSSFCell)temp).trim());
+		}
+		if(temp instanceof HSSFCell){
+			method.invoke(subModel, getValue((HSSFCell)temp).trim());
+		}
+		if (flagMap.get("isSub")) {
+			tempList = (List<T>) clazz.getMethod(
+					"get" + value.split("\\.")[0].substring(0, 1).toUpperCase() + value.split("\\.")[0].substring(1))
+					.invoke(hSModel);
+			if (tempList == null) {
+				tempList = new ArrayList<T>();
+				tempList.add(subModel);
+				method = clazz.getMethod("set" + value.split("\\.")[0].substring(0, 1).toUpperCase()
+						+ value.split("\\.")[0].substring(1), List.class);
+				method.invoke(hSModel, tempList);
+			} else {
+				tempList.add(subModel);
+			}
+		}
+		flagMap.put("isSub", !flagMap.get("isSub"));
 	}
 
 	/**
@@ -414,16 +456,17 @@ public class ExcelUtils {
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		HSSFRow hssfRow = null;
 		T hSModel = null;
+		T subModel = null;
 		HSSFCell temp = null;
 		int startRow;
-		if(needConvert){
-			Map<String,String> convertMap = URLUtils.getExcelconvert();
+		if (needConvert) {
+			Map<String, String> convertMap = URLUtils.getExcelconvert();
 			hssfRow = hssfSheet.getRow(0);
 			if (hssfRow != null) {
 				int coloumNum = hssfSheet.getRow(0).getPhysicalNumberOfCells();
 				for (int i = 0; i < coloumNum; i++) {
 					temp = hssfRow.getCell(i);
-					map.put(i, StringToUtf8(convertMap.get(getValue(temp).trim()),"iso-8859-1"));
+					map.put(i, Utils.StringToUtf8(convertMap.get(getValue(temp).trim()), "iso-8859-1"));
 				}
 			}
 			startRow = 1;
@@ -439,42 +482,46 @@ public class ExcelUtils {
 			startRow = 2;
 		}
 		// Read the Row
+		Map<String, Boolean> flagMap = new HashMap<String, Boolean>();
+		flagMap.put("isSub", false);
+		Class<?> subClazz = null;
 		for (int rowNum = startRow; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
 			hssfRow = hssfSheet.getRow(rowNum);
 			if (hssfRow != null) {
 				try {
 					hSModel = (T) clazz.newInstance();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				for (Map.Entry<Integer, String> entry : map.entrySet()) {
-					temp = hssfRow.getCell(entry.getKey());
-					if (temp == null) {
-						continue;
+					for (Map.Entry<Integer, String> entry : map.entrySet()) {
+						temp = hssfRow.getCell(entry.getKey());
+						if (temp == null) {
+							continue;
+						}
+						Method method;
+						if (entry.getValue().contains(".")) {
+							// 封装list属性
+							if (!flagMap.get("isSub")) {
+								subClazz = Utils.getGenericClazz(clazz, entry.getValue().split("\\.")[0]);
+								subModel = (T) subClazz.newInstance();
+							}
+							packSubList(flagMap, subClazz, subModel, hSModel, clazz, entry.getValue(), temp);
+						} else {
+							method = clazz.getMethod("set" + entry.getValue().substring(0, 1).toUpperCase()
+									+ entry.getValue().substring(1), String.class);
+							method.invoke(hSModel, getValue(temp).trim());
+						}
 					}
-					Method method;
-					try {
-						method = clazz.getMethod(
-								"set" + entry.getValue().substring(0, 1).toUpperCase() + entry.getValue().substring(1),
-								String.class);
-						method.invoke(hSModel, getValue(temp).trim());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					list.add(hSModel);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				list.add(hSModel);
 			}
+
 		}
 		return list;
 	}
-	
-	private String StringToUtf8(String str, String charsetName){
-		try {
-			return new String(str.getBytes(charsetName), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
+	public static void main(String[] args) {
+		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel("C:\\Users\\user\\Desktop\\goodsTemplate.xlsx",
+				ImportGoodsBO.class, true);
+		System.out.println(list.toString());
+	}
 }

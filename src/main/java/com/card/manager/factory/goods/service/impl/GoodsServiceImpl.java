@@ -8,22 +8,21 @@
 package com.card.manager.factory.goods.service.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.FileInputStream;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.http.HttpMethod;
@@ -42,6 +41,8 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
+import com.card.manager.factory.goods.model.BrandEntity;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
@@ -51,11 +52,17 @@ import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.SpecsEntity;
+import com.card.manager.factory.goods.model.SpecsValueEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.goods.pojo.GoodsRebateBO;
+import com.card.manager.factory.goods.pojo.GoodsSpecsBO;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
 import com.card.manager.factory.goods.pojo.ImportGoodsBO;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
@@ -63,6 +70,7 @@ import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.ExcelUtils;
 import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -808,23 +816,27 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), Map.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> importGoodsInfo(String filePath, StaffEntity staffEntity) {
-		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class, false);
-		StringBuilder sb = new StringBuilder();
-		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
-		Set<Integer> keySet = map.keySet();
+		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class, true);
 		Map<String, Object> result = new HashMap<String, Object>();
-		List<Integer> keyList = new ArrayList<Integer>(keySet);
-		Collections.sort(keyList);
-		if (keySet.size() > 7) {
-			result.put("success", false);
-			result.put("msg", "返佣等级超出数量限制，请联系技术人员");
-			return result;
-		}
-
-		boolean success = true;
+		RestCommonHelper helper = new RestCommonHelper();
+		// 中文转ID准备数据
+		Map<String, Integer> supplierMap = new CaseInsensitiveMap();
+		Map<String, Integer> gradeMapTemp = new CaseInsensitiveMap();
+		Map<String, String> firstMapTemp = new CaseInsensitiveMap();
+		Map<String, String> secondMapTemp = new CaseInsensitiveMap();
+		Map<String, String> thirdMapTemp = new CaseInsensitiveMap();
+		Map<String, String> brandMapTemp = new CaseInsensitiveMap();
+		Map<String, Integer> specsNameMap = new CaseInsensitiveMap();
+		Map<Integer, Map<String, Integer>> specsValueMap = new HashMap<Integer, Map<String, Integer>>();
+		packConvertData(staffEntity, supplierMap, gradeMapTemp, firstMapTemp, secondMapTemp, thirdMapTemp, brandMapTemp,
+				specsNameMap, specsValueMap, helper);
+		// end
+		Map<String, GoodsInfoEntity> infoMap = new HashMap<String, GoodsInfoEntity>();
 		if (list != null && list.size() > 0) {
+			StringBuilder sb = null;// 拼接规格信息
 			GoodsBaseEntity goodsBase = null;
 			GoodsEntity goods = null;
 			GoodsItemEntity goodsItem = null;
@@ -832,201 +844,222 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			GoodsRebateEntity goodsRebate = null;
 			GoodsStockEntity goodsStock = null;
 			GoodsInfoEntity goodsInfo = null;
-			Method method = null;
+			List<List<GoodsSpecsBO>> repeatList = null;// 判断规格是否重复
 			GradeTypeDTO gradeType = null;
+			List<GoodsItemEntity> items = null;
 			List<GoodsRebateEntity> rebateList = null;
+			Map<String, Integer> spv = null;
 			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
 			Map<Integer, GoodsRebateEntity> tempMap = null;
+			Map<Integer, GradeTypeDTO> gradeMap = CachePoolComponent.getGradeType(staffEntity.getToken());
 			for (ImportGoodsBO model : list) {
-				model.setItemCode(Utils.removePoint(model.getItemCode()));
-				// 基础商品
-				goodsBase = new GoodsBaseEntity();
-				goodsBase.setBrandId(model.getBrandId());
-				goodsBase.setGoodsName(model.getGoodsName());
-				goodsBase.setBrand(model.getBrand());
-				goodsBase.setIncrementTax(model.getIncrementTax() == null ? "0.16" : model.getIncrementTax());
-				goodsBase.setTariff(model.getTariff() == null ? "0" : model.getTariff());
-				goodsBase.setUnit(model.getUnit());
-				goodsBase.setHscode(model.getHscode());
-				goodsBase.setFirstCatalogId(model.getFirstCatalogId());
-				goodsBase.setSecondCatalogId(model.getSecondCatalogId());
-				goodsBase.setThirdCatalogId(model.getThirdCatalogId());
-				goodsBase.setCenterId(staffEntity.getGradeId());
-				if (!goodsBase.check()) {
-					success = false;
-					sb.append(model.getItemCode() + ",BASE基本信息不全,");
-					continue;
+				model.init(supplierMap, gradeMapTemp, firstMapTemp, secondMapTemp, thirdMapTemp, brandMapTemp,
+						specsNameMap, specsValueMap);
+				// 判断字段属性全不全
+				checkFieldIsNull(result, infoMap, model);
+				if (!(boolean) result.get("success")) {
+					return result;
 				}
-				int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
-				goodsBase.setId(baseId);
+				if (!infoMap.containsKey(model.getId())) {// 不存在新增base和goods
+					goodsInfo = new GoodsInfoEntity();
+					// 基础商品
+					goodsBase = new GoodsBaseEntity();
+					goodsBase.setBrandId(model.getBrandId());
+					goodsBase.setGoodsName(model.getGoodsName());
+					goodsBase.setBrand(model.getBrandName());
+					goodsBase.setIncrementTax(model.getIncrementTax());
+					goodsBase.setTariff(model.getTariff());
+					goodsBase.setUnit(model.getUnit());
+					goodsBase.setHscode(model.getHscode());
+					goodsBase.setFirstCatalogId(model.getFirstCatalogId());
+					goodsBase.setSecondCatalogId(model.getSecondCatalogId());
+					goodsBase.setThirdCatalogId(model.getThirdCatalogId());
+					goodsBase.setCenterId(staffEntity.getGradeId());
+					int baseId = staffMapper.nextVal(ServerCenterContants.GOODS_BASE_ID_SEQUENCE);
+					goodsBase.setId(baseId);
+					goodsInfo.setGoodsBase(goodsBase);
 
-				// goods表
-				goods = new GoodsEntity();
-				try {
-					goods.setSupplierId(model.getSupplierId() == null || "".equals(model.getSupplierId()) ? -1
-							: Utils.convert(model.getSupplierId()));
-					goods.setType(
-							model.getType() == null || "".equals(model.getType()) ? -1 : Utils.convert(model.getType()));
-				} catch (Exception e) {
-					success = false;
-					sb.append(model.getItemCode() + ",goods供应商ID或商品属性有误,");
-					continue;
+					// goods表
+					goods = new GoodsEntity();
+					goods.setSupplierId(model.getSupplierId());
+					goods.setType(model.getType());
+					goods.setSupplierName(model.getSupplierName());
+					goods.setBaseId(baseId);
+					goods.setTemplateId(0);
+					goods.setGoodsName(model.getGoodsName());
+					goods.setOrigin(model.getOrigin());
+					int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
+					goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
+					goodsInfo.setGoods(goods);
+					infoMap.put(model.getId(), goodsInfo);
+					goodsInfoList.add(goodsInfo);
+					repeatList = new ArrayList<List<GoodsSpecsBO>>();//判断多规格是否重复用
+				} else {
+					goodsInfo = infoMap.get(model.getId());
 				}
-				goods.setSupplierName(model.getSupplierName());
-				goods.setBaseId(baseId);
-				// 规格手动编辑
-				goods.setTemplateId(0);
-				goods.setGoodsName(model.getGoodsName());
-				goods.setOrigin(model.getOrigin());
-				int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
-				goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
 
 				// goodsItem
 				goodsItem = new GoodsItemEntity();
-				goodsItem.setGoodsId(goods.getGoodsId());
-				goodsItem.setItemCode(model.getItemCode());
+				goodsItem.setGoodsId(goodsInfo.getGoods().getGoodsId());
+				goodsItem.setItemCode(Utils.removePoint(model.getItemCode()));
 				goodsItem.setSku(Utils.removePoint(model.getSku()));
 				goodsItem.setShelfLife(model.getShelfLife());
 				goodsItem.setCarTon(model.getCarTon());
 				try {
-					goodsItem.setWeight(
-							model.getWeight() == null || "".equals(model.getWeight()) ? 0 : Utils.convert(model.getWeight()));
-					goodsItem.setExciseTax(model.getExciseFax() == null || "".equals(model.getExciseFax()) ? 0
-							: Double.valueOf(model.getExciseFax()));
+					goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
+							: Utils.convert(model.getWeight()));
+					goodsItem.setExciseTax(Double.valueOf(model.getExciseFax()));
 					goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
 							: Utils.convert(model.getConversion()));
 				} catch (Exception e) {
-					success = false;
-					sb.append(model.getItemCode() + ",item重量、消费税、换算比例有误,");
-					continue;
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+					return result;
 				}
 				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
 				goodsItem.setEncode(Utils.removePoint(model.getEncode()));
-				if (!goodsItem.check()) {
-					success = false;
-					sb.append(model.getItemCode() + ",item信息不全,");
-					continue;
+				if (model.getSpecsList() != null) {
+					sb = new StringBuilder("[");
+					for (GoodsSpecsBO specs : model.getSpecsList()) {
+						if (specs.getSpecsNameId() == null) {
+							int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_ADD,
+									staffEntity.getToken());
+							specs.setSpecsNameId(id);
+							specsNameMap.put(specs.getSpecsName(), id);//放入map，如果该excel里有其他商品使用该规格就不需要请求微服务
+						}
+						if (specs.getSpecsValueId() == null) {
+							int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_VALUE_ADD,
+									staffEntity.getToken());
+							specs.setSpecsValueId(id);
+							//同specsName
+							if (specsValueMap.get(specs.getSpecsNameId()) == null) {
+								spv = new CaseInsensitiveMap();
+								spv.put(specs.getSpecsValue(), id);
+								specsValueMap.put(specs.getSpecsNameId(), spv);
+							} else {
+								specsValueMap.get(specs.getSpecsNameId()).put(specs.getSpecsValue(), id);
+							}
+						}
+						sb.append("{\"svV\":\"" + specs.getSpecsValue() + "\",\"skV\":\"" + specs.getSpecsName() + "\",\"svId\":\""
+								+ specs.getSpecsValueId() + "\",\"skId\":\"" + specs.getSpecsNameId() + "\"},");
+					}
+					String info = sb.substring(0, sb.length() - 1) + "]";
+					goodsItem.setInfo(info);
+				} else {
+					if(goodsInfo.getGoods().getItems() != null){
+						result.put("success", false);
+						result.put("msg", "编号：" + model.getId() + ",请填写规格,如果没有规格,id请不要重复");
+						return result;
+					}
 				}
 				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
 				goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+				if (goodsInfo.getGoods().getItems() == null) {
+					items = new ArrayList<GoodsItemEntity>();
+					items.add(goodsItem);
+					goodsInfo.getGoods().setItems(items);
+				} else {
+					goodsInfo.getGoods().getItems().add(goodsItem);
+				}
+				//判断规格是否重复
+				if(repeatList.size() == 0){
+					repeatList.add(model.getSpecsList());
+				} else {
+					for(List<GoodsSpecsBO> temp : repeatList){
+						if(Utils.isEqualCollection(temp, model.getSpecsList())){
+							result.put("success", false);
+							result.put("msg", "编号：" + model.getId() + ",规格有重复");
+							return result;
+						}
+					}
+					repeatList.add(model.getSpecsList());
+				}
 
 				// goodsPrice
 				goodsPrice = new GoodsPrice();
 				goodsPrice.setItemId(goodsItem.getItemId());
-				if (model.getMin() == null || "".equals(model.getMin()) || model.getMax() == null
-						|| "".equals(model.getMax()) || model.getRetailPrice() == null
-						|| "".equals(model.getRetailPrice())) {
-					sb.append(model.getItemCode() + ",价格信息没有,");
-					success = false;
-					continue;
-				}
 				try {
 					goodsPrice.setMin(Utils.convert(model.getMin()));
-					goodsPrice.setMax(
-							"-1.0".equals(model.getMax()) || "-1".equals(model.getMax()) || null == model.getMax()
-									? null : Utils.convert(model.getMax()));
-					goodsPrice.setProxyPrice(model.getProxyPrice() == null || "".equals(model.getProxyPrice()) ? 0
-							: Double.valueOf(model.getProxyPrice()));
-					goodsPrice.setFxPrice(model.getFxPrice() == null || "".equals(model.getFxPrice()) ? 0
-							: Double.valueOf(model.getFxPrice()));
+					goodsPrice.setMax("-1".equals(Utils.removePoint(model.getMax())) || null == model.getMax() ? null
+							: Utils.convert(model.getMax()));
+					goodsPrice.setProxyPrice(Double.valueOf(model.getProxyPrice()));
+					goodsPrice.setFxPrice(Double.valueOf(model.getFxPrice()));
 					goodsPrice.setRetailPrice(Double.valueOf(model.getRetailPrice()));
 					goodsPrice.setOpt(staffEntity.getOptName());
 				} catch (Exception e) {
-					success = false;
-					sb.append(model.getItemCode() + ",价格信息出错,");
-					continue;
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+					return result;
 				}
 
 				goodsItem.setGoodsPrice(goodsPrice);
 				goodsItem.setOpt(staffEntity.getOptName());
 
-				goods.setGoodsItem(goodsItem);
-
 				// 库存设置
-				if (model.getStock() == null || "".equals(model.getStock())) {
-					success = false;
-					sb.append(model.getItemCode() + ",库存信息没有,");
-					continue;
-				}
 				goodsStock = new GoodsStockEntity();
 				try {
 					goodsStock.setItemId(Integer.valueOf(goodsItem.getItemId()));
 					goodsStock.setFxQty(Utils.convert(model.getStock()));
 					goodsStock.setQpQty(Utils.convert(model.getStock()));
 				} catch (Exception e) {
-					success = false;
-					sb.append(model.getItemCode() + ",库存信息有误,");
-					continue;
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+					return result;
 				}
 				goodsItem.setStock(goodsStock);
 
 				// 返佣设置
 				tempMap = new HashMap<Integer, GoodsRebateEntity>();
 				rebateList = new ArrayList<GoodsRebateEntity>();
-				for (Integer id : keyList) {
-					try {
-						method = ImportGoodsBO.class.getMethod("getRebate_" + id);
-						Object value = method.invoke(model);
-						if (value != null && !"".equals(value)) {
-							gradeType = map.get(id);
-							goodsRebate = tempMap.get(gradeType.getParentId());
-							if (goodsRebate != null) {
-								if (gradeType.getParentId() != 1 && gradeType.getParentId() != 0) {
-									if (Double.valueOf(value.toString()) > goodsRebate.getProportion()) {
-										success = false;
-										sb.append(model.getItemCode() + ",下级返佣不能大于上级返佣,");
-										break;
-									}
+				if (model.getRebateList() != null) {
+					for (GoodsRebateBO rebate : model.getRebateList()) {
+						if (Double.valueOf(rebate.getProportion()) > 1) {
+							result.put("success", false);
+							result.put("msg", "编号：" + model.getId() + ",返佣比例设置不能大于1");
+							return result;
+						}
+						gradeType = gradeMap.get(rebate.getGradeNameId());
+						goodsRebate = tempMap.get(gradeType.getParentId());
+						if (goodsRebate != null) {
+							if (gradeType.getParentId() != 1) {// 因为海外购返佣比例为0所以不校验
+								if (Double.valueOf(rebate.getProportion()) > goodsRebate.getProportion()) {
+									result.put("success", false);
+									result.put("msg", "编号：" + model.getId() + ",下级返佣不能大于上级返佣");
+									return result;
 								}
 							}
-							if (Double.valueOf(value.toString()) > 1) {
-								success = false;
-								sb.append(model.getItemCode() + ",返佣比例设置不能大于1,");
-								break;
-							}
-							goodsRebate = new GoodsRebateEntity();
-							goodsRebate.setProportion(Double.valueOf(value.toString()));
-							goodsRebate.setGradeType(id);
-							goodsRebate.setItemId(goodsItem.getItemId());
-							rebateList.add(goodsRebate);
-							tempMap.put(id, goodsRebate);
 						} else {
-							success = false;
-							sb.append(model.getItemCode() + ",返佣比例没有设置,");
-							break;
+							if(gradeType.getParentId() != 1 && gradeType.getParentId() != 0){
+								result.put("success", false);
+								result.put("msg", "编号：" + model.getId() + ",请先填写上一级返佣");
+								return result;
+							}
 						}
-					} catch (Exception e) {
-						success = false;
-						sb.append(model.getItemCode() + ",返佣比例没有设置,");
-						break;
+						goodsRebate = new GoodsRebateEntity();
+						goodsRebate.setGradeType(rebate.getGradeNameId());
+						goodsRebate.setItemId(goodsItem.getItemId());
+						goodsRebate.setProportion(Double.valueOf(rebate.getProportion()));
+						rebateList.add(goodsRebate);
+						tempMap.put(rebate.getGradeNameId(), goodsRebate);
 					}
 				}
-				goodsInfo = new GoodsInfoEntity();
-				goodsInfo.setGoods(goods);
-				goodsInfo.setGoodsBase(goodsBase);
-				goodsInfo.setGoodsRebateList(rebateList);
-				goodsInfoList.add(goodsInfo);
-			}
-			if (success) {
-				try {
-					RestCommonHelper helper = new RestCommonHelper(1000000);
-					ResponseEntity<String> usercenter_result = helper.request(
-							URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_IMPORT_GOODSINFO,
-							staffEntity.getToken(), true, goodsInfoList, HttpMethod.POST);
 
-					JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-					result.put("success", json.get("success"));
-					result.put("msg", json.get("errorMsg"));
-					return result;
-				} catch (Exception e) {
-					e.printStackTrace();
-					result.put("success", false);
-					result.put("msg", e);
-					return result;
-				}
-			} else {
-				result.put("success", success);
-				result.put("msg", sb.toString());
+				goodsItem.setGoodsRebateList(rebateList);
+
+			}
+			try {
+				ResponseEntity<String> usercenter_result = helper.request(
+						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_IMPORT_GOODSINFO,
+						staffEntity.getToken(), true, goodsInfoList, HttpMethod.POST);
+
+				JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+				result.put("success", json.get("success"));
+				result.put("msg", json.get("errorMsg"));
+				return result;
+			} catch (Exception e) {
+				e.printStackTrace();
+				result.put("success", false);
+				result.put("msg", e);
 				return result;
 			}
 		} else { // 没有读到数据
@@ -1036,32 +1069,177 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 	}
 
+	private int addSpecs(RestCommonHelper helper, GoodsSpecsBO specs, String url, String token) {
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway") + url, token, true, specs,
+				HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return (int) json.get("obj");
+	}
+
+	private void checkFieldIsNull(Map<String, Object> result, Map<String, GoodsInfoEntity> infoMap,
+			ImportGoodsBO model) {
+		if (infoMap.containsKey(model.getId())) {// 是多规格
+			if (!Utils.isAllFieldNotNull(model, model.getSpecsUnCheckFieldName())) {
+				result.put("success", false);
+				result.put("msg", "编号：" + model.getId() + "信息不全");
+				return;
+			}
+		} else {
+			if (!Utils.isAllFieldNotNull(model, model.getBaseUnCheckFieldName())) {
+				result.put("success", false);
+				result.put("msg", "编号：" + model.getId() + "信息不全");
+				return;
+			}
+		}
+		if (model.getRebateList() != null) {
+			for (GoodsRebateBO rebate : model.getRebateList()) {
+				if (!Utils.isAllFieldNotNull(rebate, null)) {
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + "返佣信息不全");
+					return;
+				}
+			}
+		}
+		if (model.getSpecsList() != null) {
+			for (GoodsSpecsBO specs : model.getSpecsList()) {
+				if (!Utils.isAllFieldNotNull(specs, specs.getUnCheckFieldName())) {
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + "规格信息不全");
+					return;
+				}
+			}
+		}
+		result.put("success", true);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void packConvertData(StaffEntity staffEntity, Map<String, Integer> supplierMap,
+			Map<String, Integer> gradeMapTemp, Map<String, String> firstMapTemp, Map<String, String> secondMapTemp,
+			Map<String, String> thirdMapTemp, Map<String, String> brandMapTemp, Map<String, Integer> specsNameMap,
+			Map<Integer, Map<String, Integer>> specsValueMap, RestCommonHelper helper) {
+		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
+		List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
+		List<FirstCatalogEntity> firstList = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+		List<SecondCatalogEntity> secondList = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+		List<ThirdCatalogEntity> thirdList = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+		List<BrandEntity> brandList = CachePoolComponent.getBrands(staffEntity.getToken());
+		List<Object> specsList = getSpecs(helper, ServerCenterContants.GOODS_CENTER_SPECS, staffEntity.getToken(),
+				SpecsEntity.class);
+		List<Object> specsValueList = getSpecs(helper, ServerCenterContants.GOODS_CENTER_SPECS_VALUE,
+				staffEntity.getToken(), SpecsValueEntity.class);
+		SpecsEntity specs = null;
+		SpecsValueEntity specsvalue = null;
+		Map<String, Integer> spv = null;
+		for (Object obj : specsList) {
+			specs = (SpecsEntity) obj;
+			specsNameMap.put(specs.getName(), specs.getId());
+		}
+		for (Object obj : specsValueList) {
+			specsvalue = (SpecsValueEntity) obj;
+			if (specsValueMap.get(specsvalue.getSpecsId()) == null) {
+				spv = new CaseInsensitiveMap();
+				spv.put(specsvalue.getValue(), specsvalue.getId());
+				specsValueMap.put(specsvalue.getSpecsId(), spv);
+			} else {
+				specsValueMap.get(specsvalue.getSpecsId()).put(specsvalue.getValue(), specsvalue.getId());
+			}
+		}
+		for (SupplierEntity entity : suppliers) {
+			supplierMap.put(entity.getSupplierName(), entity.getId());
+		}
+		for (FirstCatalogEntity entity : firstList) {
+			firstMapTemp.put(entity.getName(), entity.getFirstId());
+		}
+		for (SecondCatalogEntity entity : secondList) {
+			secondMapTemp.put(entity.getName(), entity.getSecondId());
+		}
+		for (ThirdCatalogEntity entity : thirdList) {
+			thirdMapTemp.put(entity.getName(), entity.getThirdId());
+		}
+		for (BrandEntity entity : brandList) {
+			brandMapTemp.put(entity.getBrand(), entity.getBrandId());
+		}
+		for (Map.Entry<Integer, GradeTypeDTO> entry : map.entrySet()) {
+			gradeMapTemp.put(entry.getValue().getName(), entry.getValue().getId());
+		}
+	}
+
+	private List<Object> getSpecs(RestCommonHelper helper, String url, String token, Class<?> clazz) {
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway") + url, token, true, null,
+				HttpMethod.GET);
+		List<Object> list = new ArrayList<Object>();
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		if (index == 0) {
+			return null;
+		}
+
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), clazz));
+		}
+		return list;
+	}
+
 	private static final String FILE_NAME = "goodsTemplate.xlsx";
 
 	@Override
 	public void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp, StaffEntity staffEntity)
-			throws IOException {
-		Map<Integer, GradeTypeDTO> map = CachePoolComponent.getGradeType(staffEntity.getToken());
+			throws Exception {
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 		ServletContext servletContext = webApplicationContext.getServletContext();
 		String filePath = servletContext.getRealPath("/") + "WEB-INF/classes/" + FILE_NAME;
-		String name = ExcelUtils.instance().getLastColumn(filePath, 1);
-		String id = name.split("_")[1];
-		Set<Integer> keySet = map.keySet();
-		if (keySet.size() > 7) {
-			throw new RuntimeException("超出返佣等级限制，请联系技术");
+		InputStream is = new FileInputStream(filePath);
+		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
+		// 生成供应商对照表
+		List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
+		String[] supplierHead = new String[] { "供应商编码", "供应商名称" };
+		String[] supplierField = new String[] { "Id", "SupplierName" };
+		ExcelUtil.createExcel(suppliers, supplierHead, supplierField, filePath, 0, "供应商对照表", xssfWorkbook);
+		// 生成分级类型对照表
+		Map<Integer, GradeTypeDTO> gradeMap = CachePoolComponent.getGradeType(staffEntity.getToken());
+		List<GradeTypeDTO> centers = new ArrayList<GradeTypeDTO>();
+		for (Map.Entry<Integer, GradeTypeDTO> entry : gradeMap.entrySet()) {
+			centers.add(entry.getValue());
 		}
-		List<Integer> keyList = new ArrayList<Integer>(keySet);
-		Collections.sort(keyList);
-		if (keyList.get(keyList.size() - 1) > Integer.valueOf(id)) {
-			List<GradeTypeDTO> gradeTypeList = new ArrayList<GradeTypeDTO>();
-			for (Integer typeId : keyList) {
-				if (typeId > Integer.valueOf(id)) {
-					gradeTypeList.add(map.get(typeId));
-				}
-			}
-			ExcelUtils.instance().addHead(filePath, gradeTypeList);
-		}
+		String[] centerHead = new String[] { "分级编码", "父级编码", "分级名称" };
+		String[] centerField = new String[] { "Id", "ParentId", "Name" };
+		ExcelUtil.createExcel(centers, centerHead, centerField, filePath, 0, "分级对照表", xssfWorkbook);
+		// 生成一级分类对照表
+		List<FirstCatalogEntity> firstList = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+		String[] firstHead = new String[] { "一级分类编码", "一级分类名称" };
+		String[] firstField = new String[] { "FirstId", "Name" };
+		ExcelUtil.createExcel(firstList, firstHead, firstField, filePath, 0, "一级分类对照表", xssfWorkbook);
+		// 生成二级分类对照表
+		List<SecondCatalogEntity> secondList = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+		String[] secondHead = new String[] { "一级分类编码", "二级分类编码", "二级分类名称" };
+		String[] secondField = new String[] { "FirstId", "SecondId", "Name" };
+		ExcelUtil.createExcel(secondList, secondHead, secondField, filePath, 0, "二级分类对照表", xssfWorkbook);
+		// 生成三级分类对照表
+		List<ThirdCatalogEntity> thirdList = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+		String[] thirdHead = new String[] { "二级分类编码", "三级分类编码", "三级分类名称" };
+		String[] thirdField = new String[] { "SecondId", "ThirdId", "Name" };
+		ExcelUtil.createExcel(thirdList, thirdHead, thirdField, filePath, 0, "三级分类对照表", xssfWorkbook);
+		// 生成品牌对照表
+		List<BrandEntity> brandList = CachePoolComponent.getBrands(staffEntity.getToken());
+		String[] brandHead = new String[] { "品牌编码", "品牌名称" };
+		String[] brandField = new String[] { "BrandId", "Brand" };
+		ExcelUtil.createExcel(brandList, brandHead, brandField, filePath, 0, "品牌对照表", xssfWorkbook);
+		RestCommonHelper helper = new RestCommonHelper();
+		List<Object> specsList = getSpecs(helper, ServerCenterContants.GOODS_CENTER_SPECS, staffEntity.getToken(),
+				SpecsEntity.class);
+		String[] specsHead = new String[] { "规格编码", "规格名称" };
+		String[] specsField = new String[] { "Id", "Name" };
+		ExcelUtil.createExcel(specsList, specsHead, specsField, filePath, 0, "规格项对照表", xssfWorkbook);
+		List<Object> specsValueList = getSpecs(helper, ServerCenterContants.GOODS_CENTER_SPECS_VALUE,
+				staffEntity.getToken(), SpecsValueEntity.class);
+		String[] specsValueHead = new String[] { "规格编码", "规格值编码", "规格值名称" };
+		String[] specsValueField = new String[] { "SpecsId", "Id", "Value" };
+		ExcelUtil.createExcel(specsValueList, specsValueHead, specsValueField, filePath, 0, "规格值对照表", xssfWorkbook);
+		ExcelUtil.writeToExcel(xssfWorkbook, filePath);
 		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
 	}
 

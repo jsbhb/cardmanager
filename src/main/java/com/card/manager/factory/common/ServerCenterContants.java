@@ -134,6 +134,15 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/specs/query";
 	public static final String GOODS_CENTER_SPECS_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/queryAll";
+	public static final String GOODS_CENTER_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpece";
+	public static final String GOODS_CENTER_SPECS_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpeceValue";
+	public static final String GOODS_CENTER_SPECS_ADD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/save/new";
+	public static final String GOODS_CENTER_SPECS_VALUE_ADD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/value/save";
+
 
 	/*------------------------分类管理-----------------------*/
 	public static final String GOODS_CENTER_CATALOG_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
