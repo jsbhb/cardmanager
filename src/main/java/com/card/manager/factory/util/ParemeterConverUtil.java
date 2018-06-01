@@ -12,7 +12,8 @@ public class ParemeterConverUtil {
 			put("微信", 1);
 			put("支付宝", 2);
 			put("银联", 3);
-			put("其他", 4);
+			put("转账", 4);
+			put("其他", 5);
 		}
 	};
 	
@@ -22,8 +23,9 @@ public class ParemeterConverUtil {
 			put("PC商城", 0);
 			put("手机", 1);
 			put("有赞", 3);
-			put("B2B线下", 4);
+			put("线下", 4);
 			put("展厅", 5);
+			put("大客户", 6);
 		}
 	};
 	

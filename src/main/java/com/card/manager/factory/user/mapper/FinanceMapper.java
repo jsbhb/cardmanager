@@ -13,6 +13,7 @@ import java.util.Map;
 import com.card.manager.factory.finance.model.CapitalManagement;
 import com.card.manager.factory.finance.model.CapitalManagementBusinessItem;
 import com.card.manager.factory.finance.model.CapitalManagementDetail;
+import com.card.manager.factory.finance.model.CapitalManagementDownLoadEntity;
 import com.github.pagehelper.Page;
 
 /**  
@@ -85,4 +86,21 @@ public interface FinanceMapper {
 	 * @since JDK 1.7
 	 */
 	Page<CapitalManagementDetail> dataListByCustomerId(Map<String,Object> params);
+	
+	CapitalManagement totalCustomerByType(Map<String,Object> params);
+	
+	CapitalManagementDetail queryCapitalManagementDetailByParam(Map<String,Object> params);
+	
+	/**
+	 * 
+	 * queryList:分页查询. <br/>   
+	 *  
+	 * @author hebin 
+	 * @param params
+	 * @return  
+	 * @since JDK 1.7
+	 */
+	Page<CapitalManagementBusinessItem> dataListByBusinessNo(Map<String,Object> params);
+	
+	List<CapitalManagementDownLoadEntity> queryInfoByParam(Map<String, Object> params);
 }

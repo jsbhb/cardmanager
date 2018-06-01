@@ -136,9 +136,11 @@
 									<div class="input-group-addon">
 				                    	<i class="fa fa-pencil"></i>
 				                  	</div>
-									<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly  value="微信"></c:if>
-									<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly  value="支付宝"></c:if>
-									<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly  value="银联"></c:if>
+									<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly value="微信"></c:if>
+									<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly value="支付宝"></c:if>
+									<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly value="银联"></c:if>
+									<c:if test="${order.orderDetail.payType==4}"><input type="text" class="form-control" readonly value="转账"></c:if>
+									<c:if test="${order.orderDetail.payType==5}"><input type="text" class="form-control" readonly value="其他"></c:if>
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">支付金额</label>

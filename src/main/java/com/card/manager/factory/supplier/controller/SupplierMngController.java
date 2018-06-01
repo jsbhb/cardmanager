@@ -20,7 +20,6 @@ import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.supplier.service.SupplierService;
-import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
 
@@ -110,11 +109,11 @@ public class SupplierMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/editSupplier", method = RequestMethod.POST)
-	public void editSupplier(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
+	public void editSupplier(HttpServletRequest req, HttpServletResponse resp, @RequestBody SupplierEntity entity) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			// gradeMngService.saveGrade(gradeInfo, staffEntity);
+			supplierService.updSupplier(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

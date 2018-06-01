@@ -260,8 +260,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			gradeMapTemp.put(entry.getValue().getName(), entry.getValue().getId());
 		}
 		// end
-		List<String> fields = new ArrayList<String>();
-		fields.add("payNo");// payNo可以为null
+		
 		for (OrderImportBO model : list) {
 			// 初始化,并判断手机号和身份证是否正确
 			if (!model.init(gradeMapTemp, supplierMap)) {
@@ -270,7 +269,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				return result;
 			}
 			// 判断是否有数据是空的
-			if (!Utils.isAllFieldNotNull(model, fields)) {
+			if (!Utils.isAllFieldNotNull(model, model.getUnCheckFieldName())) {
 				result.put("success", false);
 				result.put("msg", "订单号：" + model.getOrderId() + "订单信息数据不全");
 				return result;
@@ -296,7 +295,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				}
 			} catch (NumberFormatException e) {
 				result.put("success", false);
-				result.put("msg", "订单号：" + detail.getOrderId() + "数字类信息填写有误,请核对");
+				result.put("msg", "订单号：" + info.getOrderId() + "数字类信息填写有误,请核对");
 				return result;
 			}
 			userInfo = new UserInfoBO(model);
@@ -313,11 +312,11 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			double amount = 0.0;
 			for (OrderGoods goodstpl : entry.getValue().getOrderGoodsList()) {
 				amount = CalculationUtils.add(amount,
-						CalculationUtils.mul(goodstpl.getItemPrice(), goodstpl.getItemQuantity()));
+						CalculationUtils.mul(goodstpl.getItemPrice()+"", goodstpl.getItemQuantity()+""));
 			}
 			amount = CalculationUtils.add(amount, entry.getValue().getOrderDetail().getTaxFee(),
 					entry.getValue().getOrderDetail().getPostFee());
-			if (amount != payment) {
+			if (amount - payment > 1 || amount - payment < -1) {
 				result.put("success", false);
 				result.put("msg", "订单号：" + entry.getKey() + "金额计算和支付金额不匹配");
 				return result;
@@ -355,5 +354,4 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 		return (int) json.get("obj");
 	}
-
 }

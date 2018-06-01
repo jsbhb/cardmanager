@@ -55,6 +55,12 @@ public class CalculationUtils {
 		BigDecimal b2 = new BigDecimal(Double.valueOf(value2));
 		return b1.multiply(b2).doubleValue();
 	}
+	
+	public static double mul(String value1, String value2) {
+		BigDecimal b1 = new BigDecimal(value1);
+		BigDecimal b2 = new BigDecimal(value2);
+		return b1.multiply(b2).doubleValue();
+	}
 
 	/**
 	 * 提供精确的除法运算方法div

@@ -64,5 +64,22 @@ public class SupplierServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return new SupplierEntity(json.getJSONObject("obj"));
 	}
+	
+	@Override
+	@Log(content = "更新供应商信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void updSupplier(SupplierEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.SUPPLIER_CENTER_UPDATE, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新供应商信息操作失败:" + json.getString("errorMsg"));
+		}
+
+		CachePoolComponent.syncSupplier(token);
+	}
 
 }

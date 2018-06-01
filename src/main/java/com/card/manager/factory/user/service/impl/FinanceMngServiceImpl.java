@@ -32,6 +32,7 @@ import com.card.manager.factory.finance.model.AuditModel;
 import com.card.manager.factory.finance.model.CapitalManagement;
 import com.card.manager.factory.finance.model.CapitalManagementBusinessItem;
 import com.card.manager.factory.finance.model.CapitalManagementDetail;
+import com.card.manager.factory.finance.model.CapitalManagementDownLoadEntity;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -376,6 +377,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		capitalManagement.setCustomerId(entity.getCustomerId());
 		capitalManagement.setCustomerName(entity.getCustomerName());
 		capitalManagement.setCustomerType(entity.getCustomerType());
+		capitalManagement.setCustomerCode(entity.getCustomerCode());
 		capitalManagement.setOpt(entity.getOpt());
 		
 		CapitalManagementDetail capitalManagementDetail = new CapitalManagementDetail();
@@ -413,5 +415,26 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 	public Page<CapitalManagementDetail> dataListByCustomerId(Pagination pagination, Map<String, Object> params) {
 		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
 		return financeMapper.dataListByCustomerId(params);
+	}
+	
+	@Override
+	public CapitalManagement totalCustomerByType(Map<String, Object> params) {
+		return financeMapper.totalCustomerByType(params);
+	}
+	
+	@Override
+	public CapitalManagementDetail queryCapitalManagementDetailByParam(Map<String, Object> params) {
+		return financeMapper.queryCapitalManagementDetailByParam(params);
+	}
+	
+	@Override
+	public Page<CapitalManagementBusinessItem> dataListByBusinessNo(Pagination pagination, Map<String, Object> params) {
+		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
+		return financeMapper.dataListByBusinessNo(params);
+	}
+	
+	@Override
+	public List<CapitalManagementDownLoadEntity> queryCapitalPoolInfoListForDownload(Map<String, Object> params) {
+		return financeMapper.queryInfoByParam(params);
 	}
 }

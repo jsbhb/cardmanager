@@ -15,7 +15,9 @@ import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.finance.model.AddCapitalPoolInfoEntity;
 import com.card.manager.factory.finance.model.AuditModel;
 import com.card.manager.factory.finance.model.CapitalManagement;
+import com.card.manager.factory.finance.model.CapitalManagementBusinessItem;
 import com.card.manager.factory.finance.model.CapitalManagementDetail;
+import com.card.manager.factory.finance.model.CapitalManagementDownLoadEntity;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -96,5 +98,23 @@ public interface FinanceMngService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	Page<CapitalManagementDetail> dataListByCustomerId(Pagination pagination, Map<String, Object> params);
+	
+	CapitalManagement totalCustomerByType(Map<String, Object> params);
+
+	CapitalManagementDetail queryCapitalManagementDetailByParam(Map<String, Object> params);
+
+	/**
+	 * 
+	 * dataList:分页查询. <br/>
+	 * 
+	 * @author hebin
+	 * @param pagination
+	 * @param params
+	 * @return
+	 * @since JDK 1.7
+	 */
+	Page<CapitalManagementBusinessItem> dataListByBusinessNo(Pagination pagination, Map<String, Object> params);
+	
+	List<CapitalManagementDownLoadEntity> queryCapitalPoolInfoListForDownload(Map<String, Object> params);
 
 }

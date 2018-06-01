@@ -53,18 +53,27 @@
                    	  <option selected="selected" value="0">充值</option>
                    	  <option value="1">消费</option>
 	                </select>
+	                <div class="item-content">
+		             	（充值：增加资金池可用金额；消费：减少资金池可用金额）
+		            </div>
 				</div>
 			</div>
-	       	<div class="list-item">
+	       	<div class="list-item" id="payInfo">
 				<div class="col-sm-3 item-left">支付流水号</div>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="payNo" name="payNo">
+					<div class="item-content">
+		             	（银行转账流水号，没有可不填）
+		            </div>
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">金额</div>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="money" name="money">
+	                <div class="item-content">
+		             	（当前业务产生的总金额，必填	）
+		            </div>
 				</div>
 			</div>
 	       	<div class="list-item">
@@ -76,59 +85,93 @@
 			<div class="title">
 	       		<h1>业务信息</h1>
 	       	</div>
-			<div class="row">
-				<div class="col-md-10 list-btns">
-					<button type="button" id="newItemBtn">新增业务信息</button>
-				</div>
-			</div>
 			<div id="itemInfo">
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">订单号</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="orderId">
+		                <div class="item-content">
+			             	（当前业务关联的订单号，没有可不填）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">商品名称</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="goodsName">
+		                <div class="item-content">
+			             	（当前业务关联的商品名称，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品编号</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemId">
+		                <div class="item-content">
+			             	（当前业务关联的商品编号，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商家编码</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemCode">
+		                <div class="item-content">
+			             	（当前业务关联的商家编码，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品数量</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemQuantity">
+		                <div class="item-content">
+			             	（当前业务关联的商品数量，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品价格</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemPrice">
+		                <div class="item-content">
+			             	（当前业务关联的商品价格，没有可不填）
+			            </div>
 					</div>
 				</div>
 		       	<div class="list-item">
 					<div class="col-sm-3 item-left">商品条形码</div>
 					<div class="col-sm-9 item-right">
 						<input type="text" class="form-control" name="itemEncode">
+		                <div class="item-content">
+			             	（当前业务关联的商品条形码，没有可不填）
+			            </div>
 					</div>
 				</div>
 	       	</div>
        	</div>
 		
         <div class="submit-btn">
-           	<button type="button" id=submitBtn>保存信息</button>
+			<button type="button" id="newItemBtn">新增业务信息</button>
+           	<button type="button" id="submitBtn">保存信息</button>
        	</div>
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 	<script type="text/javascript">
+	var sysnFlg = true;
+	
+	$("#payType").change(function(){
+		if ($("#payType").val() == 0) {
+			$('#payInfo').stop();
+			$('#payInfo').slideDown(300);
+		} else {
+			$('#payInfo').stop();
+			$('#payInfo').slideUp(300);
+		}
+	});
 	
 	$("#customerId").change(function(){
 		var options=$("#customerId option:selected");
@@ -137,7 +180,9 @@
 	});
 	
 	$("#newItemBtn").click(function(){
-		var ht = '<div class="list-item"><div class="col-sm-3 item-left">订单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="orderId"></div></div>';
+		var ht = '<div class="title"></div>';
+		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">订单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="orderId"><div class="item-content">（当前业务关联的订单号，重复可不填）</div></div></div>';
+		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商品名称</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="goodsName"></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商品编号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="itemId"></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商家编码</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="itemCode"></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">商品数量</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="itemQuantity"></div></div>';
@@ -170,6 +215,9 @@
 	});
 	
 	$("#submitBtn").click(function(){
+		if (!sysnFlg) {
+			return;
+		}
 		$('#itemForm').data("bootstrapValidator").validate();
 		 if($('#itemForm').data("bootstrapValidator").isValid()){
 			var customerId = $("#customerId").val();
@@ -190,6 +238,11 @@
 	    		tmpStr+=$(this).val()+',';
 		    });
 	    	orderIdObj = tmpStr.substring(0,tmpStr.length-1).split(",");
+	    	tmpStr = "";
+	    	$("input[name='goodsName']").each(function(){
+	    		tmpStr+=$(this).val()+',';
+		    });
+	    	goodsNameObj = tmpStr.substring(0,tmpStr.length-1).split(",");
 	    	tmpStr = "";
 	    	$("input[name='itemId']").each(function(){
 	    		tmpStr+=$(this).val()+',';
@@ -218,6 +271,7 @@
 	    	for(i=0;i<orderIdObj.length;i++){
 		    	data.push({
 	    			'orderId': orderIdObj[i],
+	    			'goodsName': goodsNameObj[i],
 	    			'itemId': itemIdObj[i],
 	    			'itemCode': itemCodeObj[i],
 	    			'itemQuantity': itemQuantityObj[i],
@@ -236,6 +290,7 @@
 	    	formData["remark"] = remark;
 	    	formData["itemList"] = data;
 	    	
+	    	sysnFlg = false;
 			$.ajax({
 				url:"${wmsUrl}/admin/finance/capitalPoolMng/addCapitalPoolInfo.shtml",
 				type:'post',
@@ -252,6 +307,9 @@
 				},
 				error:function(){
 					layer.alert("提交失败，请联系客服处理");
+				},
+				complete:function() {
+					sysnFlg = true;
 				}
 			});
 		 }

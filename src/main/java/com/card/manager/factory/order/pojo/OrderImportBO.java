@@ -1,5 +1,7 @@
 package com.card.manager.factory.order.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.util.ParemeterConverUtil;
@@ -37,6 +39,7 @@ public class OrderImportBO {
 	private String phone;
 	private String name;
 	private String idNum;
+	private String remark;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {
 
@@ -45,8 +48,8 @@ public class OrderImportBO {
 		orderSource = ParemeterConverUtil.getOrderSource(orderSourceName);
 		orderFlag = ParemeterConverUtil.getOrderFlag(orderFlagName);
 		payType = ParemeterConverUtil.getPayType(payTypeName);
-		taxFee = taxFee == null ? "0" : taxFee;
-		postFee = postFee == null ? "0" : postFee;
+		taxFee = taxFee == null || "".equals(taxFee) ? "0" : taxFee;
+		postFee = postFee == null || "".equals(postFee) ? "0" : postFee;
 		phone = phone == null ? "" : phone;
 		name = name == null ? "" : name;
 		idNum = idNum == null ? "" : idNum;
@@ -65,6 +68,22 @@ public class OrderImportBO {
 			}
 		}
 		return true;
+	}
+	
+	public List<String> getUnCheckFieldName(){
+		List<String> fields = new ArrayList<String>();
+		fields.add("payNo");// payNo可以为null
+		fields.add("itemId");// itemId可以为null
+		fields.add("remark");
+		return fields;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getPhone() {

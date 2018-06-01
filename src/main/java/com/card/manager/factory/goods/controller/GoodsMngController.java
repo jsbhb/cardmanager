@@ -460,8 +460,7 @@ public class GoodsMngController extends BaseController {
 			}
 			Map<String, Object> result = goodsService.importGoodsInfo(filePath, staffEntity);
 			if ((boolean) result.get("success")) {
-				sendSuccessMessage(resp, result.get("msg") == null || "".equals(result.get("msg")) ? null
-						: result.get("msg").toString() + "已经存在");
+				sendSuccessMessage(resp, result.get("msg") + "");
 			} else {
 				sendFailureMessage(resp, result.get("msg") + "");
 			}

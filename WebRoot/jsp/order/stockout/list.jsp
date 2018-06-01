@@ -124,6 +124,7 @@
 								<th>供应商</th>
 								<th>支付总金额</th>
 								<th>消费者</th>
+								<th>订单类型</th>
 								<th>订单来源</th>
 								<th>所属分级</th>
 <!-- 								<th>交易时间</th> -->
@@ -235,12 +236,23 @@ function rebuildTable(data){
 		str += "</td><td>" + expressId;
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
-		str += "</td><td>" + list[i].customerName;
+		str += "</td><td>" + (list[i].customerName == null ? "" : list[i].customerName);
+		switch(list[i].orderFlag){
+			case 0:str += "</td><td>跨境";break;
+			case 1:str += "</td><td>大贸";break;
+			case 2:str += "</td><td>一般贸易";break;
+			default:str += "</td><td>";
+		}
+		
 		var tmpOrderSource = list[i].orderSource;
 		switch(tmpOrderSource){
 			case 0:str += "</td><td>PC商城";break;
 			case 1:str += "</td><td>手机商城";break;
 			case 2:str += "</td><td>订货平台";break;
+			case 3:str += "</td><td>有赞";break;
+			case 4:str += "</td><td>线下";break;
+			case 5:str += "</td><td>展厅";break;
+			case 6:str += "</td><td>大客户";break;
 			default:str += "</td><td>";
 		}
 // 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);

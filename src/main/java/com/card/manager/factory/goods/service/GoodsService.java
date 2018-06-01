@@ -7,7 +7,6 @@
  */
 package com.card.manager.factory.goods.service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -269,7 +268,7 @@ public interface GoodsService extends ServerCenterService {
 	Map<String, Object> importGoodsInfo(String filePath, StaffEntity staffEntity);
 
 	void exportGoodsInfoTemplate(HttpServletRequest req, HttpServletResponse resp, StaffEntity staffEntity)
-			throws IOException;
+			throws Exception;
 
 	/**
 	 * batchUploadPic:批量上传文件. <br/>

@@ -110,6 +110,7 @@ public class OrderInfo extends Pagination{
 		}else {
 			phone = Utils.removePoint(model.getReceivePhone());
 		}
+		remark = model.getRemark();
 	}
 
 	public boolean check() {

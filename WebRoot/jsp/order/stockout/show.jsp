@@ -65,10 +65,22 @@
 			<div class="col-sm-9 item-right">
 				<c:choose>
 				<c:when test="${order.orderSource==0}">
-					<input type="text" class="form-control" name="area" readonly value="PC商城">
+					<input type="text" class="form-control" readonly value="PC商城">
 				</c:when>
 				<c:when test="${order.orderSource==1}">
-					<input type="text" class="form-control" name="area" readonly value="手机商城">
+					<input type="text" class="form-control" readonly value="手机商城">
+				</c:when>
+				<c:when test="${order.orderSource==3}">
+					<input type="text" class="form-control" readonly value="有赞">
+				</c:when>
+				<c:when test="${order.orderSource==4}">
+					<input type="text" class="form-control" readonly value="线下">
+				</c:when>
+				<c:when test="${order.orderSource==5}">
+					<input type="text" class="form-control" readonly value="展厅">
+				</c:when>
+				<c:when test="${order.orderSource==6}">
+					<input type="text" class="form-control" readonly value="大客户">
 				</c:when>
 				<c:otherwise>
 					<input type="text" class="form-control" name="area" readonly value="订货平台">
@@ -95,9 +107,11 @@
        	<div class="list-item">
 			<div class="col-sm-3 item-left">支付类型</div>
 			<div class="col-sm-9 item-right">
-				<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly  value="微信"></c:if>
-				<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly  value="支付宝"></c:if>
-				<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly  value="银联"></c:if>
+				<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly value="微信"></c:if>
+				<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly value="支付宝"></c:if>
+				<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly value="银联"></c:if>
+				<c:if test="${order.orderDetail.payType==4}"><input type="text" class="form-control" readonly value="转账"></c:if>
+				<c:if test="${order.orderDetail.payType==5}"><input type="text" class="form-control" readonly value="其他"></c:if>
 			</div>
 		</div>
        	<div class="list-item">

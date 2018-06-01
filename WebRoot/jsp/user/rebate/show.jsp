@@ -78,9 +78,11 @@
        	<div class="list-item">
 			<div class="col-sm-3 item-left">支付类型</div>
 			<div class="col-sm-9 item-right">
-				<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly  value="微信"></c:if>
-				<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly  value="支付宝"></c:if>
-				<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly  value="银联"></c:if>
+				<c:if test="${order.orderDetail.payType==1}"><input type="text" class="form-control" readonly value="微信"></c:if>
+				<c:if test="${order.orderDetail.payType==2}"><input type="text" class="form-control" readonly value="支付宝"></c:if>
+				<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly value="银联"></c:if>
+				<c:if test="${order.orderDetail.payType==4}"><input type="text" class="form-control" readonly value="转账"></c:if>
+				<c:if test="${order.orderDetail.payType==5}"><input type="text" class="form-control" readonly value="其他"></c:if>
 			</div>
 		</div>
        	<div class="list-item">
@@ -181,7 +183,7 @@
 								<th>商品价格</th>
 								<th>实际价格</th>
 								<th>数量</th>
-								<th>返佣金额</th>
+<!-- 								<th>返佣金额</th> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -250,7 +252,7 @@
 			str += "</td><td>" + list[i].itemPrice;
 			str += "</td><td>" + list[i].actualPrice;
 			str += "</td><td>" + list[i].itemQuantity;
-			str += "</td><td>" + list[i].remark;
+// 			str += "</td><td>" + list[i].remark;
 			str += "</td></tr>";
 		}
 

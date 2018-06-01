@@ -31,6 +31,7 @@
 						<thead>
 							<tr>
 								<th>供应商名称</th>
+								<th>供应商代码</th>
 								<th>国家省市</th>
 								<th>地址</th>
 								<th>负责人</th>
@@ -63,12 +64,12 @@
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/supplier/supplierMng/dataList.shtml",
-			numPerPage:"10",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/supplier/supplierMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -108,6 +109,7 @@ function rebuildTable(data){
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr><td>";
 		str += list[i].supplierName;
+		str += "</td><td>" + (list[i].supplierCode == null ? "" : list[i].supplierCode);
 		str += "</td><td>" + (list[i].country == null ? "" : list[i].country) +" "+(list[i].province == null ? "" : list[i].province);
 		str += "</td><td>" + (list[i].city == null ? "" : list[i].city)+" "+(list[i].area == null ? "" : list[i].area)+" "+(list[i].address == null ? "" : list[i].address);
 		str += "</td><td>" + (list[i].operator == null ? "" : list[i].operator);

@@ -7,11 +7,8 @@
  */
 package com.card.manager.factory.goods.pojo;
 
-import java.util.List;
-
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
-import com.card.manager.factory.goods.model.GoodsRebateEntity;
 
 /**
  * ClassName: GoodsInfoEntity <br/>
@@ -26,15 +23,7 @@ public class GoodsInfoEntity {
 
 	private GoodsBaseEntity goodsBase;
 	private GoodsEntity goods;
-	private List<GoodsRebateEntity> goodsRebateList; 
 	
-	
-	public List<GoodsRebateEntity> getGoodsRebateList() {
-		return goodsRebateList;
-	}
-	public void setGoodsRebateList(List<GoodsRebateEntity> goodsRebateList) {
-		this.goodsRebateList = goodsRebateList;
-	}
 	public GoodsBaseEntity getGoodsBase() {
 		return goodsBase;
 	}
