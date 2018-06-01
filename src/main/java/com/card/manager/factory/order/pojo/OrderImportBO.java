@@ -1,5 +1,7 @@
 package com.card.manager.factory.order.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.card.manager.factory.util.ParemeterConverUtil;
@@ -65,6 +67,13 @@ public class OrderImportBO {
 			}
 		}
 		return true;
+	}
+	
+	public List<String> getUnCheckFieldName(){
+		List<String> fields = new ArrayList<String>();
+		fields.add("payNo");// payNo可以为null
+		fields.add("itemId");// itemId可以为null
+		return fields;
 	}
 
 	public String getPhone() {
