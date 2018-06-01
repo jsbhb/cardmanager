@@ -40,6 +40,7 @@ public class OrderImportBO {
 	private String name;
 	private String idNum;
 	private String remark;
+	private String conversion;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {
 
@@ -100,6 +101,14 @@ public class OrderImportBO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getConversion() {
+		return conversion;
+	}
+
+	public void setConversion(String conversion) {
+		this.conversion = conversion;
 	}
 
 	public String getIdNum() {
