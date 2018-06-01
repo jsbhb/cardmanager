@@ -42,4 +42,14 @@ public interface SupplierService extends ServerCenterService {
 	 */
 	SupplierEntity queryById(String id, String token);
 
+	/**
+	 * updSupplier:新增供应商. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param string
+	 * @since JDK 1.7
+	 */
+	void updSupplier(SupplierEntity entity, String string) throws Exception;
+
 }
