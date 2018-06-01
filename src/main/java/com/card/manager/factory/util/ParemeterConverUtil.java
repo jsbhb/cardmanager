@@ -12,7 +12,8 @@ public class ParemeterConverUtil {
 			put("微信", 1);
 			put("支付宝", 2);
 			put("银联", 3);
-			put("其他", 4);
+			put("转账", 4);
+			put("其他", 5);
 		}
 	};
 	

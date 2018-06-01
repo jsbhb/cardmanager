@@ -39,6 +39,7 @@ public class OrderImportBO {
 	private String phone;
 	private String name;
 	private String idNum;
+	private String remark;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {
 
@@ -73,7 +74,16 @@ public class OrderImportBO {
 		List<String> fields = new ArrayList<String>();
 		fields.add("payNo");// payNo可以为null
 		fields.add("itemId");// itemId可以为null
+		fields.add("remark");
 		return fields;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public String getPhone() {
