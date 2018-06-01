@@ -91,7 +91,7 @@ public class OrderInfo extends Pagination{
 
 	public OrderInfo(OrderImportBO model) {
 		orderId = Utils.removePoint(model.getOrderId());
-		status = 3;
+		status = 1;
 		expressType = 0;
 		centerId = 2;
 		centerName = "中国供销海外购";
