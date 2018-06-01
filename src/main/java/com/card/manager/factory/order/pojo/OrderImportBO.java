@@ -40,7 +40,6 @@ public class OrderImportBO {
 	private String name;
 	private String idNum;
 	private String remark;
-	private String conversion;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {
 
@@ -74,7 +73,6 @@ public class OrderImportBO {
 	public List<String> getUnCheckFieldName(){
 		List<String> fields = new ArrayList<String>();
 		fields.add("payNo");// payNo可以为null
-		fields.add("itemId");// itemId可以为null
 		fields.add("remark");
 		return fields;
 	}
@@ -101,14 +99,6 @@ public class OrderImportBO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getConversion() {
-		return conversion;
-	}
-
-	public void setConversion(String conversion) {
-		this.conversion = conversion;
 	}
 
 	public String getIdNum() {

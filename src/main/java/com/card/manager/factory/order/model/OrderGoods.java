@@ -26,7 +26,6 @@ public class OrderGoods {
 	private Double itemPrice;
 	private Double actualPrice;
 	private String remark;
-	private Integer conversion;
 	
 	public OrderGoods(){}
 
@@ -39,16 +38,8 @@ public class OrderGoods {
 		itemQuantity = Integer.valueOf(Utils.convert(model.getItemQuantity()));
 		itemPrice = Double.valueOf(model.getItemPrice());
 		actualPrice = Double.valueOf(model.getItemPrice());
-		conversion = Utils.convert(model.getConversion());
 	}
 
-	public Integer getConversion() {
-		return conversion;
-	}
-
-	public void setConversion(Integer conversion) {
-		this.conversion = conversion;
-	}
 
 	public String getItemImg() {
 		return itemImg;
