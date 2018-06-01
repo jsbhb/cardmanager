@@ -55,7 +55,7 @@
 	                <c:if test="${order.status==8}">退单</c:if>
 	                <c:if test="${order.status==9}">超时取消</c:if>
 	                <c:if test="${order.status==11}">资金池不足</c:if>
-	                <c:if test="${order.status==12}">已支付</c:if>
+	                <c:if test="${order.status==12}">已付款</c:if>
 	                <c:if test="${order.status==21}">退款中</c:if>
 	                <c:if test="${order.status==99}">异常状态</c:if>
 				</div>
