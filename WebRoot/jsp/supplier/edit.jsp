@@ -27,43 +27,43 @@
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">供应商名称</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="supplierName" readonly value="${supplier.supplierName}">
+					<input type="text" class="form-control" name="supplierName" value="${supplier.supplierName == 'null' ? '' : supplier.supplierName}">
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">供应商代码</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="supplierCode" value="${supplier.supplierCode}">
+					<input type="text" class="form-control" name="supplierCode" value="${supplier.supplierCode == 'null' ? '' : supplier.supplierCode}">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">国家</div>
+				<div class="col-sm-3 item-left">公司名称</div>
 				<div class="col-sm-9 item-right">
-             		<input type="text" class="form-control" name="country" value="${supplier.country}">
+             		<input type="text" class="form-control" name="country" value="${supplier.country == 'null' ? '' : supplier.country}">
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">省</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="province" value="${supplier.province}">
+               		<input type="text" class="form-control" name="province" value="${supplier.province == 'null' ? '' : supplier.province}">
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">市</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="city" value="${supplier.city}">
+               		<input type="text" class="form-control" name="city" value="${supplier.city == 'null' ? '' : supplier.city}">
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">区</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="area" value="${supplier.area}">
+               		<input type="text" class="form-control" name="area" value="${supplier.area == 'null' ? '' : supplier.area}">
 				</div>
 			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">地址</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="address" value="${supplier.address}">
+               		<input type="text" class="form-control" name="address" value="${supplier.address == 'null' ? '' : supplier.address}">
 				</div>
 			</div>
 			<div class="title">
@@ -72,31 +72,31 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">负责人</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="operator" value="${supplier.operator}">
+	                <input type="text" class="form-control" name="operator" value="${supplier.operator == 'null' ? '' : supplier.operator}">
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">电话</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="phone" value="${supplier.phone}">
+	                <input type="text" class="form-control" name="phone" value="${supplier.phone == 'null' ? '' : supplier.phone}">
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">邮箱</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="email" value="${supplier.email}">
+	                <input type="text" class="form-control" name="email" value="${supplier.email == 'null' ? '' : supplier.email}">
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">qq</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="qq" value="${supplier.qq}">
+	                <input type="text" class="form-control" name="qq" value="${supplier.qq == 'null' ? '' : supplier.qq}">
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">传真</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="fax" value="${supplier.fax}">
+					<input type="text" class="form-control" name="fax" value="${supplier.fax == 'null' ? '' : supplier.fax}">
 				</div>
 			</div>
 			
@@ -109,7 +109,7 @@
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
-		 if($('#supplierForm').data("bootstrapValidator").isValid()){
+// 		 if($('#supplierForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
 				 url:"${wmsUrl}/admin/supplier/supplierMng/editSupplier.shtml",
 				 type:'post',
@@ -129,9 +129,9 @@
 					 layer.alert("提交失败，请联系客服处理");
 				 }
 			 });
-		 }else{
-			 layer.alert("信息填写有误");
-		 }
+// 		 }else{
+// 			 layer.alert("信息填写有误");
+// 		 }
 	 });
 	
 	 $('#resetBtn').click(function() {
@@ -154,17 +154,17 @@
                       message: '用户名不能为空！'
                   },
                   stringLength: {
-                      min: 4,
+                      min: 2,
                       max: 30,
-                      message: '分级名称必须在4-30位字符'
+                      message: '分级名称必须在2-30位字符'
                   },
               }
       	  },
       	 country: {
-	          message: '国家不能为空',
+	          message: '公司名称不能为空',
 	          validators: {
 	              notEmpty: {
-	                  message: '国家不能为空！'
+	                  message: '公司名称不能为空！'
 	              }
 	          }
 	  	  },

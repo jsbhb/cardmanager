@@ -307,7 +307,7 @@ public class CapitalPoolMng extends BaseController {
 	        Integer num=(int)(Math.random()*9000)+1000;
 			String businessNo = "ZJC" + staffEntity.getBadge() + DateUtil.getNowPlusTimeMill() + num;
 			entity.setBusinessNo(businessNo);
-			if (Constants.CUSTOMER_TYPE_SUPPLIER.equals(entity.getCustomerType())) {
+			if (Constants.CUSTOMER_TYPE_SUPPLIER.equals(entity.getCustomerType().toString())) {
 				List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
 				for(SupplierEntity sup : suppliers) {
 					if (sup.getId() == entity.getCustomerId()) {
