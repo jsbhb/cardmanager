@@ -303,7 +303,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		List<OrderInfo> infoList = new ArrayList<OrderInfo>();
 		for (Map.Entry<String, OrderInfo> entry : infoMap.entrySet()) {
 			entry.getValue().setTdq(entry.getValue().getOrderGoodsList().size());
-			int userId = syncUserCenter(userMap.get(info.getPhone()), helper);
+			int userId = syncUserCenter(userMap.get(entry.getValue().getPhone()), helper);
 			entry.getValue().setUserId(userId);
 			entry.getValue().setCombinationId(batchId);//设置批次号
 			infoList.add(entry.getValue());
