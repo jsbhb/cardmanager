@@ -42,6 +42,7 @@ import com.card.manager.factory.ftp.common.ReadIniInfo;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.BrandEntity;
+import com.card.manager.factory.goods.model.CatalogEntity;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
@@ -53,6 +54,7 @@ import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.SpecsBO;
 import com.card.manager.factory.goods.model.SpecsEntity;
 import com.card.manager.factory.goods.model.SpecsValueEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
@@ -895,7 +897,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					goodsInfo.setGoods(goods);
 					infoMap.put(model.getId(), goodsInfo);
 					goodsInfoList.add(goodsInfo);
-					repeatList = new ArrayList<List<GoodsSpecsBO>>();//判断多规格是否重复用
+					repeatList = new ArrayList<List<GoodsSpecsBO>>();// 判断多规格是否重复用
 				} else {
 					goodsInfo = infoMap.get(model.getId());
 				}
@@ -927,13 +929,13 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 							int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_ADD,
 									staffEntity.getToken());
 							specs.setSpecsNameId(id);
-							specsNameMap.put(specs.getSpecsName(), id);//放入map，如果该excel里有其他商品使用该规格就不需要请求微服务
+							specsNameMap.put(specs.getSpecsName(), id);// 放入map，如果该excel里有其他商品使用该规格就不需要请求微服务
 						}
 						if (specs.getSpecsValueId() == null) {
 							int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_VALUE_ADD,
 									staffEntity.getToken());
 							specs.setSpecsValueId(id);
-							//同specsName
+							// 同specsName
 							if (specsValueMap.get(specs.getSpecsNameId()) == null) {
 								spv = new CaseInsensitiveMap();
 								spv.put(specs.getSpecsValue(), id);
@@ -942,13 +944,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 								specsValueMap.get(specs.getSpecsNameId()).put(specs.getSpecsValue(), id);
 							}
 						}
-						sb.append("{\"svV\":\"" + specs.getSpecsValue() + "\",\"skV\":\"" + specs.getSpecsName() + "\",\"svId\":\""
-								+ specs.getSpecsValueId() + "\",\"skId\":\"" + specs.getSpecsNameId() + "\"},");
+						sb.append("{\"svV\":\"" + specs.getSpecsValue() + "\",\"skV\":\"" + specs.getSpecsName()
+								+ "\",\"svId\":\"" + specs.getSpecsValueId() + "\",\"skId\":\"" + specs.getSpecsNameId()
+								+ "\"},");
 					}
 					String info = sb.substring(0, sb.length() - 1) + "]";
 					goodsItem.setInfo(info);
 				} else {
-					if(goodsInfo.getGoods().getItems() != null){
+					if (goodsInfo.getGoods().getItems() != null) {
 						result.put("success", false);
 						result.put("msg", "编号：" + model.getId() + ",请填写规格,如果没有规格,id请不要重复");
 						return result;
@@ -962,12 +965,12 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				} else {
 					goodsInfo.getGoods().getItems().add(goodsItem);
 				}
-				//判断规格是否重复
-				if(repeatList.size() == 0){
+				// 判断规格是否重复
+				if (repeatList.size() == 0) {
 					repeatList.add(model.getSpecsList());
 				} else {
-					for(List<GoodsSpecsBO> temp : repeatList){
-						if(Utils.isEqualCollection(temp, model.getSpecsList())){
+					for (List<GoodsSpecsBO> temp : repeatList) {
+						if (Utils.isEqualCollection(temp, model.getSpecsList())) {
 							result.put("success", false);
 							result.put("msg", "编号：" + model.getId() + ",规格有重复");
 							return result;
@@ -1030,7 +1033,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 								}
 							}
 						} else {
-							if(gradeType.getParentId() != 1 && gradeType.getParentId() != 0){
+							if (gradeType.getParentId() != 1 && gradeType.getParentId() != 0) {
 								result.put("success", false);
 								result.put("msg", "编号：" + model.getId() + ",请先填写上一级返佣");
 								return result;
@@ -1197,8 +1200,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
 		// 生成供应商对照表
 		List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
-		String[] supplierHead = new String[] { "供应商编码", "供应商名称" };
-		String[] supplierField = new String[] { "Id", "SupplierName" };
+		String[] supplierHead = new String[] { "供应商名称", "供应商自有编码" };
+		String[] supplierField = new String[] { "SupplierName", "SupplierCode" };
 		ExcelUtil.createExcel(suppliers, supplierHead, supplierField, filePath, 0, "供应商对照表", xssfWorkbook);
 		// 生成分级类型对照表
 		Map<Integer, GradeTypeDTO> gradeMap = CachePoolComponent.getGradeType(staffEntity.getToken());
@@ -1209,37 +1212,58 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String[] centerHead = new String[] { "分级编码", "父级编码", "分级名称" };
 		String[] centerField = new String[] { "Id", "ParentId", "Name" };
 		ExcelUtil.createExcel(centers, centerHead, centerField, filePath, 0, "分级对照表", xssfWorkbook);
-		// 生成一级分类对照表
 		List<FirstCatalogEntity> firstList = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
-		String[] firstHead = new String[] { "一级分类编码", "一级分类名称" };
-		String[] firstField = new String[] { "FirstId", "Name" };
-		ExcelUtil.createExcel(firstList, firstHead, firstField, filePath, 0, "一级分类对照表", xssfWorkbook);
-		// 生成二级分类对照表
 		List<SecondCatalogEntity> secondList = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
-		String[] secondHead = new String[] { "一级分类编码", "二级分类编码", "二级分类名称" };
-		String[] secondField = new String[] { "FirstId", "SecondId", "Name" };
-		ExcelUtil.createExcel(secondList, secondHead, secondField, filePath, 0, "二级分类对照表", xssfWorkbook);
-		// 生成三级分类对照表
 		List<ThirdCatalogEntity> thirdList = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
-		String[] thirdHead = new String[] { "二级分类编码", "三级分类编码", "三级分类名称" };
-		String[] thirdField = new String[] { "SecondId", "ThirdId", "Name" };
-		ExcelUtil.createExcel(thirdList, thirdHead, thirdField, filePath, 0, "三级分类对照表", xssfWorkbook);
+		Map<String, FirstCatalogEntity> firstMap = new HashMap<String, FirstCatalogEntity>();
+		Map<String, SecondCatalogEntity> secondMap = new HashMap<String, SecondCatalogEntity>();
+		for (FirstCatalogEntity first : firstList) {
+			firstMap.put(first.getFirstId(), first);
+		}
+		for (SecondCatalogEntity second : secondList) {
+			secondMap.put(second.getSecondId(), second);
+		}
+		CatalogEntity entity = null;
+		List<CatalogEntity> entityList = new ArrayList<CatalogEntity>();
+		for (ThirdCatalogEntity third : thirdList) {
+			entity = new CatalogEntity();
+			entity.setThirdCatalogName(third.getName());
+			entity.setSecondCatalogName(secondMap.get(third.getSecondId()).getName());
+			entity.setFirstCatalogName(firstMap.get(secondMap.get(third.getSecondId()).getFirstId()).getName());
+			entityList.add(entity);
+		}
+		String[] catalogHead = new String[] { "一级分类名称", "二级分类名称", "三级分类名称" };
+		String[] catalogField = new String[] { "FirstCatalogName", "SecondCatalogName", "ThirdCatalogName" };
+		ExcelUtil.createExcel(entityList, catalogHead, catalogField, filePath, 0, "分类对照表", xssfWorkbook);
 		// 生成品牌对照表
 		List<BrandEntity> brandList = CachePoolComponent.getBrands(staffEntity.getToken());
-		String[] brandHead = new String[] { "品牌编码", "品牌名称" };
-		String[] brandField = new String[] { "BrandId", "Brand" };
+		String[] brandHead = new String[] { "品牌名称" };
+		String[] brandField = new String[] { "Brand" };
 		ExcelUtil.createExcel(brandList, brandHead, brandField, filePath, 0, "品牌对照表", xssfWorkbook);
 		RestCommonHelper helper = new RestCommonHelper();
 		List<Object> specsList = getSpecs(helper, ServerCenterContants.GOODS_CENTER_SPECS, staffEntity.getToken(),
 				SpecsEntity.class);
-		String[] specsHead = new String[] { "规格编码", "规格名称" };
-		String[] specsField = new String[] { "Id", "Name" };
-		ExcelUtil.createExcel(specsList, specsHead, specsField, filePath, 0, "规格项对照表", xssfWorkbook);
 		List<Object> specsValueList = getSpecs(helper, ServerCenterContants.GOODS_CENTER_SPECS_VALUE,
 				staffEntity.getToken(), SpecsValueEntity.class);
-		String[] specsValueHead = new String[] { "规格编码", "规格值编码", "规格值名称" };
-		String[] specsValueField = new String[] { "SpecsId", "Id", "Value" };
-		ExcelUtil.createExcel(specsValueList, specsValueHead, specsValueField, filePath, 0, "规格值对照表", xssfWorkbook);
+		Map<Integer, String> specsMap = new HashMap<Integer, String>();
+		SpecsEntity specs = null;
+		SpecsValueEntity specsValue = null;
+		SpecsBO specsBO = null;
+		List<SpecsBO> specsBOList = new ArrayList<SpecsBO>();
+		for (Object obj : specsList) {
+			specs = (SpecsEntity) obj;
+			specsMap.put(specs.getId(), specs.getName());
+		}
+		for (Object obj : specsValueList) {
+			specsBO = new SpecsBO();
+			specsValue = (SpecsValueEntity) obj;
+			specsBO.setSpecs(specsMap.get(specsValue.getSpecsId()));
+			specsBO.setSpecsValue(specsValue.getValue());
+			specsBOList.add(specsBO);
+		}
+		String[] specsValueHead = new String[] { "规格项", "规格值" };
+		String[] specsValueField = new String[] { "Specs", "SpecsValue" };
+		ExcelUtil.createExcel(specsBOList, specsValueHead, specsValueField, filePath, 0, "规格对照表", xssfWorkbook);
 		ExcelUtil.writeToExcel(xssfWorkbook, filePath);
 		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
 	}

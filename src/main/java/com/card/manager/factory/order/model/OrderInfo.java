@@ -97,10 +97,7 @@ public class OrderInfo extends Pagination{
 		centerName = "中国供销海外购";
 		shopId = model.getShopId();
 		shopName = model.getShopName();
-		supplierId = model.getSupplierId();
-		supplierName = model.getSupplierName();
 		weight = 100;
-		orderFlag = model.getOrderFlag();
 		createType = 0;
 		tagFun = 0;
 		orderSource = model.getOrderSource();

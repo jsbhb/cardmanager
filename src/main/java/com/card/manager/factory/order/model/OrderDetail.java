@@ -69,7 +69,6 @@ public class OrderDetail {
 	public OrderDetail(OrderImportBO model) throws NumberFormatException{
 		orderId = Utils.removePoint(model.getOrderId());
 		payType = model.getPayType();
-		payment = Double.valueOf(model.getPayment());
 		postFee = Double.valueOf(model.getPostFee());
 		taxFee = Double.valueOf(model.getTaxFee());
 		exciseTax = 0.0;
