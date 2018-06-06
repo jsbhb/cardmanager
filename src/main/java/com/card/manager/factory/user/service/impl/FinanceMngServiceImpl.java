@@ -382,6 +382,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		
 		CapitalManagementDetail capitalManagementDetail = new CapitalManagementDetail();
 		capitalManagementDetail.setCustomerId(entity.getCustomerId());
+		capitalManagementDetail.setCustomerType(entity.getCustomerType());
 		capitalManagementDetail.setPayType(entity.getPayType());
 		capitalManagementDetail.setMoney(entity.getMoney());
 		capitalManagementDetail.setPayNo(entity.getPayNo());
@@ -407,8 +408,8 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 	}
 	
 	@Override
-	public CapitalManagement queryCapitalManagementByCustomerId(String customerId) {
-		return financeMapper.selectCapitalManagementByCustomerId(customerId);
+	public CapitalManagement queryCapitalManagementByCustomerId(Map<String, Object> param) {
+		return financeMapper.selectCapitalManagementByCustomerId(param);
 	}
 	
 	@Override

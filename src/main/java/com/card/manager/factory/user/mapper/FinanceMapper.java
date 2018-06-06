@@ -74,7 +74,7 @@ public interface FinanceMapper {
 	 */
 	void updateCapitalManagementMoney(CapitalManagementDetail entity);
 	
-	CapitalManagement selectCapitalManagementByCustomerId(String customerId);
+	CapitalManagement selectCapitalManagementByCustomerId(Map<String, Object> param);
 	
 	/**
 	 * 

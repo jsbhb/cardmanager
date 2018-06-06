@@ -85,7 +85,7 @@ public interface FinanceMngService extends ServerCenterService {
 	
 	void insertCapitalPoolInfo(AddCapitalPoolInfoEntity entity) throws Exception;
 	
-	CapitalManagement queryCapitalManagementByCustomerId(String customerId);
+	CapitalManagement queryCapitalManagementByCustomerId(Map<String, Object> param);
 
 	/**
 	 * 

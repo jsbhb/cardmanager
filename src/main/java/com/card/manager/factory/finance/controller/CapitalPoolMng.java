@@ -295,7 +295,10 @@ public class CapitalPoolMng extends BaseController {
 		entity.setOpt(staffEntity.getOptName());
 		try {
 			if ("1".equals(entity.getPayType().toString())) {
-				CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(entity.getCustomerId().toString());
+				Map<String,Object> param = new HashMap<String,Object>();
+				param.put("customerId", entity.getCustomerId().toString());
+				param.put("customerType", entity.getCustomerType().toString());
+				CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(param);
 				if (capitalManagement.getMoney() - entity.getMoney() < 0) {
 					sendFailureMessage(resp, "操作失败：客户："+entity.getCustomerName()+"可用金额("+capitalManagement.getMoney()+")小于本次消费金额("+entity.getMoney()+")");
 					return;
@@ -334,8 +337,12 @@ public class CapitalPoolMng extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		String customerId = req.getParameter("customerId");
+		String customerType = req.getParameter("customerType");
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("customerId", customerId);
+		param.put("customerType", customerType);
 		context.put(OPT, opt);
-		CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(customerId);
+		CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(param);
 		context.put("CapitalManagement", capitalManagement);
 		return forword("finance/capitalPool/show", context);
 	}
@@ -346,11 +353,13 @@ public class CapitalPoolMng extends BaseController {
 		PageCallBack pcb = new PageCallBack();
 		try {
 			String customerId = req.getParameter("customerId");
+			String customerType = req.getParameter("customerType");
 			String payType = req.getParameter("payType");
 			String payNo = req.getParameter("payNo");
 			Page<CapitalManagementDetail> page = null;
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("customerId", customerId);
+			params.put("customerType", customerType);
 			params.put("payType", payType);
 			params.put("payNo", payNo);
 			

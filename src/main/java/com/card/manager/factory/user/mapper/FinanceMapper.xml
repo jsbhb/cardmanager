@@ -22,6 +22,7 @@
 			property="managementDetailList">
 			<id column="detail_id" property="id" jdbcType="INTEGER" />
 			<result column="detail_customer_id" property="customerId" jdbcType="INTEGER" />
+			<result column="detail_customer_type" property="customerType" jdbcType="INTEGER" />
 			<result column="pay_type" property="payType" jdbcType="INTEGER" />
 			<result column="detail_money" property="money" jdbcType="DECIMAL" />
 			<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
@@ -95,6 +96,7 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="customer_id" property="customerId" jdbcType="INTEGER" />
 		<result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+		<result column="customer_type" property="customerType" jdbcType="INTEGER" />
 		<result column="pay_type" property="payType" jdbcType="INTEGER" />
 		<result column="money" property="money" jdbcType="DECIMAL" />
 		<result column="pay_no" property="payNo" jdbcType="VARCHAR" />
@@ -148,13 +150,12 @@
 		b.create_time,b.opt,c.order_id,c.goods_name,c.item_id,
 		c.item_code,c.item_quantity,c.item_price,c.item_encode
 		from capitalmanagement a
-		left join capitalmanagement_detail b on a.customer_id = b.customer_id
+		left join capitalmanagement_detail b on a.customer_id = b.customer_id and a.customer_type = b.customer_type
 		left join capitalmanagement_business_item c on b.business_no = c.business_no
 		where 1=1 
 		<if test="customerType !=null and customerType !=''">
 			and a.customer_type = #{customerType}
 		</if>
-		
 		<if test="customerId !=null and customerId !=''">
 			and a.customer_id = #{customerId}
 		</if>
@@ -170,8 +171,8 @@
 
 	<insert id="insertCapitalManagementDetail" parameterType="object">
 		INSERT INTO capitalmanagement_detail 
-		(customer_id,pay_type,money,pay_no,business_no,remark,create_time,opt) 
-		VALUES (#{customerId},#{payType},#{money},#{payNo},#{businessNo},#{remark},now(),#{opt})
+		(customer_id,pay_type,money,pay_no,business_no,remark,create_time,opt,customer_type) 
+		VALUES (#{customerId},#{payType},#{money},#{payNo},#{businessNo},#{remark},now(),#{opt},#{customerType})
 	</insert>
 	
 	<insert id="insertCapitalManagementBusinessItem" parameterType="Object">
@@ -195,15 +196,15 @@
 			,money = money - #{money}
 			,use_money = use_money + #{money}
 		</if>
-		where customer_id = #{customerId}
+		where customer_id = #{customerId} and customer_type = #{customerType}
 	</update>
 	
 	<select id="selectCapitalManagementByCustomerId" resultMap="capitalManagementBase">
-		select * from capitalmanagement where customer_id = #{customerId}
+		select * from capitalmanagement where customer_id = #{customerId} and customer_type = #{customerType}
 	</select>
 
 	<select id="dataListByCustomerId" resultMap="capitalManagementDetailBase">
-		select * from capitalmanagement_detail where customer_id = #{customerId}
+		select * from capitalmanagement_detail where customer_id = #{customerId} and customer_type = #{customerType}
 		<if test="payType !=null and payType !=''">
 			and pay_type = #{payType}
 		</if>
@@ -224,7 +225,7 @@
 	<select id="queryCapitalManagementDetailByParam" resultMap="capitalManagementDetailBase">
 		select cd.*,c.customer_name 
 		from capitalmanagement_detail cd
-		left join capitalmanagement c on c.customer_id = cd.customer_id
+		left join capitalmanagement c on c.customer_id = cd.customer_id and c.customer_type = cd.customer_type
 		where business_no = #{businessNo}
 	</select>
 

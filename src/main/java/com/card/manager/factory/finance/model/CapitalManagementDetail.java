@@ -17,6 +17,7 @@ public class CapitalManagementDetail extends Pagination {
 	private String createTime;
 	private String opt;
 	private List<CapitalManagementBusinessItem> managementBusinessItemList;
+	private Integer customerType;//客户类型0:供应商,1:区域中心
 	
 	public Integer getId() {
 		return id;
@@ -83,6 +84,12 @@ public class CapitalManagementDetail extends Pagination {
 	}
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
+	}
+	public Integer getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
 	}
 	
 }

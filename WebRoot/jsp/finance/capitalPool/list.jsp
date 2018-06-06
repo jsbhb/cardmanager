@@ -222,17 +222,17 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].countMoney;
 		str += "</td><td>" + tmpStatus;
 		str += "</td><td>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].customerId+")'>查看详情</a>";
+		str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].customerId+","+customerType")'>查看详情</a>";
 		str += "</td></tr>";
 	}
 	$("#orderTable tbody").html(str);
 }
 
-function toShow(customerId){
+function toShow(customerId,customerType){
 	var index = layer.open({
 	  title:"查看详情",
 	  type: 2,
-	  content: '${wmsUrl}/admin/finance/capitalPoolMng/showCapitalManagementDetail.shtml?customerId='+customerId
+	  content: '${wmsUrl}/admin/finance/capitalPoolMng/showCapitalManagementDetail.shtml?customerId='+customerId+'&customerType='+customerType
 	});
 	layer.full(index);
 }
