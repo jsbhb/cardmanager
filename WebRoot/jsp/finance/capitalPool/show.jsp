@@ -62,6 +62,7 @@
 			
 			<input type="hidden" class="form-control" id="customerId" name="customerId" value="${CapitalManagement.customerId}">
 			<input type="hidden" class="form-control" id="customerName" name="customerName" value="${CapitalManagement.customerName}">
+			<input type="hidden" class="form-control" id="customerType" name="customerType" value="${CapitalManagement.customerType}">
 			
 			<div class="row content-container">
 				<div class="col-md-12 container-right active">
