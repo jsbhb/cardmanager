@@ -1082,33 +1082,38 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	private void checkFieldIsNull(Map<String, Object> result, Map<String, GoodsInfoEntity> infoMap,
 			ImportGoodsBO model) {
+		Map<String, Object> tempMap = null;
 		if (infoMap.containsKey(model.getId())) {// 是多规格
-			if (!Utils.isAllFieldNotNull(model, model.getSpecsUnCheckFieldName())) {
+			tempMap = Utils.isAllFieldNotNull(model, model.getSpecsUnCheckFieldName());
+			if (!(boolean) tempMap.get("success")) {
 				result.put("success", false);
-				result.put("msg", "编号：" + model.getId() + "信息不全");
+				result.put("msg", "编号：" + model.getId() + "," + tempMap.get("describe"));
 				return;
 			}
 		} else {
-			if (!Utils.isAllFieldNotNull(model, model.getBaseUnCheckFieldName())) {
+			tempMap = Utils.isAllFieldNotNull(model, model.getBaseUnCheckFieldName());
+			if (!(boolean) tempMap.get("success")) {
 				result.put("success", false);
-				result.put("msg", "编号：" + model.getId() + "信息不全");
+				result.put("msg", "编号：" + model.getId() + "," + tempMap.get("describe"));
 				return;
 			}
 		}
 		if (model.getRebateList() != null) {
 			for (GoodsRebateBO rebate : model.getRebateList()) {
-				if (!Utils.isAllFieldNotNull(rebate, null)) {
+				tempMap = Utils.isAllFieldNotNull(rebate, null);
+				if (!(boolean) tempMap.get("success")) {
 					result.put("success", false);
-					result.put("msg", "编号：" + model.getId() + "返佣信息不全");
+					result.put("msg", "编号：" + model.getId() + "," + tempMap.get("describe"));
 					return;
 				}
 			}
 		}
 		if (model.getSpecsList() != null) {
 			for (GoodsSpecsBO specs : model.getSpecsList()) {
-				if (!Utils.isAllFieldNotNull(specs, specs.getUnCheckFieldName())) {
+				tempMap = Utils.isAllFieldNotNull(specs, specs.getUnCheckFieldName());
+				if (!(boolean) tempMap.get("success")) {
 					result.put("success", false);
-					result.put("msg", "编号：" + model.getId() + "规格信息不全");
+					result.put("msg", "编号：" + model.getId() + "," + tempMap.get("describe"));
 					return;
 				}
 			}

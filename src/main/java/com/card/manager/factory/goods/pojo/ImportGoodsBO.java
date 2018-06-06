@@ -5,42 +5,69 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.card.manager.factory.annotation.FieldDescribe;
 import com.card.manager.factory.util.ParemeterConverUtil;
 import com.card.manager.factory.util.Utils;
 
 public class ImportGoodsBO {
+	@FieldDescribe(describe="没有编号")
 	private String id;
+	@FieldDescribe(describe="没有品牌名称")
 	private String brandName;
+	@FieldDescribe(describe="匹配不到品牌编号,请核对和对照表中是否一致")
 	private String brandId;
+	@FieldDescribe(describe="没有供应商名称")
 	private String supplierName;
+	@FieldDescribe(describe="匹配不到供应商编号,请核对和对照表中是否一致")
 	private Integer supplierId;
+	@FieldDescribe(describe="没有商品类型")
 	private String typeName;
+	@FieldDescribe(describe="匹配不到商品类型编号,请核对和对照表中是否一致")
 	private Integer type;
+	@FieldDescribe(describe="没有商品名称")
 	private String goodsName;
+	@FieldDescribe(describe="没有一级分类名称")
 	private String firstCatalogName;
+	@FieldDescribe(describe="匹配不到一级分类编号,请核对和对照表中是否一致")
 	private String firstCatalogId;
+	@FieldDescribe(describe="没有二级分类名称")
 	private String secondCatalogName;
+	@FieldDescribe(describe="匹配不到二级分类编号,请核对和对照表中是否一致")
 	private String secondCatalogId;
+	@FieldDescribe(describe="没有三级分类名称")
 	private String thirdCatalogName;
+	@FieldDescribe(describe="匹配不到三级分类编号,请核对和对照表中是否一致")
 	private String thirdCatalogId;
 	private String incrementTax;
 	private String tariff;
+	@FieldDescribe(describe="没有单位")
 	private String unit;
 	private String hscode;
+	@FieldDescribe(describe="没有原产国")
 	private String origin;
+	@FieldDescribe(describe="没有商家编号")
 	private String itemCode;
+	@FieldDescribe(describe="没有自有编号")
 	private String sku;
 	private String encode;
 	private String exciseFax;
+	@FieldDescribe(describe="没有重量")
 	private String weight;
+	@FieldDescribe(describe="没有换算比例")
 	private String conversion;
+	@FieldDescribe(describe="没有成本价")
 	private String proxyPrice;
+	@FieldDescribe(describe="没有内供价")
 	private String fxPrice;
+	@FieldDescribe(describe="没有销售价")
 	private String retailPrice;
+	@FieldDescribe(describe="没有最小购买量")
 	private String min;
+	@FieldDescribe(describe="没有最大购买量")
 	private String max;
 	private String shelfLife;
 	private String carTon;
+	@FieldDescribe(describe="没有库存")
 	private String stock;
 	private List<GoodsSpecsBO> specsList;
 	private List<GoodsRebateBO> rebateList;

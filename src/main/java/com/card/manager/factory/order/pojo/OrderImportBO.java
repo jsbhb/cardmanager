@@ -4,28 +4,46 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.card.manager.factory.annotation.FieldDescribe;
 import com.card.manager.factory.util.ParemeterConverUtil;
 import com.card.manager.factory.util.RegularUtil;
 
 public class OrderImportBO {
 
+	@FieldDescribe(describe="没有订单号")
 	private String orderId;
+	@FieldDescribe(describe="匹配不到分级名称，请核对和对照表是否一致")
 	private Integer shopId;
+	@FieldDescribe(describe="没有分级名称")
 	private String shopName;
+	@FieldDescribe(describe="没有自有编码")
 	private String sku;
+	@FieldDescribe(describe="没有商品编号")
 	private String itemId;
+	@FieldDescribe(describe="没有零售价")
 	private String itemPrice;
+	@FieldDescribe(describe="没有商品数量")
 	private String itemQuantity;
+	@FieldDescribe(describe="没有订单来源")
 	private String orderSourceName;
+	@FieldDescribe(describe="匹配不到订单来源编号，请核对和对照表是否一致")
 	private Integer orderSource;
+	@FieldDescribe(describe="匹配不到支付类型编号，请核对和对照表是否一致")
 	private Integer payType;
+	@FieldDescribe(describe="没有支付类型")
 	private String payTypeName;
 	private String payNo;
+	@FieldDescribe(describe="没有收货人姓名")
 	private String receiveName;
+	@FieldDescribe(describe="没有收货人电话")
 	private String receivePhone;
+	@FieldDescribe(describe="没有收货人省")
 	private String province;
+	@FieldDescribe(describe="没有收货人市")
 	private String city;
+	@FieldDescribe(describe="没有收货人区")
 	private String area;
+	@FieldDescribe(describe="没有收货人地址")
 	private String address;
 	private String taxFee;
 	private String postFee;
@@ -33,6 +51,7 @@ public class OrderImportBO {
 	private String name;
 	private String idNum;
 	private String remark;
+	@FieldDescribe(describe="没有换算比例")
 	private String conversion;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {

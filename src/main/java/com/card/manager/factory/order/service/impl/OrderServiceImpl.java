@@ -255,7 +255,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			gradeMapTemp.put(entry.getValue().getName(), entry.getValue().getId());
 		}
 		// end
-		
+		Map<String,Object> tempMap = null;
 		for (OrderImportBO model : list) {
 			// 初始化,并判断手机号和身份证是否正确
 			if (!model.init(gradeMapTemp, supplierMap)) {
@@ -264,9 +264,10 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				return result;
 			}
 			// 判断是否有数据是空的
-			if (!Utils.isAllFieldNotNull(model, model.getUnCheckFieldName())) {
+			tempMap = Utils.isAllFieldNotNull(model, model.getUnCheckFieldName());
+			if (!(boolean)tempMap.get("success")) {
 				result.put("success", false);
-				result.put("msg", "订单号：" + model.getOrderId() + "订单信息数据不全");
+				result.put("msg", "编号：" + model.getOrderId() + "," + tempMap.get("describe"));
 				return result;
 			}
 			// 放入订单信息
