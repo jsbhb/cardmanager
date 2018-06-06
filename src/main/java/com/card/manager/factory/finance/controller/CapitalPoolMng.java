@@ -315,6 +315,10 @@ public class CapitalPoolMng extends BaseController {
 						break;
 					}
 				}
+			} else if (Constants.CUSTOMER_TYPE_CENTER.equals(entity.getCustomerType().toString())) {
+				Map<Integer, GradeBO> maps = CachePoolComponent.getGrade(staffEntity.getToken());
+				GradeBO grade = maps.get(entity.getCustomerId());
+				entity.setCustomerCode(grade.getCompany());
 			}
 			financeMngService.insertCapitalPoolInfo(entity);
 		} catch (Exception e) {
