@@ -26,18 +26,31 @@ public class OrderGoods {
 	private Double itemPrice;
 	private Double actualPrice;
 	private String remark;
-	
-	public OrderGoods(){}
+	private Integer conversion;
 
-	public OrderGoods(OrderImportBO model) throws NumberFormatException{
+	public OrderGoods() {
+	}
+
+	public OrderGoods(OrderImportBO model) throws NumberFormatException {
 		orderId = Utils.removePoint(model.getOrderId());
-		itemId = Utils.removePoint(model.getItemId());
-		sku = Utils.removePoint(model.getSku());
-		itemName = model.getItemName();
-		itemCode = Utils.removePoint(model.getItemCode());
+		itemId = model.getItemId() != null && !"".equals(model.getItemId()) ? Utils.removePoint(model.getItemId())
+				: null;
+		sku = model.getSku() != null && !"".equals(model.getSku()) ? Utils.removePoint(model.getSku()) : null;
 		itemQuantity = Integer.valueOf(Utils.convert(model.getItemQuantity()));
-		itemPrice = Double.valueOf(model.getItemPrice());
-		actualPrice = Double.valueOf(model.getItemPrice());
+		itemPrice = model.getItemPrice() != null && !"".equals(model.getItemPrice())
+				? Double.valueOf(model.getItemPrice()) : null;
+		actualPrice = model.getItemPrice() != null && !"".equals(model.getItemPrice())
+				? Double.valueOf(model.getItemPrice()) : null;
+		conversion = model.getConversion() != null && !"".equals(model.getConversion())
+				? Utils.convert(model.getConversion()) : null;
+	}
+
+	public Integer getConversion() {
+		return conversion;
+	}
+
+	public void setConversion(Integer conversion) {
+		this.conversion = conversion;
 	}
 
 	public String getItemImg() {

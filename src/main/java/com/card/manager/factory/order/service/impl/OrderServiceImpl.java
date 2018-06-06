@@ -46,7 +46,6 @@ import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
-import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.ExcelUtils;
 import com.card.manager.factory.util.FileDownloadUtil;
@@ -211,10 +210,6 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		String filePath = servletContext.getRealPath("/") + "WEB-INF/classes/" + FILE_NAME;
 		InputStream is = new FileInputStream(filePath);
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-		List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
-		String[] supplierHead = new String[] { "供应商编码", "供应商名称" };
-		String[] supplierField = new String[] { "Id", "SupplierName" };
-		ExcelUtil.createExcel(suppliers, supplierHead, supplierField, filePath, 0, "供应商对照表", xssfWorkbook);
 		Map<Integer, GradeBO> gradeMap = CachePoolComponent.getGrade(staffEntity.getToken());
 		List<GradeBO> centers = new ArrayList<GradeBO>();
 		for (Map.Entry<Integer, GradeBO> entry : gradeMap.entrySet()) {
@@ -260,7 +255,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			gradeMapTemp.put(entry.getValue().getName(), entry.getValue().getId());
 		}
 		// end
-		
+		Map<String,Object> tempMap = null;
 		for (OrderImportBO model : list) {
 			// 初始化,并判断手机号和身份证是否正确
 			if (!model.init(gradeMapTemp, supplierMap)) {
@@ -269,9 +264,10 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				return result;
 			}
 			// 判断是否有数据是空的
-			if (!Utils.isAllFieldNotNull(model, model.getUnCheckFieldName())) {
+			tempMap = Utils.isAllFieldNotNull(model, model.getUnCheckFieldName());
+			if (!(boolean)tempMap.get("success")) {
 				result.put("success", false);
-				result.put("msg", "订单号：" + model.getOrderId() + "订单信息数据不全");
+				result.put("msg", "编号：" + model.getOrderId() + "," + tempMap.get("describe"));
 				return result;
 			}
 			// 放入订单信息
@@ -308,20 +304,7 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		List<OrderInfo> infoList = new ArrayList<OrderInfo>();
 		for (Map.Entry<String, OrderInfo> entry : infoMap.entrySet()) {
 			entry.getValue().setTdq(entry.getValue().getOrderGoodsList().size());
-			double payment = entry.getValue().getOrderDetail().getPayment();
-			double amount = 0.0;
-			for (OrderGoods goodstpl : entry.getValue().getOrderGoodsList()) {
-				amount = CalculationUtils.add(amount,
-						CalculationUtils.mul(goodstpl.getItemPrice()+"", goodstpl.getItemQuantity()+""));
-			}
-			amount = CalculationUtils.add(amount, entry.getValue().getOrderDetail().getTaxFee(),
-					entry.getValue().getOrderDetail().getPostFee());
-			if (amount - payment > 1 || amount - payment < -1) {
-				result.put("success", false);
-				result.put("msg", "订单号：" + entry.getKey() + "金额计算和支付金额不匹配");
-				return result;
-			}
-			int userId = syncUserCenter(userMap.get(info.getPhone()), helper);
+			int userId = syncUserCenter(userMap.get(entry.getValue().getPhone()), helper);
 			entry.getValue().setUserId(userId);
 			entry.getValue().setCombinationId(batchId);//设置批次号
 			infoList.add(entry.getValue());

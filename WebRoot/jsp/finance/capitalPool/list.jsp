@@ -126,6 +126,9 @@
 								<c:if test="${customerType == 0}">
 									<th>客户代码</th>
 								</c:if>
+								<c:if test="${customerType == 1}">
+									<th>客户公司</th>
+								</c:if>
 								<th>可用金额</th>
 								<th>已用金额</th>
 								<th>累计金额</th>
@@ -213,9 +216,7 @@ function rebuildTable(data){
 			case 1:str += "</td><td>区域中心";break;
 			default:str += "</td><td>其他";
 		}
-		if (customerType == 0) {
-			str += "</td><td>" + (list[i].customerCode == null ? "" : list[i].customerCode);
-		}
+		str += "</td><td>" + (list[i].customerCode == null ? "" : list[i].customerCode);
 		str += "</td><td>" + list[i].money;
 		str += "</td><td>" + list[i].useMoney;
 		str += "</td><td>" + list[i].countMoney;

@@ -10,19 +10,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.card.manager.factory.annotation.FieldDescribe;
+
 public class Utils {
 
 	/**
-	 * @fun 判断除去指定字段的其他字段是否都为空
+	 * @fun 判断除去指定字段的其他字段是否都为空,并返回什么字段
 	 * @param obj
 	 * @param fields
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static boolean isAllFieldNotNull(Object obj, List<String> fields) {
+	public static Map<String,Object> isAllFieldNotNull(Object obj, List<String> fields) {
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("success", true);
 		Class stuCla = (Class) obj.getClass();// 得到类对象
 		Field[] fs = stuCla.getDeclaredFields();// 得到属性集合
-		boolean flag = true;
 		for (Field f : fs) {// 遍历属性
 			if(fields != null){
 				if (fields.contains(f.getName())) {
@@ -39,12 +42,18 @@ public class Utils {
 				e.printStackTrace();
 			}
 			if (val == null) {
-				flag = false;
-				break;
+				result.put("success", false);
+				FieldDescribe describe = f.getAnnotation(FieldDescribe.class);
+				if(describe != null){
+					result.put("describe", describe.describe());
+				}
+				return result;
 			}
 		}
-		return flag;
+		return result;
 	}
+	
+	
 
 	/**
 	 * @fun 字符串转整数

@@ -4,49 +4,60 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.card.manager.factory.annotation.FieldDescribe;
 import com.card.manager.factory.util.ParemeterConverUtil;
 import com.card.manager.factory.util.RegularUtil;
 
 public class OrderImportBO {
 
+	@FieldDescribe(describe="没有订单号")
 	private String orderId;
-	private String supplierName;
-	private Integer supplierId;
+	@FieldDescribe(describe="匹配不到分级名称，请核对和对照表是否一致")
 	private Integer shopId;
+	@FieldDescribe(describe="没有分级名称")
 	private String shopName;
-	private String orderFlagName;
-	private Integer orderFlag;
+	@FieldDescribe(describe="没有自有编码")
 	private String sku;
+	@FieldDescribe(describe="没有商品编号")
 	private String itemId;
-	private String itemCode;
+	@FieldDescribe(describe="没有零售价")
 	private String itemPrice;
+	@FieldDescribe(describe="没有商品数量")
 	private String itemQuantity;
+	@FieldDescribe(describe="没有订单来源")
 	private String orderSourceName;
+	@FieldDescribe(describe="匹配不到订单来源编号，请核对和对照表是否一致")
 	private Integer orderSource;
-	private String payment;
+	@FieldDescribe(describe="匹配不到支付类型编号，请核对和对照表是否一致")
 	private Integer payType;
+	@FieldDescribe(describe="没有支付类型")
 	private String payTypeName;
 	private String payNo;
+	@FieldDescribe(describe="没有收货人姓名")
 	private String receiveName;
+	@FieldDescribe(describe="没有收货人电话")
 	private String receivePhone;
+	@FieldDescribe(describe="没有收货人省")
 	private String province;
+	@FieldDescribe(describe="没有收货人市")
 	private String city;
+	@FieldDescribe(describe="没有收货人区")
 	private String area;
+	@FieldDescribe(describe="没有收货人地址")
 	private String address;
 	private String taxFee;
 	private String postFee;
-	private String itemName;
 	private String phone;
 	private String name;
 	private String idNum;
 	private String remark;
+	@FieldDescribe(describe="没有换算比例")
+	private String conversion;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {
 
-		supplierId = supplierMap.get(supplierName);
 		shopId = gradeMapTemp.get(shopName);
 		orderSource = ParemeterConverUtil.getOrderSource(orderSourceName);
-		orderFlag = ParemeterConverUtil.getOrderFlag(orderFlagName);
 		payType = ParemeterConverUtil.getPayType(payTypeName);
 		taxFee = taxFee == null || "".equals(taxFee) ? "0" : taxFee;
 		postFee = postFee == null || "".equals(postFee) ? "0" : postFee;
@@ -54,6 +65,16 @@ public class OrderImportBO {
 		name = name == null ? "" : name;
 		idNum = idNum == null ? "" : idNum;
 		payNo = "".equals(payNo) ? null : payNo;
+		if(itemId != null && !"".equals(itemId)){//有itemId则以itemId为准，sku和conversion置空字符串
+			sku = "";
+			conversion = "";
+		} else {//itemId没有则必须要有sku和conversion
+			itemId = "";
+			if("".equals(sku) || "".equals(conversion)){
+				sku = null;
+				conversion = null;
+			}
+		}
 		if(!RegularUtil.isPhone(receivePhone)){
 			return false;
 		}
@@ -73,8 +94,8 @@ public class OrderImportBO {
 	public List<String> getUnCheckFieldName(){
 		List<String> fields = new ArrayList<String>();
 		fields.add("payNo");// payNo可以为null
-		fields.add("itemId");// itemId可以为null
 		fields.add("remark");
+		fields.add("itemPrice");
 		return fields;
 	}
 
@@ -110,14 +131,6 @@ public class OrderImportBO {
 		this.idNum = idNum;
 	}
 
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
 	public String getOrderId() {
 		return orderId;
 	}
@@ -126,36 +139,12 @@ public class OrderImportBO {
 		this.orderId = orderId;
 	}
 
-	public String getSupplierName() {
-		return supplierName;
-	}
-
-	public void setSupplierName(String supplierName) {
-		this.supplierName = supplierName;
-	}
-
 	public String getShopName() {
 		return shopName;
 	}
 
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
-	}
-
-	public String getOrderFlagName() {
-		return orderFlagName;
-	}
-
-	public void setOrderFlagName(String orderFlagName) {
-		this.orderFlagName = orderFlagName;
-	}
-
-	public Integer getOrderFlag() {
-		return orderFlag;
-	}
-
-	public void setOrderFlag(Integer orderFlag) {
-		this.orderFlag = orderFlag;
 	}
 
 	public String getSku() {
@@ -172,14 +161,6 @@ public class OrderImportBO {
 
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
-	}
-
-	public String getItemCode() {
-		return itemCode;
-	}
-
-	public void setItemCode(String itemCode) {
-		this.itemCode = itemCode;
 	}
 
 	public String getItemPrice() {
@@ -204,14 +185,6 @@ public class OrderImportBO {
 
 	public void setOrderSourceName(String orderSourceName) {
 		this.orderSourceName = orderSourceName;
-	}
-
-	public String getPayment() {
-		return payment;
-	}
-
-	public void setPayment(String payment) {
-		this.payment = payment;
 	}
 
 	public String getPayTypeName() {
@@ -294,14 +267,6 @@ public class OrderImportBO {
 		this.postFee = postFee;
 	}
 
-	public Integer getSupplierId() {
-		return supplierId;
-	}
-
-	public void setSupplierId(Integer supplierId) {
-		this.supplierId = supplierId;
-	}
-
 	public Integer getShopId() {
 		return shopId;
 	}
@@ -324,6 +289,14 @@ public class OrderImportBO {
 
 	public void setPayType(Integer payType) {
 		this.payType = payType;
+	}
+
+	public String getConversion() {
+		return conversion;
+	}
+
+	public void setConversion(String conversion) {
+		this.conversion = conversion;
 	}
 
 }

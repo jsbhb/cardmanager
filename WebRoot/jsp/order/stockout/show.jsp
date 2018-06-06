@@ -49,7 +49,7 @@
                 <c:if test="${order.status==8}">退单</c:if>
                 <c:if test="${order.status==9}">超时取消</c:if>
                 <c:if test="${order.status==11}">资金池不足</c:if>
-                <c:if test="${order.status==12}">已支付</c:if>
+                <c:if test="${order.status==12}">已付款</c:if>
                 <c:if test="${order.status==21}">退款中</c:if>
                 <c:if test="${order.status==99}">异常状态</c:if>
 			</div>
@@ -185,7 +185,7 @@
 			</div>
 		</div>
        	<div class="list-item">
-			<div class="col-sm-3 item-left">收获地址</div>
+			<div class="col-sm-3 item-left">收货地址</div>
 			<div class="col-sm-9 item-right">
 				<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveProvince}${order.orderDetail.receiveCity}${order.orderDetail.receiveArea}">
 			</div>

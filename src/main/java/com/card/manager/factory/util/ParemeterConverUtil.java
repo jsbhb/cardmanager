@@ -39,7 +39,7 @@ public class ParemeterConverUtil {
 	
 	public static Integer getPayType(String code) {
 		Integer result = payType.get(code);
-		return result != null ? result : 4;
+		return result;
 	}
 	
 	public static Integer getOrderSource(String code) {

@@ -40,6 +40,8 @@ public class DateUtil {
 	static java.text.SimpleDateFormat sdfLongTimePlus = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	static java.text.SimpleDateFormat sdfShortLongTimePlusCn = new java.text.SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 	static java.text.SimpleDateFormat sdfLongTimePlusMill = new java.text.SimpleDateFormat("yyyyMMddHHmmssSSSS");
+	static java.text.SimpleDateFormat longTimePlusMill = new java.text.SimpleDateFormat("HHmmssSSSS");
+	static java.text.SimpleDateFormat intTimePlusMill = new java.text.SimpleDateFormat("ssSSSS");
 	static java.text.SimpleDateFormat sdfMd = new java.text.SimpleDateFormat("MM月dd日");
 	private static long DAY_IN_MILLISECOND = 0x5265c00L;
 
@@ -2706,5 +2708,16 @@ public class DateUtil {
 			convertSuccess = false;
 		}
 		return convertSuccess;
+	}
+	
+	public static String getLongTimePlusString(){
+		
+		return longTimePlusMill.format(new Date());
+	}
+	
+	
+	public static String getintTimePlusString(){
+		
+		return intTimePlusMill.format(new Date());
 	}
 }

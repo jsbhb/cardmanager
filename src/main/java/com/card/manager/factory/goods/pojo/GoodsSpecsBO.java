@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.card.manager.factory.annotation.FieldDescribe;
 import com.card.manager.factory.util.Utils;
 
 public class GoodsSpecsBO {
 	
+	@FieldDescribe(describe="没有规格项")
 	private String specsName;
 	private Integer specsNameId;
+	@FieldDescribe(describe="没有规格值")
 	private String specsValue;
 	private Integer specsValueId;
 	public void init(Map<String, Integer> specsNameMap, Map<Integer, Map<String, Integer>> specsValueMap) {

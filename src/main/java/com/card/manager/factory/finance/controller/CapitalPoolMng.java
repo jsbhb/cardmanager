@@ -260,6 +260,8 @@ public class CapitalPoolMng extends BaseController {
 			if (!StringUtil.isEmpty(customerStatus)) {
 				if ("2".equals(customerStatus)) {
 					params.put("customerStatus", Constants.CUSTOMER_WARNING_MONEY);
+				} else {
+					params.put("customerStatus2", Constants.CUSTOMER_WARNING_MONEY);
 				}
 			}
 			
@@ -305,7 +307,7 @@ public class CapitalPoolMng extends BaseController {
 	        Integer num=(int)(Math.random()*9000)+1000;
 			String businessNo = "ZJC" + staffEntity.getBadge() + DateUtil.getNowPlusTimeMill() + num;
 			entity.setBusinessNo(businessNo);
-			if (Constants.CUSTOMER_TYPE_SUPPLIER.equals(entity.getCustomerType())) {
+			if (Constants.CUSTOMER_TYPE_SUPPLIER.equals(entity.getCustomerType().toString())) {
 				List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(staffEntity.getToken());
 				for(SupplierEntity sup : suppliers) {
 					if (sup.getId() == entity.getCustomerId()) {
@@ -313,6 +315,10 @@ public class CapitalPoolMng extends BaseController {
 						break;
 					}
 				}
+			} else if (Constants.CUSTOMER_TYPE_CENTER.equals(entity.getCustomerType().toString())) {
+				Map<Integer, GradeBO> maps = CachePoolComponent.getGrade(staffEntity.getToken());
+				GradeBO grade = maps.get(entity.getCustomerId());
+				entity.setCustomerCode(grade.getCompany());
 			}
 			financeMngService.insertCapitalPoolInfo(entity);
 		} catch (Exception e) {

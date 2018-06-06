@@ -8,7 +8,14 @@ public class GradeBO implements Comparable<GradeBO>{
 	private Integer parentId;
 	private Integer gradeType;
 	private String name;
+	private String company;
 	private List<GradeBO> children;
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
 	public List<GradeBO> getChildren() {
 		return children;
 	}

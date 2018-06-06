@@ -225,8 +225,8 @@
 	    	var customerType = $("#customerType").val();
 	    	var payType = $("#payType").val();
 	    	var money = $("#money").val();
-	    	if (money <= 0) {
-	    		layer.alert("金额必须大于0");
+	    	if (money < 0) {
+	    		layer.alert("金额不能小于0");
 	    		return;
 	    	}
 	    	var payNo = $("#payNo").val();

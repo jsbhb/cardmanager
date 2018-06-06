@@ -69,7 +69,7 @@
 				                  <c:if test="${order.status==8}">退单</c:if>
 				                  <c:if test="${order.status==9}">超时取消</c:if>
 				                  <c:if test="${order.status==11}">资金池不足</c:if>
-				                  <c:if test="${order.status==12}">已支付</c:if>
+				                  <c:if test="${order.status==12}">已付款</c:if>
 				                  <c:if test="${order.status==21}">退款中</c:if>
 				                  <c:if test="${order.status==99}">异常状态</c:if>
 				                </div>
@@ -277,7 +277,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">收获地址</label>
+							<label class="col-sm-2 control-label no-padding-right">收货地址</label>
 							<div class="col-sm-4">
 								<div class="input-group">
 								 	<div class="input-group-addon">

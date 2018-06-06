@@ -55,7 +55,7 @@
 	                   	  <option value="8">退单</option>
 	                   	  <option value="9">超时取消</option>
 	                   	  <option value="11">资金池不足</option>
-	                   	  <option value="12">已支付</option>
+	                   	  <option value="12">已付款</option>
 	                   	  <option value="21">退款中</option>
 	                   	  <option value="99">异常状态</option>
 		                </select>
@@ -222,7 +222,7 @@ function rebuildTable(data){
 			case 8:str += "</td><td>退单";break;
 			case 9:str += "</td><td>超时取消";break;
 			case 11:str += "</td><td>资金池不足";break;
-			case 12:str += "</td><td>已支付";break;
+			case 12:str += "</td><td>已付款";break;
 			case 21:str += "</td><td>退款中";break;
 			case 99:str += "</td><td>异常状态";break;
 			default:str += "</td><td>未知状态";

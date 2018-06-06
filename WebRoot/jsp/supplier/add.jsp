@@ -31,7 +31,7 @@
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">国家</div>
+				<div class="col-sm-3 item-left">公司名称</div>
 				<div class="col-sm-9 item-right">
              		<input type="text" class="form-control" name="country">
 				</div>
@@ -95,7 +95,7 @@
 			</div>
 			
 	        <div class="submit-btn">
-	           	<button type="button" id="saveInfoBtn">保存信息</button>
+	           	<button type="button" id="submitBtn">保存信息</button>
 	       	</div>
 		</form>
 	</section>
@@ -103,7 +103,7 @@
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
-		 if($('#supplierForm').data("bootstrapValidator").isValid()){
+// 		 if($('#supplierForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
 				 url:"${wmsUrl}/admin/supplier/supplierMng/addSupplier.shtml",
 				 type:'post',
@@ -124,9 +124,9 @@
 					 layer.alert("提交失败，请联系客服处理");
 				 }
 			 });
-		 }else{
-			 layer.alert("信息填写有误");
-		 }
+// 		 }else{
+// 			 layer.alert("信息填写有误");
+// 		 }
 	 });
 	
 	 $('#resetBtn').click(function() {
@@ -149,17 +149,17 @@
                       message: '用户名不能为空！'
                   },
                   stringLength: {
-                      min: 4,
+                      min: 2,
                       max: 30,
-                      message: '分级名称必须在4-30位字符'
+                      message: '分级名称必须在2-30位字符'
                   },
               }
       	  },
       	 country: {
-	          message: '国家不能为空',
+	          message: '公司名称不能为空',
 	          validators: {
 	              notEmpty: {
-	                  message: '国家不能为空！'
+	                  message: '公司名称不能为空！'
 	              }
 	          }
 	  	  },
