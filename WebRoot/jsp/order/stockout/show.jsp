@@ -185,7 +185,7 @@
 			</div>
 		</div>
        	<div class="list-item">
-			<div class="col-sm-3 item-left">收获地址</div>
+			<div class="col-sm-3 item-left">收货地址</div>
 			<div class="col-sm-9 item-right">
 				<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveProvince}${order.orderDetail.receiveCity}${order.orderDetail.receiveArea}">
 			</div>

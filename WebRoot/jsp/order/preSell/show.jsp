@@ -277,7 +277,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">收获地址</label>
+							<label class="col-sm-2 control-label no-padding-right">收货地址</label>
 							<div class="col-sm-4">
 								<div class="input-group">
 								 	<div class="input-group-addon">
