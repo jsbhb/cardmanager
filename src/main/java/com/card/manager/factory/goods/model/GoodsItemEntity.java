@@ -10,6 +10,7 @@ package com.card.manager.factory.goods.model;
 import java.util.List;
 
 import com.card.manager.factory.base.Pagination;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 
 /**
  * ClassName: GoodsItemEntity <br/>
@@ -55,6 +56,8 @@ public class GoodsItemEntity extends Pagination {
 	private String shelfLife;
 	private String carTon;
 	private List<GoodsRebateEntity> goodsRebateList; 
+	private String isCreate; //是否创建
+	private List<ItemSpecsPojo> specs;
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
@@ -331,6 +334,22 @@ public class GoodsItemEntity extends Pagination {
 
 	public void setCarTon(String carTon) {
 		this.carTon = carTon;
+	}
+
+	public String getIsCreate() {
+		return isCreate;
+	}
+
+	public void setIsCreate(String isCreate) {
+		this.isCreate = isCreate;
+	}
+
+	public List<ItemSpecsPojo> getSpecs() {
+		return specs;
+	}
+
+	public void setSpecs(List<ItemSpecsPojo> specs) {
+		this.specs = specs;
 	}
 
 }

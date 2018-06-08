@@ -39,6 +39,7 @@ import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
+import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
@@ -491,36 +492,24 @@ public class GoodsMngController extends BaseController {
 		try {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
-			context.put("goodsInfo", goodsInfo);
+			for (GoodsItemEntity gie: goodsInfo.getGoods().getItems()) {
+				if (gie.getInfo() != null && !"".equals(gie.getInfo())) {
+					JSONArray jsonArray = JSONArray.fromObject(gie.getInfo().substring(1, gie.getInfo().length()));
+					int index = jsonArray.size();
+					List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
+					List<String> titles = new ArrayList<String>();
+					for (int i = 0; i < index; i++) {
+						JSONObject jObj = jsonArray.getJSONObject(i);
+						list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+						titles.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class).getSkV());
+					}
+					gie.setSpecs(list);
 
-			String info = goodsInfo.getGoods().getGoodsItem().getInfo();
-			if (info != null && !"".equals(info)) {
-				JSONArray jsonArray = JSONArray.fromObject(info.substring(1, info.length()));
-				int index = jsonArray.size();
-				List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
-				for (int i = 0; i < index; i++) {
-					JSONObject jObj = jsonArray.getJSONObject(i);
-					list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+					context.put("specsInfos", list);
+					context.put("specsTitles", titles);
 				}
-
-				// SpecsTemplateEntity entity =
-				// specsService.queryById(goodsInfo.getGoods().getTemplateId() +
-				// "",
-				// staffEntity.getToken());
-				// if (entity != null) {
-				// for (ItemSpecsPojo isp : list) {
-				// for (SpecsEntity se : entity.getSpecs()) {
-				// for (SpecsValueEntity sve : se.getValues()) {
-				// if (isp.getSvId().equals(sve.getSpecsId() + "")
-				// && isp.getSvV().equals(sve.getId() + "")) {
-				// isp.setSvT(sve.getValue());
-				// }
-				// }
-				// }
-				// }
-				// }
-				context.put("specsInfo", list);
 			}
+			context.put("goodsInfo", goodsInfo);
 
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {

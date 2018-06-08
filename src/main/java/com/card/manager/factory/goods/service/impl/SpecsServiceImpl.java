@@ -7,6 +7,9 @@
  */
 package com.card.manager.factory.goods.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -98,6 +102,46 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("新增商品规格操作失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public List<SpecsEntity> queryAllSpecs(String token) {
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS, token, true, null,
+				HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<SpecsEntity> list = new ArrayList<SpecsEntity>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), SpecsEntity.class));
+		}
+		return list;
+	}
+
+	@Override
+	public List<SpecsValueEntity> queryAllSpecsValue(String token) {
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS_VALUE, token, true, null,
+				HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<SpecsValueEntity> list = new ArrayList<SpecsValueEntity>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), SpecsValueEntity.class));
+		}
+		return list;
 	}
 
 }

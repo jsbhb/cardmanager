@@ -107,9 +107,6 @@
 		            </div>
 				</div>
 			</div>
-			<div class="title">
-	       		<h1>明细信息</h1>
-	       	</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
@@ -138,140 +135,18 @@
 	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
 				</div>
 			</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">商家编码</div>
-				<div class="col-sm-9 item-right">
-             		<input type="text" class="form-control" name="itemCode">
-					<div class="item-content">
-		             	（货主管理货物的编码）
-		            </div>
-				</div>
-			</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">海关货号</div>
-				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="sku">
-					<div class="item-content">
-		             	（海关备案货号或商家编码）
-		            </div>
-				</div>
-			</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">条形码</div>
-				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="encode">
-					<div class="item-content">
-		             	（商品自带的条形码）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">消费税率</div>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="exciseFax" id="exciseFax">
-					<div class="item-content">
-		             	（请按小数格式输入，例：0.17）
-		            </div>
-	            </div>
-			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">原产国</div>
 				<div class="col-sm-9 item-right">
 	                 <input type="text" class="form-control" name="origin">
 				</div>
 			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">商品重量</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="weight">
-					<div class="item-content">
-						（请按整数格式输入，例：2500）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">换算比例</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="conversion" value="1">
-					<div class="item-content">
-						（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
-		            </div>
-				</div>
-			</div>
-			<div class="title">
-	       		<h1>规格信息</h1>
-	       	</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">商品规格</div>
-				<div class="col-sm-9 item-right">
-					<a class="addBtn" href="javascript:void(0);" onclick="showSpecsGoods()">规格模板</a>
-				</div>
-			</div>
+			
+			
 			<div id="specsInfo">
 				<input type="hidden" class="form-control" id="specsId" name="specsId" value="0">
 	       	</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">保质期</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="shelfLife">
-					<div class="item-content">
-						（商品的保质期，例：2年，18个月）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">箱规</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="carTon">
-					<div class="item-content">
-						（例：8组，24罐）
-		            </div>
-				</div>
-			</div>
-			<div class="title">
-	       		<h1>价格信息</h1>
-	       	</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">成本价</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="proxyPrice">
-	                <div class="item-content">
-		             	（请按价格格式输入，例：113.35）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">分销价</div>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="fxPrice">
-					<div class="item-content">
-		             	（请按价格格式输入，例：113.35）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">零售价</div>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="retailPrice">
-					<div class="item-content">
-		             	（请按价格格式输入，例：113.35）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">限购数量</div>
-				<div class="col-sm-9 item-right">
-					<div class="right-item">
-	              		<input type="text" class="form-control" name="min" placeholder="请输入最小购买量">
-					</div>
-	            	<div class="right-item last-item">
-                 		<input type="text" class="form-control" name="max" placeholder="请输入最大购买量">
-					</div>
-					<div class="item-content">
-		             	（请按整数格式输入，填0表示不限制数量）
-		            </div>
-				</div>
-			</div>
+			
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品标签</div>
 				<div class="col-sm-9 item-right">
@@ -289,6 +164,284 @@
 					<div class="item-img" id="content1" data-id="1">
 						+
 						<input type="file" id="pic1" name="pic"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="title">
+	       		<h1>明细信息</h1>
+	       	</div>
+	       	
+	       	<div class="list-item">
+					<div class="col-sm-3 item-left">产品规格</div>
+					<div class="col-sm-9 item-right">
+	             		<ul class="label-content" id="specsSwitch" style="padding-left:10px;">
+	             			<li class="active" data-type="0">无规格</li>
+	             			<li data-type="1">商品规格</li>
+	             		</ul>
+	             		<div class="item-content">
+			             	（如有颜色、尺码等多种规格，请选择商品规格）
+			            </div>
+					</div>
+				</div>
+	       
+	       <div id="noSpecs" style="padding:0 20px;">
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>商家编码</div>
+					<div class="col-sm-9 item-right">
+	             		<input type="text" id="itemCode" class="form-control" name="itemCode">
+						<div class="item-content">
+			             	（货主管理货物的编码）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">海关货号</div>
+					<div class="col-sm-9 item-right">
+	               		<input type="text" class="form-control" name="sku">
+						<div class="item-content">
+			             	（海关备案货号或商家编码）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>条形码</div>
+					<div class="col-sm-9 item-right">
+	               		<input type="text" class="form-control" name="encode">
+						<div class="item-content">
+			             	（商品自带的条形码）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>商品重量</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="weight">
+						<div class="item-content">
+							（请按整数格式输入，例：2500）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">换算比例</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="conversion" value="1">
+						<div class="item-content">
+							（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">消费税率</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="exciseFax" id="exciseFax">
+						<div class="item-content">
+			             	（请按小数格式输入，例：0.17）
+			            </div>
+		            </div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">保质期1</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="shelfLife">
+						<div class="item-content">
+							（商品的保质期，例：2年，18个月）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">箱规</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="carTon">
+						<div class="item-content">
+							（例：8组，24罐）
+			            </div>
+					</div>
+				</div>
+				
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>成本价</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="proxyPrice">
+		                <div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>分销价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="fxPrice">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>零售价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="retailPrice">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">限购数量</div>
+					<div class="col-sm-9 item-right">
+						<div class="right-item">
+		              		<input type="text" class="form-control" name="min" placeholder="请输入最小购买量">
+						</div>
+		            	<div class="right-item last-item">
+	                 		<input type="text" class="form-control" name="max" placeholder="请输入最大购买量">
+						</div>
+						<div class="item-content">
+			             	（请按整数格式输入，填0表示不限制数量）
+			            </div>
+					</div>
+				</div>
+	       </div>
+			
+			<div id="specs" style="display:none;padding:0 20px;">
+				<div class="list-item" id="specsOperation">
+					<div class="list-all">
+						<div class="list-all-parent">
+							<span>&times;</span>
+							<div class="list-all-item list-all-item-key">
+								<div class="item-left">规格分类</div>
+								<div class="item-right">
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+									</div>
+					               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
+								</div>
+							</div>
+							<div class="list-all-item">
+								<div class="item-left">规格值</div>
+								<div class="item-right">
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+									<div class="select-item">
+										<select class="form-control" name="type">
+										  <option selected="selected" value="-1">请选择</option>
+					                	  <option value="1">test1</option>
+					                	  <option value="2">test2</option>
+						                </select>
+						                <span>&times</span>
+									</div>
+				             		<a class="addBtn" href="javascript:void(0);" onclick="addSpecsValue()">添加规格值</a>
+								</div>
+							</div>
+						</div>
+						<div class="row-bg-gray">
+							<button class="btn-bg-white" href="javascript:void(0);" onclick="addSpecsModule()">添加规格</button>
+						</div>
+					</div>
+				</div>
+				
+				<div class="list-item" id="specsItem">
+					<div class="list-all">
+						<table class="dynamic-table">
+							<caption>规格明细</caption>
+							<thead>
+								<tr>
+									<th>色号</th>
+									<th>尺寸</th>
+									<th>价格</th>
+									<th>库藏</th>
+									<th>色号</th>
+									<th>尺寸</th>
+									<th>价格</th>
+									<th>库藏</th>
+									<th>库藏</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>价格</td>
+									<td>价格</td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+								</tr>
+								<tr>
+									<td>价格</td>
+									<td>价格</td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+									<td><input type="text"></td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td>
+										<span>批量设置 ： </span>
+										<span>
+											<a href="javascript:void(0)">价格</a>
+											<a href="javascript:void(0)">库存</a>
+										</span>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -319,6 +472,7 @@
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/js/goodsJs/goods.js"></script>
 	<script type="text/javascript">	 
  	$("#brandId").change(function(){
 		$("#brand").val($("#brandId").find("option:selected").text());
@@ -592,15 +746,19 @@
 				});
 		}
 		
-		function showSpecsGoods(){
-			var index = layer.open({
-				  title:"查看商品规格模板",	
-				  area: ['90%', '90%'],
-				  type: 2,
-				  content: '${wmsUrl}/admin/goods/specsMng/listForAdd.shtml',
-				  maxmin: false
-				});
-		}
+		//function showSpecsGoods(){
+			
+			//disabledItemSingle();
+			
+			//var index = layer.open({
+				  //title:"查看商品规格模板",	
+				  //area: ['90%', '90%'],
+				  //type: 2,
+				  //content: '${wmsUrl}/admin/goods/specsMng/listForAdd.shtml',
+				 // maxmin: false
+				//});
+		//}
+		
 		
 		function createSpecs(id){
 			 $.ajax({

@@ -303,4 +303,59 @@ public class SpecsMngController extends BaseController {
 		}
 	}
 
+	@RequestMapping(value = "/queryAllSpecsCategoryExceptParam")
+	@ResponseBody
+	public List<SpecsEntity> queryAllSpecsCategoryExceptParam(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody List<String> ids) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+
+		try {
+			List<SpecsEntity> specs = specsService.queryAllSpecs(opt.getToken());
+			for(String id :ids) {
+				for(SpecsEntity sp : specs) {
+					if (id.equals(sp.getId()+"")) {
+						specs.remove(sp);
+						break;
+					}
+				}
+			}
+			
+			return specs;
+		} catch (Exception e) {
+			sendFailureMessage(resp, e.getMessage());
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/queryAllSpecsValueExceptParam")
+	@ResponseBody
+	public List<SpecsValueEntity> queryAllSpecsValueExceptParam(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody List<String> ids) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		String id = req.getParameter("id");
+
+		try {
+			List<SpecsValueEntity> specsValue = specsService.queryAllSpecsValue(opt.getToken());
+			List<SpecsValueEntity> retList = new ArrayList<SpecsValueEntity>();
+			for(SpecsValueEntity sv:specsValue) {
+				if (id.equals(sv.getSpecsId()+"")) {
+					retList.add(sv);
+				}
+			}
+			for(String tmpId:ids) {
+				for(SpecsValueEntity sv : retList) {
+					if (tmpId.equals(sv.getId()+"")) {
+						retList.remove(sv);
+						break;
+					}
+				}
+			}
+			
+			return retList;
+		} catch (Exception e) {
+			sendFailureMessage(resp, e.getMessage());
+			return null;
+		}
+	}
+
 }

@@ -11,3 +11,4 @@
 <link rel="stylesheet" href="${wmsUrl}/adminLTE/css/skins/_all-skins.css">
 <link rel="stylesheet" href="${wmsUrl}/plugins/validator/css/bootstrapValidator.min.css">
 <link rel="stylesheet" href="${wmsUrl}/css/google-font.css">
+<link rel="stylesheet" href="${wmsUrl}/css/component/component.css">
