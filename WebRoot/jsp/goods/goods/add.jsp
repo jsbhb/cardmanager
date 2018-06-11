@@ -305,86 +305,8 @@
 			<div id="specs" style="display:none;padding:0 20px;">
 				<div class="list-item" id="specsOperation">
 					<div class="list-all">
-						<div class="list-all-parent">
-							<span>&times;</span>
-							<div class="list-all-item list-all-item-key">
-								<div class="item-left">规格分类</div>
-								<div class="item-right">
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-									</div>
-					               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
-								</div>
-							</div>
-							<div class="list-all-item">
-								<div class="item-left">规格值</div>
-								<div class="item-right">
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-									<div class="select-item">
-										<select class="form-control" name="type">
-										  <option selected="selected" value="-1">请选择</option>
-					                	  <option value="1">test1</option>
-					                	  <option value="2">test2</option>
-						                </select>
-						                <span>&times</span>
-									</div>
-				             		<a class="addBtn" href="javascript:void(0);" onclick="addSpecsValue()">添加规格值</a>
-								</div>
-							</div>
-						</div>
 						<div class="row-bg-gray">
-							<button class="btn-bg-white" href="javascript:void(0);" onclick="addSpecsModule()">添加规格</button>
+							<a class="addBtn" href="javascript:void(0);" onclick="addSpecsModule(this)">添加规格</a>
 						</div>
 					</div>
 				</div>
@@ -393,42 +315,18 @@
 					<div class="list-all">
 						<table class="dynamic-table">
 							<caption>规格明细</caption>
-							<thead>
+							<thead id="dynamic-thead">
 								<tr>
-									<th>色号</th>
+									<th rowspan="2">色号</th>
 									<th>尺寸</th>
 									<th>价格</th>
 									<th>库藏</th>
 									<th>色号</th>
 									<th>尺寸</th>
 									<th>价格</th>
-									<th>库藏</th>
-									<th>库藏</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>价格</td>
-									<td>价格</td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-								</tr>
-								<tr>
-									<td>价格</td>
-									<td>价格</td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-									<td><input type="text"></td>
-								</tr>
+							<tbody id="dynamic-table">
 							</tbody>
 							<tfoot>
 								<tr>
@@ -1194,6 +1092,75 @@
 	        UE.getEditor('editor').execCommand( "clearlocaldata" );
 // 	        alert("已清空草稿箱")
 	    }
+	    
+	    
+	  //新增规格
+	    function addSpecsModule(e){
+	    	var html = "<div class=\"list-all-parent\"><span class=\"remove_specs\">&times;</span><div class=\"list-all-item list-all-item-key\"><div class=\"item-left\">规格分类</div><div class=\"item-right\"><div class=\"select-item\">";
+	    	$.ajax({
+	    		url:"${wmsUrl}/admin/goods/specsMng/queryAllSpecs.shtml",
+	    		type:'post',
+	    		contentType: "application/json; charset=utf-8",
+	    		dataType:'json',
+	    		success:function(data){
+	    			var list = data;
+	    			html += "<select class=\"form-control select-key\"";
+	    			
+	    			if (list == null || list.length == 0) {
+	    				html += " name=\"type\"><option value=\"-1\">没有可选择的值</option>";
+					}else{
+						html += " onchange=\"changeSpecsValueInfo(this)\" name=\"type\"><option value=\"-1\">请选择</option>"
+						for (var i = 0; i < list.length; i++) {
+		    				html += "<option value=\""+list[i].id+"\">"+list[i].name+"</option>";
+						}
+					}
+	    			html += "</select></div></div></div><div class=\"list-all-item\"><div class=\"item-left\">规格值</div><div class=\"item-right item-value\"></div></div></div>"
+	    		    $(e).parent(0).before(html);
+	    			
+	    			$('.remove_specs').on('click',function(){
+	    				$(this).parent().remove();
+	    				rebuildTable();
+	    			});
+	    		},
+	    		error:function(){
+	    			layer.alert("查询失败，请联系客服处理");
+	    		}
+	    	});
+	    	
+	    }
+	  
+	  function changeSpecsValueInfo(e){
+		  
+		  var id = $(e).find("option:selected").val();
+		  
+		  $(e).parent().parent().parent().parent().find(".item-value").empty();
+		  
+		  //alert($(e).parent().parent().parent().parent().find('.item-value').prop("outerHTML"));
+		  $.ajax({
+				url:"${wmsUrl}/admin/goods/specsMng/queryAllSpecsValue.shtml?id="+id,
+				type:'post',
+				contentType: "application/json; charset=utf-8",
+				dataType:'json',
+				success:function(data){
+					var html="<div class=\"select-item\"><select onchange=\"rebuildTable(this)\" class=\"form-control select-value\" name=\"type\"><option value=\"-1\">请选择</option>";
+					var list = data;
+					if (list == null || list.length == 0) {
+						html +=  '<option value="-1">没有可选择的值</option>';
+					}else{
+						
+						for (var i = 0; i < list.length; i++) {
+							html +=  '<option value="'+list[i].id+'">'+list[i].value+'</option>';
+						}
+					}
+					
+					$(e).parent().parent().parent().parent().find(".item-value").html(html+"</select></div><a class=\"addBtn\" href=\"javascript:void(0);\" onclick=\"addSpecsValue(this)\">添加规格值</a>");
+				},
+				error:function(){
+					layer.alert("查询失败，请联系客服处理");
+				}
+			});
+	  }
+	  
 	</script>
 </body>
 </html>
