@@ -144,4 +144,24 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		return list;
 	}
 
+	@Override
+	public List<SpecsEntity> queryAllSpecsInfo(String token) {
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS_ALL_INFO, token, true, null,
+				HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<SpecsEntity> list = new ArrayList<SpecsEntity>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), SpecsEntity.class));
+		}
+		return list;
+	}
+
 }

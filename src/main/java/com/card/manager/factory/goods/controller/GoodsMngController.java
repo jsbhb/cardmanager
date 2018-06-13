@@ -42,6 +42,7 @@ import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.SpecsEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
@@ -490,6 +491,9 @@ public class GoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
+			context.put("specs", specs);
+			
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			for (GoodsItemEntity gie: goodsInfo.getGoods().getItems()) {

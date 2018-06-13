@@ -114,17 +114,34 @@ public class OrderMngController extends BaseController {
 					orderGoods.setItemCode(itemCode);
 				}
 			}
+			String itemName = req.getParameter("itemName");
+			if (!StringUtil.isEmpty(itemName)) {
+				if (orderGoods != null) {
+					orderGoods.setItemName(itemName);
+				} else {
+					orderGoods = new OrderGoods();
+					orderGoods.setItemName(itemName);
+				}
+			}
 			if (orderGoods != null) {
 				orderGoodsList = new ArrayList<OrderGoods>();
 				orderGoodsList.add(orderGoods);
 				pagination.setOrderGoodsList(orderGoodsList);
 			}
-			// String orderId = req.getParameter("orderId");
-			// if (StringUtil.isEmpty(orderId)) {
-			// params.put("orderId", "");
-			// } else {
-			// params.put("orderId", orderId);
-			// }
+			
+			List<ThirdOrderInfo> orderExpressList = null;
+			ThirdOrderInfo thirdOrderInfo = null;
+			String expressId = req.getParameter("expressId");
+			if (!StringUtil.isEmpty(expressId)) {
+				thirdOrderInfo = new ThirdOrderInfo();
+				thirdOrderInfo.setExpressId(expressId);
+			}
+			if (thirdOrderInfo != null) {
+				orderExpressList = new ArrayList<ThirdOrderInfo>();
+				orderExpressList.add(thirdOrderInfo);
+				pagination.setOrderExpressList(orderExpressList);
+			}
+			
 			String status = req.getParameter("status");
 			if (!StringUtil.isEmpty(status)) {
 				pagination.setStatus(Integer.parseInt(status));
@@ -142,22 +159,6 @@ public class OrderMngController extends BaseController {
 				pagination.setShopId(Integer.parseInt(shopId));
 			}
 
-			// int gradeLevel = staffEntity.getGradeLevel();
-			// if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
-			// } else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
-			// pagination.setCenterId(staffEntity.getGradeId());
-			// pagination.setShopId(staffEntity.getShopId());
-			// } else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
-			// pagination.setCenterId(staffEntity.getParentGradeId());
-			// pagination.setShopId(staffEntity.getShopId());
-			// } else {
-			// if (pcb == null) {
-			// pcb = new PageCallBack();
-			// }
-			// pcb.setPagination(pagination);
-			// pcb.setSuccess(true);
-			// return pcb;
-			// }
 			Integer gradeId = staffEntity.getGradeId();
 			if (gradeId != 0 && gradeId != null) {
 				pagination.setShopId(gradeId);

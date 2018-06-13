@@ -142,6 +142,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/specs/save/new";
 	public static final String GOODS_CENTER_SPECS_VALUE_ADD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/value/save";
+	public static final String GOODS_CENTER_SPECS_ALL_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpeceInfo";
 
 
 	/*------------------------分类管理-----------------------*/

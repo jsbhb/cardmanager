@@ -86,4 +86,14 @@ public interface SpecsService extends ServerCenterService {
 	 */
 	List<SpecsValueEntity> queryAllSpecsValue(String token);
 
+	/**  
+	 *  
+	 * @author hebin 
+	 * @param id
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<SpecsEntity> queryAllSpecsInfo(String token);
+
 }
