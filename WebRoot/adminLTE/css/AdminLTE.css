@@ -434,6 +434,98 @@ body.hold-transition .main-header .logo {
 	text-align: right;
 	padding: 7px 0;	
 }
+.list-all{
+	padding: 10px;
+	border: 1px solid #d2d6de;
+}
+.list-all-parent{
+	position: relative;
+}
+.list-all-parent > span{
+	font-size:20px;
+	position: absolute;
+	top:16px;
+	right:20px;
+	width:20px;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	border-radius:50%;
+	display: none;
+	color:#fff;
+	background:rgba(0,0,0,0.3);
+	cursor:pointer;
+}
+.list-all-parent:hover > span{
+	display:inline-block;
+}
+.list-all-parent > span:hover{
+	background:rgba(0,0,0,1);
+}
+.list-all-parent > .list-all-item > .item-left{
+	padding: 7px 0 7px 10px;	
+	float: none;
+	display: inline-block;
+	width:6%;
+	vertical-align: top;
+	margin-top: 10px;
+}
+.list-all-parent > .list-all-item > .item-right{
+	padding:10px;
+	float: none;
+	display: inline-block;
+	width:90%;
+}
+.list-all-parent > .list-all-item > .item-right > select,
+.list-all-parent > .list-all-item > .item-right > input{
+	height: 31px;
+	width: 200px;
+	float: left;
+	font-size: 12px;
+}
+.list-all-parent > .list-all-item > .item-right > .select-item{
+	position: relative;
+	display:inline-block;
+}
+.list-all-parent > .list-all-item > .item-right > .select-item > select{
+	margin-right:10px;
+	margin-bottom:10px;
+	height: 31px;
+	width: 200px;
+	font-size: 12px;
+}
+.list-all-parent > .list-all-item-key > .item-right > .select-item > select{
+	margin-bottom:0;
+}
+.list-all-parent > .list-all-item > .item-right > .select-item > span{
+	font-size:20px;
+	position: absolute;
+	top:-10px;
+	right:2px;
+	width:20px;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	border-radius:50%;
+	display: none;
+	color:#fff;
+	background:rgba(0,0,0,0.3);
+	cursor:pointer;
+}
+.list-all-parent > .list-all-item > .item-right > .select-item:hover span{
+	display: inline-block;
+}
+.list-all-parent > .list-all-item > .item-right > .select-item > span:hover{
+	background:rgba(0,0,0,1);
+}
+.list-all-parent > .list-all-item > .item-right > a {
+	display: inline-block;
+	margin-left:10px;
+	line-height:31px;
+}
+.list-all-item-key{
+	background: #eee;
+}
 .list-item > .item-right{
 	overflow: hidden;
 }
