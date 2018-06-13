@@ -198,7 +198,7 @@
 	       		<h1>明细信息</h1>
 	       	</div>
 	       	<div id="specs" style="padding:0 20px;">
-				<div class="list-item" id="specsOperation">
+				<div class="list-item col-sm-6 col-sm-offset-3" id="specsOperation">
 					<div class="list-all">
 						<c:forEach var="info" items="${specsInfos}" varStatus="status">
 							<div class="list-all-parent">
@@ -254,27 +254,27 @@
 					</div>
 				</div>
 				
-				<div class="list-item" id="specsItem">
+				<div class="list-item" id="specsItem" style="width:100%;">
 					<div class="list-all">
 						<table class="dynamic-table" id="dynamicTable">
 							<caption>规格明细</caption>
 							<thead id="dynamic-thead">
 								<tr>
 									<c:forEach var="title" items="${specsTitles}">
-										<th>${title}</th>
+										<th style="width: 60px;">${title}</th>
 									</c:forEach>
-									<th><font style="color:red">*</font>商家编码</th>
-									<th>海关货号</th>
-									<th><font style="color:red">*</font>条形码</th>
-									<th><font style="color:red">*</font>商品重量</th>
-									<th>换算比例</th>
-									<th>消费税率</th>
-									<th>保质期</th>
-									<th>箱规</th>
-									<th><font style="color:red">*</font>成本价</th>
-									<th><font style="color:red">*</font>分销价</th>
-									<th><font style="color:red">*</font>零售价</th>
-									<th colspan="2">限购数量</th>
+									<th style="width: 160px;"><font style="color:red">*</font>商家编码</th>
+									<th style="width: 160px;">自有编码</th>
+									<th style="width: 130px;"><font style="color:red">*</font>条形码</th>
+									<th style="width: 100px;"><font style="color:red">*</font>商品重量</th>
+									<th style="width: 70px;">换算比例</th>
+									<th style="width: 70px;">消费税率</th>
+									<th style="width: 70px;">保质期</th>
+									<th style="width: 70px;">箱规</th>
+									<th style="width: 100px;"><font style="color:red">*</font>成本价</th>
+									<th style="width: 100px;"><font style="color:red">*</font>分销价</th>
+									<th style="width: 100px;"><font style="color:red">*</font>零售价</th>
+									<th style="width: 100px;" colspan="2">限购数量</th>
 								</tr>
 							</thead>
 							<tbody id="dynamic-table">
@@ -283,19 +283,19 @@
 										<c:forEach var="specs" items="${goodsItem.specs}">
 											<td><span name="info">${specs.svV}</span></td>
 										</c:forEach>
-										<td><input type="text" class="form-control" name="itemCode" value="${goodsItem.itemCode}" data-id="${goodsItem.itemId}" data-status="${goodsItem.status}"></td>
+										<td><input type="text" class="form-control" name="itemCode" value="${goodsItem.itemCode}"></td>
 										<td><input type="text" class="form-control" name="sku" value="${goodsItem.sku}"></td>
 										<td><input type="text" class="form-control" name="encode" value="${goodsItem.encode}"></td>
-										<td><input type="text" class="form-control" name="weight" value="${goodsItem.weight}"></td>
-										<td><input type="text" class="form-control" name="conversion" value="${goodsItem.conversion}"></td>
-										<td><input type="text" class="form-control" name="exciseTax" value="${goodsItem.exciseTax}"></td>
+										<td><input type="text" class="form-control" name="weight" value="${goodsItem.weight}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
+										<td><input type="text" class="form-control" name="conversion" value="${goodsItem.conversion}" onkeyup="this.value=this.value.replace(/[^?\\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\\d]/g,'')"></td>
+										<td><input type="text" class="form-control" name="exciseTax" value="${goodsItem.exciseTax}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
 										<td><input type="text" class="form-control" name="shelfLife" value="${goodsItem.shelfLife}"></td>
 										<td><input type="text" class="form-control" name="carTon" value="${goodsItem.carTon}"></td>
-										<td><input type="text" class="form-control" name="proxyPrice" value="${goodsItem.goodsPrice.proxyPrice}"></td>
-										<td><input type="text" class="form-control" name="fxPrice" value="${goodsItem.goodsPrice.fxPrice}"></td>
-										<td><input type="text" class="form-control" name="retailPrice" value="${goodsItem.goodsPrice.retailPrice}"></td>
-										<td><input type="text" class="form-control" name="min" placeholder="最小值" value="${goodsItem.goodsPrice.min}"></td>
-										<td><input type="text" class="form-control" name="max" placeholder="最大值" value="${goodsItem.goodsPrice.max}"></td>
+										<td><input type="text" class="form-control" name="proxyPrice" value="${goodsItem.goodsPrice.proxyPrice}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
+										<td><input type="text" class="form-control" name="fxPrice" value="${goodsItem.goodsPrice.fxPrice}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
+										<td><input type="text" class="form-control" name="retailPrice" value="${goodsItem.goodsPrice.retailPrice}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
+										<td><input type="text" class="form-control" name="min" value="${goodsItem.goodsPrice.min}" onkeyup="this.value=this.value.replace(/[^?\\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\\d]/g,'')"></td>
+										<td><input type="text" class="form-control" name="max" value="${goodsItem.goodsPrice.max}" onkeyup="this.value=this.value.replace(/[^?\\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\\d]/g,'')"></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -370,6 +370,11 @@
 				 tagId = "";
 			 }
 			 formData["tagId"] = tagId;
+
+			 if (!checkTableInfo()) {
+				return; 
+			 }
+			 
 			 formData["items"] = getTableInfo();
 // 			 console.log(formData);
 			 
@@ -853,6 +858,39 @@
 						layer.alert("查询失败，请联系客服处理");
 					}
 			  });
+		  }
+
+		  function checkTableInfo(){
+			 var retFlg = true;
+			 var e_index = "";
+			 var e_msg;
+		  	 $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
+		  		var obj_name="";
+				var obj_value="";
+		  		$.each($(r_obj).find('td'),function(c_index,c_obj){
+		  			obj_name = $(c_obj.firstChild).attr('name');
+		  			var type = c_obj.firstChild.nodeName;
+		  			if(type == 'INPUT'){
+		  				obj_value = $(c_obj.firstChild).val();
+		  				if (obj_name == "itemCode" || obj_name == "sku" ||
+	  		  				obj_name == "weight" || obj_name == "conversion" ||
+	  		  				obj_name == "proxyPrice" || obj_name == "fxPrice" ||
+	  		  				obj_name == "retailPrice") {
+		  					if (obj_value == "") {
+		  						e_index = e_index + (r_index+1) + ",";
+		  						retFlg = false;
+		  						return false;
+		  					}
+	  		  			}
+		  			}
+		  		});
+		  	 });
+		  	 if (!retFlg) {
+		  		e_index = e_index.substring(0,e_index.length-1);
+		  		e_msg = "第"+(e_index)+"条规格信息填写有误，请确认！";
+		  		layer.alert(e_msg);
+		  	 }
+		  	 return retFlg;
 		  }
 	</script>
 </body>

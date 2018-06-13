@@ -190,11 +190,11 @@
 					</div>
 				</div>
 		       	<div class="list-item">
-					<div class="col-sm-3 item-left">海关货号</div>
+					<div class="col-sm-3 item-left">自有编码</div>
 					<div class="col-sm-9 item-right">
 	               		<input type="text" class="form-control" name="sku" id="sku">
 						<div class="item-content">
-			             	（海关备案货号或商家编码）
+			             	（自行管理货物的编码或商家编码）
 			            </div>
 					</div>
 				</div>
@@ -252,7 +252,6 @@
 			            </div>
 					</div>
 				</div>
-				
 				<div class="list-item">
 					<div class="col-sm-3 item-left"><font style="color:red">*</font>成本价</div>
 					<div class="col-sm-9 item-right">
@@ -297,7 +296,7 @@
 	        </div>
 			
 			<div id="specs" style="display:none;padding:0 20px;">
-				<div class="list-item" id="specsOperation">
+				<div class="list-item col-sm-6 col-sm-offset-3" id="specsOperation">
 					<div class="list-all">
 						<div class="row-bg-gray">
 							<a class="addBtn" href="javascript:void(0);" onclick="addSpecsModule(this)">添加规格</a>
@@ -305,36 +304,47 @@
 					</div>
 				</div>
 				
-				<div class="list-item" id="specsItem">
+				<div class="list-item" id="specsItem" style="width:100%;">
 					<div class="list-all">
 						<table class="dynamic-table" id="dynamicTable">
 							<caption>规格明细</caption>
 							<thead id="dynamic-thead">
-								<tr>
-									<th><font style="color:red">*</font>商家编码</th>
-									<th>海关货号</th>
-									<th><font style="color:red">*</font>条形码</th>
-									<th><font style="color:red">*</font>商品重量</th>
-									<th>换算比例</th>
-									<th>消费税率</th>
-									<th>保质期</th>
-									<th>箱规</th>
-									<th><font style="color:red">*</font>成本价</th>
-									<th><font style="color:red">*</font>分销价</th>
-									<th><font style="color:red">*</font>零售价</th>
-									<th colspan="2">限购数量</th>
-								</tr>
+<!-- 								<tr> -->
+<!-- 									<th><font style="color:red">*</font>商家编码</th> -->
+<!-- 									<th>自有编码</th> -->
+<!-- 									<th><font style="color:red">*</font>条形码</th> -->
+<!-- 									<th><font style="color:red">*</font>商品重量</th> -->
+<!-- 									<th>换算比例</th> -->
+<!-- 									<th>消费税率</th> -->
+<!-- 									<th>保质期</th> -->
+<!-- 									<th>箱规</th> -->
+<!-- 									<th><font style="color:red">*</font>成本价</th> -->
+<!-- 									<th><font style="color:red">*</font>分销价</th> -->
+<!-- 									<th><font style="color:red">*</font>零售价</th> -->
+<!-- 									<th colspan="2">限购数量</th> -->
+<!-- 								</tr> -->
 							</thead>
 							<tbody id="dynamic-table">
 							</tbody>
 							<tfoot>
 								<tr>
-									<td colspan="2">
+									<td colspan="13">
 										<span>批量设置 ： </span>
 										<span>
-											<a href="javascript:void(0)">价格</a>
-											<a href="javascript:void(0)">库存</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('weight')">商品重量</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('shelfLife')">保质期</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('carTon')">箱规</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('proxyPrice')">成本价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('fxPrice')">分销价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('retailPrice')">零售价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('min')">限购数量(min)</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('max')">限购数量(max)</a>
 										</span>
+										<div id="batchSetting" class="batchSetting">
+											<input type="text" class="inline-input" id="batchInput"/>
+											<a href="javascript:void(0)" onclick="batchSaveTableItem()">保存</a>
+											<a href="javascript:void(0)" onclick="batchSetedTableItem()">取消</a>
+										</div>
 									</td>
 								</tr>
 							</tfoot>
@@ -577,6 +587,9 @@
 				 if ($('#dynamicTable tbody tr').length <1) {
 					 layer.alert("请选择规格信息！");
 					 return;
+				 }
+				 if (!checkTableInfo()) {
+					return; 
 				 }
 				 formData["items"] = getTableInfo();
 				 for(var json in formData){
@@ -1080,6 +1093,89 @@
 		  });
 	  }
 	  
+	  function batchSetTableItem(itemName){
+		  $("#batchSetting").addClass("active");
+		  $("#batchSetting").attr("data-id",itemName);
+	  }
+	  
+	  function batchSaveTableItem(){
+		  var tmpItem = $("#batchSetting").attr("data-id");
+		  var tmpItemInput = $("#batchInput").val();
+		  
+		  $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
+			var obj_name="";
+			$.each($(r_obj).find('td'),function(c_index,c_obj){
+				obj_name = $(c_obj.firstChild).attr('name');
+				if (obj_name == tmpItem) {
+					$(c_obj.firstChild).val(tmpItemInput);
+				}
+			});
+		  });
+
+		  $("#batchInput").val("");
+		  $("#batchSetting").removeAttr("data-id");
+		  batchSetedTableItem();
+	  }
+	  
+	  function batchSetedTableItem(){
+		  $("#batchSetting").removeClass("active");
+	  }
+
+	  function checkTableInfo(){
+		 var retFlg = true;
+		 var e_index = "";
+		 var e_msg;
+	  	 $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
+	  		var obj_name="";
+			var obj_value="";
+	  		$.each($(r_obj).find('td'),function(c_index,c_obj){
+	  			obj_name = $(c_obj.firstChild).attr('name');
+	  			var type = c_obj.firstChild.nodeName;
+	  			if(type == 'INPUT'){
+	  				obj_value = $(c_obj.firstChild).val();
+	  				if (obj_name == "itemCode" || obj_name == "sku" ||
+  		  				obj_name == "weight" || obj_name == "conversion" ||
+  		  				obj_name == "proxyPrice" || obj_name == "fxPrice" ||
+  		  				obj_name == "retailPrice") {
+	  					if (obj_value == "") {
+	  						e_index = e_index + (r_index+1) + ",";
+	  						retFlg = false;
+	  						return false;
+	  					}
+  		  			}
+	  			}
+	  		});
+	  	 });
+	  	 if (!retFlg) {
+	  		e_index = e_index.substring(0,e_index.length-1);
+	  		e_msg = "第"+(e_index)+"条规格信息填写有误，请确认！";
+	  		layer.alert(e_msg);
+		  	return retFlg;
+	  	 }
+	  	 
+	  	 e_index = "";
+	  	 var tmpSkuArr = $("#dynamicTable [name='sku']");
+	  	 var tmpConversionArr = $("#dynamicTable [name='conversion']");
+	  	 for(var i=0; i<tmpSkuArr.length; i++) {
+	  		 for(var j=i+1; j<tmpSkuArr.length; j++) {
+	  			 if ($(tmpSkuArr[i]).val() == $(tmpSkuArr[j]).val() && 
+	  				 $(tmpConversionArr[i]).val() == $(tmpConversionArr[j]).val()) {
+	  				e_index = e_index + (i+1) + "," + (j+1) + ";";
+					retFlg = false;
+					break;
+	  			 }
+	  		 }
+	  	 }
+	  	 if (!retFlg) {
+	  		e_index = e_index.substring(0,e_index.length-1);
+	  		e_msg = "第"+(e_index)+"条规格自有编码与换算比例重复，请确认！";
+	  		layer.alert(e_msg);
+		  	return retFlg;
+	  	 }
+	  	 retFlg = false;
+	  	
+	  	 return retFlg;
+	  }
 	</script>
 </body>
 </html>

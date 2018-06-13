@@ -47,6 +47,10 @@ $('#specsSwitch').on('click','li',function(){
 		$('.list-all-parent').remove();
 		$("#dynamic-table").empty();
 		$("#dynamic-thead").empty();
+		keyId = new Array();
+		keyText = new Array();
+		valueIdArray = new Array();
+		valueTextArray = new Array();
 	}else if(typeId == 1){
 		$('#noSpecs').hide();		  
 		$('#specs').show();
@@ -81,6 +85,10 @@ $('#specsSwitch').on('click','li',function(){
 		$('.list-all-parent').remove();
 		$("#dynamic-table").empty();
 		$("#dynamic-thead").empty();
+		keyId = new Array();
+		keyText = new Array();
+		valueIdArray = new Array();
+		valueTextArray = new Array();
 	}
 });
 
@@ -114,6 +122,10 @@ function addSpecsValue(e){
 //重新获取界面选择的值
 
 function reGetSelectInfo(){
+	keyId = [];
+	keyText = [];
+	valueIdArray = [];
+	valueTextArray = [];
 	$(".select-key option:selected").each(function(){
 		  if($(this).text()==''||$(this).val()==-1){		
 			  return;
@@ -122,8 +134,6 @@ function reGetSelectInfo(){
 		  if (keyId.indexOf($(this).val()) == -1) {
 			  keyText.push($(this).text());
 			  keyId.push($(this).val());
-		  } else {
-			  return;
 		  }
 		  
 		  var idArray = new Array();
@@ -173,21 +183,21 @@ function rebuildTable(){
 			  var thead = "<tr>";
 			  if(keyText.length>0){
 				  for(var i = 0;i<keyText.length;i++){
-					  thead += "<td>"+keyText[i]+"</td>"
+					  thead += "<th style='width: 60px;'>"+keyText[i]+"</th>"
 				  }
 			  }
-			  thead += "<th><font style='color:red'>*</font>商家编码</th>";
-			  thead += "<th>海关货号</th>";
-			  thead += "<th><font style='color:red'>*</font>条形码</th>";
-			  thead += "<th><font style='color:red'>*</font>商品重量</th>";
-			  thead += "<th>换算比例</th>";
-			  thead += "<th>消费税率</th>";
-			  thead += "<th>保质期</th>";
-			  thead += "<th>箱规</th>";
-			  thead += "<th><font style='color:red'>*</font>成本价</th>";
-			  thead += "<th><font style='color:red'>*</font>分销价</th>";
-			  thead += "<th><font style='color:red'>*</font>零售价</th>";
-			  thead += "<th colspan='2'>限购数量</th>";
+			  thead += "<th style='width: 160px;'><font style='color:red'>*</font>商家编码</th>";
+			  thead += "<th style='width: 160px;'>自有编码</th>";
+			  thead += "<th style='width: 130px;'><font style='color:red'>*</font>条形码</th>";
+			  thead += "<th style='width: 100px;'><font style='color:red'>*</font>商品重量</th>";
+			  thead += "<th style='width: 70px;'>换算比例</th>";
+			  thead += "<th style='width: 70px;'>消费税率</th>";
+			  thead += "<th style='width: 70px;'>保质期</th>";
+			  thead += "<th style='width: 70px;'>箱规</th>";
+			  thead += "<th style='width: 100px;'><font style='color:red'>*</font>成本价</th>";
+			  thead += "<th style='width: 100px;'><font style='color:red'>*</font>分销价</th>";
+			  thead += "<th style='width: 100px;'><font style='color:red'>*</font>零售价</th>";
+			  thead += "<th style='width: 100px;' colspan='2'>限购数量</th>";
 			  thead += "</tr>";
 			  
 			  $("#dynamic-thead").html(thead);
@@ -234,16 +244,16 @@ function rebuildTd(text,valueTextArray,valueIdArray,index,htmlArray){
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"itemCode\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"sku\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"encode\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"weight\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"conversion\" value=\"1\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"exciseTax\" value=\"0\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"weight\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"conversion\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" value=\"1\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"exciseTax\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\" value=\"0\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"shelfLife\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"carTon\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"proxyPrice\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"fxPrice\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"retailPrice\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"min\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"max\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"proxyPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"fxPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"retailPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"min\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"max\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
 	}
 } 
 
@@ -283,34 +293,6 @@ function getTableInfo(){
 				}
 				obj_value = tmpInfo;
 //				console.log(obj_value);
-				
-				
-//				var isExist = false;
-//				var tmpSKindex;
-//				var tmpSVindex;
-//				for(var i=0; i<valueTextArray.length; i++) {
-//				    for(var j=0;j<valueTextArray[i].length;j++){
-//						if ($(c_obj.firstChild).text() == valueTextArray[i][j]) {
-//							isExist = true;
-//							tmpSKindex = i;
-//							tmpSVindex = j;
-//						}
-//						if (isExist) {
-//							return;
-//						}
-//			        }
-//					if (isExist) {
-//						return;
-//					}
-//				}
-//				var tmpSK = "";
-//				var tmpSV = "";
-//				tmpSK = keyId[tmpSKindex];
-//				tmpSK = tmpSK + "|" + keyText[tmpSKindex];
-//				tmpSV = valueIdArray[tmpSKindex][tmpSVindex];
-//				tmpSV = tmpSV + "|" + valueTextArray[tmpSKindex][tmpSVindex];
-//				obj_value = obj_value + tmpSK + "&" + tmpSV + ";" ;
-				
 			}
 
 			if (obj_name == "proxyPrice" || obj_name == "fxPrice" ||
@@ -353,4 +335,18 @@ function doExchange(arr){
 		return arr[0];
 	}
 }
+
+function clearNoNum(obj)    
+{    
+    //先把非数字的都替换掉，除了数字和.    
+    obj.value = obj.value.replace(/[^\d.]/g,"");    
+    //保证只有出现一个.而没有多个.    
+    obj.value = obj.value.replace(/\.{2,}/g,".");    
+    //必须保证第一个为数字而不是.    
+    obj.value = obj.value.replace(/^\./g,"");    
+    //保证.只出现一次，而不能出现两次以上    
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");    
+    //只能输入两个小数  
+    obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');   
+} 
 

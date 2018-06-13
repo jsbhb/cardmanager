@@ -52,13 +52,33 @@ caption{
 	border: 1px solid #ccc;
 	margin-left:5%;
 }
+.dynamic-table input.inline-input{
+	width:50px;
+	display:inline-block;
+	margin-right:5px;
+}
 .dynamic-table td,.dynamic-table th{
 	height:40px;
+	position: relative;
 }
 .dynamic-table tfoot a{
 	margin-right:10px;
 }
-
+.dynamic-table .batchSetting{
+	display:none;
+	position: absolute;
+	left: 0;
+	top: 3px;
+	width: 550px;
+	margin-left: 60px;
+	background: #fff;
+}
+.dynamic-table .batchSetting.active{
+	display:block;
+}
+.dynamic-table tfoot td{
+	text-align:left;
+}
 
 
 
