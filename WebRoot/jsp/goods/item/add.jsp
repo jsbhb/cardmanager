@@ -41,7 +41,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">货号(sku)</label>
+							<label class="col-sm-2 control-label no-padding-right">自有编码(sku)</label>
 							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">

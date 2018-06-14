@@ -669,12 +669,12 @@ public class GoodsItemMngController extends BaseController {
 			String[] nameArray = null;
 			String[] colArray = null;
 			if ("1".equals(type)) {
-				nameArray = new String[] { "商品编号", "货号", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目",
+				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目",
 						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例" };
 				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "GoodsStatusName", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", "GradeTypeName", "Proportion" };
 			} else if ("2".equals(type)) {
-				nameArray = new String[] { "商品编号", "货号", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
+				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
 						"成本价", "内供价", "零售价", "分级类型", "返佣比例" };
 				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "GoodsStatusName", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",

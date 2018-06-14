@@ -7,6 +7,8 @@
  */
 package com.card.manager.factory.goods.service;
 
+import java.util.List;
+
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.SpecsEntity;
 import com.card.manager.factory.goods.model.SpecsTemplateEntity;
@@ -63,5 +65,35 @@ public interface SpecsService extends ServerCenterService {
 	 * @since JDK 1.7  
 	 */
 	void addSpecs(SpecsEntity specsEntity, String token) throws Exception;
+
+	/**  
+	 *  
+	 * @author hebin 
+	 * @param id
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<SpecsEntity> queryAllSpecs(String token);
+
+	/**  
+	 *  
+	 * @author hebin 
+	 * @param id
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<SpecsValueEntity> queryAllSpecsValue(String token);
+
+	/**  
+	 *  
+	 * @author hebin 
+	 * @param id
+	 * @param token
+	 * @return  
+	 * @since JDK 1.7  
+	 */
+	List<SpecsEntity> queryAllSpecsInfo(String token);
 
 }

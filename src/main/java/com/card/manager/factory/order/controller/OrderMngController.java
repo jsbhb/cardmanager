@@ -114,17 +114,34 @@ public class OrderMngController extends BaseController {
 					orderGoods.setItemCode(itemCode);
 				}
 			}
+			String itemName = req.getParameter("itemName");
+			if (!StringUtil.isEmpty(itemName)) {
+				if (orderGoods != null) {
+					orderGoods.setItemName(itemName);
+				} else {
+					orderGoods = new OrderGoods();
+					orderGoods.setItemName(itemName);
+				}
+			}
 			if (orderGoods != null) {
 				orderGoodsList = new ArrayList<OrderGoods>();
 				orderGoodsList.add(orderGoods);
 				pagination.setOrderGoodsList(orderGoodsList);
 			}
-			// String orderId = req.getParameter("orderId");
-			// if (StringUtil.isEmpty(orderId)) {
-			// params.put("orderId", "");
-			// } else {
-			// params.put("orderId", orderId);
-			// }
+			
+			List<ThirdOrderInfo> orderExpressList = null;
+			ThirdOrderInfo thirdOrderInfo = null;
+			String expressId = req.getParameter("expressId");
+			if (!StringUtil.isEmpty(expressId)) {
+				thirdOrderInfo = new ThirdOrderInfo();
+				thirdOrderInfo.setExpressId(expressId);
+			}
+			if (thirdOrderInfo != null) {
+				orderExpressList = new ArrayList<ThirdOrderInfo>();
+				orderExpressList.add(thirdOrderInfo);
+				pagination.setOrderExpressList(orderExpressList);
+			}
+			
 			String status = req.getParameter("status");
 			if (!StringUtil.isEmpty(status)) {
 				pagination.setStatus(Integer.parseInt(status));
@@ -142,22 +159,6 @@ public class OrderMngController extends BaseController {
 				pagination.setShopId(Integer.parseInt(shopId));
 			}
 
-			// int gradeLevel = staffEntity.getGradeLevel();
-			// if (ServerCenterContants.FIRST_GRADE == gradeLevel) {
-			// } else if (ServerCenterContants.SECOND_GRADE == gradeLevel) {
-			// pagination.setCenterId(staffEntity.getGradeId());
-			// pagination.setShopId(staffEntity.getShopId());
-			// } else if (ServerCenterContants.THIRD_GRADE == gradeLevel) {
-			// pagination.setCenterId(staffEntity.getParentGradeId());
-			// pagination.setShopId(staffEntity.getShopId());
-			// } else {
-			// if (pcb == null) {
-			// pcb = new PageCallBack();
-			// }
-			// pcb.setPagination(pagination);
-			// pcb.setSuccess(true);
-			// return pcb;
-			// }
 			Integer gradeId = staffEntity.getGradeId();
 			if (gradeId != 0 && gradeId != null) {
 				pagination.setShopId(gradeId);
@@ -396,7 +397,7 @@ public class OrderMngController extends BaseController {
 			String[] colArray = null;
 			//广州仓
 			if ("5".equals(supplierId)) {
-				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
+				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
 						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省", "市", "区", "收件信息", "下单时间", "物流信息",
 						"订购人", "订购人身份证", "包装数", "商品购买价格"};
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
@@ -404,7 +405,7 @@ public class OrderMngController extends BaseController {
 						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
 						"ReceiveAddress", "CreateTime", "ExpressInfo", "OrderName", "Idnum", "Packing", "ActualPrice" };
 			} else {
-				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
+				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
 						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
 						"ActualPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",

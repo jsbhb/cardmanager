@@ -7,6 +7,10 @@
  */
 package com.card.manager.factory.goods.pojo;
 
+import java.util.List;
+
+import com.card.manager.factory.goods.model.GoodsItemEntity;
+
 /**
  * ClassName: CreateGoodsInfoEntity <br/>
  * Function: 商品对象. <br/>
@@ -38,7 +42,7 @@ public class CreateGoodsInfoEntity {
 	private String itemCode;
 	private String sku;
 	private String encode;
-	private double exciseFax;
+	private double exciseTax;
 	private String origin;
 	private double weight;
 	private int conversion;
@@ -57,6 +61,7 @@ public class CreateGoodsInfoEntity {
 	private String values;
 	private String shelfLife;
 	private String carTon;
+	private List<GoodsItemEntity> items;
 	
 	
 	public int getBaseId() {
@@ -137,11 +142,11 @@ public class CreateGoodsInfoEntity {
 	public void setSku(String sku) {
 		this.sku = sku;
 	}
-	public double getExciseFax() {
-		return exciseFax;
+	public double getExciseTax() {
+		return exciseTax;
 	}
-	public void setExciseFax(double exciseFax) {
-		this.exciseFax = exciseFax;
+	public void setExciseTax(double exciseTax) {
+		this.exciseTax = exciseTax;
 	}
 	public String getOrigin() {
 		return origin;
@@ -292,6 +297,12 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setCarTon(String carTon) {
 		this.carTon = carTon;
+	}
+	public List<GoodsItemEntity> getItems() {
+		return items;
+	}
+	public void setItems(List<GoodsItemEntity> items) {
+		this.items = items;
 	}
 
 }

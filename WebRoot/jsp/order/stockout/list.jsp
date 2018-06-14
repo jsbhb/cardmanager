@@ -92,6 +92,16 @@
 					</div>
 				</div>
 				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="form-control" name="itemName" placeholder="请输入商品名称">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="form-control" name="expressId" placeholder="请输入物流单号">
+					</div>
+				</div>
+				<div class="col-xs-3">
 					<div class="searchBtns">
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>

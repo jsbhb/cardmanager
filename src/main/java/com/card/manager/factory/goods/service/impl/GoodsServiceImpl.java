@@ -500,7 +500,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goods.setBaseId(entity.getBaseId());
 		}
 
-		goods.setTemplateId(Integer.parseInt(entity.getSpecsId()));
+		goods.setTemplateId(0);
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
@@ -521,33 +521,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setDetailPath(invitePath + goods.getGoodsId() + ResourceContants.HTML_SUFFIX);
 		// -------------------保存商品详情---------------------//
 		// goods.setDetailPath(entity.getDetailInfo());
-
-		GoodsItemEntity goodsItem = new GoodsItemEntity();
-		int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
-		goodsItem.setGoodsId(goods.getGoodsId());
-		goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
-		goodsItem.setItemCode(entity.getItemCode());
-		goodsItem.setSku(entity.getSku());
-		goodsItem.setWeight(entity.getWeight());
-		goodsItem.setExciseTax(entity.getExciseFax());
-		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
-		goodsItem.setConversion(entity.getConversion());
-		goodsItem.setEncode(entity.getEncode());
-		goodsItem.setShelfLife(entity.getShelfLife());
-		goodsItem.setCarTon(entity.getCarTon());
-
-		GoodsPrice goodsPrice = new GoodsPrice();
-		goodsPrice.setItemId(goodsItem.getItemId());
-		goodsPrice.setMin(entity.getMin());
-		goodsPrice.setMax(entity.getMax());
-		goodsPrice.setProxyPrice(entity.getProxyPrice());
-		goodsPrice.setFxPrice(entity.getFxPrice());
-		goodsPrice.setRetailPrice(entity.getRetailPrice());
-		goodsPrice.setOpt(entity.getOpt());
-
-		goodsItem.setGoodsPrice(goodsPrice);
-		goodsItem.setOpt(entity.getOpt());
-
+		
 		List<GoodsFile> files = new ArrayList<GoodsFile>();
 		if (entity.getPicPath() != null) {
 			String[] goodsFiles = entity.getPicPath().split(",");
@@ -558,40 +532,93 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				files.add(f);
 			}
 		}
-
 		goods.setFiles(files);
 
-		String keys = entity.getKeys();
-		String values = entity.getValues();
+		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
+		if (entity.getItems() != null && entity.getItems().size() > 0) {
+			for (GoodsItemEntity gie:entity.getItems()) {
+				GoodsItemEntity goodsItem = new GoodsItemEntity();
+				goodsItem.setGoodsId(goods.getGoodsId());
+				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
+				goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+				goodsItem.setItemCode(gie.getItemCode());
+				goodsItem.setSku(gie.getSku());
+				goodsItem.setWeight(gie.getWeight());
+				goodsItem.setExciseTax(gie.getExciseTax());
+				goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+				goodsItem.setConversion(gie.getConversion());
+				goodsItem.setEncode(gie.getEncode());
+				goodsItem.setShelfLife(gie.getShelfLife());
+				goodsItem.setCarTon(gie.getCarTon());
+				
+				GoodsPrice goodsPrice = new GoodsPrice();
+				goodsPrice.setItemId(goodsItem.getItemId());
+				goodsPrice.setMin(gie.getGoodsPrice().getMin());
+				goodsPrice.setMax(gie.getGoodsPrice().getMax());
+				goodsPrice.setProxyPrice(gie.getGoodsPrice().getProxyPrice());
+				goodsPrice.setFxPrice(gie.getGoodsPrice().getFxPrice());
+				goodsPrice.setRetailPrice(gie.getGoodsPrice().getRetailPrice());
+				goodsPrice.setOpt(entity.getOpt());
 
-		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		if ((keys != null && !"".equals(keys)) && (values != null) && !"".equals(values)) {
-			String[] keyArray = keys.split(";");
-			String[] valueArray = values.split(";");
-			for (int i = 0; i < keyArray.length; i++) {
-				ItemSpecsPojo itemSpecsPojo;
-				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-					itemSpecsPojo = new ItemSpecsPojo();
-					String[] kContesnts = keyArray[i].split(":");
-					itemSpecsPojo.setSkId(kContesnts[0]);
-					itemSpecsPojo.setSkV(kContesnts[1]);
-					String[] vContants = valueArray[i].split(":");
-					itemSpecsPojo.setSvId(vContants[0]);
-					itemSpecsPojo.setSvV(vContants[1]);
-					specsPojos.add(itemSpecsPojo);
+				goodsItem.setGoodsPrice(goodsPrice);
+				goodsItem.setOpt(entity.getOpt());
+				
+				String keys = gie.getInfo();
+				List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+				if ((keys != null && !"".equals(keys))) {
+					String[] keyArray = keys.split(";");
+					for (int i = 0; i < keyArray.length; i++) {
+						ItemSpecsPojo itemSpecsPojo;
+						if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+							itemSpecsPojo = new ItemSpecsPojo();
+							String[] kContesnts = keyArray[i].split("&");
+							itemSpecsPojo.setSkId(kContesnts[0].split("\\|")[0]);
+							itemSpecsPojo.setSkV(kContesnts[0].split("\\|")[1]);
+							itemSpecsPojo.setSvId(kContesnts[1].split("\\|")[0]);
+							itemSpecsPojo.setSvV(kContesnts[1].split("\\|")[1]);
+							specsPojos.add(itemSpecsPojo);
+						}
+					}
+
+					JSONArray json = JSONArray.fromObject(specsPojos);
+					goodsItem.setInfo(json.toString());
 				}
+				items.add(goodsItem);
 			}
+		} else {
+			GoodsItemEntity goodsItem = new GoodsItemEntity();
+			int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
+			goodsItem.setGoodsId(goods.getGoodsId());
+			goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+			goodsItem.setItemCode(entity.getItemCode());
+			goodsItem.setSku(entity.getSku());
+			goodsItem.setWeight(entity.getWeight());
+			goodsItem.setExciseTax(entity.getExciseTax());
+			goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+			goodsItem.setConversion(entity.getConversion());
+			goodsItem.setEncode(entity.getEncode());
+			goodsItem.setShelfLife(entity.getShelfLife());
+			goodsItem.setCarTon(entity.getCarTon());
 
-			JSONArray json = JSONArray.fromObject(specsPojos);
-			goodsItem.setInfo(json.toString());
+			GoodsPrice goodsPrice = new GoodsPrice();
+			goodsPrice.setItemId(goodsItem.getItemId());
+			goodsPrice.setMin(entity.getMin());
+			goodsPrice.setMax(entity.getMax());
+			goodsPrice.setProxyPrice(entity.getProxyPrice());
+			goodsPrice.setFxPrice(entity.getFxPrice());
+			goodsPrice.setRetailPrice(entity.getRetailPrice());
+			goodsPrice.setOpt(entity.getOpt());
+
+			goodsItem.setGoodsPrice(goodsPrice);
+			goodsItem.setOpt(entity.getOpt());
+			items.add(goodsItem);
 		}
-
-		goods.setGoodsItem(goodsItem);
+		goods.setItems(items);
 
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goodsItem.getItemId());
+			goodsTagBindEntity.setItemId(goods.getGoodsId());
 			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
 			goods.setGoodsTagBind(goodsTagBindEntity);
 		}
@@ -635,7 +662,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setSupplierId(entity.getSupplierId());
 		goods.setSupplierName(entity.getSupplierName());
 		goods.setBaseId(entity.getBaseId());
-		goods.setTemplateId(Integer.parseInt(entity.getSpecsId()));
+		goods.setTemplateId(0);
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
@@ -665,31 +692,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// -------------------保存商品详情---------------------//
 		// goods.setDetailPath(entity.getDetailInfo());
 
-		GoodsItemEntity goodsItem = new GoodsItemEntity();
-		goodsItem.setGoodsId(goods.getGoodsId());
-		goodsItem.setItemId(entity.getItemId() + "");
-		goodsItem.setItemCode(entity.getItemCode());
-		goodsItem.setSku(entity.getSku());
-		goodsItem.setWeight(entity.getWeight());
-		goodsItem.setExciseTax(entity.getExciseFax());
-		goodsItem.setStatus(entity.getItemStatus());
-		goodsItem.setConversion(entity.getConversion());
-		goodsItem.setEncode(entity.getEncode());
-		goodsItem.setShelfLife(entity.getShelfLife());
-		goodsItem.setCarTon(entity.getCarTon());
-
-		GoodsPrice goodsPrice = new GoodsPrice();
-		goodsPrice.setItemId(goodsItem.getItemId());
-		goodsPrice.setMin(entity.getMin());
-		goodsPrice.setMax(entity.getMax());
-		goodsPrice.setProxyPrice(entity.getProxyPrice());
-		goodsPrice.setFxPrice(entity.getFxPrice());
-		goodsPrice.setRetailPrice(entity.getRetailPrice());
-		goodsPrice.setOpt(entity.getOpt());
-
-		goodsItem.setGoodsPrice(goodsPrice);
-		goodsItem.setOpt(entity.getOpt());
-
 		List<GoodsFile> files = new ArrayList<GoodsFile>();
 		if (entity.getPicPath() != null) {
 			String[] goodsFiles = entity.getPicPath().split(",");
@@ -700,47 +702,71 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				files.add(f);
 			}
 		}
-
 		goods.setFiles(files);
 
-		String keys = entity.getKeys();
-		String values = entity.getValues();
+		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
+		for (GoodsItemEntity gie:entity.getItems()) {
+			GoodsItemEntity goodsItem = new GoodsItemEntity();
+			goodsItem.setGoodsId(goods.getGoodsId());
+			goodsItem.setItemId(entity.getItemId()+"");
+			goodsItem.setItemCode(gie.getItemCode());
+			goodsItem.setSku(gie.getSku());
+			goodsItem.setWeight(gie.getWeight());
+			goodsItem.setExciseTax(gie.getExciseTax());
+			goodsItem.setStatus(entity.getItemStatus());
+			goodsItem.setConversion(gie.getConversion());
+			goodsItem.setEncode(gie.getEncode());
+			goodsItem.setShelfLife(gie.getShelfLife());
+			goodsItem.setCarTon(gie.getCarTon());
+			
+			GoodsPrice goodsPrice = new GoodsPrice();
+			goodsPrice.setItemId(goodsItem.getItemId());
+			goodsPrice.setMin(gie.getGoodsPrice().getMin());
+			goodsPrice.setMax(gie.getGoodsPrice().getMax());
+			goodsPrice.setProxyPrice(gie.getGoodsPrice().getProxyPrice());
+			goodsPrice.setFxPrice(gie.getGoodsPrice().getFxPrice());
+			goodsPrice.setRetailPrice(gie.getGoodsPrice().getRetailPrice());
+			goodsPrice.setOpt(entity.getOpt());
 
-		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		if ((keys != null && !"".equals(keys)) && (values != null) && !"".equals(values)) {
-			String[] keyArray = keys.split(";");
-			String[] valueArray = values.split(";");
-			for (int i = 0; i < keyArray.length; i++) {
-				ItemSpecsPojo itemSpecsPojo;
-				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-					itemSpecsPojo = new ItemSpecsPojo();
-					String[] kContesnts = keyArray[i].split(":");
-					itemSpecsPojo.setSkId(kContesnts[0]);
-					itemSpecsPojo.setSkV(kContesnts[1]);
-					String[] vContants = valueArray[i].split(":");
-					itemSpecsPojo.setSvId(vContants[0]);
-					itemSpecsPojo.setSvV(vContants[1]);
-					specsPojos.add(itemSpecsPojo);
+			goodsItem.setGoodsPrice(goodsPrice);
+			goodsItem.setOpt(entity.getOpt());
+			
+			String keys = gie.getInfo();
+			List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+			if ((keys != null && !"".equals(keys))) {
+				String[] keyArray = keys.split(";");
+				for (int i = 0; i < keyArray.length; i++) {
+					ItemSpecsPojo itemSpecsPojo;
+					if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+						itemSpecsPojo = new ItemSpecsPojo();
+						String[] kContesnts = keyArray[i].split("&");
+						itemSpecsPojo.setSkId(kContesnts[0].split("\\|")[0]);
+						itemSpecsPojo.setSkV(kContesnts[0].split("\\|")[1]);
+						itemSpecsPojo.setSvId(kContesnts[1].split("\\|")[0]);
+						itemSpecsPojo.setSvV(kContesnts[1].split("\\|")[1]);
+						specsPojos.add(itemSpecsPojo);
+					}
 				}
+
+				JSONArray json = JSONArray.fromObject(specsPojos);
+				goodsItem.setInfo(json.toString());
 			}
-
-			JSONArray json = JSONArray.fromObject(specsPojos);
-			goodsItem.setInfo(json.toString());
+			items.add(goodsItem);
 		}
-
-		goods.setGoodsItem(goodsItem);
+		goods.setItems(items);
+		
 
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goodsItem.getItemId());
+			goodsTagBindEntity.setItemId(goods.getGoodsId());
 			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
 			goods.setGoodsTagBind(goodsTagBindEntity);
 		}
 
 		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
 		goodsInfoEntity.setGoods(goods);
-
+		
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_UPDATE_GOODSINFO, staffEntity.getToken(),
 				true, goodsInfoEntity, HttpMethod.POST);

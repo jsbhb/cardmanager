@@ -479,7 +479,7 @@ public class RebateMngController extends BaseController {
 			String fileName = "order_" + DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
-			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "货号", "品名", "成本价", "零售价", "数量", "一级类目", "二级类目", "三级类目",
+			String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名", "成本价", "零售价", "数量", "一级类目", "二级类目", "三级类目",
 					"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
 			String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
 					"ProxyPrice", "ActualPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",

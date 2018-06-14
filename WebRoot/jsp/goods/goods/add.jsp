@@ -107,9 +107,6 @@
 		            </div>
 				</div>
 			</div>
-			<div class="title">
-	       		<h1>明细信息</h1>
-	       	</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
@@ -138,138 +135,10 @@
 	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
 				</div>
 			</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">商家编码</div>
-				<div class="col-sm-9 item-right">
-             		<input type="text" class="form-control" name="itemCode">
-					<div class="item-content">
-		             	（货主管理货物的编码）
-		            </div>
-				</div>
-			</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">海关货号</div>
-				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="sku">
-					<div class="item-content">
-		             	（海关备案货号或商家编码）
-		            </div>
-				</div>
-			</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">条形码</div>
-				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="encode">
-					<div class="item-content">
-		             	（商品自带的条形码）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">消费税率</div>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="exciseFax" id="exciseFax">
-					<div class="item-content">
-		             	（请按小数格式输入，例：0.17）
-		            </div>
-	            </div>
-			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">原产国</div>
 				<div class="col-sm-9 item-right">
 	                 <input type="text" class="form-control" name="origin">
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">商品重量</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="weight">
-					<div class="item-content">
-						（请按整数格式输入，例：2500）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">换算比例</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="conversion" value="1">
-					<div class="item-content">
-						（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
-		            </div>
-				</div>
-			</div>
-			<div class="title">
-	       		<h1>规格信息</h1>
-	       	</div>
-	       	<div class="list-item">
-				<div class="col-sm-3 item-left">商品规格</div>
-				<div class="col-sm-9 item-right">
-					<a class="addBtn" href="javascript:void(0);" onclick="showSpecsGoods()">规格模板</a>
-				</div>
-			</div>
-			<div id="specsInfo">
-				<input type="hidden" class="form-control" id="specsId" name="specsId" value="0">
-	       	</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">保质期</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="shelfLife">
-					<div class="item-content">
-						（商品的保质期，例：2年，18个月）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">箱规</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="carTon">
-					<div class="item-content">
-						（例：8组，24罐）
-		            </div>
-				</div>
-			</div>
-			<div class="title">
-	       		<h1>价格信息</h1>
-	       	</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">成本价</div>
-				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="proxyPrice">
-	                <div class="item-content">
-		             	（请按价格格式输入，例：113.35）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">分销价</div>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="fxPrice">
-					<div class="item-content">
-		             	（请按价格格式输入，例：113.35）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">零售价</div>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="retailPrice">
-					<div class="item-content">
-		             	（请按价格格式输入，例：113.35）
-		            </div>
-				</div>
-			</div>
-			<div class="list-item">
-				<div class="col-sm-3 item-left">限购数量</div>
-				<div class="col-sm-9 item-right">
-					<div class="right-item">
-	              		<input type="text" class="form-control" name="min" placeholder="请输入最小购买量">
-					</div>
-	            	<div class="right-item last-item">
-                 		<input type="text" class="form-control" name="max" placeholder="请输入最大购买量">
-					</div>
-					<div class="item-content">
-		             	（请按整数格式输入，填0表示不限制数量）
-		            </div>
 				</div>
 			</div>
 			<div class="list-item">
@@ -289,6 +158,197 @@
 					<div class="item-img" id="content1" data-id="1">
 						+
 						<input type="file" id="pic1" name="pic"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="title">
+	       		<h1>明细信息</h1>
+	       	</div>
+	       	
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">产品规格</div>
+				<div class="col-sm-9 item-right">
+             		<ul class="label-content" id="specsSwitch" style="padding-left:10px;">
+             			<li class="active" data-type="0">无规格</li>
+             			<li data-type="1">商品规格</li>
+             		</ul>
+             		<div class="item-content">
+		             	（如有颜色、尺码等多种规格，请选择商品规格）
+		            </div>
+				</div>
+			</div>
+	       
+	        <div id="noSpecs" style="padding:0 20px;">
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>商家编码</div>
+					<div class="col-sm-9 item-right">
+	             		<input type="text" class="form-control" name="itemCode" id="itemCode">
+						<div class="item-content">
+			             	（货主管理货物的编码）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">自有编码</div>
+					<div class="col-sm-9 item-right">
+	               		<input type="text" class="form-control" name="sku" id="sku">
+						<div class="item-content">
+			             	（自行管理货物的编码或商家编码）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>条形码</div>
+					<div class="col-sm-9 item-right">
+	               		<input type="text" class="form-control" name="encode" id="encode">
+						<div class="item-content">
+			             	（商品自带的条形码）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>商品重量</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="weight" id="weight">
+						<div class="item-content">
+							（请按整数格式输入，例：2500）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">换算比例</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="conversion" id="conversion" value="1">
+						<div class="item-content">
+							（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">消费税率</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="exciseTax" id="exciseTax" value="0">
+						<div class="item-content">
+			             	（请按小数格式输入，例：0.17）
+			            </div>
+		            </div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">保质期</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="shelfLife" id="shelfLife">
+						<div class="item-content">
+							（商品的保质期，例：2年，18个月）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">箱规</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="carTon" id="carTon">
+						<div class="item-content">
+							（例：8组，24罐）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>成本价</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="proxyPrice" id="proxyPrice">
+		                <div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>分销价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="fxPrice" id="fxPrice">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>零售价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="retailPrice" id="retailPrice">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">限购数量</div>
+					<div class="col-sm-9 item-right">
+						<div class="right-item">
+		              		<input type="text" class="form-control" name="min" id="min" placeholder="请输入最小购买量">
+						</div>
+		            	<div class="right-item last-item">
+	                 		<input type="text" class="form-control" name="max" id="max" placeholder="请输入最大购买量">
+						</div>
+						<div class="item-content">
+			             	（请按整数格式输入，填0表示不限制数量）
+			            </div>
+					</div>
+				</div>
+	        </div>
+			
+			<div id="specs" style="display:none;padding:0 20px;">
+				<div class="list-item col-sm-6 col-sm-offset-3" id="specsOperation">
+					<div class="list-all">
+						<div class="row-bg-gray">
+							<a class="addBtn" href="javascript:void(0);" onclick="addSpecsModule(this)">添加规格</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="list-item" id="specsItem" style="width:100%;">
+					<div class="list-all">
+						<table class="dynamic-table" id="dynamicTable">
+							<caption>规格明细</caption>
+							<thead id="dynamic-thead">
+<!-- 								<tr> -->
+<!-- 									<th><font style="color:red">*</font>商家编码</th> -->
+<!-- 									<th>自有编码</th> -->
+<!-- 									<th><font style="color:red">*</font>条形码</th> -->
+<!-- 									<th><font style="color:red">*</font>商品重量</th> -->
+<!-- 									<th>换算比例</th> -->
+<!-- 									<th>消费税率</th> -->
+<!-- 									<th>保质期</th> -->
+<!-- 									<th>箱规</th> -->
+<!-- 									<th><font style="color:red">*</font>成本价</th> -->
+<!-- 									<th><font style="color:red">*</font>分销价</th> -->
+<!-- 									<th><font style="color:red">*</font>零售价</th> -->
+<!-- 									<th colspan="2">限购数量</th> -->
+<!-- 								</tr> -->
+							</thead>
+							<tbody id="dynamic-table">
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="13">
+										<span>批量设置 ： </span>
+										<span>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('weight')">商品重量</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('shelfLife')">保质期</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('carTon')">箱规</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('proxyPrice')">成本价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('fxPrice')">分销价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('retailPrice')">零售价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('min')">限购数量(min)</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('max')">限购数量(max)</a>
+										</span>
+										<div id="batchSetting" class="batchSetting">
+											<input type="text" class="inline-input" id="batchInput"/>
+											<a href="javascript:void(0)" onclick="batchSaveTableItem()">保存</a>
+											<a href="javascript:void(0)" onclick="batchSetedTableItem()">取消</a>
+										</div>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -319,6 +379,7 @@
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/js/goodsJs/goods.js"></script>
 	<script type="text/javascript">	 
  	$("#brandId").change(function(){
 		$("#brand").val($("#brandId").find("option:selected").text());
@@ -465,23 +526,6 @@
 		$("#baseId").val("");
 	});
 	 
-	 function uploadFile(id) {
-		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/uploadFile.shtml', //你处理上传文件的服务端
-			secureuri : false,
-			fileElementId : "pic"+id,
-			dataType : 'json',
-			success : function(data) {
-				if (data.success) {
-					$("#picPath"+id).val(data.msg);
-					$("#img"+id).attr("src",data.msg);
-				} else {
-					layer.alert(data.msg);
-				}
-			}
-		})
-	 }
-	 
 	 $("#saveInfoBtn").click(function(){
 		 $("#submitBtn").click();
 	 });
@@ -496,17 +540,17 @@
 			 }
 			 var tmpFirstCatalogId = $("#firstCatalogId").val();
 			 if(tmpFirstCatalogId == -1){
-				 layer.alert("请选择商品分类");
+				 layer.alert("请选择商品一级分类");
 				 return;
 			 }
 			 var tmpSecondCatalogId = $("#secondCatalogId").val();
 			 if(tmpSecondCatalogId == -1){
-				 layer.alert("请选择商品分类");
+				 layer.alert("请选择商品二级分类");
 				 return;
 			 }
 			 var tmpThirdCatalogId = $("#thirdCatalogId").val();
 			 if(tmpThirdCatalogId == -1){
-				 layer.alert("请选择商品分类");
+				 layer.alert("请选择商品三级分类");
 				 return;
 			 }
 			 var tmpSupplierId = $("#supplierId").val();
@@ -524,8 +568,8 @@
 				 layer.alert("海关税率填写有误，请重新填写！");
 				 return;
 			 }
-			 var tmpExciseFax = $("#exciseFax").val();
-			 if(tmpExciseFax > 1){
+			 var tmpExciseTax = $("#exciseTax").val();
+			 if(tmpExciseTax > 1){
 				 layer.alert("消费税率填写有误，请重新填写！");
 				 return;
 			 }
@@ -534,36 +578,32 @@
 			 var context = ue.getContent();
 			 formData["detailInfo"] = context;
 			 var tagId = $('#tagId li.active').attr('data-id');
-			 formData["tagId"] = tagId;
-			 
-			 var newFormData;
-			 var key = "";
-			 var value = "";
-			 
-			 newFormData={};
-			 for(var json in formData){
-				 if(json.indexOf(":")!=-1){
-					 key +=json+";"
-					 value += formData[json]+";"
-				 }else{
-					 newFormData[json] = formData[json];
-				 }
+			 if (tagId == undefined) {
+				 tagId = "";
 			 }
-			 
-			 if ($("#specsId").val() != 0) {
-				 if(key == ""||value == ""){
+			 formData["tagId"] = tagId;
+			 var specsSwitchId = $('#specsSwitch li.active').attr('data-type');
+			 if (specsSwitchId == "1") {
+				 if ($('#dynamicTable tbody tr').length <1) {
 					 layer.alert("请选择规格信息！");
 					 return;
 				 }
+				 if (!checkTableInfo()) {
+					return; 
+				 }
+				 formData["items"] = getTableInfo();
+				 for(var json in formData){
+					 if(formData[json].indexOf(",")!=-1){
+						 formData[json] = "";
+					 }
+				 }
 			 }
-			 
-			 newFormData["keys"] = key;
-			 newFormData["values"] = value;
+// 			 console.log(formData);
 			 
 			 $.ajax({
 				 url:url,
 				 type:'post',
-				 data:JSON.stringify(newFormData),
+				 data:JSON.stringify(formData),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
@@ -590,55 +630,6 @@
 				  content: '${wmsUrl}/admin/goods/baseMng/listForAdd.shtml',
 				  maxmin: false
 				});
-		}
-		
-		function showSpecsGoods(){
-			var index = layer.open({
-				  title:"查看商品规格模板",	
-				  area: ['90%', '90%'],
-				  type: 2,
-				  content: '${wmsUrl}/admin/goods/specsMng/listForAdd.shtml',
-				  maxmin: false
-				});
-		}
-		
-		function createSpecs(id){
-			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/specsMng/queryById.shtml?id="+id,
-				 type:'post',
-				 contentType: "application/json; charset=utf-8",
-				 dataType:'json',
-				 success:function(data){
-					 if(data.id == null){
-						 layer.alert("同步规格模板失败！");
-					 }else{
-						 console.log(data);
-						 $("#specsInfo").html('');
-						 var specs = data.specs;
-						 var ht = '';
-						 ht = ht + '<input type="hidden" class="form-control" id="specsId" name="specsId" value="'+id+'">';
-						 for(var i = 0 ;i<specs.length;i++){
-							 var spec = specs[i];
-							 ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">'+spec.name;
-							 ht = ht + '</div><div class="col-sm-9 item-right">';
-							 
-							 var values = spec.values;
-							 var radio;
-							 for(var j =0;j<values.length;j++){
-								 ht = ht + '<label>'+values[j].value;
-								 ht = ht + '<input type="radio" class="flat-red" name="'+spec.id+":"+spec.name+'" value="'+values[j].id+":"+values[j].value+'">';
-								 ht = ht + '</label>';
-							 }
-							 ht = ht + '</div></div>';
-						 }
-						 $('#specsInfo').append(ht);
-					 }
-					 
-				 },
-				 error:function(){
-					 layer.alert("提交失败，请联系客服处理");
-				 }
-			 });
 		}
 		
 		$('#itemForm').bootstrapValidator({
@@ -704,7 +695,7 @@
 						   }
 					   }
 				  },
-				  exciseFax:{
+				  exciseTax:{
 					   message: '消费税率不正确',
 					   validators: {
 						   notEmpty: {
@@ -1036,6 +1027,155 @@
 	        UE.getEditor('editor').execCommand( "clearlocaldata" );
 // 	        alert("已清空草稿箱")
 	    }
+	    
+	    
+	  //新增规格
+	  function addSpecsModule(e){
+    	var html = "<div class=\"list-all-parent\"><span class=\"remove_specs\">&times;</span><div class=\"list-all-item list-all-item-key\"><div class=\"item-left\">规格分类</div><div class=\"item-right\"><div class=\"select-item\">";
+    	$.ajax({
+    		url:"${wmsUrl}/admin/goods/specsMng/queryAllSpecs.shtml",
+    		type:'post',
+    		contentType: "application/json; charset=utf-8",
+    		dataType:'json',
+    		success:function(data){
+    			var list = data;
+    			html += "<select class=\"form-control select-key\"";
+    			
+    			if (list == null || list.length == 0) {
+    				html += " name=\"type\"><option value=\"-1\">没有可选择的值</option>";
+				}else{
+					html += " onchange=\"changeSpecsValueInfo(this)\"><option value=\"-1\">请选择</option>"
+					for (var i = 0; i < list.length; i++) {
+	    				html += "<option value=\""+list[i].id+"\">"+list[i].name+"</option>";
+					}
+				}
+    			html += "</select></div></div></div><div class=\"list-all-item\"><div class=\"item-left\">规格值</div><div class=\"item-right item-value\"></div></div></div>"
+    		    $(e).parent(0).before(html);
+    			
+    			$('.remove_specs').on('click',function(){
+    				$(this).parent().remove();
+    				rebuildTable();
+    			});
+    		},
+    		error:function(){
+    			layer.alert("查询失败，请联系客服处理");
+    		}
+    	});
+	  }
+	  
+	  function changeSpecsValueInfo(e){
+		  
+		  var id = $(e).find("option:selected").val();
+		  
+		  $(e).parent().parent().parent().parent().find(".item-value").empty();
+		  
+		  //alert($(e).parent().parent().parent().parent().find('.item-value').prop("outerHTML"));
+		  $.ajax({
+				url:"${wmsUrl}/admin/goods/specsMng/queryAllSpecsValue.shtml?id="+id,
+				type:'post',
+				contentType: "application/json; charset=utf-8",
+				dataType:'json',
+				success:function(data){
+					var html="<div class=\"select-item\"><select onchange=\"rebuildTable(this)\" class=\"form-control select-value\"><option value=\"-1\">请选择</option>";
+					var list = data;
+					if (list == null || list.length == 0) {
+						html +=  '<option value="-1">没有可选择的值</option>';
+					}else{
+						for (var i = 0; i < list.length; i++) {
+							html +=  '<option value="'+list[i].id+'">'+list[i].value+'</option>';
+						}
+					}
+					$(e).parent().parent().parent().parent().find(".item-value").html(html+"</select></div><a class=\"addBtn\" href=\"javascript:void(0);\" onclick=\"addSpecsValue(this)\">添加规格值</a>");
+				},
+				error:function(){
+					layer.alert("查询失败，请联系客服处理");
+				}
+		  });
+	  }
+	  
+	  function batchSetTableItem(itemName){
+		  $("#batchSetting").addClass("active");
+		  $("#batchSetting").attr("data-id",itemName);
+	  }
+	  
+	  function batchSaveTableItem(){
+		  var tmpItem = $("#batchSetting").attr("data-id");
+		  var tmpItemInput = $("#batchInput").val();
+		  
+		  $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
+			var obj_name="";
+			$.each($(r_obj).find('td'),function(c_index,c_obj){
+				obj_name = $(c_obj.firstChild).attr('name');
+				if (obj_name == tmpItem) {
+					$(c_obj.firstChild).val(tmpItemInput);
+				}
+			});
+		  });
+
+		  $("#batchInput").val("");
+		  $("#batchSetting").removeAttr("data-id");
+		  batchSetedTableItem();
+	  }
+	  
+	  function batchSetedTableItem(){
+		  $("#batchSetting").removeClass("active");
+	  }
+
+	  function checkTableInfo(){
+		 var retFlg = true;
+		 var e_index = "";
+		 var e_msg;
+	  	 $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
+	  		var obj_name="";
+			var obj_value="";
+	  		$.each($(r_obj).find('td'),function(c_index,c_obj){
+	  			obj_name = $(c_obj.firstChild).attr('name');
+	  			var type = c_obj.firstChild.nodeName;
+	  			if(type == 'INPUT'){
+	  				obj_value = $(c_obj.firstChild).val();
+	  				if (obj_name == "itemCode" || obj_name == "sku" ||
+  		  				obj_name == "weight" || obj_name == "conversion" ||
+  		  				obj_name == "proxyPrice" || obj_name == "fxPrice" ||
+  		  				obj_name == "retailPrice") {
+	  					if (obj_value == "") {
+	  						e_index = e_index + (r_index+1) + ",";
+	  						retFlg = false;
+	  						return false;
+	  					}
+  		  			}
+	  			}
+	  		});
+	  	 });
+	  	 if (!retFlg) {
+	  		e_index = e_index.substring(0,e_index.length-1);
+	  		e_msg = "第"+(e_index)+"条规格信息填写有误，请确认！";
+	  		layer.alert(e_msg);
+		  	return retFlg;
+	  	 }
+	  	 
+	  	 e_index = "";
+	  	 var tmpSkuArr = $("#dynamicTable [name='sku']");
+	  	 var tmpConversionArr = $("#dynamicTable [name='conversion']");
+	  	 for(var i=0; i<tmpSkuArr.length; i++) {
+	  		 for(var j=i+1; j<tmpSkuArr.length; j++) {
+	  			 if ($(tmpSkuArr[i]).val() == $(tmpSkuArr[j]).val() && 
+	  				 $(tmpConversionArr[i]).val() == $(tmpConversionArr[j]).val()) {
+	  				e_index = e_index + (i+1) + "," + (j+1) + ";";
+					retFlg = false;
+					break;
+	  			 }
+	  		 }
+	  	 }
+	  	 if (!retFlg) {
+	  		e_index = e_index.substring(0,e_index.length-1);
+	  		e_msg = "第"+(e_index)+"条规格自有编码与换算比例重复，请确认！";
+	  		layer.alert(e_msg);
+		  	return retFlg;
+	  	 }
+	  	 retFlg = false;
+	  	
+	  	 return retFlg;
+	  }
 	</script>
 </body>
 </html>

@@ -36,13 +36,14 @@ public class SpecsMngController extends BaseController {
 	@Resource
 	SpecsService specsService;
 
-//	@RequestMapping(value = "/mng")
-//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-//		Map<String, Object> context = getRootMap();
-//		StaffEntity opt = SessionUtils.getOperator(req);
-//		context.put("opt", opt);
-//		return forword("goods/specs/mng", context);
-//	}
+	// @RequestMapping(value = "/mng")
+	// public ModelAndView toFuncList(HttpServletRequest req,
+	// HttpServletResponse resp) {
+	// Map<String, Object> context = getRootMap();
+	// StaffEntity opt = SessionUtils.getOperator(req);
+	// context.put("opt", opt);
+	// return forword("goods/specs/mng", context);
+	// }
 
 	@RequestMapping(value = "/toAdd")
 	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
@@ -166,17 +167,16 @@ public class SpecsMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			SpecsEntity specsEntity = new SpecsEntity();
-			
-			if(pojo.getTemplateId()<=0||StringUtil.isEmpty(pojo.getSpecsName())){
+
+			if (pojo.getTemplateId() <= 0 || StringUtil.isEmpty(pojo.getSpecsName())) {
 				sendFailureMessage(resp, "保存参数有误！");
 				return;
 			}
-			
+
 			specsEntity.setTemplateId(pojo.getTemplateId());
 			specsEntity.setName(pojo.getSpecsName());
 			specsEntity.setOpt(staffEntity.getOptid());
-			
-			
+
 			List<SpecsValueEntity> specsValueEntities = new ArrayList<SpecsValueEntity>();
 			String[] values = pojo.getSpecsValue().split(";");
 			for (int j = 0; j < values.length; j++) {
@@ -196,7 +196,7 @@ public class SpecsMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/mng")
-//	@RequestMapping(value = "/list")
+	// @RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
@@ -302,5 +302,97 @@ public class SpecsMngController extends BaseController {
 			return null;
 		}
 	}
+
+	@RequestMapping(value = "/queryAllSpecsCategoryExceptParam")
+	@ResponseBody
+	public List<SpecsEntity> queryAllSpecsCategoryExceptParam(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody List<String> ids) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+
+		try {
+			List<SpecsEntity> specs = specsService.queryAllSpecs(opt.getToken());
+			for (String id : ids) {
+				for (SpecsEntity sp : specs) {
+					if (id.equals(sp.getId() + "")) {
+						specs.remove(sp);
+						break;
+					}
+				}
+			}
+
+			return specs;
+		} catch (Exception e) {
+			sendFailureMessage(resp, e.getMessage());
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/queryAllSpecs")
+	@ResponseBody
+	public List<SpecsEntity> queryAllSpecs(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+
+		try {
+			List<SpecsEntity> specs = specsService.queryAllSpecs(opt.getToken());
+			return specs;
+		} catch (Exception e) {
+			sendFailureMessage(resp, e.getMessage());
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/queryAllSpecsValueExceptParam")
+	@ResponseBody
+	public List<SpecsValueEntity> queryAllSpecsValueExceptParam(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody List<String> ids) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		String id = req.getParameter("id");
+
+		try {
+			List<SpecsValueEntity> specsValue = specsService.queryAllSpecsValue(opt.getToken());
+			List<SpecsValueEntity> retList = new ArrayList<SpecsValueEntity>();
+			for (SpecsValueEntity sv : specsValue) {
+				if (id.equals(sv.getSpecsId() + "")) {
+					retList.add(sv);
+				}
+			}
+			for (String tmpId : ids) {
+				for (SpecsValueEntity sv : retList) {
+					if (tmpId.equals(sv.getId() + "")) {
+						retList.remove(sv);
+						break;
+					}
+				}
+			}
+
+			return retList;
+		} catch (Exception e) {
+			sendFailureMessage(resp, e.getMessage());
+			return null;
+		}
+	}
+	@RequestMapping(value = "/queryAllSpecsValue")
+	@ResponseBody
+	public List<SpecsValueEntity> queryAllSpecsValueE(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		String id = req.getParameter("id");
+		
+		try {
+			List<SpecsValueEntity> specsValue = specsService.queryAllSpecsValue(opt.getToken());
+			List<SpecsValueEntity> retList = new ArrayList<SpecsValueEntity>();
+			for (SpecsValueEntity sv : specsValue) {
+				if (id.equals(sv.getSpecsId() + "")) {
+					retList.add(sv);
+				}
+			}
+			
+			return retList;
+		} catch (Exception e) {
+			sendFailureMessage(resp, e.getMessage());
+			return null;
+		}
+	}
+	
+	
 
 }

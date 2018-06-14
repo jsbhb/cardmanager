@@ -52,7 +52,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">货号(sku)</label>
+							<label class="col-sm-2 control-label no-padding-right">自有编码(sku)</label>
 							<div class="col-sm-6">
 								<div class="input-group">
 				                  <div class="input-group-addon">
@@ -235,10 +235,10 @@
 		           }
 		   	  },
 		   	  sku: {
-			        message: '货号不能为空！',
+			        message: '自有编码不能为空！',
 			        validators: {
 			            notEmpty: {
-			                message: '货号不能为空！'
+			                message: '自有编码不能为空！'
 			            }
 			        }
 		   		},
