@@ -466,7 +466,7 @@ body.hold-transition .main-header .logo {
 	padding: 7px 0 7px 10px;	
 	float: none;
 	display: inline-block;
-	width:6%;
+	width:60px;
 	vertical-align: top;
 	margin-top: 10px;
 }
@@ -474,7 +474,7 @@ body.hold-transition .main-header .logo {
 	padding:10px;
 	float: none;
 	display: inline-block;
-	width:90%;
+	width:calc(100% - 70px);
 }
 .list-all-parent > .list-all-item > .item-right > select,
 .list-all-parent > .list-all-item > .item-right > input{
