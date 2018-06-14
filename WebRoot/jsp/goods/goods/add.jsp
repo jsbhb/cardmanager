@@ -1172,8 +1172,6 @@
 	  		layer.alert(e_msg);
 		  	return retFlg;
 	  	 }
-	  	 retFlg = false;
-	  	
 	  	 return retFlg;
 	  }
 	</script>

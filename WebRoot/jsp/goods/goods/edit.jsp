@@ -371,12 +371,17 @@
 			 }
 			 formData["tagId"] = tagId;
 
+			 if ($('#dynamicTable tbody tr').length <1) {
+				 layer.alert("请填写明细信息！");
+				 return;
+			 }
 			 if (!checkTableInfo()) {
 				return; 
 			 }
 			 
 			 formData["items"] = getTableInfo();
 // 			 console.log(formData);
+// 			 return;
 			 
 			 $.ajax({
 				 url:url,
