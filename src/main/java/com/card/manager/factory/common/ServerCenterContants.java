@@ -305,18 +305,6 @@ public class ServerCenterContants {
 	/*------------------------预售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PRESELL_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/presell/queryForPage";
-	
-	/*-------------------------运费模板管理-------------------------*/
-	public static final String ORDER_CENTER_POST_TEMPLATE_ENABLE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/express/template/enable/{id}";
-	public static final String ORDER_CENTER_POST_TEMPLATE_QUERY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/express/template/list";
-	public static final String ORDER_CENTER_POST_TEMPLATE_SAVE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/express/template/save";
-	public static final String ORDER_CENTER_POST_TEMPLATE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/express/template/update";
-	public static final String ORDER_CENTER_POST_TEMPLATE_GET = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/express/template/{id}";
 
 	/*------------------------商城管理-----------------------*/
 	public static final int PC = 0;
