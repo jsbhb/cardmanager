@@ -228,6 +228,12 @@ public class CapitalPoolMng extends BaseController {
 		params.put("money", Constants.CUSTOMER_WARNING_MONEY);
 		CapitalManagement totalInfo = financeMngService.totalCustomerByType(params);
 		context.put("totalInfo", totalInfo);
+		// set page privilege
+		if (opt.getRoleId() == 1) {
+			context.put("prilvl", "1");
+		} else {
+			context.put("prilvl", req.getParameter("privilege"));
+		}
 		return forword("finance/capitalPool/list", context);
 	}
 	

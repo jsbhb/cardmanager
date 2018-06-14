@@ -112,7 +112,9 @@
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-10 list-btns">
+					<c:if test="${prilvl == 1}">
 					<button type="button" onclick="toAdd(${customerType})">添加资金池记录</button>
+					</c:if>
 					<button type="button" onclick="excelExport(${customerType})">导出资金池记录</button>
 				</div>
 			</div>

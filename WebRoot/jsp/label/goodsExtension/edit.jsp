@@ -19,55 +19,73 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
-					<select class="form-control" name="brandId" id="brandId">
+					<select class="form-control" id="brandId">
 		                <c:forEach var="brand" items="${brands}">
-		                	<option value="${brand.brandId}">${brand.brand}</option>
+		                	<c:choose>
+							   <c:when test="${goodsExtensionInfo.brand == brand.brand}">
+		                			<option selected="selected" value="${brand.brandId}">${brand.brand}</option>
+							   </c:when>
+							   <c:otherwise>
+		                			<option value="${brand.brandId}">${brand.brand}</option>
+							   </c:otherwise>
+							</c:choose>
 		                </c:forEach>
 		            </select>
 				</div>
 			</div>
-            <input type="hidden" class="form-control" name="goodsId" id="goodsId" value=""/>
+            <input type="hidden" class="form-control" name="goodsId" id="goodsId" value="${goodsExtensionInfo.goodsId}"/>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
-               		<input type="text" class="form-control" name="goodsName" id="goodsName" value="">
+               		<input type="text" class="form-control" name="goodsName" value="${goodsExtensionInfo.goodsName}">
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品规格</div>
 				<div class="col-sm-9 item-right">
-	                 <input type="text" class="form-control" name="specs" value="">
+	                 <input type="text" class="form-control" name="specs" value="${goodsExtensionInfo.specs}">
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">原产国</div>
 				<div class="col-sm-9 item-right">
-	                 <input type="text" class="form-control" name="origin" value="">
+	                 <input type="text" class="form-control" name="origin" value="${goodsExtensionInfo.origin}">
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">适用年龄</div>
 				<div class="col-sm-9 item-right">
-	                 <input type="text" class="form-control" name="useAge" value="">
+	                 <input type="text" class="form-control" name="useAge" value="${goodsExtensionInfo.useAge}">
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">推荐理由</div>
 				<div class="col-sm-9 item-right">
-					<textarea class="form-control" name="reason"></textarea>
+					<textarea class="form-control" name="reason">${goodsExtensionInfo.reason}</textarea>
              		<div class="item-content">
-		             	（请用英文分号';'作为多个值的分隔符）
+		             	（请用英文分号';'作为多个值的分隔符,最多支持4个分隔符）
 		            </div>
 				</div>
 			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品图片</div>
 				<div class="col-sm-9 item-right addContent">
-					<div class="item-img" id="content" >
-						+
-						<input type="file" id="pic" name="pic" />
-						<input type="hidden" class="form-control" name="headImg" id="headImg"> 
-					</div>
+					<c:choose>
+					   <c:when test="${goodsExtensionInfo.goodsPath != null && goodsExtensionInfo.goodsPath != ''}">
+               	  			<div class="item-img choose" id="content" >
+								<img src="${goodsExtensionInfo.goodsPath}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<input value="${goodsExtensionInfo.goodsPath}" type="hidden" name="goodsPath" id="goodsPath">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content" >
+								+
+								<input type="file" id="pic" name="pic" />
+								<input type="hidden" class="form-control" name="goodsPath" id="goodsPath"> 
+							</div>
+					   </c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			
@@ -84,14 +102,16 @@
 	 $("#submitBtn").click(function(){
 		 $('#goodsForm').data("bootstrapValidator").validate();
 		 if($('#goodsForm').data("bootstrapValidator").isValid()){
-			 var tmpBrandId = $("#brandId").val();
-			 if(tmpBrandId == -1){
-				 layer.alert("请选择品牌信息");
+			 var tmpBrand = $("#brandId option:selected").text();
+			 var tmpGoodsPath = $("#goodsPath").val();
+			 if (tmpGoodsPath == "" || tmpGoodsPath == null) {
+				 layer.alert("请上传商品图片！");
 				 return;
 			 }
-			 
 			 var url = "${wmsUrl}/admin/label/goodsExtensionMng/editGoodsInfo.shtml";
+			 
 			 var formData = sy.serializeObject($('#goodsForm'));
+			 formData["brand"] = tmpBrand;
 			 
 			 $.ajax({
 				 url:url,
@@ -175,28 +195,22 @@
 		
 		//点击上传图片
 		$('.item-right').on('change','.item-img input[type=file]',function(){
-			var id = $(this).parent().attr("data-id");
-			var nextId =  parseInt(id)+1;
-			
-			var imagSize = document.getElementById("pic"+id).files[0].size;
+			var imagSize = document.getElementById("pic").files[0].size;
 			if(imagSize>1024*1024*3) {
 				layer.alert("图片大小请控制在3M以内，当前图片为："+(imagSize/(1024*1024)).toFixed(2)+"M");
 				return true;
 			}
-			
 			$.ajaxFileUpload({
 				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
 				secureuri : false,
-				fileElementId : "pic"+id,
+				fileElementId : "pic",
 				dataType : 'json',
 				success : function(data) {
 					if (data.success) {
-						var ht = '<div class="item-img" id="content'+nextId+'" data-id="'+nextId+'">+<input type="file" id="pic'+nextId+'" name="pic"/></div>';
 						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
-						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath">'
-						$('.addContent').append(ht);
-						$("#content"+id).html(imgPath);
-						$("#content"+id).addClass('choose');
+						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="goodsPath" name="goodsPath">'
+						$("#content").html(imgPath);
+						$("#content").addClass('choose');
 					} else {
 						layer.alert(data.msg);
 					}

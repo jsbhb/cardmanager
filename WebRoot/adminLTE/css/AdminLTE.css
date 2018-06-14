@@ -580,6 +580,7 @@ body.hold-transition .main-header .logo {
 .list-item > .item-right > textarea{
 	height: 62px;
 	width: 420px;
+	float: left;
 }
 .list-item > .item-right > .item-content{
 	color:#999;

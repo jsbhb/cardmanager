@@ -178,4 +178,6 @@ public interface GoodsItemService extends ServerCenterService {
 	
 	GoodsExtensionEntity queryExtensionByGoodsId(String goodsId, String token);
 
+	void updGoodsExtensionInfoEntity(GoodsExtensionEntity entity, StaffEntity staffEntity) throws Exception;
+
 }

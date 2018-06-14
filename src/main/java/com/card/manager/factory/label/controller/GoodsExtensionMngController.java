@@ -139,6 +139,10 @@ public class GoodsExtensionMngController extends BaseController {
 		try {
 			String goodsId = req.getParameter("goodsId");
 			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId, staffEntity.getToken());
+			if (goodsExtensionInfo == null) {
+				goodsExtensionInfo = new GoodsExtensionEntity();
+				goodsExtensionInfo.setGoodsId(goodsId);
+			}
 			context.put("goodsExtensionInfo", goodsExtensionInfo);
 			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
 			return forword("label/goodsExtension/edit", context);
@@ -154,7 +158,7 @@ public class GoodsExtensionMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		entity.setOpt(staffEntity.getOptid());
 		try {
-//			goodsService.updGoodsInfoEntity(entity, staffEntity);
+			goodsItemService.updGoodsExtensionInfoEntity(entity, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

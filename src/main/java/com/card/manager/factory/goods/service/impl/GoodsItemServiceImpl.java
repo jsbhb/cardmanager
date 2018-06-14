@@ -414,4 +414,20 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsExtensionEntity.class);
 	}
 
+	@Override
+	@Log(content = "更新商品推广信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void updGoodsExtensionInfoEntity(GoodsExtensionEntity entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		
+		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
+				+ ServerCenterContants.GOODS_CENTER_UPDATE_EXTENSION_INFO,
+				staffEntity.getToken(), true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新商品明细价格信息操作失败:" + json.getString("errorMsg"));
+		}
+	}
+
 }
