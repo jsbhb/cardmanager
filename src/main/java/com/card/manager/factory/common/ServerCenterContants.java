@@ -262,6 +262,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsInfoListForDownload";
 	public static final String GOODS_CENTER_MAINTAIN_STOCK_BY_ITEMID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/maintainStockByItemId";
+	public static final String GOODS_CENTER_EXTENSION_QUERY_FOR_PAGE_DOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsExtensionForPageDownload?centerId={centerId}&gradeLevel={gradeLevel}";
+	public static final String GOODS_CENTER_QUERY_EXTENSION_INFO_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsExtensionInfo";
+	public static final String GOODS_CENTER_UPDATE_EXTENSION_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/updateGoodsExtensionInfo";
 	/*------------------------商品标签管理-----------------------*/
 	public static final String GOODS_CENTER_TAG_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/queryForPage";

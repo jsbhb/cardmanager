@@ -24,6 +24,7 @@ import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseSer
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
+import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
@@ -398,6 +399,19 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		}
 		
 		return list;
+	}
+
+	@Override
+	public GoodsExtensionEntity queryExtensionByGoodsId(String goodsId, String token) {
+		GoodsExtensionEntity goodsExtension = new GoodsExtensionEntity();
+		goodsExtension.setGoodsId(goodsId);
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_EXTENSION_INFO_BY_GOODSID, token, true, goodsExtension,
+				HttpMethod.POST);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsExtensionEntity.class);
 	}
 
 }

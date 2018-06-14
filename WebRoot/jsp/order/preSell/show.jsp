@@ -295,6 +295,15 @@
 		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.receiveAddress}">
 				                </div>
 							</div>
+							<label class="col-sm-1 control-label no-padding-right">买家留言</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+				                  <div class="input-group-addon">
+				                    <i class="fa fa-pencil"></i>
+				                  </div>
+		                  			<input type="text" class="form-control" readonly  value="${order.remark}">
+				                </div>
+							</div>
 						</div>
 					</div>
 				</div>

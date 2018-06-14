@@ -134,6 +134,8 @@ function reGetSelectInfo(){
 		  if (keyId.indexOf($(this).val()) == -1) {
 			  keyText.push($(this).text());
 			  keyId.push($(this).val());
+		  } else {
+			  return true;
 		  }
 		  
 		  var idArray = new Array();
