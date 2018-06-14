@@ -261,20 +261,20 @@
 							<thead id="dynamic-thead">
 								<tr>
 									<c:forEach var="title" items="${specsTitles}">
-										<th style="width: 60px;">${title}</th>
+										<th style="width: 5%;">${title}</th>
 									</c:forEach>
-									<th style="width: 160px;"><font style="color:red">*</font>商家编码</th>
-									<th style="width: 160px;">自有编码</th>
-									<th style="width: 130px;"><font style="color:red">*</font>条形码</th>
-									<th style="width: 100px;"><font style="color:red">*</font>商品重量</th>
-									<th style="width: 70px;">换算比例</th>
-									<th style="width: 70px;">消费税率</th>
-									<th style="width: 70px;">保质期</th>
-									<th style="width: 70px;">箱规</th>
-									<th style="width: 100px;"><font style="color:red">*</font>成本价</th>
-									<th style="width: 100px;"><font style="color:red">*</font>分销价</th>
-									<th style="width: 100px;"><font style="color:red">*</font>零售价</th>
-									<th style="width: 100px;" colspan="2">限购数量</th>
+									<th style="width: 12%;"><font style="color:red">*</font>商家编码</th>
+									<th style="width: 12%;">自有编码</th>
+									<th style="width: 10%;"><font style="color:red">*</font>条形码</th>
+									<th style="width: 7%;"><font style="color:red">*</font>商品重量</th>
+									<th style="width: 5%;">换算比例</th>
+									<th style="width: 5%;">消费税率</th>
+									<th style="width: 5%;">保质期</th>
+									<th style="width: 5%;">箱规</th>
+									<th style="width: 5%;"><font style="color:red">*</font>成本价</th>
+									<th style="width: 5%;"><font style="color:red">*</font>分销价</th>
+									<th style="width: 5%;"><font style="color:red">*</font>零售价</th>
+									<th style="width: 10%;" colspan="2">限购数量</th>
 								</tr>
 							</thead>
 							<tbody id="dynamic-table">
