@@ -276,7 +276,7 @@
 					</div>
 				</div>
 		       	<div class="list-item">
-					<div class="col-sm-3 item-left">自有编码</div>
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>自有编码</div>
 					<div class="col-sm-9 item-right">
 	               		<input type="text" class="form-control" name="sku" id="sku" value="${goodsInfo.goods.items[0].sku}">
 						<div class="item-content">
@@ -285,7 +285,7 @@
 					</div>
 				</div>
 		       	<div class="list-item">
-					<div class="col-sm-3 item-left"><font style="color:red">*</font>条形码</div>
+					<div class="col-sm-3 item-left">条形码</div>
 					<div class="col-sm-9 item-right">
 	               		<input type="text" class="form-control" name="encode" id="encode" value="${goodsInfo.goods.items[0].encode}">
 						<div class="item-content">
@@ -303,7 +303,7 @@
 					</div>
 				</div>
 				<div class="list-item">
-					<div class="col-sm-3 item-left">换算比例</div>
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>换算比例</div>
 					<div class="col-sm-9 item-right">
 		                <input type="text" class="form-control" name="conversion" id="conversion" value="${goodsInfo.goods.items[0].conversion}">
 						<div class="item-content">

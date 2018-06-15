@@ -189,10 +189,10 @@ function rebuildTable(){
 				  }
 			  }
 			  thead += "<th style='width: 12%;'><font style='color:red'>*</font>商家编码</th>";
-			  thead += "<th style='width: 12%;'>自有编码</th>";
-			  thead += "<th style='width: 10%;'><font style='color:red'>*</font>条形码</th>";
+			  thead += "<th style='width: 12%;'><font style='color:red'>*</font>自有编码</th>";
+			  thead += "<th style='width: 10%;'>条形码</th>";
 			  thead += "<th style='width: 7%;'><font style='color:red'>*</font>商品重量</th>";
-			  thead += "<th style='width: 5%;'>换算比例</th>";
+			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>换算比例</th>";
 			  thead += "<th style='width: 5%;'>消费税率</th>";
 			  thead += "<th style='width: 5%;'>保质期</th>";
 			  thead += "<th style='width: 5%;'>箱规</th>";

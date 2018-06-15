@@ -57,9 +57,10 @@
 								<th style="width: 15%;">商品名称</th>
 								<th style="width: 10%;">商品品牌</th>
 								<th style="width: 10%;">商品规格</th>
-								<th style="width: 10%;">原产国</th>
-								<th style="width: 10%;">适用年龄</th>
-								<th style="width: 20%;">推荐理由</th>
+								<th style="width: 10%;">产地</th>
+								<th style="width: 10%;">自定义字段</th>
+								<th style="width: 10%;">保质期</th>
+								<th style="width: 10%;">推荐理由</th>
 								<th style="width: 10%;">操作</th>
 							</tr>
 						</thead>
@@ -130,7 +131,7 @@ function rebuildTable(data){
 		str += "<tr>";
 		str += "<td>" + list[i].goodsId;
 		if (list[i].goodsPath == null) {
-			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/default_img.jpg> ";
+			str += "</td><td><img style='width:50px;height:50px;' src=${wmsUrl}/img/default_img.jpg>";
 		} else {
 			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsPath+">";
 		}
@@ -138,11 +139,16 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].brand == null ? "" : list[i].brand);
 		str += "</td><td>" + (list[i].specs == null ? "" : list[i].specs);
 		str += "</td><td>" + (list[i].origin == null ? "" : list[i].origin);
-		str += "</td><td>" + (list[i].useAge == null ? "" : list[i].useAge);
+		str += "</td><td>" + (list[i].custom == null ? "" : list[i].custom);
+		str += "</td><td>" + (list[i].shelfLife == null ? "" : list[i].shelfLife);
 		str += "</td><td>" + (list[i].reason == null ? "" : list[i].reason);
 		str += "</td><td>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].goodsId+")' >维护信息</a>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].goodsId+")' >下载图片</a>";
+		if (list[i].goodsPath == null) {
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].goodsId+")'>维护信息</a>";
+		} else {
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].goodsId+")'>维护信息</a>";
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadFile("+list[i].goodsId+")'>下载图片</a>";
+		}
 		str += "</td></tr>";
 	}
 	$("#itemTable tbody").html(str);
@@ -158,8 +164,8 @@ function toEdit(id){
 		layer.full(index);
 }
 
-function downLoadFile(id,path){
-	window.open("${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path);
+function downLoadFile(id){
+	window.open("${wmsUrl}/admin/label/goodsExtensionMng/downLoadFile.shtml?goodsId="+id);
 }
 
 </script>

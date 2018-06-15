@@ -47,15 +47,27 @@
 				</div>
 			</div>
 	      	<div class="list-item">
-				<div class="col-sm-3 item-left">原产国</div>
+				<div class="col-sm-3 item-left">产地</div>
 				<div class="col-sm-9 item-right">
 	                 <input type="text" class="form-control" name="origin" value="${goodsExtensionInfo.origin}">
 				</div>
 			</div>
 	      	<div class="list-item">
-				<div class="col-sm-3 item-left">适用年龄</div>
+				<div class="col-sm-3 item-left">自定义字段</div>
 				<div class="col-sm-9 item-right">
-	                 <input type="text" class="form-control" name="useAge" value="${goodsExtensionInfo.useAge}">
+	                 <input type="text" class="form-control" name="custom" value="${goodsExtensionInfo.custom}">
+	                 <div class="item-content">
+		             	（请用英文冒号':'作为分隔符。例：适用年龄:0-3岁，适合肤质:所有肤质）
+		             </div>
+				</div>
+			</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">保质期</div>
+				<div class="col-sm-9 item-right">
+	                 <input type="text" class="form-control" name="shelfLife" value="${goodsExtensionInfo.shelfLife}">
+	                 <div class="item-content">
+		             	（无保质期商品可不填写）
+		             </div>
 				</div>
 			</div>
 	      	<div class="list-item">
@@ -63,7 +75,7 @@
 				<div class="col-sm-9 item-right">
 					<textarea class="form-control" name="reason">${goodsExtensionInfo.reason}</textarea>
              		<div class="item-content">
-		             	（请用英文分号';'作为多个值的分隔符,最多支持4个分隔符）
+		             	（请用英文分号';'作为多个值的分隔符,最多支持3个分隔符）
 		            </div>
 				</div>
 			</div>
@@ -172,12 +184,12 @@
 							}
 						}
 				  },
-				  useAge: {
+				  custom: {
 						trigger:"change",
-						message: '适用年龄不正确',
+						message: '自定义字段不正确',
 						validators: {
 							notEmpty: {
-								message: '适用年龄不能为空！'
+								message: '自定义字段不能为空！'
 							}
 						}
 				  },

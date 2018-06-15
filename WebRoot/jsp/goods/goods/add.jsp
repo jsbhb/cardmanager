@@ -190,7 +190,7 @@
 					</div>
 				</div>
 		       	<div class="list-item">
-					<div class="col-sm-3 item-left">自有编码</div>
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>自有编码</div>
 					<div class="col-sm-9 item-right">
 	               		<input type="text" class="form-control" name="sku" id="sku">
 						<div class="item-content">
@@ -199,7 +199,7 @@
 					</div>
 				</div>
 		       	<div class="list-item">
-					<div class="col-sm-3 item-left"><font style="color:red">*</font>条形码</div>
+					<div class="col-sm-3 item-left">条形码</div>
 					<div class="col-sm-9 item-right">
 	               		<input type="text" class="form-control" name="encode" id="encode">
 						<div class="item-content">
@@ -217,7 +217,7 @@
 					</div>
 				</div>
 				<div class="list-item">
-					<div class="col-sm-3 item-left">换算比例</div>
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>换算比例</div>
 					<div class="col-sm-9 item-right">
 		                <input type="text" class="form-control" name="conversion" id="conversion" value="1">
 						<div class="item-content">
@@ -309,20 +309,6 @@
 						<table class="dynamic-table" id="dynamicTable">
 							<caption>规格明细</caption>
 							<thead id="dynamic-thead">
-<!-- 								<tr> -->
-<!-- 									<th><font style="color:red">*</font>商家编码</th> -->
-<!-- 									<th>自有编码</th> -->
-<!-- 									<th><font style="color:red">*</font>条形码</th> -->
-<!-- 									<th><font style="color:red">*</font>商品重量</th> -->
-<!-- 									<th>换算比例</th> -->
-<!-- 									<th>消费税率</th> -->
-<!-- 									<th>保质期</th> -->
-<!-- 									<th>箱规</th> -->
-<!-- 									<th><font style="color:red">*</font>成本价</th> -->
-<!-- 									<th><font style="color:red">*</font>分销价</th> -->
-<!-- 									<th><font style="color:red">*</font>零售价</th> -->
-<!-- 									<th colspan="2">限购数量</th> -->
-<!-- 								</tr> -->
 							</thead>
 							<tbody id="dynamic-table">
 							</tbody>

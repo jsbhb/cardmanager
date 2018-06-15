@@ -4,8 +4,10 @@
 	$('.moreSearchBtn').click(function(){
 		$('.moreSearchContent').slideDown(300);
 		$('.search').hide();
+		$(this).parent().find('input').val('');
 	});
 	$('.lessSearchBtn').click(function(){
+		$(this).parent().find('.clear').click();
 		$('.moreSearchContent').slideUp(300);
 		setTimeout(function(){
 			$('.search').show();
