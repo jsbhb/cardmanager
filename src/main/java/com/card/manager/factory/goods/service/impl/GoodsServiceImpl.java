@@ -705,54 +705,54 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setFiles(files);
 
 		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
-		for (GoodsItemEntity gie:entity.getItems()) {
-			GoodsItemEntity goodsItem = new GoodsItemEntity();
-			goodsItem.setGoodsId(goods.getGoodsId());
-			goodsItem.setItemId(entity.getItemId()+"");
-			goodsItem.setItemCode(gie.getItemCode());
-			goodsItem.setSku(gie.getSku());
-			goodsItem.setWeight(gie.getWeight());
-			goodsItem.setExciseTax(gie.getExciseTax());
-			goodsItem.setStatus(entity.getItemStatus());
-			goodsItem.setConversion(gie.getConversion());
-			goodsItem.setEncode(gie.getEncode());
-			goodsItem.setShelfLife(gie.getShelfLife());
-			goodsItem.setCarTon(gie.getCarTon());
-			
-			GoodsPrice goodsPrice = new GoodsPrice();
-			goodsPrice.setItemId(goodsItem.getItemId());
-			goodsPrice.setMin(gie.getGoodsPrice().getMin());
-			goodsPrice.setMax(gie.getGoodsPrice().getMax());
-			goodsPrice.setProxyPrice(gie.getGoodsPrice().getProxyPrice());
-			goodsPrice.setFxPrice(gie.getGoodsPrice().getFxPrice());
-			goodsPrice.setRetailPrice(gie.getGoodsPrice().getRetailPrice());
-			goodsPrice.setOpt(entity.getOpt());
+		GoodsItemEntity goodsItem = new GoodsItemEntity();
+		goodsItem.setGoodsId(goods.getGoodsId());
+		goodsItem.setItemId(entity.getItemId()+"");
+		goodsItem.setItemCode(entity.getItemCode());
+		goodsItem.setSku(entity.getSku());
+		goodsItem.setWeight(entity.getWeight());
+		goodsItem.setExciseTax(entity.getExciseTax());
+		goodsItem.setStatus(entity.getItemStatus());
+		goodsItem.setConversion(entity.getConversion());
+		goodsItem.setEncode(entity.getEncode());
+		goodsItem.setShelfLife(entity.getShelfLife());
+		goodsItem.setCarTon(entity.getCarTon());
+		
+		GoodsPrice goodsPrice = new GoodsPrice();
+		goodsPrice.setItemId(goodsItem.getItemId());
+		goodsPrice.setMin(entity.getMin());
+		goodsPrice.setMax(entity.getMax());
+		goodsPrice.setProxyPrice(entity.getProxyPrice());
+		goodsPrice.setFxPrice(entity.getFxPrice());
+		goodsPrice.setRetailPrice(entity.getRetailPrice());
+		goodsPrice.setOpt(entity.getOpt());
 
-			goodsItem.setGoodsPrice(goodsPrice);
-			goodsItem.setOpt(entity.getOpt());
-			
-			String keys = gie.getInfo();
-			List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-			if ((keys != null && !"".equals(keys))) {
-				String[] keyArray = keys.split(";");
-				for (int i = 0; i < keyArray.length; i++) {
-					ItemSpecsPojo itemSpecsPojo;
-					if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-						itemSpecsPojo = new ItemSpecsPojo();
-						String[] kContesnts = keyArray[i].split("&");
-						itemSpecsPojo.setSkId(kContesnts[0].split("\\|")[0]);
-						itemSpecsPojo.setSkV(kContesnts[0].split("\\|")[1]);
-						itemSpecsPojo.setSvId(kContesnts[1].split("\\|")[0]);
-						itemSpecsPojo.setSvV(kContesnts[1].split("\\|")[1]);
-						specsPojos.add(itemSpecsPojo);
-					}
+		goodsItem.setGoodsPrice(goodsPrice);
+		goodsItem.setOpt(entity.getOpt());
+		
+		String keys = entity.getKeys();
+		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+		if ((keys != null && !"".equals(keys))) {
+			String[] keyArray = keys.split(";");
+			for (int i = 0; i < keyArray.length; i++) {
+				ItemSpecsPojo itemSpecsPojo;
+				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+					itemSpecsPojo = new ItemSpecsPojo();
+					String[] kContesnts = keyArray[i].split("&");
+					itemSpecsPojo.setSkId(kContesnts[0].split("\\|")[0]);
+					itemSpecsPojo.setSkV(kContesnts[0].split("\\|")[1]);
+					itemSpecsPojo.setSvId(kContesnts[1].split("\\|")[0]);
+					itemSpecsPojo.setSvV(kContesnts[1].split("\\|")[1]);
+					specsPojos.add(itemSpecsPojo);
 				}
-
-				JSONArray json = JSONArray.fromObject(specsPojos);
-				goodsItem.setInfo(json.toString());
 			}
-			items.add(goodsItem);
+
+			JSONArray json = JSONArray.fromObject(specsPojos);
+			goodsItem.setInfo(json.toString());
+		} else {
+			goodsItem.setInfo("");
 		}
+		items.add(goodsItem);
 		goods.setItems(items);
 		
 

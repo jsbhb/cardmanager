@@ -197,6 +197,16 @@
 			<div class="title">
 	       		<h1>明细信息</h1>
 	       	</div>
+	       	
+	       	<div class="list-item">
+				<div class="col-sm-3 item-left">产品规格</div>
+				<div class="col-sm-9 item-right">
+             		<div class="item-content">
+		             	（如有颜色、尺码等规格信息，请添加规格）
+		            </div>
+				</div>
+			</div>
+			
 	       	<div id="specs" style="padding:0 20px;">
 				<div class="list-item col-sm-6 col-sm-offset-3" id="specsOperation">
 					<div class="list-all">
@@ -226,7 +236,7 @@
 									<div class="item-left">规格值</div>
 									<div class="item-right item-value">
 										<div class="select-item">
-											<select class="form-control select-value" onchange="rebuildTable(this)">
+											<select class="form-control select-value">
 												<c:forEach var="sp" items="${specs}">
 													<c:if test="${info.skId==sp.id}">
 														<c:forEach var="spv" items="${sp.values}">
@@ -253,53 +263,120 @@
 						</div>
 					</div>
 				</div>
-				
-				<div class="list-item" id="specsItem" style="width:100%;">
-					<div class="list-all">
-						<table class="dynamic-table" id="dynamicTable">
-							<caption>规格明细</caption>
-							<thead id="dynamic-thead">
-								<tr>
-									<c:forEach var="title" items="${specsTitles}">
-										<th style="width: 5%;">${title}</th>
-									</c:forEach>
-									<th style="width: 12%;"><font style="color:red">*</font>商家编码</th>
-									<th style="width: 12%;">自有编码</th>
-									<th style="width: 10%;"><font style="color:red">*</font>条形码</th>
-									<th style="width: 7%;"><font style="color:red">*</font>商品重量</th>
-									<th style="width: 5%;">换算比例</th>
-									<th style="width: 5%;">消费税率</th>
-									<th style="width: 5%;">保质期</th>
-									<th style="width: 5%;">箱规</th>
-									<th style="width: 5%;"><font style="color:red">*</font>成本价</th>
-									<th style="width: 5%;"><font style="color:red">*</font>分销价</th>
-									<th style="width: 5%;"><font style="color:red">*</font>零售价</th>
-									<th style="width: 10%;" colspan="2">限购数量</th>
-								</tr>
-							</thead>
-							<tbody id="dynamic-table">
-								<c:forEach var="goodsItem" items="${goodsInfo.goods.items}">
-									<tr>
-										<c:forEach var="specs" items="${goodsItem.specs}">
-											<td><span name="info">${specs.svV}</span></td>
-										</c:forEach>
-										<td><input type="text" class="form-control" name="itemCode" value="${goodsItem.itemCode}"></td>
-										<td><input type="text" class="form-control" name="sku" value="${goodsItem.sku}"></td>
-										<td><input type="text" class="form-control" name="encode" value="${goodsItem.encode}"></td>
-										<td><input type="text" class="form-control" name="weight" value="${goodsItem.weight}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
-										<td><input type="text" class="form-control" name="conversion" value="${goodsItem.conversion}" onkeyup="this.value=this.value.replace(/[^?\\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\\d]/g,'')"></td>
-										<td><input type="text" class="form-control" name="exciseTax" value="${goodsItem.exciseTax}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
-										<td><input type="text" class="form-control" name="shelfLife" value="${goodsItem.shelfLife}"></td>
-										<td><input type="text" class="form-control" name="carTon" value="${goodsItem.carTon}"></td>
-										<td><input type="text" class="form-control" name="proxyPrice" value="${goodsItem.goodsPrice.proxyPrice}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
-										<td><input type="text" class="form-control" name="fxPrice" value="${goodsItem.goodsPrice.fxPrice}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
-										<td><input type="text" class="form-control" name="retailPrice" value="${goodsItem.goodsPrice.retailPrice}" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)"></td>
-										<td><input type="text" class="form-control" name="min" value="${goodsItem.goodsPrice.min}" onkeyup="this.value=this.value.replace(/[^?\\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\\d]/g,'')"></td>
-										<td><input type="text" class="form-control" name="max" value="${goodsItem.goodsPrice.max}" onkeyup="this.value=this.value.replace(/[^?\\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\\d]/g,'')"></td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+			</div>
+			
+			<div id="noSpecs" style="padding:0 20px;">
+				<div class="list-item" style="width:100%;">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>商家编码</div>
+					<div class="col-sm-9 item-right">
+	             		<input type="text" class="form-control" name="itemCode" id="itemCode" value="${goodsInfo.goods.items[0].itemCode}">
+						<div class="item-content">
+			             	（货主管理货物的编码）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left">自有编码</div>
+					<div class="col-sm-9 item-right">
+	               		<input type="text" class="form-control" name="sku" id="sku" value="${goodsInfo.goods.items[0].sku}">
+						<div class="item-content">
+			             	（自行管理货物的编码或商家编码）
+			            </div>
+					</div>
+				</div>
+		       	<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>条形码</div>
+					<div class="col-sm-9 item-right">
+	               		<input type="text" class="form-control" name="encode" id="encode" value="${goodsInfo.goods.items[0].encode}">
+						<div class="item-content">
+			             	（商品自带的条形码）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>商品重量</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="weight" id="weight" value="${goodsInfo.goods.items[0].weight}">
+						<div class="item-content">
+							（请按整数格式输入，例：2500）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">换算比例</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="conversion" id="conversion" value="${goodsInfo.goods.items[0].conversion}">
+						<div class="item-content">
+							（包装单位与计量单位的换算比例，如1包装单位=10计量单位，则填10）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">消费税率</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="exciseTax" id="exciseTax" value="${goodsInfo.goods.items[0].exciseTax}">
+						<div class="item-content">
+			             	（请按小数格式输入，例：0.17）
+			            </div>
+		            </div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">保质期</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="shelfLife" id="shelfLife" value="${goodsInfo.goods.items[0].shelfLife}">
+						<div class="item-content">
+							（商品的保质期，例：2年，18个月）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">箱规</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="carTon" id="carTon" value="${goodsInfo.goods.items[0].carTon}">
+						<div class="item-content">
+							（例：8组，24罐）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>成本价</div>
+					<div class="col-sm-9 item-right">
+		                <input type="text" class="form-control" name="proxyPrice" id="proxyPrice" value="${goodsInfo.goods.items[0].goodsPrice.proxyPrice}">
+		                <div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>分销价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="fxPrice" id="fxPrice" value="${goodsInfo.goods.items[0].goodsPrice.fxPrice}">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>零售价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="retailPrice" id="retailPrice" value="${goodsInfo.goods.items[0].goodsPrice.retailPrice}">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
+					<div class="col-sm-3 item-left">限购数量</div>
+					<div class="col-sm-9 item-right">
+						<div class="right-item">
+		              		<input type="text" class="form-control" name="min" id="min" placeholder="请输入最小购买量" value="${goodsInfo.goods.items[0].goodsPrice.min}">
+						</div>
+		            	<div class="right-item last-item">
+	                 		<input type="text" class="form-control" name="max" id="max" placeholder="请输入最大购买量" value="${goodsInfo.goods.items[0].goodsPrice.max}">
+						</div>
+						<div class="item-content">
+			             	（请按整数格式输入，填0表示不限制数量）
+			            </div>
 					</div>
 				</div>
 			</div>
@@ -370,16 +447,8 @@
 				 tagId = "";
 			 }
 			 formData["tagId"] = tagId;
-
-			 if ($('#dynamicTable tbody tr').length <1) {
-				 layer.alert("请填写明细信息！");
-				 return;
-			 }
-			 if (!checkTableInfo()) {
-				return; 
-			 }
+			 formData["keys"] = getSelectInfo();
 			 
-			 formData["items"] = getTableInfo();
 // 			 console.log(formData);
 // 			 return;
 			 
@@ -433,15 +502,15 @@
 							}
 						}
 				  },
-// 				  itemCode: {
-// 					   trigger:"change",
-// 					   message: '商家编码不正确',
-// 					   validators: {
-// 						   notEmpty: {
-// 							   message: '商家编码不能为空！'
-// 						   }
-// 					   }
-// 				  },
+				  itemCode: {
+					   trigger:"change",
+					   message: '商家编码不正确',
+					   validators: {
+						   notEmpty: {
+							   message: '商家编码不能为空！'
+						   }
+					   }
+				  },
 				  incrementTax:{
 					   message: '增值税率不正确',
 					   validators: {
@@ -464,17 +533,17 @@
 						   }
 					   }
 				  },
-// 				  exciseTax:{
-// 					   message: '消费税率不正确',
-// 					   validators: {
-// 						   notEmpty: {
-// 							   message: '消费税率不能为空'
-// 						   },
-// 						   numeric: {
-// 							   message: '消费税率只能输入数字'
-// 						   }
-// 					   }
-// 				  },
+				  exciseTax:{
+					   message: '消费税率不正确',
+					   validators: {
+						   notEmpty: {
+							   message: '消费税率不能为空'
+						   },
+						   numeric: {
+							   message: '消费税率只能输入数字'
+						   }
+					   }
+				  },
 				  origin: {
 					  trigger:"change",
 					  message: '国家不正确',
@@ -484,67 +553,67 @@
 						   }
 					   }
 				  }
-// 				  ,
-// 				  weight: {
-// 						trigger:"change",
-// 						message: '重量不正确',
-// 						validators: {
-// 							notEmpty: {
-// 								message: '重量不能为空！'
-// 							},
-// 							numeric: {
-// 							   message: '重量只能输入数字'
-// 						   }
-// 						}
-// 				   },
-// 				   proxyPrice:{
-// 					   trigger:"change",
-// 					   message:"成本价有误",
-// 					   validators: {
-// 						   notEmpty: {
-// 								  message: '成本价不能为空'
-// 							  },
-// 							  numeric: {
-// 							   message: '成本价只能输入数字'
-// 						   }
-// 						}
-// 				   },
-// 				   fxPrice:{
-// 					   trigger:"change",
-// 					   message:"分销价有误",
-// 					   validators: {
-// 						   numeric: {
-// 							   message: '分销价只能输入数字'
-// 						   }
-// 					   }
-// 				   },
-// 				   retailPrice:{
-// 					   message: '零售价有误',
-// 					   validators: {
-// 						   notEmpty: {
-// 							   message: '零售价不能为空'
-// 						   },
-// 						   numeric: {
-// 							   message: '零售价只能输入数字'
-// 						   }
-// 					   }
-// 				   },
-// 				   min:{
-// 					   message: '最小限购数量有误',
-// 					   validators: {
-// 						   numeric: {
-// 							   message: '最小限购数量只能输入数字'
-// 						   }
-// 					   }
-// 				   },
-// 				   max:{
-// 					   message: '最大限购数量有误',
-// 					   validators: {
-// 						   numeric: {
-// 							   message: '最大限购数量只能输入数字'
-// 						   }
-// 					   }
-// 				   }
+				  ,
+				  weight: {
+						trigger:"change",
+						message: '重量不正确',
+						validators: {
+							notEmpty: {
+								message: '重量不能为空！'
+							},
+							numeric: {
+							   message: '重量只能输入数字'
+						   }
+						}
+				   },
+				   proxyPrice:{
+					   trigger:"change",
+					   message:"成本价有误",
+					   validators: {
+						   notEmpty: {
+								  message: '成本价不能为空'
+							  },
+							  numeric: {
+							   message: '成本价只能输入数字'
+						   }
+						}
+				   },
+				   fxPrice:{
+					   trigger:"change",
+					   message:"分销价有误",
+					   validators: {
+						   numeric: {
+							   message: '分销价只能输入数字'
+						   }
+					   }
+				   },
+				   retailPrice:{
+					   message: '零售价有误',
+					   validators: {
+						   notEmpty: {
+							   message: '零售价不能为空'
+						   },
+						   numeric: {
+							   message: '零售价只能输入数字'
+						   }
+					   }
+				   },
+				   min:{
+					   message: '最小限购数量有误',
+					   validators: {
+						   numeric: {
+							   message: '最小限购数量只能输入数字'
+						   }
+					   }
+				   },
+				   max:{
+					   message: '最大限购数量有误',
+					   validators: {
+						   numeric: {
+							   message: '最大限购数量只能输入数字'
+						   }
+					   }
+				   }
 		}});
 		
 		function toTag(){
@@ -848,7 +917,7 @@
 					contentType: "application/json; charset=utf-8",
 					dataType:'json',
 					success:function(data){
-						var html="<div class=\"select-item\"><select onchange=\"rebuildTable(this)\" class=\"form-control select-value\"><option value=\"-1\">请选择</option>";
+						var html="<div class=\"select-item\"><select class=\"form-control select-value\"><option value=\"-1\">请选择</option>";
 						var list = data;
 						if (list == null || list.length == 0) {
 							html +=  '<option value="-1">没有可选择的值</option>';
@@ -864,38 +933,49 @@
 					}
 			  });
 		  }
-
-		  function checkTableInfo(){
-			 var retFlg = true;
-			 var e_index = "";
-			 var e_msg;
-		  	 $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
-		  		var obj_name="";
-				var obj_value="";
-		  		$.each($(r_obj).find('td'),function(c_index,c_obj){
-		  			obj_name = $(c_obj.firstChild).attr('name');
-		  			var type = c_obj.firstChild.nodeName;
-		  			if(type == 'INPUT'){
-		  				obj_value = $(c_obj.firstChild).val();
-		  				if (obj_name == "itemCode" || obj_name == "sku" ||
-	  		  				obj_name == "weight" || obj_name == "conversion" ||
-	  		  				obj_name == "proxyPrice" || obj_name == "fxPrice" ||
-	  		  				obj_name == "retailPrice") {
-		  					if (obj_value == "") {
-		  						e_index = e_index + (r_index+1) + ",";
-		  						retFlg = false;
-		  						return false;
-		  					}
-	  		  			}
-		  			}
-		  		});
-		  	 });
-		  	 if (!retFlg) {
-		  		e_index = e_index.substring(0,e_index.length-1);
-		  		e_msg = "第"+(e_index)+"条规格信息填写有误，请确认！";
-		  		layer.alert(e_msg);
-		  	 }
-		  	 return retFlg;
+		  
+		  function getSelectInfo(){
+			var tmpKeyId = [];
+			var tmpKeyText = [];
+			var tmpValueIdArray = [];
+			var tmpValueTextArray = [];
+			$(".select-key option:selected").each(function(){
+				  if($(this).text()==''||$(this).val()==-1){		
+					  return;
+				  }
+				  
+				  if (tmpKeyId.indexOf($(this).val()) == -1) {
+					  tmpKeyText.push($(this).text());
+					  tmpKeyId.push($(this).val());
+				  } else {
+					  return true;
+				  }
+				  
+				  var tmpIdArray = new Array();
+				  var tmpTextArray = new Array();
+				  
+				  $(this).parent().parent().parent().parent().parent().find(".select-value option:selected").each(function(){
+					  if($(this).text()==''||$(this).val()==-1){		
+						  return;
+					  }
+					  
+					  if (tmpIdArray.indexOf($(this).val()) == -1) {
+						  tmpIdArray.push($(this).val())
+						  tmpTextArray.push($(this).text())
+					  }
+				  });
+				  
+				  if(tmpIdArray.length > 0){
+					  tmpValueIdArray.push(tmpIdArray);
+					  tmpValueTextArray.push(tmpTextArray);
+				  }
+			});
+			
+			var tmpInfoStr = "";
+			for(var i=0; i<tmpKeyId.length; i++) {
+				tmpInfoStr += tmpKeyId[i] + "|" + tmpKeyText[i] + "&" + tmpValueIdArray[i] + "|" + tmpValueTextArray[i] + ";";
+			}
+			return tmpInfoStr;
 		  }
 	</script>
 </body>
