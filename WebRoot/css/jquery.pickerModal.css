@@ -23,7 +23,7 @@ body.isPickerModal{
 }
 .pickerModal > .pickerContainer{
     width: 540px;
-    height: 530px;
+    height: 500px;
     color: #666666;
     font-size: 14px;
     letter-spacing: 1.5px;
@@ -98,7 +98,7 @@ body.isPickerModal{
 }
 .pickerModal > .pickerContainer > .center{
     width: 100%;
-    height: 400px;
+    height: 370px;
     padding: 0 15px;
     margin: 15px 0;
     box-sizing: border-box;
@@ -173,7 +173,7 @@ body.isPickerModal{
     color: #ffffff;
 }
 .pickerModal > .pickerContainer > .center > .contents > ul{
-    height: 360px;
+    height: 330px;
     list-style: none;
     padding: 0 16px;
     margin: 0;
@@ -194,7 +194,7 @@ body.isPickerModal{
     background: #ffffff url('../img/left.png') no-repeat;
     background-size:cover;
     vertical-align: middle;
-    display: inline-block;
+    display: none;
 }
 .pickerModal > .pickerContainer > .center > .contents > ul > li > .btn_select{
     width: 16px;
