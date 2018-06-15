@@ -177,6 +177,14 @@
 
 		function valid() {
 			var flag = true;
+			if($("#supplierId option:selected").val()==''){
+				layer.alert("请选择供应商");
+				flag = false
+				return flag;
+			}
+			if(!flag){
+				return;
+			}
 			$('[id=province]').each(function() {
 				temp = $(this).text().trim();
 				if (temp == null || temp == '' || temp == 'undefined') {
@@ -254,15 +262,6 @@
 					validators : {
 						notEmpty : {
 							message : '模板名称不能为空！'
-						}
-					}
-				},
-				supplierId : {
-					trigger : "change",
-					message : '供应商不正确',
-					validators : {
-						notEmpty : {
-							message : '请选择供应商！'
 						}
 					}
 				}

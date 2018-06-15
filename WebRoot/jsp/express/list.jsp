@@ -147,6 +147,7 @@ function rebuildTable(data){
 		switch(freePost){
 			case 0:str += "</td><td>不包邮";break;
 			case 1:str += "</td><td>包邮";break;
+			case 2:str += "</td><td>邮费到付";break;
 			default:str += "</td><td>未知："+freePost;
 		}
 		var freeTax = list[i].freeTax;
