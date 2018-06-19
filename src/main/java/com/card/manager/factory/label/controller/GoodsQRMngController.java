@@ -1,11 +1,13 @@
 package com.card.manager.factory.label.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
@@ -21,18 +25,22 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.FileDownloadUtil;
-import com.card.manager.factory.util.QrCodeUtil;
+import com.card.manager.factory.util.ImageUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.ZXingCodeUtil;
 
 @Controller
 @RequestMapping("/admin/label/goodsQRMng")
 public class GoodsQRMngController extends BaseController {
+	
+	private static String imgPath = "label/goodsExtension";
 	
 	@Resource
 	GoodsItemService goodsItemService;
@@ -161,15 +169,39 @@ public class GoodsQRMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String goodsId = req.getParameter("goodsId");
-			String goodsPath = req.getParameter("path");
-//			if (StringUtil.isEmpty(goodsId)) {
-//				sendFailureMessage(resp, "操作失败：没有商品编号");
-//				return;
-//			}
-			String filePath = QrCodeUtil.checkOrCreate(staffEntity.getBadge(), goodsId, goodsPath);
-			String fileName = goodsId + ".jpg";
+			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId, staffEntity.getToken());
 			
+			if (goodsExtensionInfo == null) {
+				resp.setContentType("text/html;charset=utf-8");
+				resp.getWriter().println("商品推广信息未维护，请先维护后再下载!");
+				return;
+			}
+			
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+			String logoPath = servletContext.getRealPath("/") + "img/goodsExtensionLogo.png";
+			String QRPicPath = servletContext.getRealPath("/") + imgPath + "/" + staffEntity.getBadge();
+			File QrCodeFile = null;
+			QrCodeFile = new File(QRPicPath);
+			if (!QrCodeFile.exists()) {
+				QrCodeFile.mkdirs();
+			}
+			QRPicPath = QRPicPath + "/" + goodsId + ".jpg";
+			//生成二维码
+			ZXingCodeUtil zXingCode=new ZXingCodeUtil();
+			File logoFile = new File(logoPath);
+	        QrCodeFile = new File(QRPicPath);
+	        String url = req.getParameter("path");
+	        String note = "";
+	        zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
+	        //拼接模板文件
+			ImageUtil.overlapImage(null, QRPicPath, goodsExtensionInfo, QRPicPath);
+			String filePath = QrCodeFile.toString();
+			String fileName = goodsId + ".jpg";
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
+			if (QrCodeFile.exists()) {
+	    		QrCodeFile.delete();
+	    	}
 		} catch (Exception e) {
 			resp.setContentType("text/html;charset=utf-8");
 			resp.getWriter().println("下载失败，请重试!");

@@ -2,6 +2,7 @@ package com.card.manager.factory.util;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -13,9 +14,11 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+
 import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 
 @Component
@@ -60,42 +63,66 @@ public class ImageUtil {
 			//商品参数
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			g.drawString(entity.getBrand(), 460, 1059);
+			MyDrawString(entity.getBrand(), 460, 1059, 1.1, g);
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			g.drawString(entity.getGoodsName(), 905, 1060);
+			MyDrawString(entity.getGoodsName(), 905, 1060, 1.1, g);
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			g.drawString(entity.getOrigin(), 460, 1138);
+			MyDrawString(entity.getOrigin(), 460, 1138, 1.1, g);
 			
 			g.setFont(titleFont);
 			g.setColor(titleColor);
-			g.drawString(entity.getCustom().split(":")[0]+" ：", 728, 1136);
+			MyDrawString(entity.getCustom().split(":")[0]+":", 728, 1136, 1.5, g);
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			g.drawString(entity.getCustom().split(":")[1], 920, 1136);
+			MyDrawString(entity.getCustom().split(":")[1], 950, 1136, 1.1, g);
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			g.drawString(entity.getSpecs(), 540, 1214);
+			MyDrawString(entity.getSpecs(), 540, 1214, 1.1, g);
 			
 			if (entity.getShelfLife() != "" && entity.getShelfLife() != null) {
 				g.setFont(titleFont);
 				g.setColor(titleColor);
-				g.drawString("保 质 期 ：", 728, 1212);
-
+				MyDrawString("保质期:", 728, 1212, 1.5, g);
 				g.setFont(contentFontBase);
 				g.setPaint(contentColor);
-				g.drawString(entity.getShelfLife(), 920, 1212);
+				MyDrawString(entity.getShelfLife(), 905, 1212, 1.1, g);
 			}
 			
-			g.drawImage(tag, 220, 1600, 20, 20, null);
-			g.setFont(titleFont);
-			g.setColor(titleColor);
-			g.drawString("深度保湿", 260, 1620);
+			String [] reason = new String[0];
+			int arrIndex = 0;
+			int xIndex = 106;
+			int yIndex = 1430;
+			if (entity.getReason() != null) {
+				reason = entity.getReason().split(";");
+				if (reason.length > 4) {
+					arrIndex = 4;
+				} else {
+					arrIndex = reason.length;
+				}
+			}
+			
+			for(int i = 0; i< arrIndex; i++) {
+				if (i%2 == 0) {
+					g.drawImage(tag, xIndex, yIndex, 20, 20, null);
+					g.setFont(titleFont);
+					g.setColor(titleColor);
+					MyDrawString(reason[i], xIndex + 40, yIndex + 20, 1.5, g);
+				} else {
+					g.drawImage(tag, xIndex + 534, yIndex, 20, 20, null);
+					g.setFont(titleFont);
+					g.setColor(titleColor);
+					MyDrawString(reason[i], xIndex + 574, yIndex + 20, 1.5, g);
+					
+					yIndex = yIndex + 79;
+				}
+			}
+			
 			g.dispose();
 			
 	        ImageIO.write(bufferedImage2, "jpg", new File(targetPath));
@@ -104,6 +131,21 @@ public class ImageUtil {
 		}
 
 	}
+	
+	public static void MyDrawString(String str,int x,int y,double rate,Graphics g){  
+        String tempStr=new String();  
+        int orgStringWight=g.getFontMetrics().stringWidth(str);  
+        int orgStringLength=str.length();  
+        int tempx=x;  
+        int tempy=y;  
+        while(str.length()>0)  
+        {  
+            tempStr=str.substring(0, 1);
+            str=str.substring(1, str.length());  
+            g.drawString(tempStr, tempx, tempy);  
+            tempx=(int)(tempx+(double)orgStringWight/(double)orgStringLength*rate);  
+        }  
+    }
 	
 //	public static void main(String[] args) {
 //		GoodsExtensionEntity entity = new GoodsExtensionEntity();
