@@ -27,62 +27,61 @@ import com.card.manager.factory.util.SessionUtils;
 
 @Controller
 @RequestMapping("/admin/expressMng")
-public class ExpressMngController extends BaseController{
+public class ExpressMngController extends BaseController {
 
 	@Resource
 	ExpressService expressService;
-	
+
 	@RequestMapping("/list")
-	public ModelAndView list(HttpServletRequest req, HttpServletResponse res){
+	public ModelAndView list(HttpServletRequest req, HttpServletResponse res) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		Map<String,Object> context = getRootMap();
+		Map<String, Object> context = getRootMap();
 		context.put("supplier", CachePoolComponent.getSupplier(staffEntity.getToken()));
 		return forword("express/list", context);
 	}
-	
+
 	@RequestMapping("/toEdit")
-	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse res){
-		Map<String,Object> context = getRootMap();
+	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> context = getRootMap();
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		String id = req.getParameter("id");
-		if(id != null){
-			ExpressTemplateBO template = expressService.getExpressTemplate(staffEntity.getToken(),id);
+		if (id != null) {
+			ExpressTemplateBO template = expressService.getExpressTemplate(staffEntity.getToken(), id);
 			List<SupplierEntity> list = CachePoolComponent.getSupplier(staffEntity.getToken());
-			Map<Integer,String> tempMap = new HashMap<Integer,String>();
-			for(SupplierEntity entity : list){
+			Map<Integer, String> tempMap = new HashMap<Integer, String>();
+			for (SupplierEntity entity : list) {
 				tempMap.put(entity.getId(), entity.getSupplierName());
 			}
 			template.setSupplierName(tempMap.get(template.getSupplierId()));
-			context.put("template",template);
+			context.put("template", template);
 		} else {
 			context.put("supplier", CachePoolComponent.getSupplier(staffEntity.getToken()));
 		}
-		
+
 		return forword("express/add", context);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/dataList")
 	@ResponseBody
-	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse res,ExpressTemplateBO template){
+	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse res, ExpressTemplateBO template) {
 		PageCallBack pcb = null;
 		try {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		Map<String,Object> params = new HashMap<String,Object>();
-		pcb = expressService.dataList(template, params, staffEntity.getToken(),
-				ServerCenterContants.ORDER_CENTER_POST_TEMPLATE_QUERY, ExpressTemplateBO.class);
-		List<SupplierEntity> list = CachePoolComponent.getSupplier(staffEntity.getToken());
-		Map<Integer,String> tempMap = new HashMap<Integer,String>();
-		for(SupplierEntity entity : list){
-			tempMap.put(entity.getId(), entity.getSupplierName());
-		}
-		List<ExpressTemplateBO> tempList = (List<ExpressTemplateBO>) pcb.getObj();
-		if(tempList != null && tempList.size() > 0){
-			for(ExpressTemplateBO tpl : tempList){
-				tpl.setSupplierName(tempMap.get(tpl.getSupplierId()));
+			StaffEntity staffEntity = SessionUtils.getOperator(req);
+			Map<String, Object> params = new HashMap<String, Object>();
+			pcb = expressService.dataList(template, params, staffEntity.getToken(),
+					ServerCenterContants.ORDER_CENTER_POST_TEMPLATE_QUERY, ExpressTemplateBO.class);
+			List<SupplierEntity> list = CachePoolComponent.getSupplier(staffEntity.getToken());
+			Map<Integer, String> tempMap = new HashMap<Integer, String>();
+			for (SupplierEntity entity : list) {
+				tempMap.put(entity.getId(), entity.getSupplierName());
 			}
-		}
+			List<ExpressTemplateBO> tempList = (List<ExpressTemplateBO>) pcb.getObj();
+			if (tempList != null && tempList.size() > 0) {
+				for (ExpressTemplateBO tpl : tempList) {
+					tpl.setSupplierName(tempMap.get(tpl.getSupplierId()));
+				}
+			}
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -103,10 +102,9 @@ public class ExpressMngController extends BaseController{
 
 		return pcb;
 	}
-	
-	
+
 	@RequestMapping("/enable")
-	public void enable(HttpServletRequest req, HttpServletResponse res){
+	public void enable(HttpServletRequest req, HttpServletResponse res) {
 		try {
 			StaffEntity staffEntity = SessionUtils.getOperator(req);
 			Integer id = Integer.valueOf(req.getParameter("id"));
@@ -119,13 +117,29 @@ public class ExpressMngController extends BaseController{
 			sendFailureMessage(res, "系统出现异常，请联系技术");
 		}
 	}
-	
+
 	@RequestMapping("/save")
-	public void save(HttpServletRequest req, HttpServletResponse res, @RequestBody ExpressTemplateBO template){
+	public void save(HttpServletRequest req, HttpServletResponse res, @RequestBody ExpressTemplateBO template) {
 		try {
 			StaffEntity staffEntity = SessionUtils.getOperator(req);
 			expressService.save(staffEntity, template);
 			sendSuccessMessage(res, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(res, "系统出现异常，请联系技术");
+		}
+	}
+
+	@RequestMapping("/del")
+	public void del(HttpServletRequest req, HttpServletResponse res) {
+		try {
+			StaffEntity staffEntity = SessionUtils.getOperator(req);
+			Integer id = Integer.valueOf(req.getParameter("id"));
+			expressService.del(staffEntity, id);
+			sendSuccessMessage(res, null);
+		} catch (NumberFormatException e) {
+			sendFailureMessage(res, "id有误，请联系技术");
+			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 			sendFailureMessage(res, "系统出现异常，请联系技术");

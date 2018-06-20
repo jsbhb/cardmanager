@@ -30,7 +30,7 @@ public class ExpressServiceImpl extends AbstractServcerCenterBaseService impleme
 		ResponseEntity<String> resultString = helper.requestWithParams(
 				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_POST_TEMPLATE_ENABLE,
 				staffEntity.getToken(), true, null, HttpMethod.POST, params);
-		
+
 		JSONObject json = JSONObject.fromObject(resultString.getBody());
 		if (!json.getBoolean("success")) {
 			throw new RuntimeException("启用模板失败:" + json.getString("errorMsg"));
@@ -43,15 +43,15 @@ public class ExpressServiceImpl extends AbstractServcerCenterBaseService impleme
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		ResponseEntity<String> resultString = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_POST_TEMPLATE_GET,
-				token, true, null, HttpMethod.GET, params);
-		
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_POST_TEMPLATE_GET, token, true, null,
+				HttpMethod.GET, params);
+
 		JSONObject json = JSONObject.fromObject(resultString.getBody());
-		
+
 		if (!json.getBoolean("success")) {
 			throw new RuntimeException("查询信息失败:" + json.getString("errorMsg"));
 		}
-		
+
 		return JSONUtilNew.parse(json.get("obj").toString(), ExpressTemplateBO.class);
 	}
 
@@ -60,9 +60,9 @@ public class ExpressServiceImpl extends AbstractServcerCenterBaseService impleme
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> resultString;
 		template.setOpt(staffEntity.getOptName());
-		if(template.getId() != null){
-			if(template.getExpressList() != null && template.getExpressList().size() > 0){
-				for(ExpressFee express : template.getExpressList()){
+		if (template.getId() != null) {
+			if (template.getExpressList() != null && template.getExpressList().size() > 0) {
+				for (ExpressFee express : template.getExpressList()) {
 					express.setTemplateId(template.getId());
 				}
 			}
@@ -75,9 +75,25 @@ public class ExpressServiceImpl extends AbstractServcerCenterBaseService impleme
 					staffEntity.getToken(), true, template, HttpMethod.POST);
 		}
 		JSONObject json = JSONObject.fromObject(resultString.getBody());
-		
+
 		if (!json.getBoolean("success")) {
 			throw new RuntimeException("操作失败:" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void del(StaffEntity staffEntity, Integer id) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		ResponseEntity<String> resultString = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_POST_EXPRESS_DELETE, staffEntity.getToken(),
+				true, null, HttpMethod.DELETE, params);
+		
+		JSONObject json = JSONObject.fromObject(resultString.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("删除失败:" + json.getString("errorMsg"));
 		}
 	}
 

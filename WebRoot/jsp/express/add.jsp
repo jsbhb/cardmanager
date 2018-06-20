@@ -313,7 +313,7 @@
 				str += "<td><a href='javascript:void(0);' onclick='del(this)'>删除</a></td></tr>";
 			} else {
 				for (var i = 0; i < list.length; i++){
-					str += "<tr><td><span id = \"province\" name = \"province\">"+list[i].includeProvince+"</span>&nbsp;&nbsp;<input type = \"hidden\" value = \""+list[i].id+"\"/><a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>"
+					str += "<tr><td><span id = \"province\" name = \"province\">"+list[i].includeProvince+"</span>&nbsp;&nbsp;<input type = \"hidden\" id = \"expressId\" value = \""+list[i].id+"\"/><a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>"
 					str += "<td><input id=\"fee\" name=\"fee\" type = \"text\" value = \""+list[i].fee+"\"/></td>";
 					str += "<td><input id=\"weight\" name=\"weight\" type = \"text\" value = \""+list[i].weight+"\"/></td>";
 					str += "<td><input id=\"heavyFee\" name = \"heavyFee\"type = \"text\" value = \""+list[i].heavyFee+"\"/></td>";
@@ -363,7 +363,28 @@
 				layer.alert("请至少设置一条数据");
 				return;
 			}
-			$(temp).parent().parent().remove();
+			var id = $(temp).parent().parent().find("#expressId").val();
+			if(id != null && id != '' && id != "undefined"){
+				$.ajax({
+					 url:"${wmsUrl}/admin/expressMng/del.shtml?id="+id,
+					 type:'post',
+					 contentType: "application/json; charset=utf-8",
+					 dataType:'json',
+					 success:function(data){
+						 if(data.success){	
+							 $(temp).parent().parent().remove();
+						 }else{
+							 layer.alert(data.msg);
+						 }
+					 },
+					 error:function(){
+						 layer.alert("删除失败，请联系客服处理");
+					 }
+				 });
+			} else {
+				$(temp).parent().parent().remove();
+			}
+			
 		}
 		
 		function isJSON(str) {

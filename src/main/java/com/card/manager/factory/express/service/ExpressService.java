@@ -11,4 +11,6 @@ public interface ExpressService extends ServerCenterService{
 	ExpressTemplateBO getExpressTemplate(String token, String id);
 
 	void save(StaffEntity staffEntity, ExpressTemplateBO template);
+
+	void del(StaffEntity staffEntity, Integer id);
 }

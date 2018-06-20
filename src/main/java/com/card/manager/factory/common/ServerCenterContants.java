@@ -326,6 +326,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/express/template/save";
 	public static final String ORDER_CENTER_POST_TEMPLATE_QUERY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/express/template/list";
+	public static final String ORDER_CENTER_POST_EXPRESS_DELETE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/express-fee/{id}";
 
 	/*------------------------商城管理-----------------------*/
 	public static final int PC = 0;
