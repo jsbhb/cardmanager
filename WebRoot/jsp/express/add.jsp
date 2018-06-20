@@ -88,6 +88,7 @@
 	<%@include file="../resourceScript.jsp"%>
 	<script src="${wmsUrl}/js/jquery.pickerModal.js"></script>
 	<script type="text/javascript">
+	
 	$(function(){
 		var freePost = '${template.freePost}';
 		var freeTax = '${template.freeTax}';
@@ -114,12 +115,20 @@
 			initTable(list);
 		}
 	});
+		
+		var status = true;
 		function saveInfo(param) {
+			if(status && status !== 'false'){
+				status = false;
+			} else {
+				return;
+			}
 			$('#itemForm').data("bootstrapValidator").validate();
 			
 			if(!valid()){
 				return;
 			}
+			
 			if ($('#itemForm').data("bootstrapValidator").isValid()) {
 
 				var url = "${wmsUrl}/admin/expressMng/save.shtml";
@@ -137,14 +146,18 @@
 							parent.location.reload();
 						} else {
 							layer.alert(data.msg);
+							status = true;
 						}
 					},
 					error : function() {
 						layer.alert("提交失败，请联系客服处理");
+						status = true;
 					}
 				});
+				
 			} else {
 				layer.alert("信息填写有误");
+				status = true;
 			}
 		}
 		
