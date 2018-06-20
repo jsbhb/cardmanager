@@ -231,7 +231,9 @@
 		});
 		//删除主图
 		$('.item-right').on('click','.bgColor i',function(){
-			$(this).parent().parent().remove();
+			var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="goodsPath" id="goodsPath" value=""></div>';
+			$(this).parent().parent().removeClass("choose");
+			$(this).parent().parent().parent().html(ht);
 		});
 	</script>
 </body>

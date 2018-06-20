@@ -54,12 +54,16 @@ public class ImageUtil {
 			g.drawImage(qrImage, 640, 1758, 240, 240, null);
 			
 			String fontfilename = servletContext.getRealPath("/") + "mysh/Microsoft-Yahei-UI-Light.ttc";
+			String fontfilename2 = servletContext.getRealPath("/") + "mysh/Microsoft-Yahei.ttf";
 			InputStream is = new FileInputStream(new File(fontfilename));
+			InputStream is2 = new FileInputStream(new File(fontfilename2));
 			Font contentFont = Font.createFont(Font.TRUETYPE_FONT,is);//返回一个指定字体类型和输入数据的font
 			Font contentFontBase = contentFont.deriveFont(Font.PLAIN,40);//通过复制此 Font 对象并应用新样式和大小，创建一个新 Font 对象。
 			Color contentColor = new Color(102, 102, 102);
 			Color titleColor = new Color(50, 51, 51);
-			Font titleFont = new Font("微软雅黑", Font.PLAIN, 36);
+//			Font titleFont = new Font("微软雅黑", Font.PLAIN, 36);
+			Font titleFont = Font.createFont(Font.TRUETYPE_FONT,is2);//返回一个指定字体类型和输入数据的font
+			Font titleFontBase = titleFont.deriveFont(Font.PLAIN,36);//通过复制此 Font 对象并应用新样式和大小，创建一个新 Font 对象。
 			//商品参数
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
@@ -73,7 +77,7 @@ public class ImageUtil {
 			g.setPaint(contentColor);
 			MyDrawString(entity.getOrigin(), 460, 1138, 1.1, g);
 			
-			g.setFont(titleFont);
+			g.setFont(titleFontBase);
 			g.setColor(titleColor);
 			MyDrawString(entity.getCustom().split(":")[0]+":", 728, 1136, 1.5, g);
 
@@ -83,10 +87,10 @@ public class ImageUtil {
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			MyDrawString(entity.getSpecs(), 540, 1214, 1.1, g);
+			MyDrawString(entity.getSpecs(), 540, 1214, 1.5, g);
 			
 			if (entity.getShelfLife() != "" && entity.getShelfLife() != null) {
-				g.setFont(titleFont);
+				g.setFont(titleFontBase);
 				g.setColor(titleColor);
 				MyDrawString("保质期:", 728, 1212, 1.5, g);
 				g.setFont(contentFontBase);
@@ -110,12 +114,12 @@ public class ImageUtil {
 			for(int i = 0; i< arrIndex; i++) {
 				if (i%2 == 0) {
 					g.drawImage(tag, xIndex, yIndex, 20, 20, null);
-					g.setFont(titleFont);
+					g.setFont(titleFontBase);
 					g.setColor(titleColor);
 					MyDrawString(reason[i], xIndex + 40, yIndex + 20, 1.5, g);
 				} else {
 					g.drawImage(tag, xIndex + 534, yIndex, 20, 20, null);
-					g.setFont(titleFont);
+					g.setFont(titleFontBase);
 					g.setColor(titleColor);
 					MyDrawString(reason[i], xIndex + 574, yIndex + 20, 1.5, g);
 					
