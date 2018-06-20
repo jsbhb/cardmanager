@@ -307,11 +307,13 @@
 				str += "<th width=\"15%\">续费(元)</th>";
 				str += "<th width=\"15%\">操作</th>";
 				str += "</tr></thead><tbody>";
-				str += "<tr><td><span id = \"province\" name = \"province\"></span>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>"
-				str += "<td><input id=\"fee\" name=\"fee\" type = \"text\" /></td>";
-				str += "<td><input id=\"weight\" name=\"weight\" type = \"text\" value = \"1000\"/></td>";
-				str += "<td><input id=\"heavyFee\" name = \"heavyFee\"type = \"text\"/></td>";
-				str += "<td><a href='javascript:void(0);' onclick='del(this)'>删除</a></td></tr>";
+				for (var i = 0; i < list.length; i++){
+					str += "<tr><td><span id = \"province\" name = \"province\">"+list[i].includeProvince+"</span>&nbsp;&nbsp;<input type = \"hidden\" id = \"expressId\" value = \""+list[i].id+"\"/><a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>"
+					str += "<td><input id=\"fee\" name=\"fee\" type = \"text\" value = \""+list[i].fee+"\"/></td>";
+					str += "<td><input id=\"weight\" name=\"weight\" type = \"text\" value = \""+list[i].weight+"\"/></td>";
+					str += "<td><input id=\"heavyFee\" name = \"heavyFee\"type = \"text\" value = \""+list[i].heavyFee+"\"/></td>";
+					str += "<td><a href='javascript:void(0);' onclick='del(this)'>删除</a></td></tr>";
+				}
 				str += "</tbody></table>";
 			} 
 			str += "<div id =\"addPost\"><a class=\"addBtn\" href=\"javascript:void(0);\" onclick=\"addPost()\">为指定区域设置运费</a></div>";
