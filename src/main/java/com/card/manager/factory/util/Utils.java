@@ -41,7 +41,7 @@ public class Utils {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			if (val == null) {
+			if (val == null || "".equals(val)) {
 				result.put("success", false);
 				FieldDescribe describe = f.getAnnotation(FieldDescribe.class);
 				if(describe != null){
