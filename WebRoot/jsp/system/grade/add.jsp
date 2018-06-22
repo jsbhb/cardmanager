@@ -22,12 +22,18 @@
 				<label class="col-sm-3 item-left">分级名称<font style="color:red">*</font></label>
 				<div class="col-sm-9 item-right">
                  	<input type="text" class="form-control" name="gradeName">
+	                <div class="item-content">
+		             	（例：XX的店）
+		            </div>
 				</div>
 			</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >公司名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
                   <input type="text" class="form-control" name="company">
+                  <div class="item-content">
+					（请填写营业执照上的公司名称或法人姓名）
+	              </div>
 				</div>
 			</div>
 			<div class="list-item">
@@ -116,12 +122,18 @@
 				<label class="col-sm-3 item-left" >门店名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
                   <input type="text" class="form-control" name="storeName">
+                  <div class="item-content">
+					（请填写门店的实际名称）
+	              </div>
 				</div>
 			</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >门店联系人<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
                   <input type="text" class="form-control" name="contacts">
+                  <div class="item-content">
+					（请填写门店联系人姓名）
+	              </div>
 				</div>
 			</div>
 			<div class="list-item">
@@ -154,16 +166,19 @@
 				<label class="col-sm-3 item-left" >门店经营者<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="storeOperator">
+	                  <div class="item-content">
+						（请填写门店经营者姓名）
+		              </div>
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >经营者证件号<font style="color:red">*</font> </label>
+				<label class="col-sm-3 item-left" >经营者身份证号<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="operatorIDNum">
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">证件正面照</div>
+				<div class="col-sm-3 item-left">身份证正面照</div>
 				<div class="col-sm-9 item-right addContent">
 					<div class="item-img" id="content1" data-id="1">
 						+

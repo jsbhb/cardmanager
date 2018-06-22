@@ -25,12 +25,18 @@
             		<input type="hidden" class="form-control" name="id" value="${grade.id}">
             		<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
             		<input type="hidden" class="form-control" name="personInChargeId" value="${grade.personInChargeId}">
+	                <div class="item-content">
+		             	（例：XX的店）
+		            </div>
 				</div>
 			</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >公司名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="company" value="${grade.company}">
+	                  <div class="item-content">
+						（请填写营业执照上的公司名称或法人姓名）
+		              </div>
 				</div>
 			</div>
 			<div class="list-item">
@@ -108,12 +114,18 @@
 				<label class="col-sm-3 item-left" >门店名称<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="storeName" value="${grade.storeName}">
+	                  <div class="item-content">
+						（请填写门店的实际名称）
+		              </div>
 				</div>
 			</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >门店联系人<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="contacts" value="${grade.contacts}">
+	                  <div class="item-content">
+						（请填写门店联系人姓名）
+		              </div>
 				</div>
 			</div>
 			<div class="list-item">
@@ -146,16 +158,19 @@
 				<label class="col-sm-3 item-left" >门店经营者<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="storeOperator" value="${grade.storeOperator}">
+	                  <div class="item-content">
+						（请填写门店经营者姓名）
+		              </div>
 				</div>
 			</div>
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >经营者证件号<font style="color:red">*</font> </label>
+				<label class="col-sm-3 item-left" >经营者身份证号<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <input type="text" class="form-control" name="operatorIDNum" value="${grade.operatorIDNum}">
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">证件正面照</div>
+				<div class="col-sm-3 item-left">身份证正面照</div>
 				<div class="col-sm-9 item-right addContent">
 					<c:choose>
 					   <c:when test="${grade.picPath1 != null && grade.picPath1 != ''}">
