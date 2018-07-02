@@ -267,6 +267,9 @@ function puton(id){
 	    if(valArr.length==0){
 	    	layer.alert("请选择未上架状态的数据");
 	    	return;
+	    } else if(valArr.length>10){
+	    	layer.alert("批量处理的商品数量请控制在10个以内！");
+	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
 	} else {
@@ -302,6 +305,9 @@ function putoff(id){
 	    }); 
 	    if(valArr.length==0){
 	    	layer.alert("请选择已上架状态的数据");
+	    	return;
+	    } else if(valArr.length>10){
+	    	layer.alert("批量处理的商品数量请控制在10个以内！");
 	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
