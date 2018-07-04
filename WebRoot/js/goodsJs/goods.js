@@ -42,6 +42,7 @@ $('#specsSwitch').on('click','li',function(){
 		$("#fxPrice").removeAttr("disabled");
 		$("#retailPrice").removeAttr("disabled");
 		$("#min").removeAttr("disabled");
+		$("#min").val("1");
 		$("#max").removeAttr("disabled");
 
 		$('.list-all-parent').remove();
@@ -254,7 +255,7 @@ function rebuildTd(text,valueTextArray,valueIdArray,index,htmlArray){
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"proxyPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"fxPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"retailPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"min\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"min\" value=\"1\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"max\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
 	}
 } 
