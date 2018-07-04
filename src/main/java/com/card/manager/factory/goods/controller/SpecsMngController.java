@@ -68,6 +68,7 @@ public class SpecsMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		try {
+			context.put("type", "specs");
 			String id = req.getParameter("id");
 			context.put("id", id);
 			String name = java.net.URLDecoder.decode(req.getParameter("name"), "UTF-8");

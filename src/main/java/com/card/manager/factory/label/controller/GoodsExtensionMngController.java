@@ -195,13 +195,13 @@ public class GoodsExtensionMngController extends BaseController {
 				//根据获取到的域名进行商品二维码内容的拼接
 				//内容格式：域名+商品明细地址+centerId+shopId+goodsId
 				//http://shop1.cncoopbuy.com/goodsDetail.html?centerId=13&shopId=15&goodsId=1002
-				if (staffEntity.getGradeLevel() == 2) {
-					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=" + goodsId;
-					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=" + goodsId;
-				} else if (staffEntity.getGradeLevel() == 3) {
-					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=" + goodsId;
-					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=" + goodsId;
-				}
+//				if (staffEntity.getGradeLevel() == 2) {
+//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=" + goodsId;
+//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=" + goodsId;
+//				} else if (staffEntity.getGradeLevel() == 3) {
+//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=" + goodsId;
+//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=" + goodsId;
+//				}
 			}
 			
 			

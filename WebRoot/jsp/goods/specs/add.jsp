@@ -15,7 +15,7 @@
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
         	<c:choose>
-				<c:when  test="${typeId==-1}">
+				<c:when test="${typeId==-1}">
 					<div class="list-item">
 						<div class="col-xs-3 item-left">规格分类名称</div>
 						<div class="col-xs-9 item-right">
@@ -55,8 +55,9 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#catalogForm').data("bootstrapValidator").isValid()){
+			 var tyepId = "${typeId}";
 			 var strUrl = "${wmsUrl}/admin/goods/specsMng/";
-			 if ("${typeId==-1}") {
+			 if (tyepId ==-1) {
 				 strUrl = strUrl + "saveSpecs.shtml";
 			 } else {
 				 strUrl = strUrl + "saveSpecsValue.shtml";

@@ -40,7 +40,7 @@
 							<c:forEach var="speValue" items="${spe.values}">
 								<li style="display:none">
 				                	<span><i class="fa fa-minus fa-fw"></i>${speValue.value}</span>
-			                		<a href="javascript:void(0);" class='table-btns' onclick="toEditSpecsValue('${speValue.id}','${speValue.value}')">修改</a>
+			                		<a href="javascript:void(0);" class='table-btns' onclick="toEditSpecsValue('${spe.id}','${spe.name}','${speValue.id}','${speValue.value}')">修改</a>
 								</li>
 							</c:forEach>
 						</ul>
@@ -104,10 +104,8 @@ function toEditSpecs(id,name){
 	
 	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/specsMng/toEditSpecs.shtml?id='+id+"&name="+name));
 
-	var tilte="编辑规格分类";
-	
 	var index = layer.open({
-	  title : title,
+	  title : "编辑规格分类",
 	  type: 2,
 	  content: url,
 	  area: ['60%', '40%'],
@@ -115,18 +113,16 @@ function toEditSpecs(id,name){
 	});
 }
 
-function toEditSpecsValue(id,name){
+function toEditSpecsValue(specsId,name,id,value){
 	if(id == 0 || id == null){
 		layer.alert("信息不全，请联系技术人员！");
 		return;
 	}
 	
-	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/specsMng/toEditSpecsValue.shtml?id='+id+"&name="+name));
+	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/specsMng/toEditSpecsValue.shtml?specsId='+specsId+"&name="+name+'&id='+id+"&value="+value));
 
-	var tilte="编辑规格值";
-	
 	var index = layer.open({
-	  title : title,
+	  title : "编辑规格值",
 	  type: 2,
 	  content: url,
 	  area: ['60%', '40%'],
