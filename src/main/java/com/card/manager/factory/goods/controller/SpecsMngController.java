@@ -51,13 +51,54 @@ public class SpecsMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		try {
-
+			String typeId = req.getParameter("typeId");
+			context.put("typeId", typeId);
+			String typeName = java.net.URLDecoder.decode(req.getParameter("typeName"), "UTF-8");
+			context.put("typeName", typeName);
 			return forword("goods/specs/add", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
 		}
+	}
 
+	@RequestMapping(value = "/toEditSpecs")
+	public ModelAndView toEditSpecs(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String id = req.getParameter("id");
+			context.put("id", id);
+			String name = java.net.URLDecoder.decode(req.getParameter("name"), "UTF-8");
+			context.put("name", name);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+		return forword("goods/specs/editSpecs", context);
+	}
+
+	@RequestMapping(value = "/toEditSpecsValue")
+	public ModelAndView toEditSpecsValue(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			context.put("type", "value");
+			String specsId = req.getParameter("specsId");
+			context.put("specsId", specsId);
+			String name = java.net.URLDecoder.decode(req.getParameter("name"), "UTF-8");
+			context.put("name", name);
+			String id = req.getParameter("id");
+			context.put("id", id);
+			String value = java.net.URLDecoder.decode(req.getParameter("value"), "UTF-8");
+			context.put("value", value);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+		return forword("goods/specs/editSpecs", context);
 	}
 
 	@RequestMapping(value = "/toAddValue")
@@ -168,25 +209,50 @@ public class SpecsMngController extends BaseController {
 		try {
 			SpecsEntity specsEntity = new SpecsEntity();
 
-			if (pojo.getTemplateId() <= 0 || StringUtil.isEmpty(pojo.getSpecsName())) {
+			if (StringUtil.isEmpty(pojo.getSpecsName())) {
 				sendFailureMessage(resp, "保存参数有误！");
 				return;
 			}
 
-			specsEntity.setTemplateId(pojo.getTemplateId());
+			specsEntity.setTemplateId(0);
 			specsEntity.setName(pojo.getSpecsName());
-			specsEntity.setOpt(staffEntity.getOptid());
-
-			List<SpecsValueEntity> specsValueEntities = new ArrayList<SpecsValueEntity>();
-			String[] values = pojo.getSpecsValue().split(";");
-			for (int j = 0; j < values.length; j++) {
-				if (!StringUtil.isEmpty(values[j].trim())) {
-					specsValueEntities.add(new SpecsValueEntity(values[j]));
-				}
-			}
-			specsEntity.setValues(specsValueEntities);
 
 			specsService.addSpecs(specsEntity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/updateSpecsValue", method = RequestMethod.POST)
+	public void updateSpecsValue(HttpServletRequest req, HttpServletResponse resp, @RequestBody SpecsValueEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptid());
+		try {
+			if (entity.getSpecsId() <= 0 || entity.getId() <= 0 || StringUtil.isEmpty(entity.getValue())) {
+				sendFailureMessage(resp, "保存参数有误！");
+				return;
+			}
+			specsService.updSpecsValue(entity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/updateSpecs", method = RequestMethod.POST)
+	public void updateSpecs(HttpServletRequest req, HttpServletResponse resp, @RequestBody SpecsEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			if (entity.getId() <= 0 || StringUtil.isEmpty(entity.getName())) {
+				sendFailureMessage(resp, "保存参数有误！");
+				return;
+			}
+			specsService.updSpecs(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
@@ -201,7 +267,9 @@ public class SpecsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		return forword("goods/specs/list_1", context);
+		List<SpecsEntity> specs = specsService.queryAllSpecsInfo(opt.getToken());
+		context.put("specs", specs);
+		return forword("goods/specs/list", context);
 	}
 
 	@RequestMapping(value = "/listForAdd")

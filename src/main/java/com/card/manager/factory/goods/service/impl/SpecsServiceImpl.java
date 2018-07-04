@@ -73,7 +73,7 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	@Override
-	@Log(content = "新增商品规格信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	@Log(content = "新增规格值操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addSpecsValue(SpecsValueEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -84,12 +84,12 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("新增商品规格信息操作失败:" + json.getString("errorMsg"));
+			throw new Exception("新增规格值操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
 	@Override
-	@Log(content = "新增商品规格操作", source = Log.BACK_PLAT, type = Log.ADD)
+	@Log(content = "新增规格分类操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void addSpecs(SpecsEntity specsEntity, String token) throws Exception{
 		RestCommonHelper helper = new RestCommonHelper();
 
@@ -100,7 +100,7 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("新增商品规格操作失败:" + json.getString("errorMsg"));
+			throw new Exception("新增规格分类操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -162,6 +162,38 @@ public class SpecsServiceImpl extends AbstractServcerCenterBaseService implement
 			list.add(JSONUtilNew.parse(jObj.toString(), SpecsEntity.class));
 		}
 		return list;
+	}
+
+	@Override
+	@Log(content = "更新规格值操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void updSpecsValue(SpecsValueEntity entity, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS_UPDATE_VALUE, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新规格值操作失败:" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	@Log(content = "更新规格分类操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void updSpecs(SpecsEntity specsEntity, String token) throws Exception{
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SPECS_UPDATE_SPECS, token, true, specsEntity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新规格分类操作失败:" + json.getString("errorMsg"));
+		}
 	}
 
 }

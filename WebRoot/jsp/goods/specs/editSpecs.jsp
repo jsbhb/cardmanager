@@ -15,11 +15,12 @@
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
         	<c:choose>
-				<c:when  test="${typeId==-1}">
+				<c:when  test="${type!=value}">
 					<div class="list-item">
 						<div class="col-xs-3 item-left">规格分类名称</div>
 						<div class="col-xs-9 item-right">
-							<input type="text" class="form-control" name="specsName" placeholder="请输入规格分类名称">
+							<input type="hidden" readonly class="form-control" name="id" value="${id}">
+							<input type="text" class="form-control" name="name" value="${name}" placeholder="请输入规格分类名称">
 			             </div>
 					</div>
 				</c:when>
@@ -27,19 +28,20 @@
 					<div class="list-item">
 						<div class="col-xs-3 item-left">规格分类编号</div>
 						<div class="col-xs-9 item-right">
-							<input type="text" readonly class="form-control" name="specsId" value="${typeId}">
+							<input type="text" readonly class="form-control" name="specsId" value="${specsId}">
 			             </div>
 					</div>
 					<div class="list-item">
 						<div class="col-xs-3 item-left">规格分类名称</div>
 						<div class="col-xs-9 item-right">
-							<input type="text" readonly class="form-control" value="${typeName}">
+							<input type="text" readonly class="form-control" value="${name}">
 			             </div>
 					</div>
 					<div class="list-item">
 						<div class="col-xs-3 item-left">规格值</div>
 						<div class="col-xs-9 item-right">
-							<input type="text" class="form-control" name="specsValue" placeholder="请输入规格值">
+							<input type="hidden" readonly class="form-control" name="id" value="${id}">
+							<input type="text" class="form-control" name="value" value="${value}" placeholder="请输入规格值">
 			             </div>
 					</div>
 				</c:otherwise>
@@ -56,10 +58,10 @@
 	 $("#submitBtn").click(function(){
 		 if($('#catalogForm').data("bootstrapValidator").isValid()){
 			 var strUrl = "${wmsUrl}/admin/goods/specsMng/";
-			 if ("${typeId==-1}") {
-				 strUrl = strUrl + "saveSpecs.shtml";
+			 if ("${type!=value}") {
+				 strUrl = strUrl + "updateSpecs.shtml";
 			 } else {
-				 strUrl = strUrl + "saveSpecsValue.shtml";
+				 strUrl = strUrl + "updateSpecsValue.shtml";
 			 }
 			 $.ajax({
 				 url:strUrl,
@@ -69,7 +71,7 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	
-						 layer.alert("新增成功");
+						 layer.alert("修改成功");
 						 parent.layer.closeAll();
 						 parent.location.reload();
 					 }else{

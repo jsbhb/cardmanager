@@ -618,7 +618,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goods.getGoodsId());
+			goodsTagBindEntity.setItemId(items.get(0).getItemId());
 			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
 			goods.setGoodsTagBind(goodsTagBindEntity);
 		}
@@ -758,7 +758,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goods.getGoodsId());
+			goodsTagBindEntity.setItemId(goodsItem.getItemId());
 			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
 			goods.setGoodsTagBind(goodsTagBindEntity);
 		}
