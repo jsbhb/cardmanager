@@ -42,8 +42,12 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
-		                	<option value="5">广州仓</option>
-		                	<option selected="selected" value="6">一般贸易仓</option>
+<!-- 		                	<option value="5">广州仓</option> -->
+<!-- 		                	<option selected="selected" value="6">一般贸易仓</option> -->
+		                	<option selected="selected" value="">--请选择供应商--</option>
+			                <c:forEach var="supplier" items="${suppliers}">
+			                <option value="${supplier.id}">${supplier.supplierName}</option>
+			                </c:forEach>
 			            </select>
 					</div>
 				</div>
