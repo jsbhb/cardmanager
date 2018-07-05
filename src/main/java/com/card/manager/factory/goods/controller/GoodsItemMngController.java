@@ -319,6 +319,10 @@ public class GoodsItemMngController extends BaseController {
 				goodsEntity.setType(Integer.parseInt(goodsType));
 				item.setGoodsEntity(goodsEntity);
 			}
+			String encode = req.getParameter("encode");
+			if (!StringUtil.isEmpty(encode)) {
+				item.setEncode(encode);
+			}
 
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());

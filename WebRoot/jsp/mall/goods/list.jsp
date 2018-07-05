@@ -77,6 +77,11 @@
 					</div>
 				</div>
 				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="encode" placeholder="条形码">
+					</div>
+				</div>
+				<div class="col-xs-3">
 					<div class="searchBtns">
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
