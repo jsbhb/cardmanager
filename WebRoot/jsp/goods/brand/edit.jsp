@@ -34,6 +34,7 @@
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
+		 $('#brandForm').data("bootstrapValidator").validate();
 		 if($('#brandForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
 				 url:"${wmsUrl}/admin/goods/brandMng/modify.shtml",
