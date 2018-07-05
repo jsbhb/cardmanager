@@ -617,10 +617,15 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
-			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goods.getGoodsId());
-			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-			goods.setGoodsTagBind(goodsTagBindEntity);
+			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
+			GoodsTagBindEntity goodsTagBindEntity = null;
+			for(GoodsItemEntity gie:items) {
+				goodsTagBindEntity = new GoodsTagBindEntity();
+				goodsTagBindEntity.setItemId(gie.getItemId());
+				goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
+				goodsTagBindList.add(goodsTagBindEntity);
+			}
+			goods.setGoodsTagBindList(goodsTagBindList);
 		}
 
 		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
@@ -670,13 +675,12 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// -------------------保存商品详情---------------------//
 		String savePath;
 		String invitePath;
-		String pathId = "";
+		String pathId = entity.getGoodsId() + "";
 		if (entity.getGoodsDetailPath() != null) {
-			pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/") + 1);
-			pathId = pathId.substring(0, pathId.lastIndexOf("."));
-		}
-		if (!pathId.equals(entity.getGoodsId() + "")) {
-			pathId = entity.getGoodsId() + "";
+			if (entity.getGoodsDetailPath().indexOf(".html") > 0) {
+				pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/") + 1);
+				pathId = pathId.substring(0, pathId.lastIndexOf("."));
+			}
 		}
 		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
 		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
@@ -759,7 +763,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goods.getGoodsId());
+			goodsTagBindEntity.setItemId(goodsItem.getItemId());
 			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
 			goods.setGoodsTagBind(goodsTagBindEntity);
 		}

@@ -38,12 +38,18 @@
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
                		<input type="text" class="form-control" name="goodsName" value="${goodsExtensionInfo.goodsName}">
+               		<div class="item-content">
+		             	（商品名称请控制在12个字以内）
+		            </div>
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品规格</div>
 				<div class="col-sm-9 item-right">
 	                 <input type="text" class="form-control" name="specs" value="${goodsExtensionInfo.specs}">
+	                 <div class="item-content">
+		             	（商品规格请控制在5个字以内）
+		             </div>
 				</div>
 			</div>
 	      	<div class="list-item">
@@ -80,7 +86,7 @@
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">商品图片</div>
+				<div class="col-sm-3 item-left">商品图片(1441*890px)</div>
 				<div class="col-sm-9 item-right addContent">
 					<c:choose>
 					   <c:when test="${goodsExtensionInfo.goodsPath != null && goodsExtensionInfo.goodsPath != ''}">
@@ -163,7 +169,11 @@
 						validators: {
 							notEmpty: {
 								message: '商品名称不能为空！'
-							}
+							},
+							stringLength: {
+			                    max: 12,
+			                    message: '商品名称请小于12个字'
+			                }
 						}
 				  },
 				  specs: {
@@ -172,7 +182,11 @@
 						validators: {
 							notEmpty: {
 								message: '商品规格不能为空！'
-							}
+							},
+							stringLength: {
+			                    max: 5,
+			                    message: '商品规格请小于5个字'
+			                }
 						}
 				  },
 				  origin: {

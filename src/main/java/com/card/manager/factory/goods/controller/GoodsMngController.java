@@ -541,6 +541,13 @@ public class GoodsMngController extends BaseController {
 			if (goodsInfo.getGoods().getDetailPath() != null
 					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
 				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+			} else if (goodsInfo.getGoods().getDetailPath() != null) {
+				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
+				String BaseUrl = URLUtils.get("static");
+				for (int i=0; i<imgArr.length; i++) {
+					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\""+BaseUrl+"/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+				}
+				detailInfo = detailInfo + "<p><br></p>";
 			}
 			context.put("detailInfo", detailInfo);
 

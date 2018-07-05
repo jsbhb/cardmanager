@@ -111,4 +111,6 @@ public interface CatalogService {
 	 */
 	void modify(CatalogModel model, StaffEntity staffEntity) throws Exception;
 
+	void publish(StaffEntity staffEntity) throws Exception;
+
 }

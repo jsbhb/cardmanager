@@ -44,6 +44,7 @@ import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.invoicing.service.InventoryService;
+import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
@@ -85,6 +86,8 @@ public class InventoryMngController extends BaseController {
 		context.put("firsts", firsts);
 		List<BrandEntity> brands = CachePoolComponent.getBrands(opt.getToken());
 		context.put("brands", brands);
+		List<SupplierEntity> suppliers = CachePoolComponent.getSupplier(opt.getToken());
+		context.put("suppliers", suppliers);
 		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
 		if (grade != null) {
 			context.put("gradeType", grade.getGradeType());

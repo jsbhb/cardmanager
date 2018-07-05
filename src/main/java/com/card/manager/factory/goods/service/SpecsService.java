@@ -96,4 +96,24 @@ public interface SpecsService extends ServerCenterService {
 	 */
 	List<SpecsEntity> queryAllSpecsInfo(String token);
 
+	/**  
+	 * addSpecsValue:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param entity
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void updSpecsValue(SpecsValueEntity entity, String token) throws Exception;
+
+	/**  
+	 * addSpecs:(这里用一句话描述这个方法的作用). <br/>   
+	 *  
+	 * @author hebin 
+	 * @param specsEntity
+	 * @param token  
+	 * @since JDK 1.7  
+	 */
+	void updSpecs(SpecsEntity specsEntity, String token) throws Exception;
+
 }

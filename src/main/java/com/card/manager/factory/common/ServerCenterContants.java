@@ -144,6 +144,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/specs/value/save";
 	public static final String GOODS_CENTER_SPECS_ALL_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpeceInfo";
+	public static final String GOODS_CENTER_SPECS_UPDATE_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/updateValue";
+	public static final String GOODS_CENTER_SPECS_UPDATE_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/updateSpecs";
 
 
 	/*------------------------分类管理-----------------------*/
@@ -173,6 +177,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/querySecondAll";
 	public static final String GOODS_CENTER_CATALOG_QUERY_THIRD_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
+	public static final String GOODS_CENTER_CATALOG_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/navigation/publish";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_BASE_ID_SEQUENCE = "base";

@@ -319,4 +319,25 @@ public class CatalogServiceImpl implements CatalogService {
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CatalogModel.class);
 
 	}
+
+	@Override
+	@Log(content = "发布商品分类信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void publish(StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+
+		result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_PUBLISH,
+				staffEntity.getToken(), true, null, HttpMethod.POST);
+
+		if (result == null)
+			throw new Exception("没有返回信息");
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("发布商品分类信息操作失败:" + json.getString("errorMsg"));
+		}
+
+	}
 }

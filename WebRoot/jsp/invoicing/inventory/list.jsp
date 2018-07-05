@@ -42,8 +42,12 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
-		                	<option value="5">广州仓</option>
-		                	<option selected="selected" value="6">一般贸易仓</option>
+<!-- 		                	<option value="5">广州仓</option> -->
+<!-- 		                	<option selected="selected" value="6">一般贸易仓</option> -->
+		                	<option selected="selected" value="">--请选择供应商--</option>
+			                <c:forEach var="supplier" items="${suppliers}">
+			                <option value="${supplier.id}">${supplier.supplierName}</option>
+			                </c:forEach>
 			            </select>
 					</div>
 				</div>
@@ -229,7 +233,7 @@ function rebuildTable(data){
 		} else {
 			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td style='text-align:left;'><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
 // 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {

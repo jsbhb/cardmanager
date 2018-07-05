@@ -29,6 +29,7 @@ public class FloorDictPojo {
 	private int centerId;
 	private String opt;
 	private int sort;
+	private String description;
 
 	public int getType() {
 		return type;
@@ -116,6 +117,14 @@ public class FloorDictPojo {
 
 	public void setSort(int sort) {
 		this.sort = sort;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

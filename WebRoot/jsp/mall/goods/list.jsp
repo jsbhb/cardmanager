@@ -201,7 +201,7 @@ function rebuildTable(data){
 		} else {
 			str += "<td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td style='text-align:left;'><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
@@ -267,6 +267,9 @@ function puton(id){
 	    if(valArr.length==0){
 	    	layer.alert("请选择未上架状态的数据");
 	    	return;
+	    } else if(valArr.length>10){
+	    	layer.alert("批量处理的商品数量请控制在10个以内！");
+	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
 	} else {
@@ -302,6 +305,9 @@ function putoff(id){
 	    }); 
 	    if(valArr.length==0){
 	    	layer.alert("请选择已上架状态的数据");
+	    	return;
+	    } else if(valArr.length>10){
+	    	layer.alert("批量处理的商品数量请控制在10个以内！");
 	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 

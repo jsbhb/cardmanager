@@ -23,10 +23,14 @@
       </ol>
 	</section>
 	<section class="content" style="align:center">
+		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
+			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+		</div>
 		<div class=list-content>
 			<div class="row">
 				<div class="col-md-12 list-btns">
 					<button type="button" onclick = "toAdd(-1,1)">新增一级分类</button>
+					<button type="button" onclick = "publish()">发布分类</button>
 				</div>
 			</div>
 			<div class="treeList">
@@ -161,6 +165,36 @@ function del(id,catalog){
 		}, function(){
 		  layer.close();
 		});
+}
+
+
+
+function publish(){
+	$.ajax({
+		 url:"${wmsUrl}/admin/goods/catalogMng/categoryInfoPublish.shtml",
+		 type:'post',
+		 dataType:'json',
+		 beforeSend : function() {
+			$("#image").css({
+				display : "block",
+				position : "fixed",
+				zIndex : 99,
+			});
+		 },
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("发布成功");
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("发布分类信息失败，请联系技术人员");
+		 },
+		 complete : function(data) {
+				$("#image").hide();
+		 }
+	});
 }
 </script>
 </body>

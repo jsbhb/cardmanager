@@ -278,5 +278,18 @@ public class CatalogMngController extends BaseController {
 			return forword("error", context);
 		}
 	}
+	
+	@RequestMapping(value = "/categoryInfoPublish", method = RequestMethod.POST)
+	public void categoryInfoPublish(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			catalogService.publish(staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
 
 }

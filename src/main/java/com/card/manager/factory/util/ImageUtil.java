@@ -67,11 +67,15 @@ public class ImageUtil {
 			//商品参数
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			MyDrawString(entity.getBrand(), 460, 1059, 1.1, g);
+			int tmpBrandIndex = entity.getBrand().lastIndexOf(" ");
+			String tmpBrand = entity.getBrand().substring(tmpBrandIndex + 1, entity.getBrand().length());
+			g.drawString(tmpBrand, 460, 1059); 
+//			MyDrawString(entity.getBrand(), 460, 1059, 1.1, g);
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			MyDrawString(entity.getGoodsName(), 905, 1060, 1.1, g);
+			g.drawString(entity.getGoodsName(), 905, 1060); 
+//			MyDrawString(entity.getGoodsName(), 905, 1060, 1.1, g);
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
@@ -87,7 +91,8 @@ public class ImageUtil {
 
 			g.setFont(contentFontBase);
 			g.setPaint(contentColor);
-			MyDrawString(entity.getSpecs(), 540, 1214, 1.5, g);
+			g.drawString(entity.getSpecs(), 540, 1214); 
+//			MyDrawString(entity.getSpecs(), 540, 1214, 1.5, g);
 			
 			if (entity.getShelfLife() != "" && entity.getShelfLife() != null) {
 				g.setFont(titleFontBase);
@@ -95,7 +100,8 @@ public class ImageUtil {
 				MyDrawString("保质期:", 728, 1212, 1.5, g);
 				g.setFont(contentFontBase);
 				g.setPaint(contentColor);
-				MyDrawString(entity.getShelfLife(), 905, 1212, 1.1, g);
+				g.drawString(entity.getShelfLife(), 905, 1212); 
+//				MyDrawString(entity.getShelfLife(), 905, 1212, 1.1, g);
 			}
 			
 			String [] reason = new String[0];
