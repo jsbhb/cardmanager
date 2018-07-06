@@ -51,6 +51,7 @@ import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
+import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.CompressFileUtils;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -76,6 +77,9 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	SftpService sftpService;
+	
+	@Resource
+	SysLogger sysLogger;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -465,7 +469,7 @@ public class GoodsMngController extends BaseController {
 				sendFailureMessage(resp, result.get("msg") + "");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			sysLogger.error("批量导入商品", "error", e);
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
@@ -616,7 +620,7 @@ public class GoodsMngController extends BaseController {
 	}
 
 	private final int MAX_SIZE = 1024 * 50 * 1024; // 50MB
-	SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDDhhmmss");
+	SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDDhhmmssSSS");
 
 	@RequestMapping(value = "/toBatchUploadPic")
 	public ModelAndView toBatchUploadPic(HttpServletRequest req, HttpServletResponse resp) {
@@ -850,6 +854,21 @@ public class GoodsMngController extends BaseController {
 		List<String> coverInviteList = new ArrayList<String>();
 		File file;
 		String newFileName;
+		Collections.sort(coverList, new Comparator<String>() {
+
+			@Override
+			public int compare(String file0, String file1) {
+				try {
+					String s1 = file0.substring(0, file0.lastIndexOf("."));
+					String s2 = file1.substring(0, file1.lastIndexOf("."));
+					return s1.compareTo(s2);
+				} catch (Exception e) {
+					return 1;
+				}
+
+			}
+
+		});
 		int i = 0;
 		for (String fileName : coverList) {
 			file = new File(path + "/" + fileName);
