@@ -426,7 +426,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("更新商品明细价格信息操作失败:" + json.getString("errorMsg"));
+			throw new Exception("更新商品推广信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
