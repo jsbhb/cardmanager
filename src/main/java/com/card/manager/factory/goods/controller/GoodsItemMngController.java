@@ -42,6 +42,7 @@ import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
 import com.card.manager.factory.goods.pojo.GoodsPojo;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
@@ -51,8 +52,12 @@ import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/goods/itemMng")
@@ -642,6 +647,10 @@ public class GoodsItemMngController extends BaseController {
 			
 			List<GoodsInfoListForDownload> ReportList = new ArrayList<GoodsInfoListForDownload>();
 			ReportList = goodsItemService.queryGoodsInfoListForDownload(param, staffEntity.getToken());
+			List<FirstCatalogEntity> firsts = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+			List<SecondCatalogEntity> seconds = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+			List<ThirdCatalogEntity> thirds = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+			Map<Integer, GradeTypeDTO> gradeTypes = CachePoolComponent.getGradeType(staffEntity.getToken());
 
 			for (GoodsInfoListForDownload gi : ReportList) {
 				switch (gi.getGoodsStatus()) {
@@ -652,10 +661,50 @@ public class GoodsItemMngController extends BaseController {
 
 				if (gi.getItemStatus() != null) {
 					switch (gi.getItemStatus()) {
-					case 0:gi.setItemStatusName("下架");break;
 					case 1:gi.setItemStatusName("上架");break;
+					default :gi.setItemStatusName("未上架");
+					}
+				} else {
+					gi.setItemStatusName("未上架");
+				}
+				
+				String infoStr = gi.getInfo();
+				if (infoStr != null && !"".equals(infoStr)) {
+					JSONArray jsonArray = JSONArray.fromObject(infoStr.substring(1, infoStr.length()));
+					int index = jsonArray.size();
+					List<ItemSpecsPojo> specslist = new ArrayList<ItemSpecsPojo>();
+					for (int i = 0; i < index; i++) {
+						JSONObject jObj = jsonArray.getJSONObject(i);
+						specslist.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+					}
+					
+					String tmpStr = "";
+					for (ItemSpecsPojo isp : specslist) {
+						tmpStr = tmpStr + isp.getSkV() + ":" + isp.getSvV() + "|";
+					}
+					gi.setInfo(tmpStr.substring(0, tmpStr.length()-1));
+				}
+				
+				for(FirstCatalogEntity first:firsts) {
+					if (first.getFirstId().equals(gi.getFirstName())) {
+						gi.setFirstName(first.getName());
+						break;
 					}
 				}
+				for(SecondCatalogEntity second:seconds) {
+					if (second.getSecondId().equals(gi.getSecondName())) {
+						gi.setSecondName(second.getName());
+						break;
+					}
+				}
+				for(ThirdCatalogEntity third:thirds) {
+					if (third.getThirdId().equals(gi.getThirdName())) {
+						gi.setThirdName(third.getName());
+						break;
+					}
+				}
+				GradeTypeDTO gradeType = gradeTypes.get(gi.getGradeType());
+				gi.setGradeTypeName(gradeType.getName());
 			}
 
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
@@ -673,14 +722,14 @@ public class GoodsItemMngController extends BaseController {
 			String[] nameArray = null;
 			String[] colArray = null;
 			if ("1".equals(type)) {
-				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目",
+				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
 						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例" };
-				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "GoodsStatusName", "ItemStatusName",
+				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", "GradeTypeName", "Proportion" };
 			} else if ("2".equals(type)) {
-				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "状态", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
+				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
 						"成本价", "内供价", "零售价", "分级类型", "返佣比例" };
-				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "GoodsStatusName", "ItemStatusName",
+				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
 						"RetailPrice", "GradeTypeName", "Proportion" };
 			}

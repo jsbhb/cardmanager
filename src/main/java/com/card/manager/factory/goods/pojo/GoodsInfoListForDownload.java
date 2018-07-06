@@ -6,6 +6,7 @@ public class GoodsInfoListForDownload {
 	private String goodsId;
 	private String itemId;
 	private String sku;
+	private String info;
 	private String goodsName;
 	private String brand;
 	private String origin;
@@ -165,6 +166,12 @@ public class GoodsInfoListForDownload {
 	}
 	public void setAttr(String attr) {
 		this.attr = attr;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
 	}
 	
 }
