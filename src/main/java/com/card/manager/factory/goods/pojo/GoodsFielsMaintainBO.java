@@ -7,7 +7,7 @@
  */
 package com.card.manager.factory.goods.pojo;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * ClassName: GoodsFielsMaintainBO <br/>
@@ -21,7 +21,7 @@ import java.util.Set;
 public class GoodsFielsMaintainBO {
 	private String itemCode;
 	private String goodsDetailPath;
-	private Set<String> picPathList;
+	private List<String> picPathList;
 
 	public String getItemCode() {
 		return itemCode;
@@ -39,11 +39,11 @@ public class GoodsFielsMaintainBO {
 		this.goodsDetailPath = goodsDetailPath;
 	}
 
-	public Set<String> getPicPathList() {
+	public List<String> getPicPathList() {
 		return picPathList;
 	}
 
-	public void setPicPathList(Set<String> picPathList) {
+	public void setPicPathList(List<String> picPathList) {
 		this.picPathList = picPathList;
 	}
 }

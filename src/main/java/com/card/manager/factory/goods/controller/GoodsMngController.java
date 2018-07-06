@@ -9,10 +9,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -493,10 +491,10 @@ public class GoodsMngController extends BaseController {
 		try {
 			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
 			context.put("specs", specs);
-			
+
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
-			for (GoodsItemEntity gie: goodsInfo.getGoods().getItems()) {
+			for (GoodsItemEntity gie : goodsInfo.getGoods().getItems()) {
 				if (gie.getInfo() != null && !"".equals(gie.getInfo())) {
 					JSONArray jsonArray = JSONArray.fromObject(gie.getInfo().substring(1, gie.getInfo().length()));
 					int index = jsonArray.size();
@@ -544,8 +542,9 @@ public class GoodsMngController extends BaseController {
 			} else if (goodsInfo.getGoods().getDetailPath() != null) {
 				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
 				String BaseUrl = URLUtils.get("static");
-				for (int i=0; i<imgArr.length; i++) {
-					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\""+BaseUrl+"/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+				for (int i = 0; i < imgArr.length; i++) {
+					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
+							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
 				}
 				detailInfo = detailInfo + "<p><br></p>";
 			}
@@ -692,14 +691,14 @@ public class GoodsMngController extends BaseController {
 				GoodsFielsMaintainBO bo;
 				List<GoodsFielsMaintainBO> list = new ArrayList<GoodsFielsMaintainBO>();
 				for (String itemCodeFile : itemCodeList) {
-					try{
+					try {
 						bo = dealGoodsPic(itemCodeFile, compressedFilePath + sourceNameWithoutSuffix, staffEntity);
 						if (bo == null) {
 							continue;
 						}
 						bo.setItemCode(itemCodeFile);
 						list.add(bo);
-					}catch(Exception e){
+					} catch (Exception e) {
 						sendFailureMessage(resp, "操作失败：" + e.getMessage());
 					}
 				}
@@ -762,14 +761,14 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
-	private String getNewFileName(String itemCode, String fileName, StaffEntity staffEntity) {
+	private String getNewFileName(String itemCode, String fileName, StaffEntity staffEntity, Integer i) {
 		// 文件后缀
 		String suffix = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf("."), fileName.length())
 				: null;
 
 		// 源文件名称
 		String sourceNameWithoutSuffix = (fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf("."))
-				: null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge();
+				: null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge() + "-" + i;
 		// 源文件名称
 		return itemCode + "_" + sourceNameWithoutSuffix + suffix;
 	}
@@ -824,8 +823,8 @@ public class GoodsMngController extends BaseController {
 			}
 
 			if (detailList.size() != 0) {
-				bo.setGoodsDetailPath(dealDetailPic(itemCode,
-						path + "/" + itemCode + "/" + "detail", detailList, staffEntity));
+				bo.setGoodsDetailPath(
+						dealDetailPic(itemCode, path + "/" + itemCode + "/" + "detail", detailList, staffEntity));
 			}
 
 		} else {
@@ -844,19 +843,21 @@ public class GoodsMngController extends BaseController {
 	 * @throws Exception
 	 * @since JDK 1.7
 	 */
-	private Set<String> dealCoverPic(String itemCode, String path, List<String> coverList, StaffEntity staffEntity)
+	private List<String> dealCoverPic(String itemCode, String path, List<String> coverList, StaffEntity staffEntity)
 			throws Exception {
 		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
 
-		Set<String> coverInviteList = new HashSet<String>();
+		List<String> coverInviteList = new ArrayList<String>();
 		File file;
 		String newFileName;
+		int i = 0;
 		for (String fileName : coverList) {
 			file = new File(path + "/" + fileName);
-			newFileName = getNewFileName(itemCode, fileName, staffEntity);
+			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
+			i++;
 			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
-			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload"
-					+ "/" + newFileName);
+			coverInviteList.add(
+					URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload" + "/" + newFileName);
 		}
 
 		return coverInviteList;
@@ -896,14 +897,14 @@ public class GoodsMngController extends BaseController {
 			}
 
 		});
-
+		int i = 0;
 		for (String fileName : detailList) {
 			file = new File(path + "/" + fileName);
-			newFileName = getNewFileName(itemCode, fileName, staffEntity);
+			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
+			i++;
 			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
 			sb.append("<p style=\"text-align: center;\"><img src=\"");
-			sb.append(
-					URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload" + "/" + newFileName);
+			sb.append(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload" + "/" + newFileName);
 			sb.append("\"></p>");
 		}
 
