@@ -1,6 +1,7 @@
 package com.card.manager.factory.label.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -126,5 +127,17 @@ public class GoodsTagMngController extends BaseController {
 		}
 
 		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/listTag")
+	public ModelAndView listTag(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		String itemIds = req.getParameter("itemIds");
+		StaffEntity opt = SessionUtils.getOperator(req);
+		List<GoodsTagEntity> list = goodsService.queryGoodsTags(opt.getToken());
+		context.put("opt", opt);
+		context.put("itemIds", itemIds);
+		context.put("tagList",list);
+		return forword("label/goodsTag/listTagForBind", context);
 	}
 }

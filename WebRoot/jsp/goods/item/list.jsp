@@ -125,6 +125,7 @@
 						<button type="button" onclick = "beUse('')">批量可用</button>
 						<button type="button" onclick = "beFx('')">批量可分销</button>
 						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
+						<button type="button" onclick = "bindTag()">批量打标签</button>
                        	<button type="button" onclick="excelExport(2)">商品信息导出</button>
 					</c:if>
 				</div>
@@ -539,6 +540,28 @@ function excelExport(type){
     window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
 // 	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds;
     $("#theadInp").prop("checked", false);
+}
+
+function bindTag(){
+	var valArr = new Array; 
+	var itemIds;
+    $("[name='check']:checked").each(function(i){
+    	if ($(this).parent().siblings().eq(9).text() == "可用") {
+ 	        valArr[i] = $(this).val(); 
+    	}
+    }); 
+    if(valArr.length==0){
+    	layer.alert("请选择可用状态的数据");
+    	return;
+    }
+    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+    var index = layer.open({
+  	  title:"标签绑定",		
+  	  type: 2,
+  	  area: ['55%','30%'],
+  	  content: '${wmsUrl}/admin/label/goodsTagMng//listTag.shtml?itemIds='+itemIds,
+  	  maxmin: false
+  	});
 }
 
 </script>
