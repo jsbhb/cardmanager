@@ -279,4 +279,14 @@ public interface GoodsService extends ServerCenterService {
 	 */
 	void batchUploadPic(List<GoodsFielsMaintainBO> boList, String token) throws Exception;
 
+	/**
+	 * addItemInfoEntity:添加商品规格. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void addItemInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception;
+
 }

@@ -180,7 +180,4 @@ public interface GoodsItemService extends ServerCenterService {
 
 	void updGoodsExtensionInfoEntity(GoodsExtensionEntity entity, StaffEntity staffEntity) throws Exception;
 
-	
-	void batchBindTag(String itemIds, String tagIds, StaffEntity staffEntity);
-
 }

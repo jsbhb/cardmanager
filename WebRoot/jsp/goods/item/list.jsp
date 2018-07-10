@@ -305,6 +305,7 @@ function rebuildTable(data){
 		if(prilvl == 1){
 			if (status != 2) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
 			} else {
 				str += "</td><td>";
 			}
@@ -562,6 +563,16 @@ function bindTag(){
   	  content: '${wmsUrl}/admin/label/goodsTagMng//listTag.shtml?itemIds='+itemIds,
   	  maxmin: false
   	});
+}
+
+function toCreateItem(id){
+	var index = layer.open({
+	  title:"添加商品规格信息",		
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/goodsMng/toCreateItemInfo.shtml?itemId='+id,
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
 </script>

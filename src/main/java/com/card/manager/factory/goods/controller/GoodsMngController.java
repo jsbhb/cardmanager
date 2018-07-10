@@ -929,4 +929,80 @@ public class GoodsMngController extends BaseController {
 
 		return goodsService.saveModelHtml(itemCode, sb.toString(), staffEntity);
 	}
+	
+	@RequestMapping(value = "/toCreateItemInfo")
+	public ModelAndView toCreateItemInfo(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
+			context.put("specs", specs);
+
+			String itemId = req.getParameter("itemId");
+			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
+			context.put("goodsInfo", goodsInfo);
+
+			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
+			for (FirstCatalogEntity first : catalogs) {
+				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
+					context.put("firstName", first.getName());
+					for (SecondCatalogEntity second : first.getSeconds()) {
+						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
+							context.put("secondName", second.getName());
+							for (ThirdCatalogEntity third : second.getThirds()) {
+								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
+									context.put("thirdName", third.getName());
+									break;
+								}
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+
+			// 初始化商详信息
+			String detailInfo = "";
+			// 包含商详地址
+			if (goodsInfo.getGoods().getDetailPath() != null
+					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
+				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+			} else if (goodsInfo.getGoods().getDetailPath() != null) {
+				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
+				String BaseUrl = URLUtils.get("static");
+				for (int i = 0; i < imgArr.length; i++) {
+					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
+							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+				}
+				detailInfo = detailInfo + "<p><br></p>";
+			}
+			context.put("detailInfo", detailInfo);
+
+			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
+			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			context.put("tags", tags);
+
+			return forword("goods/goods/create", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/createItemInfo", method = RequestMethod.POST)
+	public void createItemInfo(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody CreateGoodsInfoEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptid());
+		try {
+			goodsService.addItemInfoEntity(entity, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
 }
