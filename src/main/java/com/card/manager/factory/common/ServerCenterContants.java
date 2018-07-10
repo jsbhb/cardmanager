@@ -277,6 +277,8 @@ public class ServerCenterContants {
 	/*------------------------商品标签管理-----------------------*/
 	public static final String GOODS_CENTER_TAG_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/queryForPage";
+	public static final String GOODS_CENTER_BIND_TAG_BATCH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/tag/batch-bind";
 	public static final String GOODS_CENTER_TAG_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goodsTag/saveTag";
 	public static final String GOODS_CENTER_QUERY_TAG_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
