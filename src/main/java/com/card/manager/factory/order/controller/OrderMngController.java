@@ -327,7 +327,9 @@ public class OrderMngController extends BaseController {
 			ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());
 
 			String tmpOrderId = "";
-			String TmpExpressInfo = "";
+			String tmpExpressInfo = "";
+			String tmpItemInfo = "";
+			String tmpReceiveProvince = "";
 			for (OrderInfoListForDownload oi : ReportList) {
 				switch (oi.getStatus()) {
 				case 0:	oi.setStatusName("待支付");break;
@@ -363,7 +365,7 @@ public class OrderMngController extends BaseController {
 
 				if (!tmpOrderId.equals(oi.getOrderId())) {
 					tmpOrderId = oi.getOrderId();
-					TmpExpressInfo = "";
+					tmpExpressInfo = "";
 					Map<String, Object> express = new HashMap<String, Object>();
 					for (ThirdOrderInfo toi : oi.getOrderExpressList()) {
 						if (toi.getExpressName() == null || toi.getExpressName() == ""
@@ -378,13 +380,25 @@ public class OrderMngController extends BaseController {
 						}
 					}
 					for (Map.Entry<String, Object> entry : express.entrySet()) {
-						TmpExpressInfo += entry.getKey() + ":" + entry.getValue() + "|";
+						tmpExpressInfo += entry.getKey() + ":" + entry.getValue() + "|";
 					}
-					if (TmpExpressInfo.length() > 0) {
-						TmpExpressInfo = TmpExpressInfo.substring(0, TmpExpressInfo.length() - 1);
+					if (tmpExpressInfo.length() > 0) {
+						tmpExpressInfo = tmpExpressInfo.substring(0, tmpExpressInfo.length() - 1);
 					}
 				}
-				oi.setExpressInfo(TmpExpressInfo);
+				oi.setExpressInfo(tmpExpressInfo);
+				
+				if (oi.getItemInfo() != null) {
+					tmpItemInfo = oi.getItemInfo();
+					tmpItemInfo = tmpItemInfo.replace("\"", "");
+					tmpItemInfo = tmpItemInfo.replace("{", "");
+					tmpItemInfo = tmpItemInfo.replace("}", "");
+					oi.setItemInfo(tmpItemInfo);
+				}
+				
+				//收件信息省市区拼起来，中间用空格隔开
+				tmpReceiveProvince = oi.getReceiveProvince() + " " + oi.getReceiveCity() + " " + oi.getReceiveArea();
+				oi.setReceiveProvince(tmpReceiveProvince);
 			}
 
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
@@ -397,20 +411,18 @@ public class OrderMngController extends BaseController {
 			String[] colArray = null;
 			//广州仓
 			if ("5".equals(supplierId)) {
-				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省", "市", "区", "收件信息", "下单时间", "物流信息",
-						"订购人", "订购人身份证", "包装数", "商品购买价格"};
+				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
+						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息", "订购人", "订购人身份证", "包装数", "商品购买价格"};
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-						"ActualPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
-						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
+						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince",
 						"ReceiveAddress", "CreateTime", "ExpressInfo", "OrderName", "Idnum", "Packing", "ActualPrice" };
 			} else {
-				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
+				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
+						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-						"ActualPrice", "ItemQuantity", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
-						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveCity", "ReceiveArea",
-						"ReceiveAddress", "CreateTime", "ExpressInfo" };
+						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime", "ExpressInfo" };
 			}
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);
