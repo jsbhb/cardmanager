@@ -100,6 +100,8 @@ public class ServerCenterContants {
 			+ "/cooperation/shopkeeper";
 	public static final String USER_CENTER_PARTNER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/cooperation/partner";
+	public static final String USER_CENTER_GRADE_INIT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/area-center/init/{id}";
 	/**
 	 * 商品中心url
 	 */

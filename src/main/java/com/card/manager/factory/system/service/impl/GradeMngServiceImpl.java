@@ -353,4 +353,21 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	public int queryFirstGradeIdByOpt(String gradeId) {
 		return staffMapper.queryFirstGradeIdByOpt(gradeId);
 	}
+
+	@Override
+	public void gradeInit(Integer id, String token) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("id", id);
+		RestCommonHelper helper = new RestCommonHelper();
+		
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_INIT, token,
+				true, null, HttpMethod.POST,param);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("初始化失败:" + json.getString("errorMsg"));
+		}
+	}
 }

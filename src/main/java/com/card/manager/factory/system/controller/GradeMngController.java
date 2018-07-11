@@ -281,4 +281,19 @@ public class GradeMngController extends BaseController {
 
 		return pcb;
 	}
+	
+	@RequestMapping(value = "/init", method = RequestMethod.POST)
+	public void gradeInit(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			Integer id = Integer.valueOf(req.getParameter("id"));
+			gradeMngService.gradeInit(id,staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
 }

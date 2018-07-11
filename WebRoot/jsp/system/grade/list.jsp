@@ -38,6 +38,7 @@
 						<tr>
 							<th>等级编号</th>
 							<th>名称</th>
+							<th>初始化</th>
 							<th>上级机构</th>
 							<th>类型</th>
 							<th>公司</th>
@@ -113,12 +114,25 @@ function rebuildTable(data){
 		str += "<td>" + list[i].id;
 		str += "</td><td>" + (list[i].gradeName == null ? "" : list[i].gradeName);
 		
+		var gradeType = list[i].gradeType;
+		var init = list[i].init;
+		if(gradeType == 2){
+			if(init == 1){
+				str += "</td><td>完成";
+			} else {
+				str += "</td><td>未完成";
+				str += "<a href='#' onclick='init("+list[i].id+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
+			}
+		} else {
+			str += "</td><td>完成";
+		}
+		
 		var pgName = list[i].parentGradeName;
 		
 		if(pgName != null && pgName !="null" && pgName != ""){
-			str += "<td>" + list[i].parentGradeName;
+			str += "</td><td>" + list[i].parentGradeName;
 		}else{
-			str += "<td>";
+			str += "</td><td>";
 		}
 		
 		
@@ -167,6 +181,30 @@ function toAdd(){
 		  maxmin: true
 		});
 		layer.full(index);
+}
+
+function init(id){
+	if(id == 0 || id == null){
+		layer.alert("信息不全，请联系技术人员！");
+		return;
+	}
+	$.ajax({
+		 url:"${wmsUrl}/admin/system/gradeMng/init.shtml?id="+id,
+		 type:'post',
+	     contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 reloadTable();
+			 }else{
+				  layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("系统出现问题啦，快叫技术人员处理");
+		 }
+	 });
+ 
 }
 
 </script>

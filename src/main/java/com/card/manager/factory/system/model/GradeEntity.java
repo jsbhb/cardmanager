@@ -90,9 +90,18 @@ public class GradeEntity extends Pagination{
 
 	private String gradeTypeName;
 	
+	private Integer init;
 	
 	public Integer getGradeLevel() {
 		return gradeLevel;
+	}
+
+	public Integer getInit() {
+		return init;
+	}
+
+	public void setInit(Integer init) {
+		this.init = init;
 	}
 
 	public void setGradeLevel(Integer gradeLevel) {
