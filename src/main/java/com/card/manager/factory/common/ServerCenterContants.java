@@ -297,6 +297,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/tagFunc";
 	public static final String ORDER_CENTER_PRESELL_CANCLEFUNC = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/presell/pass";
+	public static final String GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsPriceRatioListInfo";
 
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
