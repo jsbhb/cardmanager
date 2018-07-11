@@ -1137,6 +1137,7 @@ a:focus {
     outline: none;
     padding-left :10px;
     float:left;
+    width: 200px;
 }
 .content-header > .search > .searchBtn{
 	float: left;
