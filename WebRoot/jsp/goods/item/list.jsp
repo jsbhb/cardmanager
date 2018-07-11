@@ -547,12 +547,12 @@ function bindTag(){
 	var valArr = new Array; 
 	var itemIds;
     $("[name='check']:checked").each(function(i){
-    	if ($(this).parent().siblings().eq(9).text() == "可用") {
+    	if ($(this).parent().siblings().eq(9).text() != "可分销") {
  	        valArr[i] = $(this).val(); 
     	}
     }); 
     if(valArr.length==0){
-    	layer.alert("请选择可用状态的数据");
+    	layer.alert("请选择可用或初始化状态的数据");
     	return;
     }
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
@@ -560,7 +560,7 @@ function bindTag(){
   	  title:"标签绑定",		
   	  type: 2,
   	  area: ['55%','30%'],
-  	  content: '${wmsUrl}/admin/label/goodsTagMng//listTag.shtml?itemIds='+itemIds,
+  	  content: '${wmsUrl}/admin/label/goodsTagMng/listTag.shtml?itemIds='+itemIds,
   	  maxmin: false
   	});
 }

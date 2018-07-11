@@ -430,4 +430,34 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		}
 	}
 
+	@Override
+	public void batchBindTag(String itemIds, String tagIds, StaffEntity staffEntity) {
+		if (itemIds == null || tagIds == null) {
+			return;
+		}
+		String[] itemIdArr = itemIds.split(",");
+		String[] tagIdArr = tagIds.split(",");
+		GoodsTagBindEntity entity = null;
+		List<GoodsTagBindEntity> list = new ArrayList<GoodsTagBindEntity>();
+		for (String itemId : itemIdArr) {
+			for (String tagId : tagIdArr) {
+				entity = new GoodsTagBindEntity();
+				entity.setItemId(itemId);
+				entity.setTagId(Integer.valueOf(tagId));
+				entity.setOpt(staffEntity.getOptName());
+				list.add(entity);
+			}
+		}
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BIND_TAG_BATCH,
+				staffEntity.getToken(), true, list, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("批量绑定商品标签出错:" + json.getString("errorMsg"));
+		}
+	}
 }

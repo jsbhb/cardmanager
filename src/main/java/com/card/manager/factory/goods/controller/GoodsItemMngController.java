@@ -746,4 +746,19 @@ public class GoodsItemMngController extends BaseController {
 			return;
 		}
 	}
+	
+	@RequestMapping(value = "/batchBindGoodsTag", method = RequestMethod.POST)
+	public void batchBindGoodsTag(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemIds = req.getParameter("itemIds");
+			String tagIds = req.getParameter("tagId");
+			goodsItemService.batchBindTag(itemIds, tagIds, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
 }
