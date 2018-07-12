@@ -305,6 +305,16 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/presell/pass";
 	public static final String GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsPriceRatioListInfo";
+	public static final String GOODS_CENTER_QUERY_GOODS_RATIO_PLATFORM_PAGE_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForPage";
+	public static final String GOODS_CENTER_CREATE_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/createGoodsRatioPlatformInfo";
+	public static final String GOODS_CENTER_UPDATE_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/updateGoodsRatioPlatformInfo";
+	public static final String GOODS_CENTER_QUERY_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForEdit";
+	public static final String GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/syncGoodsPriceRatioInfo";
 
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")

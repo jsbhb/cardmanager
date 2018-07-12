@@ -38,6 +38,7 @@ import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.SpecsEntity;
@@ -998,6 +999,129 @@ public class GoodsMngController extends BaseController {
 		entity.setOpt(staffEntity.getOptid());
 		try {
 			goodsService.addItemInfoEntity(entity, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/toShowGoodsInfo")
+	public ModelAndView toShowGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
+			context.put("specs", specs);
+
+			String itemId = req.getParameter("itemId");
+			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
+			for (GoodsItemEntity gie : goodsInfo.getGoods().getItems()) {
+				if (gie.getInfo() != null && !"".equals(gie.getInfo())) {
+					JSONArray jsonArray = JSONArray.fromObject(gie.getInfo().substring(1, gie.getInfo().length()));
+					int index = jsonArray.size();
+					List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
+					List<String> titles = new ArrayList<String>();
+					for (int i = 0; i < index; i++) {
+						JSONObject jObj = jsonArray.getJSONObject(i);
+						list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+						titles.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class).getSkV());
+					}
+					gie.setSpecs(list);
+
+					context.put("specsInfos", list);
+					context.put("specsTitles", titles);
+				}
+			}
+			context.put("goodsInfo", goodsInfo);
+
+			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
+			for (FirstCatalogEntity first : catalogs) {
+				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
+					context.put("firstName", first.getName());
+					for (SecondCatalogEntity second : first.getSeconds()) {
+						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
+							context.put("secondName", second.getName());
+							for (ThirdCatalogEntity third : second.getThirds()) {
+								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
+									context.put("thirdName", third.getName());
+									break;
+								}
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+
+			// 初始化商详信息
+			String detailInfo = "";
+			// 包含商详地址
+			if (goodsInfo.getGoods().getDetailPath() != null
+					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
+				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+			} else if (goodsInfo.getGoods().getDetailPath() != null) {
+				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
+				String BaseUrl = URLUtils.get("static");
+				for (int i = 0; i < imgArr.length; i++) {
+					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
+							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+				}
+				detailInfo = detailInfo + "<p><br></p>";
+			}
+			context.put("detailInfo", detailInfo);
+
+			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
+			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			context.put("tags", tags);
+
+			return forword("goods/goods/show", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/toEditRatioGoodsInfo")
+	public ModelAndView toEditRatioGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String itemId = req.getParameter("itemId");
+			String goodsName = java.net.URLDecoder.decode(req.getParameter("goodsName"), "UTF-8");
+			String itemInfo = java.net.URLDecoder.decode(req.getParameter("itemInfo"), "UTF-8");
+			if (itemInfo == null) {
+				itemInfo = "";
+			}
+			GoodsItemEntity entity = new GoodsItemEntity();
+			entity.setItemId(itemId);
+			
+			List<GoodsPriceRatioEntity> goodPriceRatios = goodsService.queryGoodsPriceRatioList(entity, staffEntity.getToken());
+			if (goodPriceRatios.size() <= 0) {
+				return forword("goods/goodsRatio/notice", context);
+			}
+			
+			context.put("itemId", itemId);
+			context.put("goodsName", goodsName);
+			context.put("itemInfo", itemInfo);
+			context.put("goodPriceRatios", goodPriceRatios);
+			return forword("goods/goodsRatio/show", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/syncRatioGoodsInfo")
+	public void syncRatioGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody List<GoodsPriceRatioEntity> list) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		
+		try {
+			goodsService.syncRatioGoodsInfo(list, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

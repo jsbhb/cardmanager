@@ -374,6 +374,23 @@ public class GoodsItemMngController extends BaseController {
 							break;
 						}
 					}
+					
+					String infoStr = info.getInfo();
+					if (infoStr != null && !"".equals(infoStr)) {
+						JSONArray jsonArray = JSONArray.fromObject(infoStr.substring(1, infoStr.length()));
+						int index = jsonArray.size();
+						List<ItemSpecsPojo> specslist = new ArrayList<ItemSpecsPojo>();
+						for (int i = 0; i < index; i++) {
+							JSONObject jObj = jsonArray.getJSONObject(i);
+							specslist.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+						}
+						
+						String tmpStr = "";
+						for (ItemSpecsPojo isp : specslist) {
+							tmpStr = tmpStr + isp.getSkV() + ":" + isp.getSvV() + "|";
+						}
+						info.setInfo(tmpStr.substring(0, tmpStr.length()-1));
+					}
 				}
 				pcb.setObj(list);
 			}

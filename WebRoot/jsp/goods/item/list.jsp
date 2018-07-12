@@ -188,6 +188,7 @@
 								<th width="5%">商品价格</th>
 								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
+								<th width="5%">商品规格</th>
 								<th width="5%">创建时间</th>
 								<c:choose>
 									<c:when test="${prilvl == 1}">
@@ -323,6 +324,7 @@ function rebuildTable(data){
 			case '2':str += "</td><td>可分销";break;
 			default:str += "</td><td>状态错误："+status;
 		}
+		str += "</td><td>" + (list[i].info == null ? "" : list[i].info);
 		str += "</td><td>" + list[i].createTime;
 		var prilvl = "${prilvl}";
 		var gradeId = "${opt.gradeId}";
@@ -330,8 +332,11 @@ function rebuildTable(data){
 			if (status != 2) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+","+list[i].goodsName+","+list[i].info+")'>设置比价</a>";
 			} else {
 				str += "</td><td>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].itemId+")'>查看信息</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
 			}
 			if(status == 0){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
@@ -659,6 +664,27 @@ function reSetDefaultInfo() {
 		tmpBrands = tmpBrands + "<li><span data-id=\""+options[j].value+"\" data-name=\""+options[j].text+"\" class=\"no-child\">"+options[j].text+"</span></li>";
 	}
 	$('.first-ul').html(tmpBrands);
+}
+
+function toShow(id){
+	var index = layer.open({
+	  title:"查看商品信息",		
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/goodsMng/toShowGoodsInfo.shtml?itemId='+id,
+	  maxmin: true
+	});
+	layer.full(index);
+}
+
+function toEditRatio(id,name,info){
+	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/goodsMng/toEditRatioGoodsInfo.shtml?itemId='+id+"&goodsName="+name+"&itemInfo="+info));
+	var index = layer.open({
+	  title:"设置商品比价信息",		
+	  type: 2,
+	  content: url,
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
 </script>

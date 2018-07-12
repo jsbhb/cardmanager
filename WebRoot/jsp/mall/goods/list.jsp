@@ -123,9 +123,10 @@
 								<th width="5%">供应商</th>
 								<th width="5%">商品类型</th>
 								<th width="10%">条形码</th>
-								<th width="10%">商品价格</th>
-								<th width="10%">商品库存</th>
+								<th width="5%">商品价格</th>
+								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
+								<th width="5%">商品规格</th>
 								<c:if test="${prilvl == 1}">
 								<th width="5%">操作</th>
 								</c:if>
@@ -232,7 +233,7 @@ function rebuildTable(data){
 			case 2:str += "</td><td>一般贸易商品";break;
 			default:str += "</td><td>状态类型："+goodsType;
 		}
-		str += "</td><td>" + list[i].encode;
+		str += "</td><td>" + (list[i].encode == null ? "" : list[i].encode);
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -245,6 +246,7 @@ function rebuildTable(data){
 			case 1:str += "</td><td>已上架";break;
 			default:str += "</td><td>状态错误："+status;
 		}
+		str += "</td><td>" + (list[i].simpleInfo == null ? "" : list[i].simpleInfo);
 		if(prilvl == 1){
 			str += "</td><td>";
 			if(status == 0){
