@@ -535,6 +535,11 @@
 				 layer.alert("请选择品牌信息");
 				 return;
 			 }
+			 var tmpBrandId = $("#brandId").val();
+			 if(tmpBrandId == ""){
+				 layer.alert("请重新选择品牌信息");
+				 return;
+			 }
 			 var tmpFirstCatalogId = $("#firstCatalogId").val();
 			 if(tmpFirstCatalogId == -1){
 				 layer.alert("请选择商品一级分类");

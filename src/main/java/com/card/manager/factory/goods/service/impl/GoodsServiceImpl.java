@@ -49,6 +49,7 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
+import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
@@ -1497,6 +1498,46 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("添加商品规格信息操作失败:" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public List<GoodsPriceRatioEntity> queryGoodsPriceRatioList(GoodsItemEntity entity, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<GoodsPriceRatioEntity> list = new ArrayList<GoodsPriceRatioEntity>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), GoodsPriceRatioEntity.class));
+		}
+		return list;
+	}
+
+	@Override
+	@Log(content = "同步商品比价信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void syncRatioGoodsInfo(List<GoodsPriceRatioEntity> list, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		for(GoodsPriceRatioEntity gpre:list) {
+			gpre.setStatus(0);
+			gpre.setOpt(staffEntity.getOpt());
+		}
+
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO, staffEntity.getToken(),
+				true, list, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("同步商品比价信息操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
