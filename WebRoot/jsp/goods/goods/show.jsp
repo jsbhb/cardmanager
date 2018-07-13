@@ -240,6 +240,10 @@
 								</div>
 							</div>
 		           	    </c:forEach>
+		           	    
+		           	    <div class="row-bg-gray">
+							<a class="addBtn" href="javascript:void(0);">添加规格</a>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -134,14 +134,15 @@
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick = "excelExport(1)">商品库存导出</button>
+					<button type="button" onclick = "excelExport(1)">商品信息导出</button>
 					<c:if test="${prilvl == 1}">
 						<button type="button" onclick="jump(9)">新增商品</button>
 						<button type="button" onclick = "beUse('')">批量可用</button>
 						<button type="button" onclick = "beFx('')">批量可分销</button>
 						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
 						<button type="button" onclick = "bindTag()">批量打标签</button>
-                       	<button type="button" onclick="excelExport(2)">商品信息导出</button>
+                       	<button type="button" onclick="excelExport(2)">商品信息导出(运营用)</button>
+                       	<button type="button" onclick="modelExport()">商品报价单导出</button>
 					</c:if>
 				</div>
 			</div>
@@ -332,7 +333,7 @@ function rebuildTable(data){
 			if (status != 2) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+","+list[i].goodsName+","+list[i].info+")'>设置比价</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
 			} else {
 				str += "</td><td>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].itemId+")'>查看信息</a>";
@@ -570,6 +571,16 @@ function excelExport(type){
     window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
 // 	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds;
     $("#theadInp").prop("checked", false);
+}
+
+function modelExport(){
+	var index = layer.open({
+  	  title:"商品报价单导出",		
+  	  type: 2,
+  	  area: ['70%','60%'],
+  	  content: '${wmsUrl}/admin/goods/itemMng/toExport.shtml',
+  	  maxmin: false
+  	});
 }
 
 function bindTag(){

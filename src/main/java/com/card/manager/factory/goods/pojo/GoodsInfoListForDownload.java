@@ -1,5 +1,9 @@
 package com.card.manager.factory.goods.pojo;
 
+import java.util.List;
+
+import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
+import com.card.manager.factory.goods.model.GoodsTagEntity;
 
 public class GoodsInfoListForDownload {
 
@@ -27,6 +31,10 @@ public class GoodsInfoListForDownload {
 	private String gradeTypeName;
 	private String remark;
 	private String attr;
+	private List<GoodsTagEntity> goodsTagList;
+	private List<GoodsPriceRatioEntity> goodsPriceRatioList;
+	private String goodsTagName;
+	private String goodsPriceRatioInfo;
 	
 	public String getGoodsId() {
 		return goodsId;
@@ -173,5 +181,28 @@ public class GoodsInfoListForDownload {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-	
+	public List<GoodsTagEntity> getGoodsTagList() {
+		return goodsTagList;
+	}
+	public void setGoodsTagList(List<GoodsTagEntity> goodsTagList) {
+		this.goodsTagList = goodsTagList;
+	}
+	public List<GoodsPriceRatioEntity> getGoodsPriceRatioList() {
+		return goodsPriceRatioList;
+	}
+	public void setGoodsPriceRatioList(List<GoodsPriceRatioEntity> goodsPriceRatioList) {
+		this.goodsPriceRatioList = goodsPriceRatioList;
+	}
+	public String getGoodsTagName() {
+		return goodsTagName;
+	}
+	public void setGoodsTagName(String goodsTagName) {
+		this.goodsTagName = goodsTagName;
+	}
+	public String getGoodsPriceRatioInfo() {
+		return goodsPriceRatioInfo;
+	}
+	public void setGoodsPriceRatioInfo(String goodsPriceRatioInfo) {
+		this.goodsPriceRatioInfo = goodsPriceRatioInfo;
+	}
 }

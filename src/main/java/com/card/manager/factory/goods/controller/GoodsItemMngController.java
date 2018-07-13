@@ -34,6 +34,7 @@ import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
@@ -621,23 +622,17 @@ public class GoodsItemMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
-	@RequestMapping(value = "/toEdit")
-	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
+	@RequestMapping(value = "/toExport")
+	public ModelAndView toExport(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		String id = req.getParameter("id");
-
-		try {
-			// GoodsEntity goodsItem = goodsService.queryById(id,
-			// opt.getToken());
-			// context.put("goodsItem", goodsItem);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword("error", context);
-		}
-
-		return forword("goods/item/edit", context);
+		List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+		context.put("tags", tags);
+		List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
+		context.put("gradeList", gradeList);
+		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		return forword("goods/item/modelExport", context);
 	}
 
 	@RequestMapping(value = "/downLoadExcel")
@@ -646,13 +641,23 @@ public class GoodsItemMngController extends BaseController {
 		try {
 			String type = req.getParameter("type");
 			String supplierId = req.getParameter("supplierId").trim();
-			String itemIds = req.getParameter("itemIds").trim();
+			String itemIds = req.getParameter("itemIds");
 			List<String> itemIdList = new ArrayList<String>();
-			if (!"".equals(itemIds)) {
+			if (!"".equals(itemIds) && itemIds != null) {
 				for (String itemId : itemIds.split(",")) {
 					itemIdList.add(itemId);
 				}
 			}
+			String selectedGradeType = req.getParameter("gradeType");
+			String tagIds = req.getParameter("tagIds");
+			List<String> tagIdList = new ArrayList<String>();
+			if (!"".equals(tagIds) && tagIds != null) {
+				for (String tagId : tagIds.split(",")) {
+					tagIdList.add(tagId);
+				}
+			}
+			String rebateStart = req.getParameter("rebateStart");
+			String rebateEnd = req.getParameter("rebateEnd");
 			GoodsListDownloadParam param = new GoodsListDownloadParam();
 			if (!"".equals(supplierId)) {
 				param.setSupplierId(Integer.parseInt(supplierId));
@@ -660,7 +665,20 @@ public class GoodsItemMngController extends BaseController {
 			if (itemIdList.size() > 0) {
 				param.setItemIdList(itemIdList);
 			}
-			param.setProportionFlg(1);
+			//筛选是否有返佣的数据 -1：不筛选
+			param.setProportionFlg(-1);
+			if (!StringUtil.isEmpty(selectedGradeType)) {
+				param.setGradeType(Integer.parseInt(selectedGradeType));
+			}
+			if (tagIdList.size() > 0) {
+				param.setTagIdList(tagIdList);
+			}
+			if (!StringUtil.isEmpty(rebateStart)) {
+				param.setRebateStart(Double.parseDouble(rebateStart));
+			}
+			if (!StringUtil.isEmpty(rebateEnd)) {
+				param.setRebateEnd(Double.parseDouble(rebateEnd));
+			}
 			
 			List<GoodsInfoListForDownload> ReportList = new ArrayList<GoodsInfoListForDownload>();
 			ReportList = goodsItemService.queryGoodsInfoListForDownload(param, staffEntity.getToken());
@@ -720,8 +738,35 @@ public class GoodsItemMngController extends BaseController {
 						break;
 					}
 				}
-				GradeTypeDTO gradeType = gradeTypes.get(gi.getGradeType());
-				gi.setGradeTypeName(gradeType.getName());
+				
+				if (gi.getGradeType() != null) {
+					GradeTypeDTO gradeType = gradeTypes.get(gi.getGradeType());
+					gi.setGradeTypeName(gradeType.getName());
+				}
+				
+				//商品标签
+				String tmpGoodsTagName = "";
+				for(GoodsTagEntity gte:gi.getGoodsTagList()) {
+					tmpGoodsTagName = tmpGoodsTagName + gte.getTagName() + "|";
+				}
+				if (tmpGoodsTagName != "") {
+					gi.setGoodsTagName(tmpGoodsTagName.substring(0, tmpGoodsTagName.length()-1));
+				} else {
+					gi.setGoodsTagName("普通");
+				}
+				
+				//比价信息
+				String tmpGoodsPriceRatioInfo = "";
+				for (GoodsPriceRatioEntity gpre:gi.getGoodsPriceRatioList()) {
+					tmpGoodsPriceRatioInfo = tmpGoodsPriceRatioInfo + gpre.getRatioPlatformName() +
+							"平台:价格￥" + gpre.getRatioPrice() + " 评价数" + gpre.getEvaluateQty() +
+							" 销量" + gpre.getSalesVolume() +"|";
+				}
+				if (tmpGoodsPriceRatioInfo != "") {
+					gi.setGoodsPriceRatioInfo(tmpGoodsPriceRatioInfo.substring(0, tmpGoodsPriceRatioInfo.length()-1));
+				} else {
+					gi.setGoodsPriceRatioInfo("无");
+				}
 			}
 
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
@@ -732,6 +777,8 @@ public class GoodsItemMngController extends BaseController {
 				fileType = "goods_stock_";
 			} else if ("2".equals(type)) {
 				fileType = "goods_info_";
+			} else if ("3".equals(type)) {
+				fileType = "goods_quotation_";
 			}
 			String fileName = fileType + DateUtil.getNowLongTime() + ".xlsx";
 			String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
@@ -740,15 +787,22 @@ public class GoodsItemMngController extends BaseController {
 			String[] colArray = null;
 			if ("1".equals(type)) {
 				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
-						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例" };
+						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
 				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
-						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", "GradeTypeName", "Proportion" };
+						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", 
+						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			} else if ("2".equals(type)) {
 				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
-						"成本价", "内供价", "零售价", "分级类型", "返佣比例" };
+						"成本价", "内供价", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
 				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
-						"RetailPrice", "GradeTypeName", "Proportion" };
+						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
+			} else if ("3".equals(type)) {
+				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
+						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
+				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
+						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", 
+						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			}
 
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
