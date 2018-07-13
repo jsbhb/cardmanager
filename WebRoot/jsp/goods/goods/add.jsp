@@ -34,7 +34,7 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
-	                <input type="text" class="form-control" name="brand" id="brand" readonly placeholder="选择品牌"/>
+	                <input type="text" class="form-control" name="brand" id="brand" readonly style="background:#fff;" placeholder="选择品牌"/>
 	                <input type="hidden" class="form-control" name="baseId" id="baseId"/>
 	                <input type="hidden" class="form-control" name="brandId" id="brandId"/>
 					<a class="addBtn" href="javascript:void(0);" onclick="toBrand()">新增品牌</a>

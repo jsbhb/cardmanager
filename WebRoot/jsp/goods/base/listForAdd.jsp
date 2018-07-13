@@ -63,8 +63,9 @@
 					<thead>
 						<tr>
 							<th width="7%">基础编码</th>
-							<th width="20%">品牌名称</th>
-							<th width="25%">商品分类</th>
+							<th width="6%">品牌编码</th>
+							<th width="17%">品牌名称</th>
+							<th width="22%">商品分类</th>
 							<th width="20%">商品名称</th>
 							<th width="7%">计量单位</th>
 							<th width="7%">海关代码</th>
@@ -131,14 +132,15 @@ function rebuildTable(data){
 	var str = "";
 	
 	if (list == null || list.length == 0) {
-		str = "<tr style='text-align:center'><td colspan=8><h5>没有查到数据</h5></td></tr>";
+		str = "<tr style='text-align:center'><td colspan=10><h5>没有查到数据</h5></td></tr>";
 		$("#baseTable tbody").html(str);
 		return;
 	}
 
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		str += "<td align='left'>" + list[i].id + "</td>";
+		str += "<td align='left'>" + list[i].id;
+		str += "</td><td>" + list[i].brandId;
 		str += "</td><td>" + list[i].brand;
 		str += "</td><td>" + list[i].firstCatalogId+"-"+list[i].secondCatalogId+"-"+list[i].thirdCatalogId;
 		str += "</td><td>" + list[i].goodsName;
@@ -169,15 +171,16 @@ function sureSup(){
 		}
 	
 		$('#baseId', window.parent.document).val(selectTr.children("td").eq(0).text());
-		$('#brand', window.parent.document).val(selectTr.children("td").eq(1).text());
-		$('#catalog', window.parent.document).val(selectTr.children("td").eq(2).text());
-		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(3).text().trim());
-		$('#unit', window.parent.document).val(selectTr.children("td").eq(4).text());
-		$('#hscode', window.parent.document).val(selectTr.children("td").eq(5).text().trim());
-		$('#incrementTax', window.parent.document).val(selectTr.children("td").eq(6).text());
-		$('#tariff', window.parent.document).val(selectTr.children("td").eq(7).text());
+		$('#brandId', window.parent.document).val(selectTr.children("td").eq(1).text());
+		$('#brand', window.parent.document).val(selectTr.children("td").eq(2).text());
+		$('#catalog', window.parent.document).val(selectTr.children("td").eq(3).text());
+		$('#goodsName', window.parent.document).val(selectTr.children("td").eq(4).text().trim());
+		$('#unit', window.parent.document).val(selectTr.children("td").eq(5).text());
+		$('#hscode', window.parent.document).val(selectTr.children("td").eq(6).text().trim());
+		$('#incrementTax', window.parent.document).val(selectTr.children("td").eq(7).text());
+		$('#tariff', window.parent.document).val(selectTr.children("td").eq(8).text());
 
-		 parent.choiseModel();
+		parent.choiseModel();
 		
 // 		$('#baseInfo', window.parent.document).show();
 		
