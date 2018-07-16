@@ -124,8 +124,15 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_SAVE, staff.getToken(), true,
 				gradeInfo, HttpMethod.POST);
 
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-		JSONObject obj = json.getJSONObject("obj");
+		JSONObject usercenter_json = JSONObject.fromObject(usercenter_result.getBody());
+		String usercenter_success = usercenter_json.getString("success");
+		// 如果失败，提示
+		if ("true".equals(usercenter_success)) {
+		} else {
+			throw new Exception("用户中心注册失败:" + usercenter_json.getString("errorMsg"));
+		}
+		
+		JSONObject obj = usercenter_json.getJSONObject("obj");
 		int userId = obj.getInt("userId");
 		int gradeId = obj.getInt("gradeId");
 		StaffEntity staffEntity = new StaffEntity();
@@ -174,13 +181,11 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 					staff.getToken(), true, null, HttpMethod.POST, params);
 
 			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-
-			String success = finance_json.getString("success");
-
+			String finance_success = finance_json.getString("success");
 			// 如果失败，提示
-			if ("true".equals(success)) {
+			if ("true".equals(finance_success)) {
 			} else {
-				throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
+				throw new Exception("开通资金池失败:" + finance_json.getString("errorMsg"));
 			}
 		}
 		CachePoolComponent.syncCenter(staffEntity.getToken());
@@ -347,5 +352,22 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	@Override
 	public int queryFirstGradeIdByOpt(String gradeId) {
 		return staffMapper.queryFirstGradeIdByOpt(gradeId);
+	}
+
+	@Override
+	public void gradeInit(Integer id, String token) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		param.put("id", id);
+		RestCommonHelper helper = new RestCommonHelper();
+		
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_INIT, token,
+				true, null, HttpMethod.POST,param);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("初始化失败:" + json.getString("errorMsg"));
+		}
 	}
 }

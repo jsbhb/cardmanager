@@ -15,11 +15,9 @@
 	<section class="content-iframe">
        	<form class="form-horizontal" role="form" id="brandForm" style="margin-top:20px;">
 			<div class="list-item">
-				<div class="col-xs-3 item-left">品牌名称<font style="color:red">*</font> </div>
+				<div class="col-xs-3 item-left">比价平台名称<font style="color:red">*</font> </div>
 				<div class="col-xs-9 item-right">
-           		    <input type="hidden" class="form-control" name="id" value="${brand.id}">
-                    <input type="hidden" class="form-control" name="brandId" value="${brand.brandId}">
-					<input type="text" class="form-control" name="brand" value="${brand.brand}">
+					<input type="text" class="form-control" name="ratioPlatformName">
 	            	<div class="item-content">
 	             		（请输入数字、英文和汉字，限1-40字）
 	             	</div>
@@ -34,24 +32,22 @@
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
-		 $('#brandForm').data("bootstrapValidator").validate();
 		 if($('#brandForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/brandMng/modify.shtml",
+				 url:"${wmsUrl}/admin/goods/goodsPriceRatioMng/addRatioPlatform.shtml",
 				 type:'post',
 				 data:JSON.stringify(sy.serializeObject($('#brandForm'))),
 				 contentType: "application/json; charset=utf-8",
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){	
-						 parent.layer.closeAll();
-						 parent.reloadTable();
+						 parent.location.reload();
 					 }else{
 						 layer.alert(data.msg);
 					 }
 				 },
 				 error:function(){
-					 layer.alert("提交失败，请联系客服处理");
+					 layer.alert("新增比价平台失败，请联系客服处理");
 				 }
 			 });
 		 }else{
@@ -59,25 +55,32 @@
 		 }
 	 });
 	
+	 $('#resetBtn').click(function() {
+	        $('#brandForm').data('bootstrapValidator').resetForm(true);
+	    });
+	
 	$('#brandForm').bootstrapValidator({
 //      live: 'disabled',
-	      message: 'This value is not valid',
-	      feedbackIcons: {
-	          valid: 'glyphicon glyphicon-ok',
-	          invalid: 'glyphicon glyphicon-remove',
-	          validating: 'glyphicon glyphicon-refresh'
-	      },
-	      fields: {
-	    	  brand: {
-	              message: '品牌名称不正确',
-	              validators: {
-	                  notEmpty: {
-	                      message: '品牌名称不能为空！'
-	                  }
-	              }
-	      	  }
-	      }
-	  });
+      message: 'This value is not valid',
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+    	  ratioPlatformName: {
+              message: '比价平台名称不正确',
+              validators: {
+                  notEmpty: {
+                      message: '比价平台名称不能为空！'
+                  }
+              }
+      	  }
+      }
+  });
+	
+	
+	
 	</script>
 </body>
 </html>

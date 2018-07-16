@@ -100,6 +100,8 @@ public class ServerCenterContants {
 			+ "/cooperation/shopkeeper";
 	public static final String USER_CENTER_PARTNER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/cooperation/partner";
+	public static final String USER_CENTER_GRADE_INIT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/area-center/init/{id}";
 	/**
 	 * 商品中心url
 	 */
@@ -144,6 +146,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/specs/value/save";
 	public static final String GOODS_CENTER_SPECS_ALL_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpeceInfo";
+	public static final String GOODS_CENTER_SPECS_UPDATE_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/updateValue";
+	public static final String GOODS_CENTER_SPECS_UPDATE_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/specs/updateSpecs";
 
 
 	/*------------------------分类管理-----------------------*/
@@ -223,6 +229,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/goods/updateGoodsInfo";
 	public static final String GOODS_CENTER_IMPORT_GOODSINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/import/goods";
+	public static final String GOODS_CENTER_CREATE_ITEMINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/goods/saveItemInfo";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";
@@ -270,9 +278,17 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsExtensionInfo";
 	public static final String GOODS_CENTER_UPDATE_EXTENSION_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/updateGoodsExtensionInfo";
+	public static final String GOODS_CENTER_PUBLISH_ERROR_LIST = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/publish/exception/{centerId}/{type}";
+	public static final String GOODS_CENTER_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/publish/{centerId}";
+	public static final String GOODS_CENTER_UNPUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/publish/del/{centerId}";
 	/*------------------------商品标签管理-----------------------*/
 	public static final String GOODS_CENTER_TAG_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/queryForPage";
+	public static final String GOODS_CENTER_BIND_TAG_BATCH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/tag/batch-bind";
 	public static final String GOODS_CENTER_TAG_SAVE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goodsTag/saveTag";
 	public static final String GOODS_CENTER_QUERY_TAG_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -287,6 +303,18 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/tagFunc";
 	public static final String ORDER_CENTER_PRESELL_CANCLEFUNC = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/presell/pass";
+	public static final String GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsPriceRatioListInfo";
+	public static final String GOODS_CENTER_QUERY_GOODS_RATIO_PLATFORM_PAGE_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForPage";
+	public static final String GOODS_CENTER_CREATE_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/createGoodsRatioPlatformInfo";
+	public static final String GOODS_CENTER_UPDATE_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/updateGoodsRatioPlatformInfo";
+	public static final String GOODS_CENTER_QUERY_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForEdit";
+	public static final String GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/syncGoodsPriceRatioInfo";
 
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")

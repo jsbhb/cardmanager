@@ -36,28 +36,29 @@ public class MallGoodsMngController extends BaseController {
 
 	@Resource
 	GoodsItemService goodsItemService;
-	
+
 	@Resource
 	GoodsService goodsService;
 
-//	@RequestMapping(value = "/mng")
-//	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
-//		Map<String, Object> context = getRootMap();
-//		StaffEntity opt = SessionUtils.getOperator(req);
-//		context.put("opt", opt);
-//		return forword("mall/goods/mng", context);
-//	}
-	
+	// @RequestMapping(value = "/mng")
+	// public ModelAndView toFuncList(HttpServletRequest req,
+	// HttpServletResponse resp) {
+	// Map<String, Object> context = getRootMap();
+	// StaffEntity opt = SessionUtils.getOperator(req);
+	// context.put("opt", opt);
+	// return forword("mall/goods/mng", context);
+	// }
+
 	@RequestMapping(value = "/mng")
-//	@RequestMapping(value = "/list")
+	// @RequestMapping(value = "/list")
 	public ModelAndView goodsItemList(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		//分级类型不是海外购时，提示无法使用功能
-//		if (opt.getGradeType() != 1) {
-//			return forword("mall/goods/notice", context);
-//		}
+		// 分级类型不是海外购时，提示无法使用功能
+		// if (opt.getGradeType() != 1) {
+		// return forword("mall/goods/notice", context);
+		// }
 		if (opt.getGradeId() == 0) {
 			return forword("mall/goods/notice", context);
 		}
@@ -95,18 +96,18 @@ public class MallGoodsMngController extends BaseController {
 				tagBindEntity.setTagId(Integer.parseInt(tagId));
 				item.setTagBindEntity(tagBindEntity);
 			}
-			
-//			String status = req.getParameter("status");
-//			if (!StringUtil.isEmpty(status)) {
-//				item.setStatus(status);
-//			}
+
+			// String status = req.getParameter("status");
+			// if (!StringUtil.isEmpty(status)) {
+			// item.setStatus(status);
+			// }
 			String tabId = req.getParameter("hidTabId");
 			if ("first".equals(tabId)) {
 				item.setStatus("1");
 			} else if ("second".equals(tabId)) {
 				item.setStatus("0");
 			}
-			
+
 			String itemId = req.getParameter("itemId");
 			if (!StringUtil.isEmpty(itemId)) {
 				item.setItemId(itemId);
@@ -128,6 +129,10 @@ public class MallGoodsMngController extends BaseController {
 				GoodsEntity goodsEntity = new GoodsEntity();
 				goodsEntity.setType(Integer.parseInt(goodsType));
 				item.setGoodsEntity(goodsEntity);
+			}
+			String encode = req.getParameter("encode");
+			if (!StringUtil.isEmpty(encode)) {
+				item.setEncode(encode);
 			}
 
 			params.put("centerId", staffEntity.getGradeId());
@@ -160,7 +165,7 @@ public class MallGoodsMngController extends BaseController {
 
 		return pcb;
 	}
-	
+
 	@RequestMapping(value = "/puton", method = RequestMethod.POST)
 	public void puton(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -195,6 +200,104 @@ public class MallGoodsMngController extends BaseController {
 		}
 
 		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/publishList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack publishList(HttpServletRequest req, HttpServletResponse resp, GoodsEntity item) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String tabId = req.getParameter("hidTabId");
+			if ("first".equals(tabId)) {
+				params.put("type", 1);
+			} else if ("second".equals(tabId)) {
+				params.put("type", 2);
+			}
+
+			params.put("centerId", staffEntity.getGradeId());
+
+			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
+					ServerCenterContants.GOODS_CENTER_PUBLISH_ERROR_LIST, GoodsEntity.class);
+
+			List<GoodsEntity> list = (List<GoodsEntity>) pcb.getObj();
+
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(item);
+			pcb.setSuccess(true);
+			return pcb;
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			return pcb;
+		}
+
+		return pcb;
+	}
+	
+	@RequestMapping(value = "/publish", method = RequestMethod.POST)
+	public void publish(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String goodsIds = req.getParameter("goodsIds");
+			if (StringUtil.isEmpty(goodsIds)) {
+				sendFailureMessage(resp, "操作失败：没有商品ID");
+				return;
+			}
+			goodsItemService.publish(goodsIds, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/unPublish", method = RequestMethod.POST)
+	public void unPublish(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String goodsIds = req.getParameter("goodsIds");
+			if (StringUtil.isEmpty(goodsIds)) {
+				sendFailureMessage(resp, "操作失败：没有商品ID");
+				return;
+			}
+			goodsItemService.unPublish(goodsIds, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/list")
+	public ModelAndView goodsPublishList(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		if (opt.getGradeId() == 0) {
+			return forword("mall/goods/notice", context);
+		}
+		try {
+			// set page privilege
+			if (opt.getRoleId() == 1) {
+				context.put("prilvl", "1");
+			} else {
+				context.put("prilvl", req.getParameter("privilege"));
+			}
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+		return forword("mall/goods/publishExceptionList", context);
 	}
 
 }

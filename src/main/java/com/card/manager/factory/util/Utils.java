@@ -21,13 +21,13 @@ public class Utils {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Map<String,Object> isAllFieldNotNull(Object obj, List<String> fields) {
-		Map<String,Object> result = new HashMap<String,Object>();
+	public static Map<String, Object> isAllFieldNotNull(Object obj, List<String> fields) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("success", true);
 		Class stuCla = (Class) obj.getClass();// 得到类对象
 		Field[] fs = stuCla.getDeclaredFields();// 得到属性集合
 		for (Field f : fs) {// 遍历属性
-			if(fields != null){
+			if (fields != null) {
 				if (fields.contains(f.getName())) {
 					continue;
 				}
@@ -44,7 +44,7 @@ public class Utils {
 			if (val == null || "".equals(val)) {
 				result.put("success", false);
 				FieldDescribe describe = f.getAnnotation(FieldDescribe.class);
-				if(describe != null){
+				if (describe != null) {
 					result.put("describe", describe.describe());
 				}
 				return result;
@@ -52,8 +52,6 @@ public class Utils {
 		}
 		return result;
 	}
-	
-	
 
 	/**
 	 * @fun 字符串转整数
@@ -68,6 +66,15 @@ public class Utils {
 		}
 	}
 
+	public static boolean isNumeric(String str) {
+		for (int i = str.length(); --i >= 0;) {
+			if (!Character.isDigit(str.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * @fun 字符串去除小数点后的字符
 	 * @param str
@@ -75,8 +82,10 @@ public class Utils {
 	 */
 	public static String removePoint(String str) {
 		if (str != null) {
-			if (str.contains(".")) {
-				return str.substring(0, str.indexOf("."));
+			if (isNumeric(str)) {
+				if (str.contains(".")) {
+					return str.substring(0, str.indexOf("."));
+				}
 			}
 		}
 		return str;
@@ -106,7 +115,7 @@ public class Utils {
 				if (f.getType() == java.util.List.class || f.getType() == java.util.Set.class) {
 					// 如果是List类型，得到其Generic的类型
 					Type genericType = f.getGenericType();
-					if (genericType == null){
+					if (genericType == null) {
 						return null;
 					}
 					// 如果是泛型参数的类型
@@ -123,54 +132,56 @@ public class Utils {
 		}
 		return null;
 	}
-	
-    private static final Integer INTEGER_ONE = 1;  
-    @SuppressWarnings("rawtypes")
-	public static boolean isEqualCollection(Collection a, Collection b){  
-        if (a.size() !=b.size()) {  // size是最简单的相等条件  
-           return false;  
-        }  
-        Map mapa = getCardinalityMap(a);   
-        Map mapb = getCardinalityMap(b);  
-         
-        // 转换map后，能去掉重复的，这时候size就是非重复项，也是先决条件  
-        if (mapa.size() !=mapb.size()) {    
-           return false;  
-        }  
-        Iterator it =mapa.keySet().iterator();  
-        while (it.hasNext()) {  
-           Object obj = it.next();  
-           // 查询同一个obj，首先两边都要有，而且还要校验重复个数，就是map.value  
-           if (getFreq(obj,mapa) != getFreq(obj, mapb)) {  
-               return false;  
-           }  
-        }  
-        return true;  
-    }  
-    /** 
-     * 以obj为key，可以防止重复，如果重复就value++ 
-     * 这样实际上记录了元素以及出现的次数 
-     */  
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private static final Map getCardinalityMap(Collection coll) {  
-        Map count = new HashMap();  
-        for (Iterator it =coll.iterator(); it.hasNext();) {  
-           Object obj =it.next();  
-           Integer c =(Integer) count.get(obj);  
-           if (c == null)     
-               count.put(obj, INTEGER_ONE);  
-           else {  
-               count.put(obj, new Integer(c.intValue() + 1));  
-           }  
-        }  
-        return count;  
-    }  
-    @SuppressWarnings("rawtypes")
-	private static final int getFreq(Object obj, Map freqMap) {  
-        Integer count =(Integer) freqMap.get(obj);  
-        if (count != null) {  
-           return count.intValue();  
-        }  
-        return 0;  
-    }  
+
+	private static final Integer INTEGER_ONE = 1;
+
+	@SuppressWarnings("rawtypes")
+	public static boolean isEqualCollection(Collection a, Collection b) {
+		if (a.size() != b.size()) { // size是最简单的相等条件
+			return false;
+		}
+		Map mapa = getCardinalityMap(a);
+		Map mapb = getCardinalityMap(b);
+
+		// 转换map后，能去掉重复的，这时候size就是非重复项，也是先决条件
+		if (mapa.size() != mapb.size()) {
+			return false;
+		}
+		Iterator it = mapa.keySet().iterator();
+		while (it.hasNext()) {
+			Object obj = it.next();
+			// 查询同一个obj，首先两边都要有，而且还要校验重复个数，就是map.value
+			if (getFreq(obj, mapa) != getFreq(obj, mapb)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 以obj为key，可以防止重复，如果重复就value++ 这样实际上记录了元素以及出现的次数
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private static final Map getCardinalityMap(Collection coll) {
+		Map count = new HashMap();
+		for (Iterator it = coll.iterator(); it.hasNext();) {
+			Object obj = it.next();
+			Integer c = (Integer) count.get(obj);
+			if (c == null)
+				count.put(obj, INTEGER_ONE);
+			else {
+				count.put(obj, new Integer(c.intValue() + 1));
+			}
+		}
+		return count;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private static final int getFreq(Object obj, Map freqMap) {
+		Integer count = (Integer) freqMap.get(obj);
+		if (count != null) {
+			return count.intValue();
+		}
+		return 0;
+	}
 }

@@ -95,4 +95,6 @@ public interface GradeMngService extends ServerCenterService {
 
 	int queryFirstGradeIdByOpt(String gradeId);
 
+	void gradeInit(Integer id, String token);
+
 }

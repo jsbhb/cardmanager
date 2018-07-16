@@ -19,31 +19,48 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">商品品牌</div>
 				<div class="col-sm-9 item-right">
-					<select class="form-control" id="brandId">
+			   		<input type="text" class="form-control" name="brand" id="brand" value="${goodsExtensionInfo.brand}">
+			   		<div class="item-content">
+		             	（请选择商品品牌）
+		            </div>
+				</div>
+			</div>
+			<div class="list-item" style="display:none">
+				<div class="col-sm-3 item-left">商品品牌</div>
+				<div class="col-sm-9 item-right">
+			   		<select class="form-control" id="hidBrand">
 		                <c:forEach var="brand" items="${brands}">
-		                	<c:choose>
-							   <c:when test="${goodsExtensionInfo.brand == brand.brand}">
-		                			<option selected="selected" value="${brand.brandId}">${brand.brand}</option>
-							   </c:when>
-							   <c:otherwise>
-		                			<option value="${brand.brandId}">${brand.brand}</option>
-							   </c:otherwise>
-							</c:choose>
+		                <option value="${brand.brandId}">${brand.brand}</option>
 		                </c:forEach>
 		            </select>
 				</div>
 			</div>
+			<div class="select-content">
+				<input type="text" placeholder="请输入品牌名称" id="searchBrand"/>
+	            <ul class="first-ul" style="margin-left:5px;">
+	           		<c:forEach var="brand" items="${brands}">
+	           			<c:set var="brand" value="${brand}" scope="request" />
+						<li><span data-name="${brand.brand}" class="no-child">${brand.brand}</span></li>
+					</c:forEach>
+	           	</ul>
+	       	</div>
             <input type="hidden" class="form-control" name="goodsId" id="goodsId" value="${goodsExtensionInfo.goodsId}"/>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品名称</div>
 				<div class="col-sm-9 item-right">
                		<input type="text" class="form-control" name="goodsName" value="${goodsExtensionInfo.goodsName}">
+               		<div class="item-content">
+		             	（商品名称请控制在12个字以内）
+		            </div>
 				</div>
 			</div>
 	      	<div class="list-item">
 				<div class="col-sm-3 item-left">商品规格</div>
 				<div class="col-sm-9 item-right">
 	                 <input type="text" class="form-control" name="specs" value="${goodsExtensionInfo.specs}">
+	                 <div class="item-content">
+		             	（商品规格请控制在5个字以内）
+		             </div>
 				</div>
 			</div>
 	      	<div class="list-item">
@@ -66,7 +83,7 @@
 				<div class="col-sm-9 item-right">
 	                 <input type="text" class="form-control" name="shelfLife" value="${goodsExtensionInfo.shelfLife}">
 	                 <div class="item-content">
-		             	（无保质期商品可不填写）
+		             	（无保质期商品请填写无）
 		             </div>
 				</div>
 			</div>
@@ -80,7 +97,7 @@
 				</div>
 			</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">商品图片</div>
+				<div class="col-sm-3 item-left">商品图片(1441*890px)</div>
 				<div class="col-sm-9 item-right addContent">
 					<c:choose>
 					   <c:when test="${goodsExtensionInfo.goodsPath != null && goodsExtensionInfo.goodsPath != ''}">
@@ -110,11 +127,17 @@
 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
+	var cpLock = false;
+    $('#searchBrand').on('compositionstart', function () {
+        cpLock = true;
+    });
+    $('#searchBrand').on('compositionend', function () {
+        cpLock = false;
+    });
 	 
 	 $("#submitBtn").click(function(){
 		 $('#goodsForm').data("bootstrapValidator").validate();
 		 if($('#goodsForm').data("bootstrapValidator").isValid()){
-			 var tmpBrand = $("#brandId option:selected").text();
 			 var tmpGoodsPath = $("#goodsPath").val();
 			 if (tmpGoodsPath == "" || tmpGoodsPath == null) {
 				 layer.alert("请上传商品图片！");
@@ -123,7 +146,6 @@
 			 var url = "${wmsUrl}/admin/label/goodsExtensionMng/editGoodsInfo.shtml";
 			 
 			 var formData = sy.serializeObject($('#goodsForm'));
-			 formData["brand"] = tmpBrand;
 			 
 			 $.ajax({
 				 url:url,
@@ -163,7 +185,11 @@
 						validators: {
 							notEmpty: {
 								message: '商品名称不能为空！'
-							}
+							},
+							stringLength: {
+			                    max: 12,
+			                    message: '商品名称请小于12个字'
+			                }
 						}
 				  },
 				  specs: {
@@ -172,7 +198,11 @@
 						validators: {
 							notEmpty: {
 								message: '商品规格不能为空！'
-							}
+							},
+							stringLength: {
+			                    max: 5,
+			                    message: '商品规格请小于5个字'
+			                }
 						}
 				  },
 				  origin: {
@@ -190,6 +220,15 @@
 						validators: {
 							notEmpty: {
 								message: '自定义字段不能为空！'
+							}
+						}
+				  },
+				  shelfLife: {
+						trigger:"change",
+						message: '保质期字段不正确',
+						validators: {
+							notEmpty: {
+								message: '保质期字段不能为空！'
 							}
 						}
 				  },
@@ -235,6 +274,69 @@
 			$(this).parent().parent().removeClass("choose");
 			$(this).parent().parent().parent().html(ht);
 		});
+		
+		//点击展开下拉列表
+		$('#brand').click(function(){
+			$('.select-content').css('width',$(this).outerWidth());
+			$('.select-content').css('left',$(this).offset().left - 25);
+			$('.select-content').css('top',$(this).offset().top + $(this).height() - 2);
+			$('.select-content').stop();
+			$('.select-content').slideDown(300);
+		});
+		
+		//点击空白隐藏下拉列表
+		$('html').click(function(event){
+			var el = event.target || event.srcelement;
+			if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "brand"){
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
+		//点击选择分类
+		$('.select-content').on('click','span',function(event){
+			var el = event.target || event.srcelement;
+			if(el.nodeName != 'I'){
+				var name = $(this).attr('data-name');
+				$('#brand').val(name);
+				$('#searchBrand').val("");
+				reSetDefaultInfo();
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
+		
+		$('#searchBrand').on("input",function(){
+			if (!cpLock) {
+				var tmpSearchKey = $(this).val();
+				if (tmpSearchKey !='') {
+					var searched = "";
+//	 				var unSearched = "";
+					$('.first-ul li').each(function(){
+						var tmpLiText = $(this).text();
+						var flag = tmpLiText.indexOf(tmpSearchKey);
+						if(flag >=0) {
+							searched = searched + "<li><span data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+//	 					}else {
+//	 						unSearched = unSearched + "<li><span data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+						}
+					});
+//	 				searched = searched + unSearched;
+					$('.first-ul').html(searched);
+				} else {
+					reSetDefaultInfo();
+				}
+	        }
+		});
+		
+		function reSetDefaultInfo() {
+			var tmpBrands = "";
+			var hidBrandSelect = document.getElementById("hidBrand");
+ 			var options = hidBrandSelect.options;
+ 			for(var j=0;j<options.length;j++){
+ 				tmpBrands = tmpBrands + "<li><span data-name=\""+options[j].text+"\" class=\"no-child\">"+options[j].text+"</span></li>";
+ 			}
+			$('.first-ul').html(tmpBrands);
+		}
 	</script>
 </body>
 </html>

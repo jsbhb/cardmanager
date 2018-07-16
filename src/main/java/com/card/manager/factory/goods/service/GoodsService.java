@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.model.GoodsEntity;
+import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
@@ -278,5 +280,19 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void batchUploadPic(List<GoodsFielsMaintainBO> boList, String token) throws Exception;
+
+	/**
+	 * addItemInfoEntity:添加商品规格. <br/>
+	 * 
+	 * @author hebin
+	 * @param entity
+	 * @param token
+	 * @since JDK 1.7
+	 */
+	void addItemInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception;
+
+	List<GoodsPriceRatioEntity> queryGoodsPriceRatioList(GoodsItemEntity entity, String token);
+
+	void syncRatioGoodsInfo(List<GoodsPriceRatioEntity> list, StaffEntity staffEntity) throws Exception;
 
 }

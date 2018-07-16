@@ -15,11 +15,10 @@
 	<section class="content-iframe">
        	<form class="form-horizontal" role="form" id="brandForm" style="margin-top:20px;">
 			<div class="list-item">
-				<div class="col-xs-3 item-left">品牌名称<font style="color:red">*</font> </div>
+				<div class="col-xs-3 item-left">比价平台名称<font style="color:red">*</font> </div>
 				<div class="col-xs-9 item-right">
-           		    <input type="hidden" class="form-control" name="id" value="${brand.id}">
-                    <input type="hidden" class="form-control" name="brandId" value="${brand.brandId}">
-					<input type="text" class="form-control" name="brand" value="${brand.brand}">
+           		    <input type="hidden" class="form-control" name="id" value="${ratioPlatformInfo.id}">
+					<input type="text" class="form-control" name="ratioPlatformName" value="${ratioPlatformInfo.ratioPlatformName}">
 	            	<div class="item-content">
 	             		（请输入数字、英文和汉字，限1-40字）
 	             	</div>
@@ -37,7 +36,7 @@
 		 $('#brandForm').data("bootstrapValidator").validate();
 		 if($('#brandForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
-				 url:"${wmsUrl}/admin/goods/brandMng/modify.shtml",
+				 url:"${wmsUrl}/admin/goods/goodsPriceRatioMng/modify.shtml",
 				 type:'post',
 				 data:JSON.stringify(sy.serializeObject($('#brandForm'))),
 				 contentType: "application/json; charset=utf-8",
@@ -68,11 +67,11 @@
 	          validating: 'glyphicon glyphicon-refresh'
 	      },
 	      fields: {
-	    	  brand: {
-	              message: '品牌名称不正确',
+	    	  ratioPlatformName: {
+	              message: '比价平台名称不正确',
 	              validators: {
 	                  notEmpty: {
-	                      message: '品牌名称不能为空！'
+	                      message: '比价平台名称不能为空！'
 	                  }
 	              }
 	      	  }

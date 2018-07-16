@@ -9,7 +9,9 @@ package com.card.manager.factory.goods.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -108,9 +110,8 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 			JSONArray json = JSONArray.fromObject(specsPojos);
 			goodsItem.setInfo(json.toString());
 		}
-		
 
-		//新增商品时判断是否添加商品标签
+		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
 			goodsTagBindEntity.setItemId(goodsItem.getItemId());
@@ -225,8 +226,8 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		String[] arr = itemId.split(",");
 		List<String> itemIdList = Arrays.asList(arr);
-//		List<String> list = new ArrayList<String>();
-//		list.add(itemId);
+		// List<String> list = new ArrayList<String>();
+		// list.add(itemId);
 		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
 				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/" + staffEntity.getGradeId(),
 				staffEntity.getToken(), true, itemIdList, HttpMethod.POST);
@@ -296,7 +297,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		goodsItem.setGoodsPrice(goodsPrice);
 		goodsItem.setOpt(pojo.getOpt());
-		
+
 		GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
 		goodsTagBindEntity.setItemId(pojo.getItemId());
 		goodsTagBindEntity.setTagId(Integer.parseInt(pojo.getTagId()));
@@ -320,9 +321,9 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		List<String> list = new ArrayList<String>();
 		list.add(itemId);
-		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
-				+ ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_SYNC,
-				staffEntity.getToken(), true, list, HttpMethod.POST);
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_SYNC, staffEntity.getToken(),
+				true, list, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
@@ -338,7 +339,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_EDIT, 
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_EDIT,
 				staffEntity.getToken(), true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -352,7 +353,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_CHECK, 
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_CHECK,
 				staffEntity.getToken(), true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -363,10 +364,10 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	@Log(content = "更新商品明细价格信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
-		
-		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
-				+ ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_EDIT,
-				staffEntity.getToken(), true, price, HttpMethod.POST);
+
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_EDIT, staffEntity.getToken(),
+				true, price, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
@@ -381,15 +382,15 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		List<GoodsInfoListForDownload> list = new ArrayList<GoodsInfoListForDownload>();
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true, param,
-				HttpMethod.POST);
-		
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true,
+				param, HttpMethod.POST);
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		
+
 		if (!json.getBoolean("success")) {
 			return list;
 		}
-		
+
 		JSONArray obj = json.getJSONArray("obj");
 		int index = obj.size();
 
@@ -397,7 +398,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 			JSONObject jObj = obj.getJSONObject(i);
 			list.add(JSONUtilNew.parse(jObj.toString(), GoodsInfoListForDownload.class));
 		}
-		
+
 		return list;
 	}
 
@@ -407,9 +408,9 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		goodsExtension.setGoodsId(goodsId);
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_EXTENSION_INFO_BY_GOODSID, token, true, goodsExtension,
-				HttpMethod.POST);
-		
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_EXTENSION_INFO_BY_GOODSID, token,
+				true, goodsExtension, HttpMethod.POST);
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsExtensionEntity.class);
 	}
@@ -418,16 +419,86 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 	@Log(content = "更新商品推广信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updGoodsExtensionInfoEntity(GoodsExtensionEntity entity, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
-		
-		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
-				+ ServerCenterContants.GOODS_CENTER_UPDATE_EXTENSION_INFO,
+
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_UPDATE_EXTENSION_INFO,
 				staffEntity.getToken(), true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("更新商品明细价格信息操作失败:" + json.getString("errorMsg"));
+			throw new Exception("更新商品推广信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
+	@Override
+	public void batchBindTag(String itemIds, String tagIds, StaffEntity staffEntity) {
+		if (itemIds == null || tagIds == null) {
+			return;
+		}
+		String[] itemIdArr = itemIds.split(",");
+		String[] tagIdArr = tagIds.split(",");
+		GoodsTagBindEntity entity = null;
+		List<GoodsTagBindEntity> list = new ArrayList<GoodsTagBindEntity>();
+		for (String itemId : itemIdArr) {
+			for (String tagId : tagIdArr) {
+				entity = new GoodsTagBindEntity();
+				entity.setItemId(itemId);
+				entity.setTagId(Integer.valueOf(tagId));
+				entity.setOpt(staffEntity.getOptName());
+				list.add(entity);
+			}
+		}
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BIND_TAG_BATCH, staffEntity.getToken(),
+				true, list, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("批量绑定商品标签出错:" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public void publish(String goodsIds, StaffEntity staffEntity) {
+		RestCommonHelper helper = new RestCommonHelper();
+		String[] goodsIdArr = goodsIds.split(",");
+		List<String> goodsIdList = Arrays.asList(goodsIdArr);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("centerId", staffEntity.getGradeId());
+
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PUBLISH,
+				staffEntity.getToken(), true, goodsIdList, HttpMethod.POST, param);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("商品发布失败:" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public void unPublish(String goodsIds, StaffEntity staffEntity) {
+		RestCommonHelper helper = new RestCommonHelper();
+		String[] goodsIdArr = goodsIds.split(",");
+		List<String> goodsIdList = Arrays.asList(goodsIdArr);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("centerId", staffEntity.getGradeId());
+
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_UNPUBLISH,
+				staffEntity.getToken(), true, goodsIdList, HttpMethod.POST, param);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("商品删除发布失败:" + json.getString("errorMsg"));
+		}
+
+	}
 }

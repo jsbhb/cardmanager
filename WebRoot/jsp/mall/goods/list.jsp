@@ -77,6 +77,11 @@
 					</div>
 				</div>
 				<div class="col-xs-3">
+					<div class="searchItem">
+	                  	<input type="text" class="form-control" name="encode" placeholder="条形码">
+					</div>
+				</div>
+				<div class="col-xs-3">
 					<div class="searchBtns">
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
@@ -118,9 +123,10 @@
 								<th width="5%">供应商</th>
 								<th width="5%">商品类型</th>
 								<th width="10%">条形码</th>
-								<th width="10%">商品价格</th>
-								<th width="10%">商品库存</th>
+								<th width="5%">商品价格</th>
+								<th width="5%">商品库存</th>
 								<th width="5%">商品状态</th>
+								<th width="5%">商品规格</th>
 								<c:if test="${prilvl == 1}">
 								<th width="5%">操作</th>
 								</c:if>
@@ -201,7 +207,7 @@ function rebuildTable(data){
 		} else {
 			str += "<td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td style='text-align:left;'><a target='_blank' href='http://www.cncoopbuy.com/goodsDetail.html?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
@@ -227,7 +233,7 @@ function rebuildTable(data){
 			case 2:str += "</td><td>一般贸易商品";break;
 			default:str += "</td><td>状态类型："+goodsType;
 		}
-		str += "</td><td>" + list[i].encode;
+		str += "</td><td>" + (list[i].encode == null ? "" : list[i].encode);
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -240,6 +246,7 @@ function rebuildTable(data){
 			case 1:str += "</td><td>已上架";break;
 			default:str += "</td><td>状态错误："+status;
 		}
+		str += "</td><td>" + (list[i].simpleInfo == null ? "" : list[i].simpleInfo);
 		if(prilvl == 1){
 			str += "</td><td>";
 			if(status == 0){
@@ -267,7 +274,7 @@ function puton(id){
 	    if(valArr.length==0){
 	    	layer.alert("请选择未上架状态的数据");
 	    	return;
-	    }
+	    } 
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
 	} else {
 		itemIds = id;
@@ -303,7 +310,7 @@ function putoff(id){
 	    if(valArr.length==0){
 	    	layer.alert("请选择已上架状态的数据");
 	    	return;
-	    }
+	    } 
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
 	} else {
 		itemIds = id;

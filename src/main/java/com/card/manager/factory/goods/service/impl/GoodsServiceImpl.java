@@ -49,6 +49,7 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPrice;
+import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
 import com.card.manager.factory.goods.model.GoodsRebateEntity;
 import com.card.manager.factory.goods.model.GoodsStockEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
@@ -617,10 +618,15 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
-			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goods.getGoodsId());
-			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-			goods.setGoodsTagBind(goodsTagBindEntity);
+			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
+			GoodsTagBindEntity goodsTagBindEntity = null;
+			for(GoodsItemEntity gie:items) {
+				goodsTagBindEntity = new GoodsTagBindEntity();
+				goodsTagBindEntity.setItemId(gie.getItemId());
+				goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
+				goodsTagBindList.add(goodsTagBindEntity);
+			}
+			goods.setGoodsTagBindList(goodsTagBindList);
 		}
 
 		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
@@ -758,7 +764,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goods.getGoodsId());
+			goodsTagBindEntity.setItemId(goodsItem.getItemId());
 			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
 			goods.setGoodsTagBind(goodsTagBindEntity);
 		}
@@ -1334,6 +1340,206 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("新增商品明细信息操作失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	@Log(content = "添加商品规格信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void addItemInfoEntity(CreateGoodsInfoEntity entity, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		GoodsEntity goods = new GoodsEntity();
+		goods.setGoodsId(entity.getGoodsId() + "");
+		goods.setSupplierId(entity.getSupplierId());
+		goods.setSupplierName(entity.getSupplierName());
+		goods.setBaseId(entity.getBaseId());
+		goods.setTemplateId(0);
+		goods.setGoodsName(entity.getGoodsName());
+		goods.setOrigin(entity.getOrigin());
+		goods.setType(entity.getType());
+
+		// -------------------保存商品详情---------------------//
+		String savePath;
+		String invitePath;
+		String pathId = entity.getGoodsId() + "";
+		if (entity.getGoodsDetailPath() != null) {
+			if (entity.getGoodsDetailPath().indexOf(".html") > 0) {
+				pathId = entity.getGoodsDetailPath().substring(entity.getGoodsDetailPath().lastIndexOf("/") + 1);
+				pathId = pathId.substring(0, pathId.lastIndexOf("."));
+			}
+		}
+		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
+		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
+		ReadIniInfo.getInstance();
+		savePath = PathFormat.parse(savePath);
+		invitePath = PathFormat.parse(invitePath);
+		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
+		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+		SftpService service = (SftpService) wac.getBean("sftpService");
+		service.login();
+		service.uploadFile(savePath, pathId + ResourceContants.HTML_SUFFIX, is, "");
+		goods.setDetailPath(invitePath + pathId + ResourceContants.HTML_SUFFIX);
+		// -------------------保存商品详情---------------------//
+		// goods.setDetailPath(entity.getDetailInfo());
+
+		List<GoodsFile> files = new ArrayList<GoodsFile>();
+		if (entity.getPicPath() != null) {
+			String[] goodsFiles = entity.getPicPath().split(",");
+			for (String file : goodsFiles) {
+				GoodsFile f = new GoodsFile();
+				f.setPath(file);
+				f.setGoodsId(goods.getGoodsId());
+				files.add(f);
+			}
+		}
+		goods.setFiles(files);
+
+		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
+		if (entity.getItems() != null && entity.getItems().size() > 0) {
+			for (GoodsItemEntity gie:entity.getItems()) {
+				GoodsItemEntity goodsItem = new GoodsItemEntity();
+				goodsItem.setGoodsId(goods.getGoodsId());
+				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
+				goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+				goodsItem.setItemCode(gie.getItemCode());
+				goodsItem.setSku(gie.getSku());
+				goodsItem.setWeight(gie.getWeight());
+				goodsItem.setExciseTax(gie.getExciseTax());
+				goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+				goodsItem.setConversion(gie.getConversion());
+				goodsItem.setEncode(gie.getEncode());
+				goodsItem.setShelfLife(gie.getShelfLife());
+				goodsItem.setCarTon(gie.getCarTon());
+				
+				GoodsPrice goodsPrice = new GoodsPrice();
+				goodsPrice.setItemId(goodsItem.getItemId());
+				goodsPrice.setMin(gie.getGoodsPrice().getMin());
+				goodsPrice.setMax(gie.getGoodsPrice().getMax());
+				goodsPrice.setProxyPrice(gie.getGoodsPrice().getProxyPrice());
+				goodsPrice.setFxPrice(gie.getGoodsPrice().getFxPrice());
+				goodsPrice.setRetailPrice(gie.getGoodsPrice().getRetailPrice());
+				goodsPrice.setOpt(entity.getOpt());
+
+				goodsItem.setGoodsPrice(goodsPrice);
+				goodsItem.setOpt(entity.getOpt());
+				
+				String keys = gie.getInfo();
+				List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
+				if ((keys != null && !"".equals(keys))) {
+					String[] keyArray = keys.split(";");
+					for (int i = 0; i < keyArray.length; i++) {
+						ItemSpecsPojo itemSpecsPojo;
+						if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
+							itemSpecsPojo = new ItemSpecsPojo();
+							String[] kContesnts = keyArray[i].split("&");
+							itemSpecsPojo.setSkId(kContesnts[0].split("\\|")[0]);
+							itemSpecsPojo.setSkV(kContesnts[0].split("\\|")[1]);
+							itemSpecsPojo.setSvId(kContesnts[1].split("\\|")[0]);
+							itemSpecsPojo.setSvV(kContesnts[1].split("\\|")[1]);
+							specsPojos.add(itemSpecsPojo);
+						}
+					}
+
+					JSONArray json = JSONArray.fromObject(specsPojos);
+					goodsItem.setInfo(json.toString());
+				}
+				items.add(goodsItem);
+			}
+		} else {
+			GoodsItemEntity goodsItem = new GoodsItemEntity();
+			int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
+			goodsItem.setGoodsId(goods.getGoodsId());
+			goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
+			goodsItem.setItemCode(entity.getItemCode());
+			goodsItem.setSku(entity.getSku());
+			goodsItem.setWeight(entity.getWeight());
+			goodsItem.setExciseTax(entity.getExciseTax());
+			goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+			goodsItem.setConversion(entity.getConversion());
+			goodsItem.setEncode(entity.getEncode());
+			goodsItem.setShelfLife(entity.getShelfLife());
+			goodsItem.setCarTon(entity.getCarTon());
+
+			GoodsPrice goodsPrice = new GoodsPrice();
+			goodsPrice.setItemId(goodsItem.getItemId());
+			goodsPrice.setMin(entity.getMin());
+			goodsPrice.setMax(entity.getMax());
+			goodsPrice.setProxyPrice(entity.getProxyPrice());
+			goodsPrice.setFxPrice(entity.getFxPrice());
+			goodsPrice.setRetailPrice(entity.getRetailPrice());
+			goodsPrice.setOpt(entity.getOpt());
+
+			goodsItem.setGoodsPrice(goodsPrice);
+			goodsItem.setOpt(entity.getOpt());
+			items.add(goodsItem);
+		}
+		goods.setItems(items);
+
+		// 新增商品时判断是否添加商品标签
+		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
+			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
+			GoodsTagBindEntity goodsTagBindEntity = null;
+			for(GoodsItemEntity gie:items) {
+				goodsTagBindEntity = new GoodsTagBindEntity();
+				goodsTagBindEntity.setItemId(gie.getItemId());
+				goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
+				goodsTagBindList.add(goodsTagBindEntity);
+			}
+			goods.setGoodsTagBindList(goodsTagBindList);
+		}
+
+		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
+		goodsInfoEntity.setGoods(goods);
+
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CREATE_ITEMINFO, staffEntity.getToken(),
+				true, goodsInfoEntity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("添加商品规格信息操作失败:" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public List<GoodsPriceRatioEntity> queryGoodsPriceRatioList(GoodsItemEntity entity, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<GoodsPriceRatioEntity> list = new ArrayList<GoodsPriceRatioEntity>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), GoodsPriceRatioEntity.class));
+		}
+		return list;
+	}
+
+	@Override
+	@Log(content = "同步商品比价信息操作", source = Log.BACK_PLAT, type = Log.ADD)
+	public void syncRatioGoodsInfo(List<GoodsPriceRatioEntity> list, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		for(GoodsPriceRatioEntity gpre:list) {
+			gpre.setStatus(0);
+			gpre.setOpt(staffEntity.getOpt());
+		}
+
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO, staffEntity.getToken(),
+				true, list, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("同步商品比价信息操作失败:" + json.getString("errorMsg"));
+		}
+
 	}
 
 }
