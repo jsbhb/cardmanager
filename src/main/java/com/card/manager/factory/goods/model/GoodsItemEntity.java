@@ -54,6 +54,7 @@ public class GoodsItemEntity extends Pagination {
 	private int conversion;
 	private double rebate;
 	private String shelfLife;
+	private List<GoodsTagEntity> tagList;
 	private String carTon;
 	private List<GoodsRebateEntity> goodsRebateList; 
 	private String isCreate; //是否创建
@@ -62,6 +63,14 @@ public class GoodsItemEntity extends Pagination {
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
 				&& !"".equals(sku);
+	}
+
+	public List<GoodsTagEntity> getTagList() {
+		return tagList;
+	}
+
+	public void setTagList(List<GoodsTagEntity> tagList) {
+		this.tagList = tagList;
 	}
 
 	public List<GoodsRebateEntity> getGoodsRebateList() {

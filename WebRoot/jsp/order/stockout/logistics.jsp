@@ -129,6 +129,13 @@
 		ht = ht + '<option value="GTO">国通快递</option>';
 		ht = ht + '<option value="UC">优速快递</option>';
 		ht = ht + '<option value="DBL">德邦</option>';
+		ht = ht + '<option value="YXHY">源星货运</option>';
+		ht = ht + '<option value="ANE">安能物流</option>';
+		ht = ht + '<option value="JXWL">家馨物流</option>';
+		ht = ht + '<option value="YPFL">洋浦物流</option>';
+		ht = ht + '<option value="FXTK">福兴特快</option>';
+		ht = ht + '<option value="SSFX">盛世风行</option>';
+		ht = ht + '<option value="OTHER">其他</option>';
 		ht = ht + '</select></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">快递单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="expressIdV"></div></div>';
 		$('#logisticsInfo').append(ht);

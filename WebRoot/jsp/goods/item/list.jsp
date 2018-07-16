@@ -281,6 +281,13 @@ function rebuildTable(data){
 			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
 		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		if(list[i].tagList.length > 0){
+			str += '<p style="margin: 5px 0 0 0;">';
+			for(var j=0;j<list[i].tagList.length;j++){
+				str += "<span class='table_icon'>"+list[i].tagList[j].tagName+"</span>"
+			}
+			str += '</p>';
+		}
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {

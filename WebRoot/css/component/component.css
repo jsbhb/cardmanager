@@ -1,5 +1,5 @@
-/*°´Å¥×é¼þ*/
-/*±³¾°°×É«°´Å¥*/
+/*ï¿½ï¿½Å¥ï¿½ï¿½ï¿½*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Å¥*/
 .btn-bg-white{
 	display: inline-block;
 	height: 30px;
@@ -16,15 +16,15 @@
 	border-color: #59f;
 	text-decoration: none;
 }
-/*±³¾°ÑÕÉ«¿ò*/
-/*»ÒÉ«ÏµÁÐ*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½*/
+/*ï¿½ï¿½É«Ïµï¿½ï¿½*/
 .row-bg-gray{
 	background:#eee;
 	padding: 10px;
 }
 
-/*±í¸ñÑùÊ½*/
-/*¶¯Ì¬±í¸ñ*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
+/*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½*/
 .dynamic-table{
 	width:100%;
 }
@@ -78,6 +78,15 @@ caption{
 }
 .dynamic-table tfoot td{
 	text-align:left;
+}
+span.table_icon{
+	display: inline-block;
+	padding: 0 4px;
+	margin-right: 5px;
+	border: 1px dotted #e31436;
+	vertical-align: 6px;
+	font-size: 12px;
+	color: #e31436;
 }
 
 
