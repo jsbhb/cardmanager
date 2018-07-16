@@ -63,7 +63,7 @@
 				 if(data.success){
 					 layer.alert("保存成功");
 					 parent.layer.closeAll();
-					 parent.refreshTag();
+					 parent.reloadTable();
 				 }else{
 					 layer.alert(data.msg);
 				 }
