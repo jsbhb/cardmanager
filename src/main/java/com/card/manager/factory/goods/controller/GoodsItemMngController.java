@@ -631,6 +631,8 @@ public class GoodsItemMngController extends BaseController {
 		context.put("tags", tags);
 		List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
 		context.put("gradeList", gradeList);
+		List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
+		context.put("firsts", catalogs);
 		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		return forword("goods/item/modelExport", context);
 	}
@@ -658,6 +660,9 @@ public class GoodsItemMngController extends BaseController {
 			}
 			String rebateStart = req.getParameter("rebateStart");
 			String rebateEnd = req.getParameter("rebateEnd");
+			String firstCatalogId = req.getParameter("firstCatalogId");
+			String secondCatalogId = req.getParameter("secondCatalogId");
+			String thirdCatalogId = req.getParameter("thirdCatalogId");
 			GoodsListDownloadParam param = new GoodsListDownloadParam();
 			if (!"".equals(supplierId)) {
 				param.setSupplierId(Integer.parseInt(supplierId));
@@ -678,6 +683,36 @@ public class GoodsItemMngController extends BaseController {
 			}
 			if (!StringUtil.isEmpty(rebateEnd)) {
 				param.setRebateEnd(Double.parseDouble(rebateEnd));
+			}
+			//目前只做了一条类目选择，后期会修改成同时选择多条类目
+			if (!"".equals(firstCatalogId) && firstCatalogId != null && !"-1".equals(firstCatalogId)) {
+				List<String> firstCatalogList = new ArrayList<String>();
+//				for (String firstCatalog : firstCatalogId.split(",")) {
+//					firstCatalogList.add(firstCatalog);
+//				}
+				firstCatalogList.add(firstCatalogId);
+				param.setFirstCatalogList(firstCatalogList);
+			}
+			if (!"".equals(secondCatalogId) && secondCatalogId != null && !"-1".equals(secondCatalogId)) {
+				List<String> secondCatalogList = new ArrayList<String>();
+//				for (String secondCatalog : secondCatalogId.split(",")) {
+//					secondCatalogList.add(secondCatalog);
+//				}
+				secondCatalogList.add(secondCatalogId);
+				param.setSecondCatalogList(secondCatalogList);
+			}
+			if (!"".equals(thirdCatalogId) && thirdCatalogId != null && !"-1".equals(thirdCatalogId)) {
+				List<String> thirdCatalogList = new ArrayList<String>();
+//				for (String thirdCatalog : thirdCatalogId.split(",")) {
+//					thirdCatalogList.add(thirdCatalog);
+//				}
+				thirdCatalogList.add(thirdCatalogId);
+				param.setThirdCatalogList(thirdCatalogList);
+			}
+			//商品报价单默认查询上架商品
+			if ("3".equals(type)) {
+				param.setItemStatus(1);
+				param.setProportionFlg(1);
 			}
 			
 			List<GoodsInfoListForDownload> ReportList = new ArrayList<GoodsInfoListForDownload>();
@@ -701,6 +736,16 @@ public class GoodsItemMngController extends BaseController {
 					}
 				} else {
 					gi.setItemStatusName("未上架");
+				}
+				
+				if (gi.getGoodsType() != null) {
+					switch (gi.getGoodsType()) {
+					case "0":gi.setGoodsTypeName("跨境商品");break;
+					case "2":gi.setGoodsTypeName("一般贸易商品");break;
+					default :gi.setGoodsTypeName("跨境商品");
+					}
+				} else {
+					gi.setGoodsTypeName("跨境商品");
 				}
 				
 				String infoStr = gi.getInfo();
@@ -741,7 +786,9 @@ public class GoodsItemMngController extends BaseController {
 				
 				if (gi.getGradeType() != null) {
 					GradeTypeDTO gradeType = gradeTypes.get(gi.getGradeType());
-					gi.setGradeTypeName(gradeType.getName());
+					if (gradeType != null) {
+						gi.setGradeTypeName(gradeType.getName());
+					}
 				}
 				
 				//商品标签
@@ -786,23 +833,22 @@ public class GoodsItemMngController extends BaseController {
 			String[] nameArray = null;
 			String[] colArray = null;
 			if ("1".equals(type)) {
-				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
+				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
 						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
 				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", 
 						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			} else if ("2".equals(type)) {
-				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
+				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
 						"成本价", "内供价", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
 				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
 						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			} else if ("3".equals(type)) {
-				nameArray = new String[] { "商品编号", "自有编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
-						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
-				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
-						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", 
-						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
+				nameArray = new String[] { "分级类型", "一级类目", "二级类目", "三级类目", "商家编码", "商品条码", "商品名称", 
+						"产地", "规格", "箱规", "保质期", "商品类型", "库存", "零售价", "返佣比例", "商品标签", "比价信息" };
+				colArray = new String[] { "GradeTypeName", "FirstName", "SecondName", "ThirdName", "Sku", "Encode", "GoodsName", 
+						"Origin", "Info", "Carton", "ShelfLife", "GoodsTypeName", "FxQty", "RetailPrice", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			}
 
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);

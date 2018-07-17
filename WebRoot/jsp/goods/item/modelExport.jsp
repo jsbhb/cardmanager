@@ -40,6 +40,29 @@
        		</ul>
        	</div>
        	<div class="list-item">
+				<div class="col-sm-3 item-left">商品分类</div>
+				<div class="col-sm-9 item-right">
+	                <div class="right-items">
+						<select class="form-control" name="firstCatalogId" id="firstCatalogId">
+	                  	  <option selected="selected" value="-1">选择分类</option>
+	                  	  <c:forEach var="first" items="${firsts}">
+	                  	  	<option value="${first.firstId}">${first.name}</option>
+	                  	  </c:forEach>
+	                	</select>	
+					</div>
+					<div class="right-items">
+						<select class="form-control" name="secondCatalogId" id="secondCatalogId">
+						<option selected="selected" value="-1">选择分类</option>
+		                </select>
+	                </div>
+	                <div class="right-items last-items">
+						<select class="form-control" name="thirdCatalogId" id="thirdCatalogId">
+						<option selected="selected" value="-1">选择分类</option>
+		                </select>
+	                </div>
+				</div>
+			</div>
+       	<div class="list-item">
 			<div class="col-xs-3 item-left">返佣比例区间</div>
 			<div class="col-xs-9 item-right">
 				<input type="text" class="chooseTime" id="rebateStart" onkeyup="clearNoNum(this)">
@@ -133,7 +156,12 @@
 				layer.alert('返佣比例结束区间有误，请确认');
         		return;
 			}
-	    	var url = "${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+3+"&gradeType="+gradeType+"&tagIds="+tagIdArr+"&supplierId="+supplierId+"&rebateStart="+rebateStart+"&rebateEnd="+rebateEnd;
+
+			var tmpFirstCatalogId = $("#firstCatalogId").val();
+			var tmpSecondCatalogId = $("#secondCatalogId").val();
+			var tmpThirdCatalogId = $("#thirdCatalogId").val();
+			
+	    	var url = "${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+3+"&gradeType="+gradeType+"&tagIds="+tagIdArr+"&supplierId="+supplierId+"&rebateStart="+rebateStart+"&rebateEnd="+rebateEnd+"&firstCatalogId="+tmpFirstCatalogId+"&secondCatalogId="+tmpSecondCatalogId+"&thirdCatalogId="+tmpThirdCatalogId;
 	    	window.open(url);
 	    }
 	    
@@ -149,6 +177,76 @@
 	        //只能输入两个小数  
 	        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');   
 	    }
+		
+		$("#firstCatalogId").change(function(){
+			var firstId = $("#firstCatalogId").val();
+			var secondSelect = $("#secondCatalogId");
+			var thirdSelect = $("#thirdCatalogId");
+			secondSelect.empty();
+			secondSelect.append("<option value='-1'>选择分类</option>")
+			thirdSelect.empty();
+			thirdSelect.append("<option value='-1'>选择分类</option>")
+			$.ajax({
+				 url:"${wmsUrl}/admin/goods/catalogMng/querySecondCatalogByFirstId.shtml?firstId="+firstId,
+				 type:'post',
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 async:false,
+				 success:function(data){
+					 if(data.success){
+						 if (data == null || data.length == 0) {
+								return;
+							}
+							var list = data.obj;
+							if (list == null || list.length == 0) {
+								return;
+							}
+							for (var i = 0; i < list.length; i++) {
+								secondSelect.append("<option value='"+list[i].secondId+"'>"+list[i].name+"</option>")
+							}
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("提交失败，请联系客服处理");
+				 }
+			 });
+		});
+		
+		$("#secondCatalogId").change(function(){
+			var secondId = $("#secondCatalogId").val();
+			var thirdSelect = $("#thirdCatalogId");
+			thirdSelect.empty();
+			thirdSelect.append("<option value='-1'>选择分类</option>")
+			$.ajax({
+				 url:"${wmsUrl}/admin/goods/catalogMng/queryThirdCatalogBySecondId.shtml?secondId="+secondId,
+				 type:'post',
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 async:false,
+				 success:function(data){
+					 if(data.success){
+						 if (data == null || data.length == 0) {
+								return;
+							}
+							var list = data.obj;
+							if (list == null || list.length == 0) {
+								return;
+							}
+							thirdSelect.empty();
+							for (var i = 0; i < list.length; i++) {
+								thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
+							}
+					 }else{
+						 layer.alert(data.msg);
+					 }
+				 },
+				 error:function(){
+					 layer.alert("提交失败，请联系客服处理");
+				 }
+			 });
+		});
 	</script>
 </body>
 </html>

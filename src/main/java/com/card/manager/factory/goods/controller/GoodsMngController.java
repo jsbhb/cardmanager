@@ -1093,7 +1093,7 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			String goodsName = java.net.URLDecoder.decode(req.getParameter("goodsName"), "UTF-8");
 			String itemInfo = java.net.URLDecoder.decode(req.getParameter("itemInfo"), "UTF-8");
-			if (itemInfo == null) {
+			if (itemInfo == null || "null".equals(itemInfo)) {
 				itemInfo = "";
 			}
 			GoodsItemEntity entity = new GoodsItemEntity();

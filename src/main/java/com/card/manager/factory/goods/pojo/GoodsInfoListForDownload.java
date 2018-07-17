@@ -35,6 +35,11 @@ public class GoodsInfoListForDownload {
 	private List<GoodsPriceRatioEntity> goodsPriceRatioList;
 	private String goodsTagName;
 	private String goodsPriceRatioInfo;
+	private String encode;
+	private String carton;
+	private String shelfLife;
+	private String goodsType;
+	private String goodsTypeName;
 	
 	public String getGoodsId() {
 		return goodsId;
@@ -204,5 +209,35 @@ public class GoodsInfoListForDownload {
 	}
 	public void setGoodsPriceRatioInfo(String goodsPriceRatioInfo) {
 		this.goodsPriceRatioInfo = goodsPriceRatioInfo;
+	}
+	public String getEncode() {
+		return encode;
+	}
+	public void setEncode(String encode) {
+		this.encode = encode;
+	}
+	public String getCarton() {
+		return carton;
+	}
+	public void setCarton(String carton) {
+		this.carton = carton;
+	}
+	public String getShelfLife() {
+		return shelfLife;
+	}
+	public void setShelfLife(String shelfLife) {
+		this.shelfLife = shelfLife;
+	}
+	public String getGoodsType() {
+		return goodsType;
+	}
+	public void setGoodsType(String goodsType) {
+		this.goodsType = goodsType;
+	}
+	public String getGoodsTypeName() {
+		return goodsTypeName;
+	}
+	public void setGoodsTypeName(String goodsTypeName) {
+		this.goodsTypeName = goodsTypeName;
 	}
 }
