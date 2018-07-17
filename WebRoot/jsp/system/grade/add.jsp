@@ -13,6 +13,9 @@
 </head>
 
 <body>
+	<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);">
+		<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+	</div>
 	<section class="content-iframe content">
 		<form class="form-horizontal" role="form" id="form">
 			<div class="title">
@@ -296,6 +299,11 @@
 				 layer.alert("供销货架图片不能为空！");
 				 return;
 			 }
+			 $("#image").css({
+					display : "block",
+					position : "fixed",
+					zIndex : 99,
+				});
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeMng/addGrade.shtml",
 				 type:'post',
@@ -310,10 +318,12 @@
 					 }else{
 						 parent.reloadTable();
 						 layer.alert(data.msg);
+						 $("#image").hide();
 					 }
 				 },
 				 error:function(){
 					 layer.alert("提交失败，请联系客服处理");
+					 $("#image").hide();
 				 }
 			 });
 		 }else{

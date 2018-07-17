@@ -175,10 +175,7 @@ function publish(id){
 	    if(valArr.length==0){
 	    	layer.alert("请选择数据");
 	    	return;
-	    } else if(valArr.length>10){
-	    	layer.alert("批量处理的商品数量请控制在10个以内！");
-	    	return;
-	    }
+	    } 
 	    goodsIds = valArr.join(',');//转换为逗号隔开的字符串 
 	} else {
 		goodsIds = id;
@@ -212,10 +209,7 @@ function unPublish(id){
 	    if(valArr.length==0){
 	    	layer.alert("请选择数据");
 	    	return;
-	    } else if(valArr.length>10){
-	    	layer.alert("批量处理的商品数量请控制在10个以内！");
-	    	return;
-	    }
+	    } 
 	    goodsIds = valArr.join(',');//转换为逗号隔开的字符串 
 	} else {
 		goodsIds = id;
