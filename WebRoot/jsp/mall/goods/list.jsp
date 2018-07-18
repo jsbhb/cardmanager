@@ -227,7 +227,7 @@ function rebuildTable(data){
 // 			str += "</td><td>普通";
 // 		}
 
-		var goodsType = list[i].goodsEntity.type;
+		var goodsType = list[i].type;
 		switch(goodsType){
 			case 0:str += "</td><td>跨境商品";break;
 			case 2:str += "</td><td>一般贸易商品";break;

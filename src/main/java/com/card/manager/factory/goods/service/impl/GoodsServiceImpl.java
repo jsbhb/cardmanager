@@ -620,11 +620,16 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
 			GoodsTagBindEntity goodsTagBindEntity = null;
+			String[] tagArray = entity.getTagId().split("\\|");
 			for(GoodsItemEntity gie:items) {
-				goodsTagBindEntity = new GoodsTagBindEntity();
-				goodsTagBindEntity.setItemId(gie.getItemId());
-				goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-				goodsTagBindList.add(goodsTagBindEntity);
+				for (int i = 0; i < tagArray.length; i++) {
+					if (tagArray[i].trim() != null || !"".equals(tagArray[i].trim())) {
+						goodsTagBindEntity = new GoodsTagBindEntity();
+						goodsTagBindEntity.setItemId(gie.getItemId());
+						goodsTagBindEntity.setTagId(Integer.parseInt(tagArray[i].trim()));
+						goodsTagBindList.add(goodsTagBindEntity);
+					}
+				}
 			}
 			goods.setGoodsTagBindList(goodsTagBindList);
 		}
@@ -760,13 +765,20 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		items.add(goodsItem);
 		goods.setItems(items);
 		
-
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
-			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goodsItem.getItemId());
-			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-			goods.setGoodsTagBind(goodsTagBindEntity);
+			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
+			GoodsTagBindEntity goodsTagBindEntity = null;
+			String[] tagArray = entity.getTagId().split("\\|");
+			for (int i = 0; i < tagArray.length; i++) {
+				if (tagArray[i].trim() != null || !"".equals(tagArray[i].trim())) {
+					goodsTagBindEntity = new GoodsTagBindEntity();
+					goodsTagBindEntity.setItemId(goodsItem.getItemId());
+					goodsTagBindEntity.setTagId(Integer.parseInt(tagArray[i].trim()));
+					goodsTagBindList.add(goodsTagBindEntity);
+				}
+			}
+			goods.setGoodsTagBindList(goodsTagBindList);
 		}
 
 		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
@@ -1478,11 +1490,16 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
 			GoodsTagBindEntity goodsTagBindEntity = null;
+			String[] tagArray = entity.getTagId().split("\\|");
 			for(GoodsItemEntity gie:items) {
-				goodsTagBindEntity = new GoodsTagBindEntity();
-				goodsTagBindEntity.setItemId(gie.getItemId());
-				goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-				goodsTagBindList.add(goodsTagBindEntity);
+				for (int i = 0; i < tagArray.length; i++) {
+					if (tagArray[i].trim() != null || !"".equals(tagArray[i].trim())) {
+						goodsTagBindEntity = new GoodsTagBindEntity();
+						goodsTagBindEntity.setItemId(gie.getItemId());
+						goodsTagBindEntity.setTagId(Integer.parseInt(tagArray[i].trim()));
+						goodsTagBindList.add(goodsTagBindEntity);
+					}
+				}
 			}
 			goods.setGoodsTagBindList(goodsTagBindList);
 		}

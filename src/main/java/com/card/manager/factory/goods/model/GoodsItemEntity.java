@@ -59,6 +59,7 @@ public class GoodsItemEntity extends Pagination {
 	private List<GoodsRebateEntity> goodsRebateList; 
 	private String isCreate; //是否创建
 	private List<ItemSpecsPojo> specs;
+	private Integer type;
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
@@ -359,6 +360,14 @@ public class GoodsItemEntity extends Pagination {
 
 	public void setSpecs(List<ItemSpecsPojo> specs) {
 		this.specs = specs;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

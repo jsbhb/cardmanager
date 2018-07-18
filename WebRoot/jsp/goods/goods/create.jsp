@@ -150,9 +150,16 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品标签</div>
 				<div class="col-sm-9 item-right">
-					<ul class="label-content" id="tagId">
+					<ul class="label-content-express" id="tagId">
 						<c:forEach var="tag" items="${tags}">
+							<c:choose>
+							<c:when test="${tag.tagFunId == 1}">
+							<li data-id="${tag.id}" class="active">${tag.tagName}</li>
+							</c:when>
+							<c:otherwise>
 							<li data-id="${tag.id}">${tag.tagName}</li>
+							</c:otherwise>
+							</c:choose>
 	             	    </c:forEach>
 					</ul>
 					<a class="addBtn" href="javascript:void(0);" onclick="toTag()">+新增标签</a>
@@ -413,9 +420,15 @@
 			 var formData = sy.serializeObject($('#itemForm'));
 			 var context = ue.getContent();
 			 formData["detailInfo"] = context;
-			 var tagId = $('#tagId li.active').attr('data-id');
-			 if (tagId == undefined) {
+			 var valArr = new Array;
+			 var tagId;
+			 $('#tagId li.active').each(function(i){
+				 valArr[i] = $(this).attr('data-id');
+			 });
+			 if(valArr.length == 0){
 				 tagId = "";
+			 } else {
+			 	 tagId = valArr.join('|');//转换为|隔开的字符串 
 			 }
 			 formData["tagId"] = tagId;
 			 var specsSwitchId = $('#specsSwitch li.active').attr('data-type');
@@ -999,6 +1012,14 @@
 	  	 }
 	  	 return retFlg;
 	  }
+		//点击标签选中
+		$('.label-content-express').on('click', 'li', function() {
+			if (!$(this).hasClass("active")) {
+				$(this).addClass("active");
+			} else {
+				$(this).attr("class", "");
+			}
+		});
 	</script>
 </body>
 </html>

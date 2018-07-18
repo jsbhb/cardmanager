@@ -39,6 +39,7 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsFile;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
+import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.SpecsEntity;
@@ -517,6 +518,17 @@ public class GoodsMngController extends BaseController {
 				}
 			}
 			context.put("goodsInfo", goodsInfo);
+			
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			for (GoodsTagEntity gte: tags) {
+				for(GoodsTagBindEntity gtbe:goodsInfo.getGoods().getGoodsTagBindList()) {
+					if (gte.getId() == gtbe.getTagId()) {
+						gte.setTagFunId(1);
+						break;
+					}
+				}
+			}
+			context.put("tags", tags);
 
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {
@@ -557,8 +569,6 @@ public class GoodsMngController extends BaseController {
 
 			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
 			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			context.put("tags", tags);
 
 			return forword("goods/goods/edit", context);
 		} catch (Exception e) {
@@ -942,6 +952,17 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			context.put("goodsInfo", goodsInfo);
+			
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			for (GoodsTagEntity gte: tags) {
+				for(GoodsTagBindEntity gtbe:goodsInfo.getGoods().getGoodsTagBindList()) {
+					if (gte.getId() == gtbe.getTagId()) {
+						gte.setTagFunId(1);
+						break;
+					}
+				}
+			}
+			context.put("tags", tags);
 
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {
@@ -982,8 +1003,6 @@ public class GoodsMngController extends BaseController {
 
 			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
 			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			context.put("tags", tags);
 
 			return forword("goods/goods/create", context);
 		} catch (Exception e) {
@@ -1035,6 +1054,17 @@ public class GoodsMngController extends BaseController {
 				}
 			}
 			context.put("goodsInfo", goodsInfo);
+			
+			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
+			for (GoodsTagEntity gte: tags) {
+				for(GoodsTagBindEntity gtbe:goodsInfo.getGoods().getGoodsTagBindList()) {
+					if (gte.getId() == gtbe.getTagId()) {
+						gte.setTagFunId(1);
+						break;
+					}
+				}
+			}
+			context.put("tags", tags);
 
 			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
 			for (FirstCatalogEntity first : catalogs) {
@@ -1075,8 +1105,6 @@ public class GoodsMngController extends BaseController {
 
 			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
 			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			context.put("tags", tags);
 
 			return forword("goods/goods/show", context);
 		} catch (Exception e) {

@@ -152,10 +152,10 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品标签</div>
 				<div class="col-sm-9 item-right">
-					<ul class="label-content" id="tagId">
+					<ul class="label-content-express" id="tagId">
 						<c:forEach var="tag" items="${tags}">
 							<c:choose>
-							<c:when test="${goodsInfo.goods.goodsTagBind.tagId==tag.id}">
+							<c:when test="${tag.tagFunId == 1}">
 							<li data-id="${tag.id}" class="active">${tag.tagName}</li>
 							</c:when>
 							<c:otherwise>
@@ -897,6 +897,15 @@
 			}
 			return tmpInfoStr;
 		  }
+			
+			//点击标签选中
+			$('.label-content-express').on('click', 'li', function() {
+				if (!$(this).hasClass("active")) {
+					$(this).addClass("active");
+				} else {
+					$(this).attr("class", "");
+				}
+			});
 	</script>
 </body>
 </html>
