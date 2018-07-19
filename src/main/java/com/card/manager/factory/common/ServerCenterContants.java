@@ -389,6 +389,11 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/mall/index/init";
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/queryDataAll";
+	
+	
+	/*------------------------cms-----------------------*/
+	public static final String GOODS_CENTER_CMS_RETRIEVE_DATAL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/cms/index/";
 
 	/**
 	 * 日志中心url
