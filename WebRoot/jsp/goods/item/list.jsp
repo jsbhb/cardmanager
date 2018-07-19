@@ -121,9 +121,9 @@
 	
 		<div class="list-tabBar">
 			<ul>
-				<li data-id="first" class="active">上架</li>
-				<li data-id="second">下架</li>
-				<li data-id="third">分销</li>
+				<li data-id="first" class="active">上架商品</li>
+				<li data-id="second">下架商品</li>
+				<li data-id="third">分销商品</li>
 			</ul>
 		</div>
 	

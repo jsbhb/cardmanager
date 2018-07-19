@@ -154,7 +154,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		// List<String> list = new ArrayList<String>();
 		// list.add(itemId);
 		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
-				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/" + staffEntity.getGradeId(),
+				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/2",
 				staffEntity.getToken(), true, itemIdList, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -170,8 +170,8 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		RestCommonHelper helper = new RestCommonHelper();
 
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/"
-						+ staffEntity.getGradeId() + "?itemId=" + itemId,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/2"
+						+ "?itemId=" + itemId,
 				staffEntity.getToken(), true, null, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
