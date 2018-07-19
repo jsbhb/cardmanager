@@ -235,6 +235,7 @@
 								return;
 							}
 							thirdSelect.empty();
+							thirdSelect.append("<option value='-1'>选择分类</option>")
 							for (var i = 0; i < list.length; i++) {
 								thirdSelect.append("<option value='"+list[i].thirdId+"'>"+list[i].name+"</option>")
 							}

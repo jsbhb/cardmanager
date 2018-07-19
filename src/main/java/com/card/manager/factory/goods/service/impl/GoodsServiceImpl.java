@@ -63,7 +63,6 @@ import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
-import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.goods.pojo.GoodsRebateBO;
 import com.card.manager.factory.goods.pojo.GoodsSpecsBO;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
@@ -87,7 +86,6 @@ import net.sf.json.JSONObject;
 
 /**
  * ClassName: SupplierServiceImpl <br/>
- * Function: TODO ADD FUNCTION. <br/>
  * date: Nov 7, 2017 3:22:23 PM <br/>
  * 
  * @author hebin
@@ -99,106 +97,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Resource
 	StaffMapper<?> staffMapper;
-
-	@Override
-	@Log(content = "新增商品明细信息操作", source = Log.BACK_PLAT, type = Log.ADD)
-	public void addEntity(GoodsPojo entity, String token) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-
-		int goodsIdSequence = staffMapper.nextVal(ServerCenterContants.GOODS_ID_SEQUENCE);
-
-		GoodsEntity goods = new GoodsEntity();
-		goods.setGoodsId(SequeceRule.getGoodsId(goodsIdSequence));
-		goods.setTemplateId(entity.getTemplateId());
-		goods.setGoodsName(entity.getName());
-		goods.setSupplierId(entity.getSupplierId());
-		goods.setSupplierName(entity.getSupplierName());
-		goods.setBaseId(entity.getBaseId());
-		goods.setOrigin(entity.getOrigin());
-		goods.setThirdId(entity.getThirdId());
-
-		GoodsItemEntity goodsItem = new GoodsItemEntity();
-		goodsItem.setExciseTax(entity.getExciseFax());
-		goodsItem.setSku(entity.getSku());
-		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
-		goodsItem.setItemCode(entity.getItemCode());
-		goodsItem.setWeight(entity.getWeight());
-
-		int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
-		goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
-		goodsItem.setGoodsId(goods.getGoodsId());
-
-		GoodsPrice goodsPrice = new GoodsPrice();
-		goodsPrice.setProxyPrice(entity.getProxyPrice());
-		goodsPrice.setFxPrice(entity.getFxPrice());
-		goodsPrice.setMax(entity.getMax());
-		goodsPrice.setMin(entity.getMin());
-		goodsPrice.setItemId(goodsItem.getItemId());
-		goodsPrice.setOpt(entity.getOpt());
-		goodsPrice.setRetailPrice(entity.getRetailPrice());
-
-		List<GoodsFile> files = new ArrayList<GoodsFile>();
-		if (entity.getPicPath() != null) {
-			String[] goodsFiles = entity.getPicPath().split(",");
-			for (String file : goodsFiles) {
-				GoodsFile f = new GoodsFile();
-				f.setPath(file);
-				f.setGoodsId(goods.getGoodsId());
-				files.add(f);
-			}
-		}
-
-		goods.setFiles(files);
-
-		goodsItem.setGoodsPrice(goodsPrice);
-		goodsItem.setOpt(entity.getOpt());
-
-		String keys = entity.getKeys();
-		String values = entity.getValues();
-
-		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		if (keys != null && values != null) {
-			String[] keyArray = keys.split(";");
-			String[] valueArray = values.split(";");
-			for (int i = 0; i < keyArray.length; i++) {
-				ItemSpecsPojo itemSpecsPojo;
-				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-					itemSpecsPojo = new ItemSpecsPojo();
-					String[] kContesnts = keyArray[i].split(":");
-					itemSpecsPojo.setSkId(kContesnts[0]);
-					itemSpecsPojo.setSkV(kContesnts[1]);
-					String[] vContants = valueArray[i].split(":");
-					itemSpecsPojo.setSvId(vContants[0]);
-					itemSpecsPojo.setSvV(vContants[1]);
-					specsPojos.add(itemSpecsPojo);
-				}
-			}
-
-			JSONArray json = JSONArray.fromObject(specsPojos);
-			goodsItem.setInfo(json.toString());
-		}
-
-		goods.setGoodsItem(goodsItem);
-
-		// 新增商品时判断是否添加商品标签
-		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
-			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goodsItem.getItemId());
-			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-			goods.setGoodsTagBind(goodsTagBindEntity);
-		}
-
-		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SAVE + "?type=" + entity.getType(), token,
-				true, goods, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("新增商品明细信息操作失败:" + json.getString("errorMsg"));
-		}
-
-	}
 
 	@Override
 	public GoodsEntity queryById(String id, String token) {
@@ -215,7 +113,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	}
 
 	/**
-	 * TODO 简单描述该方法的实现功能（可选）.
 	 * 
 	 * @see com.card.manager.factory.goods.service.GoodsService#queryThirdById(java.lang.String,
 	 *      java.lang.String)
@@ -232,37 +129,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ThirdWarehouseGoods.class);
-	}
-
-	@Override
-	@Log(content = "更新商品明细信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
-	public void updEntity(GoodsEntity entity, String token) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_EDIT, token, true, entity, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("更新商品明细信息操作失败:" + json.getString("errorMsg"));
-		}
-
-	}
-
-	@Override
-	@Log(content = "删除商品明细信息操作", source = Log.BACK_PLAT, type = Log.DELETE)
-	public void delEntity(GoodsEntity entity, String token) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_REMOVE, token, true, entity,
-				HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("删除商品明细信息操作失败:" + json.getString("errorMsg"));
-		}
-
 	}
 
 	@Override
@@ -288,51 +154,6 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			context = context.replaceAll("\r\n", "<br>&nbsp;&nbsp;");// 这才是正确的！
 			context = context.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 			return context;
-		}
-	}
-
-	@Override
-	@Log(content = "保存商品详情信息操作", source = Log.BACK_PLAT, type = Log.ADD)
-	public void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception {
-
-		String savePath;
-		String invitePath;
-
-		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.HTML + "/";
-		invitePath = URLUtils.get("static") + "/" + ResourceContants.HTML + "/";
-		ReadIniInfo.getInstance();
-
-		// long maxSize = ((Long) conf.get("maxSize")).longValue();
-		//
-		// if (!validType(suffix, (String[]) conf.get("allowFiles"))) {
-		// return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
-		// }
-
-		savePath = PathFormat.parse(savePath);
-		invitePath = PathFormat.parse(invitePath);
-
-		// String physicalPath = (String) conf.get("rootPath") + savePath;
-
-		InputStream is = new ByteArrayInputStream(html.getBytes("utf-8"));
-
-		WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-		SftpService service = (SftpService) wac.getBean("sftpService");
-		service.login();
-		service.uploadFile(savePath, goodsId + ResourceContants.HTML_SUFFIX, is, "");
-
-		GoodsEntity entity = new GoodsEntity();
-		entity.setDetailPath(invitePath + goodsId + ResourceContants.HTML_SUFFIX);
-		entity.setGoodsId(goodsId);
-
-		RestCommonHelper helper = new RestCommonHelper();
-		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SAVE_DETAIL_PATH, staffEntity.getToken(),
-				true, entity, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("保存商品详情信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
 
@@ -416,7 +237,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
-			throw new Exception("行政商品标签操作失败:" + json.getString("errorMsg"));
+			throw new Exception("新增商品标签操作失败:" + json.getString("errorMsg"));
 		}
 
 	}
@@ -546,7 +367,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setSku(gie.getSku());
 				goodsItem.setWeight(gie.getWeight());
 				goodsItem.setExciseTax(gie.getExciseTax());
-				goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+				goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
 				goodsItem.setConversion(gie.getConversion());
 				goodsItem.setEncode(gie.getEncode());
 				goodsItem.setShelfLife(gie.getShelfLife());
@@ -595,7 +416,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsItem.setSku(entity.getSku());
 			goodsItem.setWeight(entity.getWeight());
 			goodsItem.setExciseTax(entity.getExciseTax());
-			goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+			goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
 			goodsItem.setConversion(entity.getConversion());
 			goodsItem.setEncode(entity.getEncode());
 			goodsItem.setShelfLife(entity.getShelfLife());
@@ -963,7 +784,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
 					return result;
 				}
-				goodsItem.setStatus(GoodsStatusEnum.USEFUL.getIndex() + "");
+				goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
 				goodsItem.setEncode(Utils.removePoint(model.getEncode()));
 				if (model.getSpecsList() != null) {
 					sb = new StringBuilder("[");
@@ -1416,7 +1237,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setSku(gie.getSku());
 				goodsItem.setWeight(gie.getWeight());
 				goodsItem.setExciseTax(gie.getExciseTax());
-				goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+				goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
 				goodsItem.setConversion(gie.getConversion());
 				goodsItem.setEncode(gie.getEncode());
 				goodsItem.setShelfLife(gie.getShelfLife());
@@ -1465,7 +1286,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsItem.setSku(entity.getSku());
 			goodsItem.setWeight(entity.getWeight());
 			goodsItem.setExciseTax(entity.getExciseTax());
-			goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
+			goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
 			goodsItem.setConversion(entity.getConversion());
 			goodsItem.setEncode(entity.getEncode());
 			goodsItem.setShelfLife(entity.getShelfLife());

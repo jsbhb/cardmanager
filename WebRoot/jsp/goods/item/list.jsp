@@ -121,9 +121,9 @@
 	
 		<div class="list-tabBar">
 			<ul>
-				<li data-id="first" class="active">在售中</li>
-				<li data-id="second">已售罄</li>
-				<li data-id="third">未分销</li>
+				<li data-id="first" class="active">上架</li>
+				<li data-id="second">下架</li>
+				<li data-id="third">分销</li>
 			</ul>
 		</div>
 	
@@ -137,7 +137,8 @@
 					<button type="button" onclick = "excelExport(1)">商品信息导出</button>
 					<c:if test="${prilvl == 1}">
 						<button type="button" onclick="jump(9)">新增商品</button>
-						<button type="button" onclick = "beUse('')">批量可用</button>
+						<button type="button" onclick = "puton('')">批量上架</button>
+						<button type="button" onclick = "putoff('')">批量下架</button>
 						<button type="button" onclick = "beFx('')">批量可分销</button>
 						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
 						<button type="button" onclick = "bindTag()">批量打标签</button>
@@ -298,27 +299,6 @@ function rebuildTable(data){
 			str += "</td><td style='text-align:left;'>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
 		}
 		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
-// 		if (list[i].tagBindEntity != null) {
-// 			var tmpTagId = list[i].tagBindEntity.tagId;
-// 			var tmpTagName = "普通";
-// 			var tagSelect = document.getElementById("tagId");
-// 			var options = tagSelect.options;
-// 			for(var j=0;j<options.length;j++){
-// 				if (tmpTagId==options[j].value) {
-// 					tmpTagName = options[j].text;
-// 					break;
-// 				}
-// 			}
-// 			str += "</td><td>" + tmpTagName;
-// 		} else {
-// 			str += "</td><td>普通";
-// 		}
-// 		if (list[i].baseEntity == null) {
-// 			str += "</td><td>";
-// 		} else {
-// 			str += "</td><td>" + list[i].baseEntity.incrementTax;
-// 		}
-// 		str += "</td><td>" + list[i].exciseTax;
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -327,43 +307,41 @@ function rebuildTable(data){
 		}
 		var status = list[i].status;
 		switch(status){
-			case '0':str += "</td><td>初始化";break;
-			case '1':str += "</td><td>可用";break;
-			case '2':str += "</td><td>可分销";break;
+			case '0':str += "</td><td>下架";break;
+			case '1':str += "</td><td>上架";break;
 			default:str += "</td><td>状态错误："+status;
 		}
 		str += "</td><td>" + (list[i].info == null ? "" : list[i].info);
-		str += "</td><td>" + list[i].createTime;
+		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		var prilvl = "${prilvl}";
 		var gradeId = "${opt.gradeId}";
+		var isFx = list[i].isFx;
+		console.log(isFx);
 		if(prilvl == 1){
-			if (status != 2) {
+			if (status == 0) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")' >上架</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
 			} else {
 				str += "</td><td>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].itemId+")'>查看信息</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
-			}
-			if(status == 0){
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='beUse("+list[i].itemId+")' >可用</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
-			}else if(status == 1){
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >可分销</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
-			}else if(status == 2){
-				str += "<a  href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
-			}
-			if(status==1||status==2){
-				if(list[i].supplierName!="一般贸易仓"
-					&&list[i].supplierName!="广州仓库"
-					&&list[i].supplierName!="广州仓gzc"
-					&&list[i].supplierName!="天天仓"
-					&&list[i].supplierName!=null){
-					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='putoff("+list[i].itemId+")' >下架</a>";
+				if (isFx == 0) {
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >分销</a>";
+				} else {
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
 				}
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+			}
+			if(list[i].supplierName!="一般贸易仓"
+				&&list[i].supplierName!="广州仓库"
+				&&list[i].supplierName!="广州仓gzc"
+				&&list[i].supplierName!="天天仓"
+				&&list[i].supplierName!=null){
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
 			}
 		} else {
 			if (gradeId == 0 || gradeId == 2) {
@@ -374,66 +352,28 @@ function rebuildTable(data){
 		}
 		str += "</td></tr>";
 	}
-
 	$("#baseTable tbody").html(str);
 }
 	
 function toEdit(id){
 	var index = layer.open({
-		  title:"编辑商品信息",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/goodsMng/toEditGoodsInfo.shtml?itemId='+id,
-		  maxmin: true
-		});
-		layer.full(index);
+	  title:"编辑商品信息",		
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/goodsMng/toEditGoodsInfo.shtml?itemId='+id,
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
 
 function setRebate(id,prilvl){
 	var index = layer.open({
-		  title:"设置商品返佣比例",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/goods/itemMng/toSetRebate.shtml?id='+id+"&prilvl="+prilvl,
-		  maxmin: true
-		});
-		layer.full(index);
-}
-
-function beUse(id){
-	if(id == ""){
-		var valArr = new Array; 
-		var itemIds;
-	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "初始化") {
-	 	        valArr[i] = $(this).val(); 
-	    	}
-	    }); 
-	    if(valArr.length==0){
-	    	layer.alert("请选择初始化状态的数据");
-	    	return;
-	    }
-	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-	} else {
-		itemIds = id;
-	}
-	$.ajax({
-		 url:"${wmsUrl}/admin/goods/itemMng/beUse.shtml?itemId="+itemIds,
-		 type:'post',
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){	
-				 layer.alert("设置成功");
-				 reloadTable();
-				 $("#theadInp").prop("checked", false);
-			 }else{
-				 layer.alert(data.msg);
-			 }
-		 },
-		 error:function(){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	 });
+	  title:"设置商品返佣比例",		
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/itemMng/toSetRebate.shtml?id='+id+"&prilvl="+prilvl,
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
 function beFx(id){
@@ -441,12 +381,12 @@ function beFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "可用") {
+	    	if ($(this).parent().siblings().eq(9).text() == "上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
 	    if(valArr.length==0){
-	    	layer.alert("请选择可用状态的数据");
+	    	layer.alert("请选择上架状态的数据");
 	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
@@ -478,12 +418,12 @@ function noBeFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "可分销") {
+	    	if ($(this).parent().siblings().eq(9).text() == "上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
 	    if(valArr.length==0){
-	    	layer.alert("请选择可分销状态的数据");
+	    	layer.alert("请选择上架状态的数据");
 	    	return;
 	    }
 	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
@@ -530,9 +470,6 @@ function syncStock(id){
 	 });
 }
 
-
-
-
 //点击分类
 $('.container-left').on('click','span:not(.active)',function(){
 	var categoryId = $(this).attr("data-id");
@@ -576,7 +513,6 @@ function excelExport(type){
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
     var supplierId = $("#supplierId").val();
     window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
-// 	location.href="${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds;
     $("#theadInp").prop("checked", false);
 }
 
@@ -704,7 +640,78 @@ function toEditRatio(id,name,info){
 	});
 	layer.full(index);
 }
-
+function puton(id){
+	if(id == ""){
+		var valArr = new Array; 
+		var itemIds;
+	    $("[name='check']:checked").each(function(i){
+	    	if ($(this).parent().siblings().eq(9).text() == "下架") {
+	 	        valArr[i] = $(this).val(); 
+	    	}
+	    }); 
+	    if(valArr.length==0){
+	    	layer.alert("请选择下架状态的数据");
+	    	return;
+	    } 
+	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+	} else {
+		itemIds = id;
+	}
+	$.ajax({
+		 url:"${wmsUrl}/admin/mall/goodsMng/puton.shtml?itemId="+itemIds,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("设置成功");
+				 reloadTable();
+				 $("#theadInp").prop("checked", false);
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
+}
+function putoff(id){
+	if(id == ""){
+		var valArr = new Array; 
+		var itemIds;
+	    $("[name='check']:checked").each(function(i){
+	    	if ($(this).parent().siblings().eq(9).text() == "上架") {
+	 	        valArr[i] = $(this).val(); 
+	    	}
+	    }); 
+	    if(valArr.length==0){
+	    	layer.alert("请选择上架状态的数据");
+	    	return;
+	    } 
+	    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+	} else {
+		itemIds = id;
+	}
+	$.ajax({
+		 url:"${wmsUrl}/admin/mall/goodsMng/putoff.shtml?itemId="+itemIds,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){	
+				 layer.alert("设置成功");
+				 reloadTable();
+				 $("#theadInp").prop("checked", false);
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("提交失败，请联系客服处理");
+		 }
+	 });
+}
 </script>
 </body>
 </html>

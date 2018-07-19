@@ -60,6 +60,7 @@ public class GoodsItemEntity extends Pagination {
 	private String isCreate; //是否创建
 	private List<ItemSpecsPojo> specs;
 	private Integer type;
+	private Integer isFx;
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
@@ -368,6 +369,14 @@ public class GoodsItemEntity extends Pagination {
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public Integer getIsFx() {
+		return isFx;
+	}
+
+	public void setIsFx(Integer isFx) {
+		this.isFx = isFx;
 	}
 
 }

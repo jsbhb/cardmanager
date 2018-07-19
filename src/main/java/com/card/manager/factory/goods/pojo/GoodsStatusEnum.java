@@ -18,7 +18,7 @@ package com.card.manager.factory.goods.pojo;
  */
 public enum  GoodsStatusEnum {
 	
-	INIT("初始化",0),USEFUL("可用",1),FX("可分销",2);
+	DOWNSHELF("下架",0),UPSHELF("上架",1);
 	
 	private String name;
 	private int index;

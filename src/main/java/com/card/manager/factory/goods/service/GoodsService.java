@@ -25,7 +25,6 @@ import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
-import com.card.manager.factory.goods.pojo.GoodsPojo;
 import com.card.manager.factory.system.model.StaffEntity;
 
 /**
@@ -38,16 +37,6 @@ import com.card.manager.factory.system.model.StaffEntity;
  * @since JDK 1.7
  */
 public interface GoodsService extends ServerCenterService {
-
-	/**
-	 * addEntity:新增商品. <br/>
-	 * 
-	 * @author hebin
-	 * @param entity
-	 * @param token
-	 * @since JDK 1.7
-	 */
-	void addEntity(GoodsPojo entity, String token) throws Exception;
 
 	/**
 	 * queryById:根据编号查询商品信息. <br/>
@@ -72,26 +61,6 @@ public interface GoodsService extends ServerCenterService {
 	ThirdWarehouseGoods queryThirdById(String id, String token);
 
 	/**
-	 * addEntity:新增商品. <br/>
-	 * 
-	 * @author hebin
-	 * @param entity
-	 * @param token
-	 * @since JDK 1.7
-	 */
-	void updEntity(GoodsEntity entity, String token) throws Exception;
-
-	/**
-	 * addEntity:新增商品. <br/>
-	 * 
-	 * @author hebin
-	 * @param entity
-	 * @param token
-	 * @since JDK 1.7
-	 */
-	void delEntity(GoodsEntity entity, String token) throws Exception;
-
-	/**
 	 * getHtmlContext:(这里用一句话描述这个方法的作用). <br/>
 	 * 
 	 * @author hebin
@@ -99,17 +68,6 @@ public interface GoodsService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	String getHtmlContext(String html, StaffEntity staffEntity) throws Exception;
-
-	/**
-	 * saveHtml:(这里用一句话描述这个方法的作用). <br/>
-	 * 
-	 * @author hebin
-	 * @param html
-	 * @param html
-	 * @param staffEntity
-	 * @since JDK 1.7
-	 */
-	void saveHtml(String goodsId, String html, StaffEntity staffEntity) throws Exception;
 
 	 /**
 	 * saveHtml:保存html. <br/>

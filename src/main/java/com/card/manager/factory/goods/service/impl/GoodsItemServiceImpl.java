@@ -24,20 +24,16 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
-import com.card.manager.factory.goods.model.GoodsPrice;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 import com.card.manager.factory.goods.pojo.GoodsInfoListForDownload;
 import com.card.manager.factory.goods.pojo.GoodsListDownloadParam;
-import com.card.manager.factory.goods.pojo.GoodsPojo;
-import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
-import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.GoodsItemService;
+import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.JSONUtilNew;
-import com.card.manager.factory.util.SequeceRule;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONArray;
@@ -57,79 +53,6 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 	@Resource
 	StaffMapper<?> staffMapper;
-
-	@Override
-	@Log(content = "新增商品明细信息操作", source = Log.BACK_PLAT, type = Log.ADD)
-	public void addEntity(GoodsPojo entity, String token) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-
-		GoodsItemEntity goodsItem = new GoodsItemEntity();
-		goodsItem.setExciseTax(entity.getExciseFax());
-		goodsItem.setSku(entity.getSku());
-		goodsItem.setStatus(GoodsStatusEnum.INIT.getIndex() + "");
-		goodsItem.setItemCode(entity.getItemCode());
-		goodsItem.setWeight(entity.getWeight());
-
-		int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
-		goodsItem.setItemId(SequeceRule.getGoodsItemId(itemid));
-		goodsItem.setGoodsId(entity.getGoodsId());
-
-		GoodsPrice goodsPrice = new GoodsPrice();
-		goodsPrice.setProxyPrice(entity.getProxyPrice());
-		goodsPrice.setRetailPrice(entity.getRetailPrice());
-		goodsPrice.setFxPrice(entity.getProxyPrice());
-		goodsPrice.setMax(entity.getMax());
-		goodsPrice.setMin(entity.getMin());
-		goodsPrice.setItemId(goodsItem.getItemId());
-		goodsPrice.setOpt(entity.getOpt());
-
-		goodsItem.setGoodsPrice(goodsPrice);
-		goodsItem.setOpt(entity.getOpt());
-
-		String keys = entity.getKeys();
-		String values = entity.getValues();
-
-		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
-		if (keys != null && values != null) {
-			String[] keyArray = keys.split(";");
-			String[] valueArray = values.split(";");
-			for (int i = 0; i < keyArray.length; i++) {
-				ItemSpecsPojo itemSpecsPojo;
-				if (keyArray[i].trim() != null || !"".equals(keyArray[i].trim())) {
-					itemSpecsPojo = new ItemSpecsPojo();
-					String[] kContesnts = keyArray[i].split(":");
-					itemSpecsPojo.setSkId(kContesnts[0]);
-					itemSpecsPojo.setSkV(kContesnts[1]);
-					String[] vContants = valueArray[i].split(":");
-					itemSpecsPojo.setSvId(vContants[0]);
-					itemSpecsPojo.setSvV(vContants[1]);
-					specsPojos.add(itemSpecsPojo);
-				}
-			}
-
-			JSONArray json = JSONArray.fromObject(specsPojos);
-			goodsItem.setInfo(json.toString());
-		}
-
-		// 新增商品时判断是否添加商品标签
-		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
-			GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-			goodsTagBindEntity.setItemId(goodsItem.getItemId());
-			goodsTagBindEntity.setTagId(Integer.parseInt(entity.getTagId()));
-			goodsItem.setTagBindEntity(goodsTagBindEntity);
-		}
-
-		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_SAVE, token, true, goodsItem,
-				HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("新增商品明细信息操作失败:" + json.getString("errorMsg"));
-		}
-
-	}
 
 	@Override
 	public GoodsItemEntity queryById(String id, String token) {
@@ -171,7 +94,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		entity.setOpt(optId);
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_NOT_BE_USE + itemId, token, true,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_NOT_BE_FX, token, true,
 				entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -275,117 +198,22 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		}
 	}
 
-	@Override
-	@Log(content = "更新商品明细信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
-	public void updateEntity(GoodsPojo pojo, String token) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-		GoodsItemEntity goodsItem = new GoodsItemEntity();
-		goodsItem.setExciseTax(pojo.getExciseFax());
-		goodsItem.setSku(pojo.getSku());
-		goodsItem.setItemCode(pojo.getItemCode());
-		goodsItem.setWeight(pojo.getWeight());
-		goodsItem.setItemId(pojo.getItemId());
-
-		GoodsPrice goodsPrice = new GoodsPrice();
-		goodsPrice.setProxyPrice(pojo.getProxyPrice());
-		goodsPrice.setRetailPrice(pojo.getRetailPrice());
-		goodsPrice.setFxPrice(pojo.getFxPrice());
-		goodsPrice.setMax(pojo.getMax());
-		goodsPrice.setMin(pojo.getMin());
-		goodsPrice.setItemId(goodsItem.getItemId());
-		goodsPrice.setOpt(pojo.getOpt());
-
-		goodsItem.setGoodsPrice(goodsPrice);
-		goodsItem.setOpt(pojo.getOpt());
-
-		GoodsTagBindEntity goodsTagBindEntity = new GoodsTagBindEntity();
-		goodsTagBindEntity.setItemId(pojo.getItemId());
-		goodsTagBindEntity.setTagId(Integer.parseInt(pojo.getTagId()));
-		goodsItem.setTagBindEntity(goodsTagBindEntity);
-
-		ResponseEntity<String> usercenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_UPDATE, token, true, goodsItem,
-				HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("更新商品明细信息操作失败:" + json.getString("errorMsg"));
-		}
-	}
-
-	@Override
-	@Log(content = "订货平台同步商品信息操作", source = Log.BACK_PLAT, type = Log.ADD)
-	public void TBSyncGoods(String itemId, StaffEntity staffEntity) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-
-		List<String> list = new ArrayList<String>();
-		list.add(itemId);
-		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_SYNC, staffEntity.getToken(),
-				true, list, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(query_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("订货平台同步商品信息操作失败:" + json.getString("errorMsg"));
-		}
-	}
-
-	@Override
-	public GoodsPrice queryPriceById(String id, StaffEntity staffEntity) {
-		GoodsItemEntity entity = new GoodsItemEntity();
-		entity.setItemId(id);
-
-		RestCommonHelper helper = new RestCommonHelper();
-		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_EDIT,
-				staffEntity.getToken(), true, entity, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsPrice.class);
-	}
-
-	@Override
-	public GoodsPrice queryCheckGoodsPriceById(String id, StaffEntity staffEntity) {
-		GoodsItemEntity entity = new GoodsItemEntity();
-		entity.setItemId(id);
-
-		RestCommonHelper helper = new RestCommonHelper();
-		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_QUERY_FOR_CHECK,
-				staffEntity.getToken(), true, entity, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsPrice.class);
-	}
-
-	@Override
-	@Log(content = "更新商品明细价格信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
-	public void editPrice(GoodsPrice price, StaffEntity staffEntity) throws Exception {
-		RestCommonHelper helper = new RestCommonHelper();
-
-		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_PURCHASE_ITEM_EDIT, staffEntity.getToken(),
-				true, price, HttpMethod.POST);
-
-		JSONObject json = JSONObject.fromObject(query_result.getBody());
-
-		if (!json.getBoolean("success")) {
-			throw new Exception("更新商品明细价格信息操作失败:" + json.getString("errorMsg"));
-		}
-	}
-
+	@Resource
+	SysLogger sysLogger;
+	
 	@Override
 	public List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(GoodsListDownloadParam param, String token) {
 
+		sysLogger.debug("商品导出处理开始", System.currentTimeMillis() / 1000 + "");
 		List<GoodsInfoListForDownload> list = new ArrayList<GoodsInfoListForDownload>();
-		RestCommonHelper helper = new RestCommonHelper();
+		RestCommonHelper helper = new RestCommonHelper(300000);
+		sysLogger.debug("商品导出发送请求", System.currentTimeMillis() / 1000 + "");
 		ResponseEntity<String> query_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true,
 				param, HttpMethod.POST);
-
+		sysLogger.debug("商品导出收到回执", System.currentTimeMillis() / 1000 + "");
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		sysLogger.debug("商品导出回执转换Json", System.currentTimeMillis() / 1000 + "");
 
 		if (!json.getBoolean("success")) {
 			return list;
@@ -398,6 +226,8 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 			JSONObject jObj = obj.getJSONObject(i);
 			list.add(JSONUtilNew.parse(jObj.toString(), GoodsInfoListForDownload.class));
 		}
+		sysLogger.debug("商品导出拼接list", System.currentTimeMillis() / 1000 + "");
+		sysLogger.debug("商品导出处理结束", System.currentTimeMillis() / 1000 + "");
 
 		return list;
 	}

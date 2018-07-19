@@ -250,6 +250,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/beFx";
 	public static final String GOODS_CENTER_ITEM_NOT_BE_USE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/unDistribution?itemId=";
+	public static final String GOODS_CENTER_ITEM_NOT_BE_FX = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/item/notBeFx";
 	public static final String GOODS_CENTER_ITEM_PUT_ON = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/upShelves";
 	public static final String GOODS_CENTER_ITEM_PUT_OFF = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
