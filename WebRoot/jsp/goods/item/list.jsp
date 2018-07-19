@@ -136,7 +136,7 @@
 				<div class="col-md-10 list-btns">
 					<button type="button" onclick = "excelExport(1)">商品信息导出</button>
 					<c:if test="${prilvl == 1}">
-						<button type="button" onclick="jump(9)">新增商品</button>
+<!-- 						<button type="button" onclick="jump(9)">新增商品</button> -->
 						<button type="button" onclick = "puton('')">批量上架</button>
 						<button type="button" onclick = "putoff('')">批量下架</button>
 						<button type="button" onclick = "beFx('')">批量可分销</button>
@@ -530,12 +530,12 @@ function bindTag(){
 	var valArr = new Array; 
 	var itemIds;
     $("[name='check']:checked").each(function(i){
-    	if ($(this).parent().siblings().eq(9).text() != "可分销") {
+    	if ($(this).parent().siblings().eq(9).text() == "下架") {
  	        valArr[i] = $(this).val(); 
     	}
     }); 
     if(valArr.length==0){
-    	layer.alert("请选择可用或初始化状态的数据");
+    	layer.alert("请选择下架状态的数据");
     	return;
     }
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 

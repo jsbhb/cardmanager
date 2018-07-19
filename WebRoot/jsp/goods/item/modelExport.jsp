@@ -27,8 +27,8 @@
 		<div class="list-item">
 			<div class="col-sm-3 item-left">分级类型</div>
 			<div class="col-xs-9 item-right">
-				<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;">
-                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType">
+				<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;" value="${gradeList[0].childern[0].name}">
+                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="${gradeList[0].childern[0].id}">
 			</div>
 		</div>
 		<div class="select-content" style="width: 420px;top: 92px;">

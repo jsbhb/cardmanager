@@ -150,6 +150,10 @@ function toDelete(id){
 		 });
 	});
 }
+
+function refreshTag(){
+	reloadTable();
+}
 </script>
 </body>
 </html>
