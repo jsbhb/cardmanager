@@ -61,6 +61,7 @@ public class GoodsItemEntity extends Pagination {
 	private List<ItemSpecsPojo> specs;
 	private Integer type;
 	private Integer isFx;
+	private String webUrlParam;//跳转到商城商详页面的参数信息
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
@@ -377,6 +378,14 @@ public class GoodsItemEntity extends Pagination {
 
 	public void setIsFx(Integer isFx) {
 		this.isFx = isFx;
+	}
+
+	public String getWebUrlParam() {
+		return webUrlParam;
+	}
+
+	public void setWebUrlParam(String webUrlParam) {
+		this.webUrlParam = webUrlParam;
 	}
 
 }

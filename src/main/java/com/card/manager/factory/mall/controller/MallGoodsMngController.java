@@ -20,6 +20,7 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
@@ -146,6 +147,25 @@ public class MallGoodsMngController extends BaseController {
 			List<GoodsItemEntity> list = (List<GoodsItemEntity>) pcb.getObj();
 			for (GoodsItemEntity entity : list) {
 				GoodsUtil.changeSpecsInfo(entity);
+			}
+
+			if (pcb != null) {
+				GoodsBaseEntity goodsInfo = null;
+				String tmpWebUrlParam = "";
+				for (GoodsItemEntity info : list) {
+					tmpWebUrlParam = "";
+					goodsInfo = info.getBaseEntity();
+					if (goodsInfo == null) {
+						info.setWebUrlParam(tmpWebUrlParam);
+						continue;
+					}
+					tmpWebUrlParam = tmpWebUrlParam + goodsInfo.getFirstCatalogId();
+					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getSecondCatalogId();
+					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getThirdCatalogId();
+					tmpWebUrlParam = tmpWebUrlParam + "/" + info.getGoodsId() + ".html";
+					info.setWebUrlParam(tmpWebUrlParam);
+				}
+				pcb.setObj(list);
 			}
 
 		} catch (ServerCenterNullDataException e) {
