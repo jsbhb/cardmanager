@@ -82,6 +82,8 @@ public class ShopQRMngController extends BaseController {
 	        String url = req.getParameter("path");
 	        String note = "";
 	        zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
+			//设置DPI300 java生成图片默认DPI72 不适用于打印
+			ImageUtil.handleDpi(QrCodeFile, 300, 300);
 			String filePath = QRPicPath;
 			String fileName = staffEntity.getBadge() + ".jpg";
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);

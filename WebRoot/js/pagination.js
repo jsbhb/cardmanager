@@ -117,7 +117,7 @@ $.page = {
 		
 		var selectStr = '';
 		if (o.numPerPage == 20){
-			 selectStr = "<option>10</option><option selected>20</option><option>50</option><option>100</option><option>500</option><option>1000</option>"
+			 selectStr = "<option>10</option><option selected>20</option>"
 		}else if (o.numPerPage == 50){
 			 selectStr = "<option>10</option><option>20</option><option selected>50</option><option>100</option><option>500</option><option>1000</option>"
 		}else if (o.numPerPage == 100){
@@ -127,7 +127,7 @@ $.page = {
 		}else if (o.numPerPage == 1000){
 			 selectStr = "<option selected>10</option><option>20</option><option>50</option><option>100</option><option>500</option><option selected>1000</option>"
 		}else if(o.numPerPage == 10){
-			 selectStr = "<option selected>10</option><option>20</option><option>50</option><option>100</option><option>500</option><option>1000</option>"
+			 selectStr = "<option selected>10</option><option>20</option>"
 		} 
 		
 		

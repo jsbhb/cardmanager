@@ -316,7 +316,6 @@ function rebuildTable(data){
 		var prilvl = "${prilvl}";
 		var gradeId = "${opt.gradeId}";
 		var isFx = list[i].isFx;
-		console.log(isFx);
 		if(prilvl == 1){
 			if (status == 0) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
@@ -671,7 +670,8 @@ function puton(id){
 				 layer.alert(data.msg);
 			 }
 		 },
-		 error:function(){
+		 error:function(data){
+			 console.log(data.msg);
 			 layer.alert("提交失败，请联系客服处理");
 		 }
 	 });
@@ -707,7 +707,8 @@ function putoff(id){
 				 layer.alert(data.msg);
 			 }
 		 },
-		 error:function(){
+		 error:function(data){
+			 console.log(data.msg);
 			 layer.alert("提交失败，请联系客服处理");
 		 }
 	 });

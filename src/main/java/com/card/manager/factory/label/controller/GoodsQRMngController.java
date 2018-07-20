@@ -196,6 +196,8 @@ public class GoodsQRMngController extends BaseController {
 	        zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
 	        //拼接模板文件
 			ImageUtil.overlapImage(null, QRPicPath, goodsExtensionInfo, QRPicPath);
+			//设置DPI300 java生成图片默认DPI72 不适用于打印
+			ImageUtil.handleDpi(QrCodeFile, 300, 300);
 			String filePath = QrCodeFile.toString();
 			String fileName = goodsId + ".jpg";
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
