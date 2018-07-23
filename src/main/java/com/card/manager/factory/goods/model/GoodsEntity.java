@@ -56,6 +56,7 @@ public class GoodsEntity extends Pagination {
 	private GoodsTagBindEntity goodsTagBind;
 	private List<GoodsTagBindEntity> goodsTagBindList;
 	private String tagId;
+	private GoodsBaseEntity baseEntity;
 
 	public GoodsEntity() {
 	}
@@ -339,6 +340,14 @@ public class GoodsEntity extends Pagination {
 
 	public void setGoodsTagBindList(List<GoodsTagBindEntity> goodsTagBindList) {
 		this.goodsTagBindList = goodsTagBindList;
+	}
+
+	public GoodsBaseEntity getBaseEntity() {
+		return baseEntity;
+	}
+
+	public void setBaseEntity(GoodsBaseEntity baseEntity) {
+		this.baseEntity = baseEntity;
 	}
 
 }

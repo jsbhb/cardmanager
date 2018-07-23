@@ -3,6 +3,7 @@ package com.card.manager.factory.label.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -24,9 +25,16 @@ import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
+import com.card.manager.factory.goods.service.GoodsBaseService;
 import com.card.manager.factory.goods.service.GoodsItemService;
+import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
@@ -47,6 +55,12 @@ public class GoodsExtensionMngController extends BaseController {
 	
 	@Resource
 	GradeMngService gradeMngService;
+	
+	@Resource
+	GoodsService goodsService;
+	
+	@Resource
+	GoodsBaseService goodsBaseService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView goodsList(HttpServletRequest req, HttpServletResponse resp) {
@@ -94,32 +108,6 @@ public class GoodsExtensionMngController extends BaseController {
 
 			pcb = goodsItemService.dataList(item, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_EXTENSION_QUERY_FOR_PAGE_DOWNLOAD, GoodsExtensionEntity.class);
-			
-//			String tmpLink = "";
-//			if (entity != null) {
-//				tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getGradeId() + "&goodsId=";
-//				//根据获取到的域名进行商品二维码内容的拼接
-//				//内容格式：域名+商品明细地址+centerId+shopId+goodsId
-//				//http://shop1.cncoopbuy.com/goodsDetail.html?centerId=13&shopId=15&goodsId=1002
-//				if (staffEntity.getGradeLevel() == 2) {
-//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=";
-//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=";
-//				} else if (staffEntity.getGradeLevel() == 3) {
-//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
-//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
-//				}
-//			}
-			
-//			@SuppressWarnings("unchecked")
-//			List<GoodsEntity> list = (List<GoodsEntity>) pcb.getObj();
-//			for (GoodsEntity gEntity : list) {
-//				if (tmpLink == "") {
-//					gEntity.setDetailPath("");
-//				} else {
-//					gEntity.setDetailPath(tmpLink + gEntity.getGoodsId());
-//				}
-//			}
-			
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -179,6 +167,9 @@ public class GoodsExtensionMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String goodsId = req.getParameter("goodsId");
+			GoodsEntity goodsInfo = goodsService.queryById(goodsId, staffEntity.getToken());
+			GoodsBaseEntity base = goodsBaseService.queryById(goodsInfo.getBaseId()+"", staffEntity.getToken());
+			
 			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId, staffEntity.getToken());
 			
 			//根据账号信息获取对应的最上级分级ID
@@ -191,17 +182,29 @@ public class GoodsExtensionMngController extends BaseController {
 			
 			String tmpLink = "";
 			if (entity != null) {
-				tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getGradeId() + "&goodsId=" + goodsId;
-				//根据获取到的域名进行商品二维码内容的拼接
-				//内容格式：域名+商品明细地址+centerId+shopId+goodsId
-				//http://shop1.cncoopbuy.com/goodsDetail.html?centerId=13&shopId=15&goodsId=1002
-//				if (staffEntity.getGradeLevel() == 2) {
-//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=" + goodsId;
-//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=" + goodsId;
-//				} else if (staffEntity.getGradeLevel() == 3) {
-//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=" + goodsId;
-//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=" + goodsId;
-//				}
+				tmpLink = entity.getMobileUrl();
+				List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+				for (FirstCatalogEntity fce : first) {
+					if (base.getFirstCatalogId().equals(fce.getFirstId())) {
+						tmpLink = tmpLink + "/" + fce.getAccessPath();
+						break;
+					}
+				}
+				for (SecondCatalogEntity sce : second) {
+					if (base.getSecondCatalogId().equals(sce.getSecondId())) {
+						tmpLink = tmpLink + "/" + sce.getAccessPath();
+						break;
+					}
+				}
+				for (ThirdCatalogEntity tce : third) {
+					if (base.getThirdCatalogId().equals(tce.getThirdId())) {
+						tmpLink = tmpLink + "/" + tce.getAccessPath();
+						break;
+					}
+				}
+				tmpLink = entity.getMobileUrl() + "/" + goodsId + ".html?shopId=" + staffEntity.getGradeId();
 			}
 			
 			
