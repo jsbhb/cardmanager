@@ -225,21 +225,21 @@ public class GoodsItemMngController extends BaseController {
 					tmpWebUrlParam = "";
 					for (FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
-							tmpWebUrlParam = tmpWebUrlParam + goodsInfo.getFirstCatalogId();
+							tmpWebUrlParam = tmpWebUrlParam + fce.getAccessPath();
 							goodsInfo.setFirstCatalogId(fce.getName());
 							break;
 						}
 					}
 					for (SecondCatalogEntity sce : second) {
 						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
-							tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getSecondCatalogId();
+							tmpWebUrlParam = tmpWebUrlParam + "/" + sce.getAccessPath();
 							goodsInfo.setSecondCatalogId(sce.getName());
 							break;
 						}
 					}
 					for (ThirdCatalogEntity tce : third) {
 						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
-							tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getThirdCatalogId();
+							tmpWebUrlParam = tmpWebUrlParam + "/" + tce.getAccessPath();
 							goodsInfo.setThirdCatalogId(tce.getName());
 							break;
 						}

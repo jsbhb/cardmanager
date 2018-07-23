@@ -31,6 +31,7 @@ public class SecondCatalogEntity {
 	private String updateTime;
 	private String opt;
 	private List<ThirdCatalogEntity> thirds;
+	private String accessPath;
 
 	public SecondCatalogEntity() {
 
@@ -129,5 +130,13 @@ public class SecondCatalogEntity {
 
 	public void setThirds(List<ThirdCatalogEntity> thirds) {
 		this.thirds = thirds;
+	}
+
+	public String getAccessPath() {
+		return accessPath;
+	}
+
+	public void setAccessPath(String accessPath) {
+		this.accessPath = accessPath;
 	}
 }

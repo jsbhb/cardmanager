@@ -159,10 +159,10 @@ public class MallGoodsMngController extends BaseController {
 						info.setWebUrlParam(tmpWebUrlParam);
 						continue;
 					}
-					tmpWebUrlParam = tmpWebUrlParam + goodsInfo.getFirstCatalogId();
-					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getSecondCatalogId();
-					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getThirdCatalogId();
-					tmpWebUrlParam = tmpWebUrlParam + "/" + info.getGoodsId() + ".html";
+//					tmpWebUrlParam = tmpWebUrlParam + goodsInfo.getFirstCatalogId();
+//					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getSecondCatalogId();
+//					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getThirdCatalogId();
+//					tmpWebUrlParam = tmpWebUrlParam + "/" + info.getGoodsId() + ".html";
 					info.setWebUrlParam(tmpWebUrlParam);
 				}
 				pcb.setObj(list);

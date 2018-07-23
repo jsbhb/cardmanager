@@ -26,6 +26,7 @@ public class ThirdCatalogEntity {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private String accessPath;
 
 	public ThirdCatalogEntity() {
 
@@ -95,6 +96,14 @@ public class ThirdCatalogEntity {
 
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+
+	public String getAccessPath() {
+		return accessPath;
+	}
+
+	public void setAccessPath(String accessPath) {
+		this.accessPath = accessPath;
 	}
 
 }
