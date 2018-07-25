@@ -10,6 +10,13 @@ public class GradeBO implements Comparable<GradeBO>{
 	private String name;
 	private String company;
 	private List<GradeBO> children;
+	private String gradeTypeName;
+	public String getGradeTypeName() {
+		return gradeTypeName;
+	}
+	public void setGradeTypeName(String gradeTypeName) {
+		this.gradeTypeName = gradeTypeName;
+	}
 	public String getCompany() {
 		return company;
 	}

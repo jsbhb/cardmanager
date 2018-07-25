@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +13,10 @@
 </head>
 <body>
 <section class="content-wrapper query content-iframe">
-	<section class="content-header">
+		<section class="content-header">
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">财务管理</a></li>
-	        <li class="active">资金池查看</li>
+	        <li class="active">资金池</li>
 	      </ol>
 	      <div class="search">
 	      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" value = "${list[0].name}">
@@ -35,21 +36,42 @@
 		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
+		<div class="default-content">
+			<div class="today-orders">
+				<div class="today-orders-item">
+					<a href="javascript:void(0);" id="total" onclick="totalCustomer()">${overview.total}</a>
+					<p>分级数量</p>
+				</div>
+		        <div class="today-orders-item">
+					<a href="javascript:void(0);" id="money">${overview.totalFee}</a>
+					<p>总可用金额</p>
+				</div>
+				<div class="today-orders-item">
+					<a href="javascript:void(0);" id="warning" onclick="warningCustomer(${overview.warningId})">${fn:length(overview.warningId)}</a>
+					<p>预警</p>（可用金额低于3000）
+				</div>
+			</div>
+		</div>
 		<div class="list-content">
+			<div class="row">
+				<div class="col-md-10 list-btns">
+					<c:if test="${prilvl == 1}">
+					<button type="button" onclick="toAdd()">添加资金池记录</button>
+					</c:if>
+				</div>
+			</div>
 			<div class="row content-container">
 				<div class="col-md-12 container-right active">
 					<table id="orderTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th>分级名称</th>
-								<th>账户可用金额</th>
-								<th>可用优惠金额</th>
-								<th>冻结优惠金额</th>
-								<th>账户使用金额</th>
-								<th>使用优惠金额</th>
-								<th>累计产生金额</th>
-								<th>累计产生优惠</th>
-								<th>分级状态</th>
+								<th>客户名称</th>
+								<th>客户类型</th>
+								<th>客户公司</th>
+								<th>可用金额</th>
+								<th>已用金额</th>
+								<th>累计金额</th>
+								<th>状态</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -68,11 +90,8 @@
 	
 <%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<script src="${wmsUrl}/js/mainpage.js"></script>
 <script type="text/javascript">
-//点击搜索按钮
-$('.searchBtn').on('click',function(){
-	$("#querybtns").click();
-});
 
 /**
  * 初始化分页信息
@@ -85,7 +104,6 @@ var options = {
 	index:"1",
 	callback:rebuildTable
 }
-
 
 $(function(){
 	 $(".pagination-nav").pagination(options);
@@ -111,57 +129,73 @@ function rebuildTable(data){
 	var str = "";
 	
 	if (list == null || list.length == 0) {
-		str = "<tr style='text-align:center'><td colspan=10><h5>没有查到数据</h5></td></tr>";
+		str = "<tr style='text-align:center'><td colspan=8><h5>没有查到数据</h5></td></tr>";
 		$("#orderTable tbody").html(str);
 		return;
 	}
 
 	for (var i = 0; i < list.length; i++) {
-		if (list[i].money < 1000) {
+		var tmpStatus = "";
+		if (list[i].money < 3000) {
 			str += "<tr style='color: #FF0000'>";
+			tmpStatus = "预警";
 		} else {
 			str += "<tr>";
+			tmpStatus = "正常";
 		}
 		str += "<td>" + (list[i].centerName == "" ? "" : list[i].centerName);
+		str += "</td><td>" + (list[i].gradeTypeName == null ? "" : list[i].gradeTypeName);
+		str += "</td><td>" + (list[i].company == null ? "" : list[i].company);
 		str += "</td><td>" + list[i].money;
-		str += "</td><td>" + list[i].preferential;
-		str += "</td><td>" + list[i].frozenPreferential;
 		str += "</td><td>" + list[i].useMoney;
-		str += "</td><td>" + list[i].usePreferential;
 		str += "</td><td>" + list[i].countMoney;
-		str += "</td><td>" + list[i].countPreferential;
-		var status = list[i].status;
-		switch(status){
-			case 0:str += "</td><td>停用";break;
-			case 1:str += "</td><td>启用";break;
-			default:str += "</td><td>停用";
-		}
-		str += "</td><td align='left'>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].centerId+")'>充值</a>";
-		str += "<a href='javascript:void(0);' class='table-btns' onclick='toDelete("+list[i].centerId+")'>清算</a>";
+		str += "</td><td>" + tmpStatus;
+		str += "</td><td>";
+		str += "<a href='javascript:void(0);' onclick='toShow("+list[i].centerId+")'>查看详情</a>";
 		str += "</td></tr>";
 	}
 	$("#orderTable tbody").html(str);
 }
 
-function toShow(centerId){
+function toShow(gradeId){
 	var index = layer.open({
-		  title:"资金池充值",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/finance/capitalPoolMng/toShow.shtml?centerId='+centerId
-		});
-		layer.full(index);
+	  title:"查看详情",
+	  type: 2,
+	  content: '${wmsUrl}/admin/finance/capitalPoolMng/showCapitalDetail.shtml?gradeId='+gradeId
+	});
+	layer.full(index);
 }
 
-function toDelete(centerId){
+function toAdd(){
+	var url = "${wmsUrl}/admin/finance/capitalPoolMng/toAdd.shtml";
 	var index = layer.open({
-		  title:"资金池清算",		
-		  type: 2,
-		  content: '${wmsUrl}/admin/finance/capitalPoolMng/toDelete.shtml?centerId='+centerId
-		});
-		layer.full(index);
+	  title:"添加资金池记录",
+	  type: 2,
+	  content: url,
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
+function warningCustomer(ids){
+	var arr = new Array();
+	if(ids != null && ids.length > 0){
+		for(var i=0;i<ids.length;i++){
+			arr[i] = ids[i]
+		}
+	} else {
+		return;
+	}
+	var gradeIds = arr.join(',');
+	$("#gradeId").val(gradeIds);
+	$("#gradeName").val("");
+	$("#querybtns").click();
+}
+
+function totalCustomer(){
+	$("#gradeId").val("");
+	$("#querybtns").click();
+}
 
 //点击展开
 $('.select-content').on('click','li span i:not(active)',function(){

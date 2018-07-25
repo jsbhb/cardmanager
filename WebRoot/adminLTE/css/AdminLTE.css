@@ -936,6 +936,26 @@ body.hold-transition .main-header .logo {
 	    line-height: 20px;
 	    color: #666;
 	}
+	
+	.aside-content{
+		width:calc(100%);
+	    padding: 8px 8px 8px 16px;  
+    	bottom: 0;
+    	font-size:12px;
+		border:1px solid #dfeaf9;
+		background:#f2f6fc;
+	}
+	.aside-content p{
+		line-height: 12px;
+		font-size: 12px;
+		color: #999;
+	}
+	.aside-content .content-title{
+		margin-bottom: 5px;
+	    font-size: 14px;
+	    line-height: 20px;
+	    color: #666;
+	}
 /* H1 - H6 font */
 h1,
 h2,

@@ -450,6 +450,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/rebate/recharge/audit";
 	public static final String FINANCE_CENTER_CENTER_LIQUIDATION = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/capitalpool/liquidation/{centerId}";
+	public static final String FINANCE_CENTER_GET_CAPITALPOOLOVERVIEW = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/capitalPoolOverview";
+	public static final String FINANCE_CENTER_QUERY_CAPITALPOOL_DETAIL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/detail";
+	public static final String FINANCE_CENTER_ADD_CAPITALPOOL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool";
 	
 	/**
 	 * 调度器管理中心url
