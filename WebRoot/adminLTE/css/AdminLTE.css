@@ -936,6 +936,26 @@ body.hold-transition .main-header .logo {
 	    line-height: 20px;
 	    color: #666;
 	}
+	
+	.aside-content{
+		width:calc(100%);
+	    padding: 8px 8px 8px 16px;  
+    	bottom: 0;
+    	font-size:12px;
+		border:1px solid #dfeaf9;
+		background:#f2f6fc;
+	}
+	.aside-content p{
+		line-height: 12px;
+		font-size: 12px;
+		color: #999;
+	}
+	.aside-content .content-title{
+		margin-bottom: 5px;
+	    font-size: 14px;
+	    line-height: 20px;
+	    color: #666;
+	}
 /* H1 - H6 font */
 h1,
 h2,
@@ -5840,4 +5860,16 @@ table th,table td{
 	background-color: #5491de;
 	border-color: #5491de;
 	color: #fff;
+}
+thead th,tbody td{
+	text-align: left;
+}
+.second-rows td:nth-child(2){
+	padding-left: 20px;
+}
+.thrid-rows td:nth-child(2){
+	padding-left: 50px;
+}
+.second-rows,.thrid-rows{
+	display: none;
 }
