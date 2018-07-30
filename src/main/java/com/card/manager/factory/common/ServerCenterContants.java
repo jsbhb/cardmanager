@@ -339,6 +339,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}";
 	public static final String ORDER_CENTER_MAINTENANCEEXPRESS = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/maintenance/express";
+	public static final String ORDER_CENTER_SENDSTOCKINGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/stockOut/sendStockInGoodsInfoToMJY";
+	public static final String ORDER_CENTER_SENDSTOCKOUTGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/stockOut/sendStockOutGoodsInfoToMJY";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";

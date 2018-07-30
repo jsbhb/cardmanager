@@ -27,8 +27,8 @@
 		<div class="list-item">
 			<div class="col-sm-3 item-left">分级类型</div>
 			<div class="col-xs-9 item-right">
-				<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;" value="${gradeList[0].childern[0].name}">
-                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="${gradeList[0].childern[0].id}">
+				<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;" value="${gradeList[0].name}">
+                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="${gradeList[0].id}">
 			</div>
 		</div>
 		<div class="select-content" style="width: 420px;top: 92px;">
@@ -40,28 +40,62 @@
        		</ul>
        	</div>
        	<div class="list-item">
-				<div class="col-sm-3 item-left">商品分类</div>
-				<div class="col-sm-9 item-right">
-	                <div class="right-items">
-						<select class="form-control" name="firstCatalogId" id="firstCatalogId">
-	                  	  <option selected="selected" value="-1">选择分类</option>
-	                  	  <c:forEach var="first" items="${firsts}">
-	                  	  	<option value="${first.firstId}">${first.name}</option>
-	                  	  </c:forEach>
-	                	</select>	
-					</div>
-					<div class="right-items">
-						<select class="form-control" name="secondCatalogId" id="secondCatalogId">
-						<option selected="selected" value="-1">选择分类</option>
-		                </select>
-	                </div>
-	                <div class="right-items last-items">
-						<select class="form-control" name="thirdCatalogId" id="thirdCatalogId">
-						<option selected="selected" value="-1">选择分类</option>
-		                </select>
-	                </div>
+			<div class="col-sm-3 item-left">商品分类</div>
+			<div class="col-sm-9 item-right">
+                <div class="right-items">
+					<select class="form-control" name="firstCatalogId" id="firstCatalogId">
+                  	  <option selected="selected" value="-1">选择分类</option>
+                  	  <c:forEach var="first" items="${firsts}">
+                  	  	<option value="${first.firstId}">${first.name}</option>
+                  	  </c:forEach>
+                	</select>	
+				</div>
+				<div class="right-items">
+					<select class="form-control" name="secondCatalogId" id="secondCatalogId">
+					<option selected="selected" value="-1">选择分类</option>
+	                </select>
+                </div>
+                <div class="right-items last-items">
+					<select class="form-control" name="thirdCatalogId" id="thirdCatalogId">
+					<option selected="selected" value="-1">选择分类</option>
+	                </select>
+                </div>
+			</div>
+		</div>
+		<div class="list-item">
+			<div class="col-xs-3 item-left">商品类型</div>
+			<div class="col-xs-9 item-right">
+				<select class="form-control" name="goodsType" id="goodsType">
+                	<option selected="selected" value="0">跨境商品</option>
+                	<option value="2">一般贸易商品</option>
+                	<option value="-1">全部商品</option>
+               	</select>
+			</div>
+		</div>
+		<c:if test="${type == 1 || type == 2}">
+			<div class="list-item">
+				<div class="col-xs-3 item-left">上下架状态</div>
+				<div class="col-xs-9 item-right">
+					<select class="form-control" name="itemStatus" id="itemStatus">
+                  	  <option selected="selected" value="1">上架</option>
+                  	  <option value="0">下架</option>
+                  	  <option value="-1">全部</option>
+                	</select>
+               		<input type="hidden" readonly class="form-control" name="type" id="type" value="${type}">
 				</div>
 			</div>
+		</c:if>
+		<c:if test="${type == 3}">
+			<div class="list-item">
+				<div class="col-xs-3 item-left">上下架状态</div>
+				<div class="col-xs-9 item-right">
+					<select class="form-control" disabled name="itemStatus" id="itemStatus">
+                  	  <option selected="selected" value="1">上架</option>
+                	</select>
+               		<input type="hidden" readonly class="form-control" name="type" id="type" value="${type}">
+				</div>
+			</div>
+		</c:if>
        	<div class="list-item">
 			<div class="col-xs-3 item-left">返佣比例区间</div>
 			<div class="col-xs-9 item-right">
@@ -136,6 +170,7 @@
 		});
 		
 	    function downLoadExcel(){
+	    	var type = $("#type").val();
 	    	var supplierId = $("#supplierId").val();
 	    	var gradeType = $("#gradeType").val();
 	    	var tagIdArr = new Array;
@@ -160,8 +195,13 @@
 			var tmpFirstCatalogId = $("#firstCatalogId").val();
 			var tmpSecondCatalogId = $("#secondCatalogId").val();
 			var tmpThirdCatalogId = $("#thirdCatalogId").val();
+			var tmpGoodsType = $("#goodsType").val();
+			var tmpItemStatus = $("#itemStatus").val();
 			
-	    	var url = "${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+3+"&gradeType="+gradeType+"&tagIds="+tagIdArr+"&supplierId="+supplierId+"&rebateStart="+rebateStart+"&rebateEnd="+rebateEnd+"&firstCatalogId="+tmpFirstCatalogId+"&secondCatalogId="+tmpSecondCatalogId+"&thirdCatalogId="+tmpThirdCatalogId;
+	    	var url = "${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&gradeType="+gradeType+
+	    			  "&tagIds="+tagIdArr+"&supplierId="+supplierId+"&rebateStart="+rebateStart+"&rebateEnd="+rebateEnd+
+	    			  "&firstCatalogId="+tmpFirstCatalogId+"&secondCatalogId="+tmpSecondCatalogId+"&thirdCatalogId="+tmpThirdCatalogId+
+	    			  "&goodsType="+tmpGoodsType+"&itemStatus="+tmpItemStatus;
 	    	window.open(url);
 	    }
 	    

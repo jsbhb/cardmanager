@@ -79,4 +79,8 @@ public interface OrderService extends ServerCenterService {
 			throws Exception;
 
 	Map<String, Object> importOrder(String filePath, StaffEntity staffEntity);
+
+	void sendStockInGoodsInfoToMJYByOrderId(String orderId, StaffEntity staff) throws Exception;
+
+	void sendStockOutGoodsInfoToMJYByOrderId(String orderId, StaffEntity staff) throws Exception;
 }

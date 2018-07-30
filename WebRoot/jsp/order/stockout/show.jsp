@@ -215,6 +215,7 @@
 								<th>商家编码</th>
 								<th>自有编码</th>
 								<th>商品名称</th>
+								<th>商品规格</th>
 								<th>商品价格</th>
 								<th>实际价格</th>
 								<th>数量</th>
@@ -283,6 +284,7 @@
 			str += "</td><td>" + list[i].itemCode;
 			str += "</td><td>" + list[i].sku;
 			str += "</td><td>" + list[i].itemName;
+			str += "</td><td>" + (list[i].itemInfo == null ? "" :list[i].itemInfo);
 			str += "</td><td>" + list[i].itemPrice;
 			str += "</td><td>" + list[i].actualPrice;
 			str += "</td><td>" + list[i].itemQuantity;

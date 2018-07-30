@@ -122,8 +122,10 @@
 		<div class="list-tabBar">
 			<ul>
 				<li data-id="first" class="active">上架商品</li>
-				<li data-id="second">下架商品</li>
-				<li data-id="third">分销商品</li>
+				<c:if test="${prilvl == 1}">
+					<li data-id="second">下架商品</li>
+					<li data-id="third">分销商品</li>
+				</c:if>
 			</ul>
 		</div>
 	
@@ -134,7 +136,8 @@
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick = "excelExport(1)">商品信息导出</button>
+                   	<button type="button" onclick="modelExport(3)">商品报价单导出</button>
+					<button type="button" onclick = "modelExport(1)">商品信息导出</button>
 					<c:if test="${prilvl == 1}">
 <!-- 						<button type="button" onclick="jump(9)">新增商品</button> -->
 						<button type="button" onclick = "puton('')">批量上架</button>
@@ -142,8 +145,7 @@
 						<button type="button" onclick = "beFx('')">批量可分销</button>
 						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
 						<button type="button" onclick = "bindTag()">批量打标签</button>
-                       	<button type="button" onclick="excelExport(2)">商品信息导出(运营用)</button>
-                       	<button type="button" onclick="modelExport()">商品报价单导出</button>
+                       	<button type="button" onclick="modelExport(2)">商品信息导出(运营用)</button>
 					</c:if>
 				</div>
 			</div>
@@ -503,24 +505,24 @@ function queryDataByLabelTouch(typeId,categoryId,tabId){
 	reloadTable();
 }
 
-function excelExport(type){
-	var valArr = new Array; 
-	var itemIds;
-    $("[name='check']:checked").each(function(i){
-    	valArr[i] = $(this).val();
-    }); 
-    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-    var supplierId = $("#supplierId").val();
-    window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
-    $("#theadInp").prop("checked", false);
-}
+// function excelExport(type){
+// 	var valArr = new Array; 
+// 	var itemIds;
+//     $("[name='check']:checked").each(function(i){
+//     	valArr[i] = $(this).val();
+//     }); 
+//     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+//     var supplierId = $("#supplierId").val();
+//     window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
+//     $("#theadInp").prop("checked", false);
+// }
 
-function modelExport(){
+function modelExport(type){
 	var index = layer.open({
   	  title:"商品报价单导出",		
   	  type: 2,
-  	  area: ['70%','60%'],
-  	  content: '${wmsUrl}/admin/goods/itemMng/toExport.shtml',
+  	  area: ['70%','80%'],
+  	  content: '${wmsUrl}/admin/goods/itemMng/toExport.shtml?type='+type,
   	  maxmin: false
   	});
 }

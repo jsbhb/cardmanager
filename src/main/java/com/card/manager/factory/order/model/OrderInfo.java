@@ -87,6 +87,8 @@ public class OrderInfo extends Pagination{
 	
 	private String phone;
 	
+	private Integer isEshopIn;//Eshop是否入库，0：未入库；1入库
+	
 	public OrderInfo(){}
 
 	public OrderInfo(OrderImportBO model) {
@@ -420,6 +422,14 @@ public class OrderInfo extends Pagination{
 
 	public void setOrderSource(Integer orderSource) {
 		this.orderSource = orderSource;
+	}
+
+	public Integer getIsEshopIn() {
+		return isEshopIn;
+	}
+
+	public void setIsEshopIn(Integer isEshopIn) {
+		this.isEshopIn = isEshopIn;
 	}
 
 	@Override

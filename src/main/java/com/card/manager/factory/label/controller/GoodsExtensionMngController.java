@@ -76,10 +76,7 @@ public class GoodsExtensionMngController extends BaseController {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
-		try {
-			//查询已上架状态的数据
-			item.setStatus("1");
-			
+		try {			
 			String goodsName = req.getParameter("goodsName");
 			if (!StringUtil.isEmpty(goodsName)) {
 				item.setGoodsName(goodsName);
@@ -91,6 +88,12 @@ public class GoodsExtensionMngController extends BaseController {
 			String goodsId = req.getParameter("goodsId");
 			if (!StringUtil.isEmpty(goodsId)) {
 				item.setGoodsId(goodsId);
+			}
+			String goodsType = req.getParameter("goodsType");
+			if (!StringUtil.isEmpty(goodsType)) {
+				GoodsEntity goodsEntity = new GoodsEntity();
+				goodsEntity.setType(Integer.parseInt(goodsType));
+				item.setGoodsEntity(goodsEntity);
 			}
 
 			//根据账号信息获取对应的最上级分级ID

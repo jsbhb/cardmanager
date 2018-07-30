@@ -281,6 +281,15 @@ function rebuildTable(data){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='setExpress(\""+list[i].orderId+"\")' >维护物流</a>";
 			}
 		}
+		if(prilvl == 1) {
+			var tmpEshopIn = list[i].isEshopIn;
+			//同步订单信息到卖家云生成入库单
+			if (tmpEshopIn == 0) {
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='sendStcokInInfoToMJY(\""+list[i].orderId+"\")' >创建入库单</a>";
+			} else {
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='sendStcokOutInfoToMJY(\""+list[i].orderId+"\")' >创建出库单</a>";
+			}
+		}
 		str += "</td></tr>";
 	}
 		
@@ -406,6 +415,46 @@ function readExcelForMaintain(filePath){
 		 success:function(data){
 			 if(data.success){
 				 $("#import").val();
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("处理失败，请联系客服处理");
+		 }
+	 });
+}
+
+function sendStcokInInfoToMJY(orderId){
+	$.ajax({
+		 url:"${wmsUrl}/admin/order/stockOutMng/sendStockInGoodsInfoToMJY.shtml?orderId="+orderId,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){
+				 layer.alert("创建入库单成功！");
+				 reloadTable();
+			 }else{
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.alert("处理失败，请联系客服处理");
+		 }
+	 });
+}
+
+function sendStcokOutInfoToMJY(orderId){
+	$.ajax({
+		 url:"${wmsUrl}/admin/order/stockOutMng/sendStockOutGoodsInfoToMJY.shtml?orderId="+orderId,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 if(data.success){
+				 layer.alert("创建出库单成功！");
 				 reloadTable();
 			 }else{
 				 layer.alert(data.msg);

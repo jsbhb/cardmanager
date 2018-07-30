@@ -48,6 +48,21 @@
                 </select>
 			</div>
 		</div>
+		<div class="list-item">
+			<div class="col-xs-3 item-left">分级列表</div>
+			<div class="col-xs-9 item-right">
+				<input type="text" class="form-control" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value="${list[0].name}">
+				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value="${list[0].id}">
+			</div>
+		</div>
+		<div class="select-content" style="width: 420px;top: 175px;">
+       		<ul class="first-ul" style="margin-left:10px;">
+       			<c:forEach var="menu" items="${list}">
+       				<c:set var="menu" value="${menu}" scope="request" />
+       				<%@include file="recursive.jsp"%>  
+				</c:forEach>
+       		</ul>
+       	</div>
 		<div class="submit-btn">
            	<button type="button" onclick="downLoadExcel()">确认导出</button>
        	</div>
@@ -111,15 +126,52 @@
 	    	var endTime = $("#endTime").val();
 	    	var dateType = $('#dateType li.active').attr('data-id');
 	    	var supplierId = $("#supplierId").val();
+	    	var gradeId = $("#gradeId").val();
 	    	if (dateType == 0) {
 		    	if (startTime == "" || endTime == "") {
 		    		layer.alert("自定义日期不能为空，请选择");
 			    	return;
 		    	}
 	    	}
-	    	window.open("${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId);
-// 	    	location.href="${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId;
+	    	window.open("${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId+"&gradeId="+gradeId);
 	    }
+		//点击展开下拉列表
+		$('#gradeName').click(function(){
+			$('.select-content').stop();
+			$('.select-content').slideDown(300);
+		});
+		//点击空白隐藏下拉列表
+		$('html').click(function(event){
+			var el = event.target || event.srcelement;
+			if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
+		//点击展开
+		$('.select-content').on('click','li span i:not(active)',function(){
+			$(this).addClass('active');
+			$(this).parent().next().stop();
+			$(this).parent().next().slideDown(300);
+		});
+		//点击收缩
+		$('.select-content').on('click','li span i.active',function(){
+			$(this).removeClass('active');
+			$(this).parent().next().stop();
+			$(this).parent().next().slideUp(300);
+		});
+		//点击选择分类
+		$('.select-content').on('click','span',function(event){
+			var el = event.target || event.srcelement;
+			if(el.nodeName != 'I'){
+				var name = $(this).attr('data-name');
+				var id = $(this).attr('data-id');
+				$('#gradeName').val(name);
+				$('#gradeId').val(id);
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
 	</script>
 </body>
 </html>
