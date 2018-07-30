@@ -11,6 +11,7 @@ public class CapitalPool extends Pagination{
 
 	private Integer id;
 	private Integer centerId;//区域中心ID
+	private String gradeTypeName;
 	private Double money;//可用金额
 	private Double frozenMoney;//冻结金额
 	private Double preferential;//优惠金额
@@ -26,6 +27,19 @@ public class CapitalPool extends Pagination{
 	private String updateTime;
 	private String opt;
 	private String centerName;
+	private String company;
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getGradeTypeName() {
+		return gradeTypeName;
+	}
+	public void setGradeTypeName(String gradeTypeName) {
+		this.gradeTypeName = gradeTypeName;
+	}
 	public Integer getId() {
 		return id;
 	}
