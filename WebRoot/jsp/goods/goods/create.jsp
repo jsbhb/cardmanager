@@ -171,7 +171,11 @@
 					<c:forEach var="file" items="${goodsInfo.goods.files}" varStatus="status">
                    	 	<div class="item-img choose" id="content${status.index+1}" data-id="${status.index+1}">
 								<img src="${file.path}">
-								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<div class="bgColor">
+									<i class="fa fa-arrow-left fa-fw"></i>
+									<i class="fa fa-trash fa-fw"></i>
+									<i class="fa fa-arrow-right fa-fw"></i>
+								</div>
 								<input value="${file.path}" type="hidden" name="picPath" id="picPath${status.index+1}">
 							</div>
                    	 </c:forEach>
@@ -680,7 +684,7 @@
 				success : function(data) {
 					if (data.success) {
 						var ht = '<div class="item-img" id="content'+nextId+'" data-id="'+nextId+'">+<input type="file" id="pic'+nextId+'" name="pic"/></div>';
-						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-arrow-left fa-fw"></i><i class="fa fa-trash fa-fw"></i><i class="fa fa-arrow-right fa-fw"></i></div>';
 						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath">'
 						$('.addContent').append(ht);
 						$("#content"+id).html(imgPath);
@@ -692,8 +696,46 @@
 			})
 		});
 		//删除主图
-		$('.item-right').on('click','.bgColor i',function(){
+		$('.item-right').on('click','.bgColor i.fa-trash',function(){
 			$(this).parent().parent().remove();
+		});
+		//图片左移
+		$('.item-right').on('click','.bgColor i.fa-arrow-left',function(){
+			var thePar = $(this).parent().parent();
+			var prev = thePar.prev();
+			var theImg = thePar.find('img').attr('src');
+			var prevImg = prev.find('img').attr('src');
+			var lastImg = thePar.parent().children("div:eq(-2)").find('img').attr('src');
+			if(prevImg == undefined){
+				thePar.find('img').attr('src',lastImg);
+				thePar.parent().children("div:eq(-2)").find('img').attr('src',theImg);
+				thePar.find('input').attr('value',lastImg);
+				thePar.parent().children("div:eq(-2)").find('input').attr('value',theImg);
+			}else{
+				thePar.find('img').attr('src',prevImg);
+				prev.find('img').attr('src',theImg);
+				thePar.find('input').attr('value',prevImg);
+				prev.find('input').attr('value',theImg);
+			}
+		});
+		//图片右移
+		$('.item-right').on('click','.bgColor i.fa-arrow-right',function(){
+			var thePar = $(this).parent().parent();
+			var next = thePar.next();
+			var theImg = thePar.find('img').attr('src');
+			var nextImg = next.find('img').attr('src');
+			var firstImg = thePar.parent().children("div:first-child").find('img').attr('src');
+			if(nextImg == undefined){
+				thePar.find('img').attr('src',firstImg);
+				thePar.parent().children("div:first-child").find('img').attr('src',theImg);
+				thePar.find('input').attr('value',firstImg);
+				thePar.parent().children("div:first-child").find('input').attr('value',theImg);
+			}else{
+				thePar.find('img').attr('src',nextImg);
+				next.find('img').attr('src',theImg);
+				thePar.find('input').attr('value',nextImg);
+				next.find('input').attr('value',theImg);
+			}
 		});
 		//切换tabBar
 		$('.list-tabBar').on('click','ul li:not(.active)',function(){

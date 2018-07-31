@@ -728,7 +728,7 @@ body.hold-transition .main-header .logo {
     display: none;
 }
 .list-item > .item-right > .item-img > .bgColor > i{
-	font-size: 18px;
+	font-size: 13px;
     color: #fff;
     cursor: pointer;
 }
