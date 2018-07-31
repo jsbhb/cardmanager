@@ -62,13 +62,31 @@
 					</c:forEach>
            		</ul>
            	</div>
-			<div class="list-item" style="display:none;" id="copySelect">
-				<label class="col-sm-3 item-left" >复制商城<font style="color:red">*</font> </label>
+			<div class="list-item" id="customType">
+				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-					<select class="form-control" name="copyMall" id="copyMall">
-                	  <option selected="selected" value="0">不复制</option>
-                	  <option value="1">复制</option>
+					<select class="form-control" name="type" id="type">
+                	  <option selected="selected" value="1">普通客户</option>
+                	  <option value="2">对接客户</option>
 	                </select>
+				</div>
+			</div>
+			<div class="list-item" id="key" style="display: none">
+				<label class="col-sm-3 item-left" >appKey<font style="color:red"></font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="appKey" name="appKey">
+					<div class="item-content">
+		             	（对接appKey,问技术部拿）
+		            </div>
+				</div>
+			</div>
+			<div class="list-item" id="secret" style="display: none">
+				<label class="col-sm-3 item-left" >appSecret<font style="color:red"></font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="appSecret" name="appSecret">
+					<div class="item-content">
+		             	（对接appSecret，问技术部拿）
+		            </div>
 				</div>
 			</div>
 			<div class="title">
@@ -491,6 +509,21 @@
 			$('.select-content').slideUp(300);
 		}
 	});
+	
+	$("#customType").change(function(){
+		if ($("#type").val() == 1) {
+			$('#key').stop();
+			$('#key').slideUp(300);
+			$('#secret').stop();
+			$('#secret').slideUp(300);
+		} else {
+			$('#key').stop();
+			$('#key').slideDown(300);
+			$('#secret').stop();
+			$('#secret').slideDown(300);
+		}
+	});
+	
 	//点击选择分类
 	$('.select-content').on('click','span',function(event){
 		var el = event.target || event.srcelement;
