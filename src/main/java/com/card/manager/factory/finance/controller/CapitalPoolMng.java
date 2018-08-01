@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -562,7 +564,12 @@ public class CapitalPoolMng extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		context.put("centerId", CachePoolComponent.getCenter(opt.getToken()));
+		List<StaffEntity> list = CachePoolComponent.getAllCenter(opt.getToken());
+		Set<StaffEntity> set = new HashSet<StaffEntity>();
+		for(StaffEntity staff : list){
+			set.add(staff);
+		}
+		context.put("centerId", set);
 		return forword("finance/poolcharge/add", context);
 	}
 

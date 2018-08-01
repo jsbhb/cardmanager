@@ -287,6 +287,25 @@ public class CachePoolComponent {
 		syncCenter(token);
 		return CENTERS;
 	}
+	
+	/**
+	 * 
+	 * getSupplier:获取全局供应商信息. <br/>
+	 * 
+	 * @author hebin
+	 * @param token
+	 * @return
+	 * @since JDK 1.7
+	 */
+	public static List<StaffEntity> getAllCenter(String token) {
+		// if (CENTERS.size() == 0) {
+		// syncCenter(token);
+		// }
+		CENTERS.clear();
+		Map<String, String> params = new HashMap<String, String>();
+		CENTERS = component.staffMngService.queryByParam(params);
+		return CENTERS;
+	}
 
 	/**
 	 * syncSupplier:(这里用一句话描述这个方法的作用). <br/>
