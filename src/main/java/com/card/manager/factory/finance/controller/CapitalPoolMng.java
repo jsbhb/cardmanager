@@ -567,6 +567,9 @@ public class CapitalPoolMng extends BaseController {
 		List<StaffEntity> list = CachePoolComponent.getAllCenter(opt.getToken());
 		Set<StaffEntity> set = new HashSet<StaffEntity>();
 		for(StaffEntity staff : list){
+			if(staff.getGradeId() == 0){
+				continue;
+			}
 			set.add(staff);
 		}
 		context.put("centerId", set);
