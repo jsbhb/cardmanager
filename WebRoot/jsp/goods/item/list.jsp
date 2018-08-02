@@ -121,11 +121,25 @@
 	
 		<div class="list-tabBar">
 			<ul>
-				<li data-id="first" class="active">上架商品</li>
 				<c:if test="${prilvl == 1}">
-					<li data-id="second">下架商品</li>
-					<li data-id="third">分销商品</li>
+					
 				</c:if>
+				<c:choose>
+					<c:when test="${prilvl == 1}">
+						<li data-id="first" class="active">上架商品</li>
+						<li data-id="second">下架商品</li>
+						<li data-id="third">分销商品</li>
+					</c:when>
+					<c:when test="${customType == 1}">
+						<li data-id="first" class="active">上架商品</li>
+					</c:when>
+					<c:when test="${customType == 2}">
+						<li data-id="third" class="active">分销商品</li>
+					</c:when>
+					<c:otherwise>
+						<li data-id="first" class="active">上架商品</li>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 		</div>
 	

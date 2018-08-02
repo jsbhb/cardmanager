@@ -29,7 +29,7 @@
 			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="goodsId" placeholder="请输入商品编码">
+	                  	<input type="text" class="form-control" name="goodsId" placeholder="请输入商品ID">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -60,7 +60,7 @@
 					<table id="itemTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th style="width: 5%;">商品编码</th>
+								<th style="width: 5%;">商品ID</th>
 								<th style="width: 10%;">商品图片</th>
 								<th style="width: 15%;">商品名称</th>
 								<th style="width: 10%;">商品品牌</th>

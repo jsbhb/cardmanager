@@ -237,6 +237,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/import/goods";
 	public static final String GOODS_CENTER_CREATE_ITEMINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goods/saveItemInfo";
+	public static final String GOODS_CENTER_QUERY_GOODSINFO_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/queryGoodsInfoByGoodsId";
 
 	/*------------------------商品明细管理-----------------------*/
 	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";

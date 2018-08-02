@@ -11,6 +11,7 @@ public class GradeBO implements Comparable<GradeBO>{
 	private String company;
 	private List<GradeBO> children;
 	private String gradeTypeName;
+	private Integer type;
 	public String getGradeTypeName() {
 		return gradeTypeName;
 	}
@@ -64,6 +65,12 @@ public class GradeBO implements Comparable<GradeBO>{
 	public String toString() {
 		return "GradeBO [id=" + id + ", parentId=" + parentId + ", gradeType=" + gradeType + ", name=" + name
 				+ ", children=" + children + "]";
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	
 }

@@ -1380,4 +1380,18 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	}
 
+	@Override
+	public GoodsEntity queryGoodsInfoByGoodsId(String goodsId, String token) {
+		GoodsEntity entity = new GoodsEntity();
+		entity.setGoodsId(goodsId);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSINFO_BY_GOODSID, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsEntity.class);
+	}
+
 }

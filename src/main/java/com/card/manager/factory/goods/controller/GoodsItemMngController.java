@@ -90,6 +90,7 @@ public class GoodsItemMngController extends BaseController {
 		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
 		if (grade != null) {
 			context.put("gradeType", grade.getGradeType());
+			context.put("customType", grade.getType());
 		}
 		// set page privilege
 		if (opt.getRoleId() == 1) {

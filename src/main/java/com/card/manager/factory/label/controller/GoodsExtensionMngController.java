@@ -170,7 +170,7 @@ public class GoodsExtensionMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String goodsId = req.getParameter("goodsId");
-			GoodsEntity goodsInfo = goodsService.queryById(goodsId, staffEntity.getToken());
+			GoodsEntity goodsInfo = goodsService.queryGoodsInfoByGoodsId(goodsId, staffEntity.getToken());
 			GoodsBaseEntity base = goodsBaseService.queryById(goodsInfo.getBaseId()+"", staffEntity.getToken());
 			
 			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId, staffEntity.getToken());
