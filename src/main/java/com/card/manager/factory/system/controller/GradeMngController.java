@@ -130,7 +130,9 @@ public class GradeMngController extends BaseController {
 
 		if (opt.getRoleId() != AuthCommon.SUPER_ADMIN) {
 			int id = opt.getGradeId();
-			entity.setId(id);
+			if (id != AuthCommon.EARA_ADMIN) {
+				entity.setId(id);
+			}
 		}
 		
 		try {
