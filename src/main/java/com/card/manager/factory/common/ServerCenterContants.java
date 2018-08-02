@@ -181,6 +181,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
 	public static final String GOODS_CENTER_CATALOG_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/navigation/publish";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_FIRST_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/updateFirstByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_SECOND_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/updateSecondByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_THIRD_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/updateThirdByParam";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_BASE_ID_SEQUENCE = "base";

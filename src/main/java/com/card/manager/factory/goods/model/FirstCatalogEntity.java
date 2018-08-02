@@ -29,8 +29,11 @@ public class FirstCatalogEntity {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private Integer sort;
+	private Integer status;
 	private List<SecondCatalogEntity> seconds;
 	private String accessPath;
+	private String tagPath;
 
 	public FirstCatalogEntity() {
 
@@ -43,6 +46,10 @@ public class FirstCatalogEntity {
 		this.updateTime = obj.getString("updateTime");
 		this.createTime = obj.getString("createTime");
 		this.opt = obj.getString("opt");
+		this.sort = obj.getInt("sort");
+		this.status = obj.getInt("status");
+		this.accessPath = obj.getString("accessPath");
+		this.tagPath = obj.getString("tagPath");
 
 		List<SecondCatalogEntity> seconds = new ArrayList<SecondCatalogEntity>();
 
@@ -126,6 +133,30 @@ public class FirstCatalogEntity {
 
 	public void setAccessPath(String accessPath) {
 		this.accessPath = accessPath;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getTagPath() {
+		return tagPath;
+	}
+
+	public void setTagPath(String tagPath) {
+		this.tagPath = tagPath;
 	}
 
 }

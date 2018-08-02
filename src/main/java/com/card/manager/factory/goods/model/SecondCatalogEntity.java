@@ -30,6 +30,8 @@ public class SecondCatalogEntity {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private Integer sort;
+	private Integer status;
 	private List<ThirdCatalogEntity> thirds;
 	private String accessPath;
 
@@ -45,6 +47,9 @@ public class SecondCatalogEntity {
 		this.updateTime = obj.getString("updateTime");
 		this.createTime = obj.getString("createTime");
 		this.opt = obj.getString("opt");
+		this.sort = obj.getInt("sort");
+		this.status = obj.getInt("status");
+		this.accessPath = obj.getString("accessPath");
 
 		List<ThirdCatalogEntity> thirds = new ArrayList<ThirdCatalogEntity>();
 
@@ -138,5 +143,21 @@ public class SecondCatalogEntity {
 
 	public void setAccessPath(String accessPath) {
 		this.accessPath = accessPath;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }

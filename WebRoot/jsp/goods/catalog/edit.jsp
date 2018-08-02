@@ -14,6 +14,38 @@
 <body>
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
+			<c:if test="${type==1}">
+				<div class="list-item">
+					<div class="col-sm-3 item-left">分类图标</div>
+					<div class="col-sm-9 item-right addContent">
+						<c:choose>
+						   <c:when test="${tagPath != null && tagPath != ''}">
+		           	  			<div class="item-img choose" id="content" >
+									<c:choose>
+										<c:when test="${tagPath.indexOf('http') != -1}">
+											<img src="${tagPath}">
+											<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+											<input value="${tagPath}" type="hidden" name="tagPath" id="tagPath">
+										</c:when>
+										<c:otherwise>
+											<img src="${webUrl}/${tagPath}">
+											<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+											<input value="${webUrl}/${tagPath}" type="hidden" name="tagPath" id="tagPath">
+										</c:otherwise>
+									</c:choose>
+								</div>
+						   </c:when>
+						   <c:otherwise>
+		               	  		<div class="item-img" id="content" >
+									+
+									<input type="file" id="pic" name="pic" />
+									<input type="hidden" class="form-control" name="tagPath" id="tagPath"> 
+								</div>
+						   </c:otherwise>
+						</c:choose> 
+					</div>
+				</div>
+			</c:if>
         	<div class="list-item">
 				<div class="col-xs-3 item-left">分类编号</div>
 				<div class="col-xs-9 item-right">
@@ -27,16 +59,36 @@
 					<input type="text" class="form-control" name="name" value="${name}">
 	             </div>
 			</div>
+			<div class="list-item">
+				<div class="col-xs-3 item-left">分类别称</div>
+				<div class="col-xs-9 item-right">
+					<input type="text" class="form-control" name="accessPath" value="${accessPath}">
+	            	<div class="item-content">
+	             		（商品分类的别称，例：myyp）
+	             	</div>
+	             </div>
+			</div>
+			<div class="list-item">
+				<div class="col-xs-3 item-left">分类顺序</div>
+				<div class="col-xs-9 item-right">
+					<input type="text" class="form-control" name="sort"  value="${sort}">
+	            	<div class="item-content">
+	             		（商品分类的顺序，例：2）
+	             	</div>
+	             </div>
+			</div>
 			<div class="submit-btn">
             	<button type="button" id="submitBtn">确定</button>
-            	<button type="button" id="resetBtn">重置</button>
              </div>
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
+	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
+		 $('#catalogForm').data("bootstrapValidator").validate();
 		 if($('#catalogForm').data("bootstrapValidator").isValid()){
 			 $.ajax({
 				 url:"${wmsUrl}/admin/goods/catalogMng/modify.shtml",
@@ -62,10 +114,6 @@
 		 }
 	 });
 	
-	 $('#resetBtn').click(function() {
-	        $('#catalogForm').data('bootstrapValidator').resetForm(true);
-	    });
-	
 	$('#catalogForm').bootstrapValidator({
 //      live: 'disabled',
       message: 'This value is not valid',
@@ -76,17 +124,65 @@
       },
       fields: {
     	  name: {
-              message: '名字不正确',
+              message: '分类名称不正确',
               validators: {
                   notEmpty: {
-                      message: '名字不能为空！'
+                      message: '分类名称不能为空！'
+                  }
+              }
+      	  },
+      	  accessPath: {
+            message: '分类别称不正确',
+            validators: {
+                notEmpty: {
+                    message: '分类别称不能为空！'
+                }
+            }
+    	  },
+      	  sort: {
+              message: '分类顺序不正确',
+              validators: {
+                  notEmpty: {
+                      message: '分类别称不能为空！'
+                  },
+                  digits: {
+                      message: '分类顺序只能使用数字！'
                   }
               }
       	  }
       }
   });
 	
-	
+	//点击上传图片
+	$('.item-right').on('change','.item-img input[type=file]',function(){
+		var imagSize = document.getElementById("pic").files[0].size;
+		if(imagSize>1024*1024*3) {
+			layer.alert("图片大小请控制在3M以内，当前图片为："+(imagSize/(1024*1024)).toFixed(2)+"M");
+			return true;
+		}
+		$.ajaxFileUpload({
+			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			secureuri : false,
+			fileElementId : "pic",
+			dataType : 'json',
+			success : function(data) {
+				if (data.success) {
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="tagPath" name="tagPath">'
+					$("#content").html(imgPath);
+					$("#content").addClass('choose');
+				} else {
+					layer.alert(data.msg);
+				}
+			}
+		})
+	});
+	//删除主图
+	$('.item-right').on('click','.bgColor i',function(){
+		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="headImg" id="headImg" value=""></div>';
+		$(this).parent().parent().removeClass("choose");
+		$(this).parent().parent().parent().html(ht);
+	});
 	
 	</script>
 </body>

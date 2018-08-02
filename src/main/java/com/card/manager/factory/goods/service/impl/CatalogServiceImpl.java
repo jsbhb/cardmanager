@@ -93,6 +93,10 @@ public class CatalogServiceImpl implements CatalogService {
 			entity.setFirstId(ServerCenterContants.FIRST_CATALOG + sequence);
 			entity.setName(model.getName());
 			entity.setOpt(staffEntity.getOpt());
+			entity.setAccessPath(model.getAccessPath());
+			entity.setSort(model.getSort());
+			entity.setTagPath(model.getTagPath());
+			entity.setStatus(1);
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_FIRST_CATALOG,
@@ -109,6 +113,9 @@ public class CatalogServiceImpl implements CatalogService {
 			entity.setFirstId(model.getParentId());
 			entity.setName(model.getName());
 			entity.setOpt(staffEntity.getOpt());
+			entity.setAccessPath(model.getAccessPath());
+			entity.setSort(model.getSort());
+			entity.setStatus(1);
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_SECOND_CATALOG,
@@ -123,6 +130,9 @@ public class CatalogServiceImpl implements CatalogService {
 			entity.setThirdId(ServerCenterContants.THIRD_CATALOG + sequence);
 			entity.setName(model.getName());
 			entity.setOpt(staffEntity.getOpt());
+			entity.setAccessPath(model.getAccessPath());
+			entity.setSort(model.getSort());
+			entity.setStatus(1);
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_THIRD_CATALOG,
@@ -150,6 +160,9 @@ public class CatalogServiceImpl implements CatalogService {
 			entity.setFirstId(model.getId());
 			entity.setName(model.getName());
 			entity.setOpt(staffEntity.getOpt());
+			entity.setAccessPath(model.getAccessPath());
+			entity.setSort(model.getSort());
+			entity.setTagPath(model.getTagPath());
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_FIRST_CATALOG,
@@ -160,6 +173,8 @@ public class CatalogServiceImpl implements CatalogService {
 			SecondCatalogEntity entity = new SecondCatalogEntity();
 			entity.setSecondId(model.getId());
 			entity.setName(model.getName());
+			entity.setAccessPath(model.getAccessPath());
+			entity.setSort(model.getSort());
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_SECOND_CATALOG,
@@ -168,6 +183,8 @@ public class CatalogServiceImpl implements CatalogService {
 			ThirdCatalogEntity entity = new ThirdCatalogEntity();
 			entity.setThirdId(model.getId());
 			entity.setName(model.getName());
+			entity.setAccessPath(model.getAccessPath());
+			entity.setSort(model.getSort());
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_THIRD_CATALOG,
@@ -339,5 +356,52 @@ public class CatalogServiceImpl implements CatalogService {
 			throw new Exception("发布商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
 
+	}
+	
+	@Override
+	@Log(content = "执行商品分类操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void updCategoryByParam(CatalogModel model, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = null;
+		if (CategoryTypeEnum.FIRST.getType().equals(model.getType())) {
+			FirstCatalogEntity entity = new FirstCatalogEntity();
+			entity.setFirstId(model.getId());
+			entity.setSort(model.getSort());
+			entity.setStatus(model.getStatus());
+
+			result = helper.request(
+					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_UPDATE_FIRST_CATALOG_BY_PARAM,
+					staffEntity.getToken(), true, entity, HttpMethod.POST);
+
+		} else if (CategoryTypeEnum.SECOND.getType().equals(model.getType())) {
+
+			SecondCatalogEntity entity = new SecondCatalogEntity();
+			entity.setSecondId(model.getId());
+			entity.setSort(model.getSort());
+			entity.setStatus(model.getStatus());
+
+			result = helper.request(
+					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_UPDATE_SECOND_CATALOG_BY_PARAM,
+					staffEntity.getToken(), true, entity, HttpMethod.POST);
+		} else if (CategoryTypeEnum.THIRD.getType().equals(model.getType())) {
+			ThirdCatalogEntity entity = new ThirdCatalogEntity();
+			entity.setThirdId(model.getId());
+			entity.setSort(model.getSort());
+			entity.setStatus(model.getStatus());
+			entity.setIsPopular(model.getIsPopular());
+
+			result = helper.request(
+					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_UPDATE_THIRD_CATALOG_BY_PARAM,
+					staffEntity.getToken(), true, entity, HttpMethod.POST);
+		}
+
+		if (result == null)
+			throw new Exception("没有返回信息");
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("执行商品分类操作失败:" + json.getString("errorMsg"));
+		}
 	}
 }

@@ -119,8 +119,30 @@ public class CatalogMngController extends BaseController {
 				context.put(ERROR, "没有分类名称!");
 				return forword("error", context);
 			}
-
 			context.put("name", name);
+
+			String accessPath = java.net.URLDecoder.decode(req.getParameter("accessPath"), "UTF-8");
+			if (StringUtil.isEmpty(accessPath)) {
+				context.put(ERROR, "没有分类别称!");
+				return forword("error", context);
+			}
+			context.put("accessPath", accessPath);
+
+			String sort = java.net.URLDecoder.decode(req.getParameter("sort"), "UTF-8");
+			if (StringUtil.isEmpty(sort)) {
+				context.put(ERROR, "没有分类顺序!");
+				return forword("error", context);
+			}
+			context.put("sort", sort);
+
+			if (type.equals("1")) {
+				String tagPath = java.net.URLDecoder.decode(req.getParameter("tagPath"), "UTF-8");
+				if (StringUtil.isEmpty(tagPath)) {
+					context.put(ERROR, "没有分类图标!");
+					return forword("error", context);
+				}
+				context.put("tagPath", tagPath);
+			}
 
 			return forword("goods/catalog/edit", context);
 		} catch (Exception e) {
@@ -181,7 +203,7 @@ public class CatalogMngController extends BaseController {
 		try {
 			List<FirstCatalogEntity> firsts = catalogService.queryAll(opt.getToken());
 			context.put("firsts", firsts);
-			return forword("goods/catalog/list2", context);
+			return forword("goods/catalog/list3", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
@@ -285,6 +307,82 @@ public class CatalogMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			catalogService.publish(staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/changeCategorySort", method = RequestMethod.POST)
+	public void changeCategorySort(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String id = req.getParameter("id");
+			String catelog = req.getParameter("catelog");
+			String sort = req.getParameter("sort");
+			if (StringUtil.isEmpty(id) || StringUtil.isEmpty(catelog) || StringUtil.isEmpty(sort)) {
+				sendFailureMessage(resp, "缺少参数，请确认");
+				return;
+			}
+			CatalogModel model = new CatalogModel();
+			model.setId(id);
+			model.setType(catelog);
+			model.setSort(Integer.parseInt(sort));
+			model.setStatus(2);
+			catalogService.updCategoryByParam(model,staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/changeCategoryStatus", method = RequestMethod.POST)
+	public void changeCategoryStatus(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String id = req.getParameter("id");
+			String catelog = req.getParameter("catelog");
+			String status = req.getParameter("status");
+			if (StringUtil.isEmpty(id) || StringUtil.isEmpty(catelog) || StringUtil.isEmpty(status)) {
+				sendFailureMessage(resp, "缺少参数，请确认");
+				return;
+			}
+			CatalogModel model = new CatalogModel();
+			model.setId(id);
+			model.setType(catelog);
+			model.setSort(2);
+			model.setStatus(Integer.parseInt(status));
+			catalogService.updCategoryByParam(model,staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+	
+	@RequestMapping(value = "/changeCategoryPopular", method = RequestMethod.POST)
+	public void changeCategoryPopular(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String id = req.getParameter("id");
+			String popular = req.getParameter("popular");
+			if (StringUtil.isEmpty(id) || StringUtil.isEmpty(popular)) {
+				sendFailureMessage(resp, "缺少参数，请确认");
+				return;
+			}
+			CatalogModel model = new CatalogModel();
+			model.setId(id);
+			model.setType("3");
+			model.setSort(2);
+			model.setStatus(2);
+			model.setIsPopular(Integer.parseInt(popular));
+			
+			catalogService.updCategoryByParam(model,staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
