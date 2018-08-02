@@ -91,22 +91,6 @@
    <div id="page-wrapper" class="iframePage">
 	<div class="default-content">
 		<c:choose>
-		<c:when test="${id==35}">
-			<div class="use-center">
-				<div class="use-center-left">
-					<ul>
-						<li>18405817534</li>
-						<li>已实名认证</li>
-					</ul>
-				</div>
-				<div class="use-center-right">
-					<ul>
-						<li>推广收益</li>
-						<li>￥0</li>
-					</ul>
-				</div>
-			</div>
-		</c:when>
 		<c:when test="${id==51}">
 			<div class="use-center">
 				
