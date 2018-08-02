@@ -95,6 +95,8 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 		GradeTypeRole role = new GradeTypeRole(entity.getId(), entity.getRole());
 
 		roleMapper.updateByGradeTypeId(role);
+		
+		CachePoolComponent.syncGradeType(staff.getToken());
 	}
 
 	@Override
@@ -114,6 +116,8 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 		if (!success) {
 			throw new Exception("删除失败:" + json.getString("errorMsg"));
 		}
+		
+		CachePoolComponent.syncGradeType(staffEntity.getToken());
 	}
 
 }
