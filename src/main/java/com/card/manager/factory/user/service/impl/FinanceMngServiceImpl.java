@@ -33,6 +33,8 @@ import com.card.manager.factory.finance.model.CapitalManagement;
 import com.card.manager.factory.finance.model.CapitalManagementBusinessItem;
 import com.card.manager.factory.finance.model.CapitalManagementDetail;
 import com.card.manager.factory.finance.model.CapitalManagementDownLoadEntity;
+import com.card.manager.factory.finance.model.CapitalOverviewModel;
+import com.card.manager.factory.finance.model.CapitalPoolDetail;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -41,6 +43,7 @@ import com.card.manager.factory.user.model.CardEntity;
 import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
+import com.card.manager.factory.util.JSONUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -61,17 +64,17 @@ import net.sf.json.JSONObject;
  */
 @Service
 public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService implements FinanceMngService {
-	
+
 	@Resource
 	FinanceMapper financeMapper;
-	
+
 	@Override
 	@Log(content = "更新账号绑定银行卡信息", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updateCard(CardEntity cardInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> goodscenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_UPDATE, staffEntity.getToken(), true, cardInfo,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_UPDATE, staffEntity.getToken(),
+				true, cardInfo, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 		if (!json.getBoolean("success")) {
@@ -86,39 +89,41 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		String operId = "";
 		String operType = "";
 		if (staffEntity.getGradeLevel() == 1) {
-			operId = staffEntity.getUserCenterId()+"";
+			operId = staffEntity.getUserCenterId() + "";
 			operType = "2";
 		} else if (staffEntity.getGradeLevel() == 2) {
-			operId = staffEntity.getGradeId()+"";
+			operId = staffEntity.getGradeId() + "";
 			operType = "0";
 		} else if (staffEntity.getGradeLevel() == 3) {
-			operId = staffEntity.getShopId()+"";
+			operId = staffEntity.getShopId() + "";
 			operType = "1";
 		}
 		params.put("id", operId);
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_QUERY_CARDINFO+"?type="+operType, staffEntity.getToken(), true, staffEntity,
-				HttpMethod.GET, params);
-		
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_QUERY_CARDINFO + "?type=" + operType,
+				staffEntity.getToken(), true, staffEntity, HttpMethod.GET, params);
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-//		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CardEntity.class);
-		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), new TypeReference<List<CardEntity>>() {});
-		 
+		// return JSONUtilNew.parse(json.getJSONObject("obj").toString(),
+		// CardEntity.class);
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), new TypeReference<List<CardEntity>>() {
+		});
+
 	}
-	
+
 	@Override
 	public String checkCardNo(String cardNo, String token) throws Exception {
-		
+
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDNO_CHECK+"?cardNo="+cardNo, token, true, null,
-				HttpMethod.GET);
-		
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDNO_CHECK + "?cardNo=" + cardNo, token,
+				true, null, HttpMethod.GET);
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		if (!json.getBoolean("success")) {
 			throw new Exception("校验银行卡信息失败:" + json.getString("errorMsg"));
 		}
-//		return json.getJSONObject("errorMsg").toString();
+		// return json.getJSONObject("errorMsg").toString();
 		return json.getString("errorMsg");
 	}
 
@@ -128,8 +133,8 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		RestCommonHelper helper = new RestCommonHelper();
 
 		ResponseEntity<String> goodscenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_INSERT, staffEntity.getToken(), true, cardInfo,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_INSERT, staffEntity.getToken(),
+				true, cardInfo, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
@@ -137,42 +142,42 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 			throw new Exception("新增账号绑定银行卡信息失败:" + json.getString("errorMsg"));
 		}
 	}
-	
+
 	@Override
 	public Rebate queryRebate(Integer id, String token) {
-		
+
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gradeId", id);
 		ResponseEntity<String> query_result = helper.requestWithParams(
 				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY, token, true, null,
 				HttpMethod.GET, params);
-		
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), Rebate.class);
 	}
-	
+
 	@Override
 	public ShopRebate queryShopRebate(String id, String type, String token) {
-		
+
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gradeId", id);
 		ResponseEntity<String> query_result = helper.requestWithParams(
 				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REBATE_QUERY, token, true, null,
 				HttpMethod.GET, params);
-		
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ShopRebate.class);
 	}
-	
+
 	@Override
 	public CardEntity queryInfoByCardId(CardEntity cardEntity, StaffEntity staffEntity) {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_QUERY_CARD_BY_CARDID, staffEntity.getToken(), true, cardEntity,
-				HttpMethod.POST);
-		
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_QUERY_CARD_BY_CARDID,
+				staffEntity.getToken(), true, cardEntity, HttpMethod.POST);
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), CardEntity.class);
 	}
@@ -184,15 +189,15 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", cardInfo.getId().toString());
 		ResponseEntity<String> goodscenter_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_DELETE, staffEntity.getToken(), true, null,
-				HttpMethod.DELETE, params);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_DELETE, staffEntity.getToken(),
+				true, null, HttpMethod.DELETE, params);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 		if (!json.getBoolean("success")) {
 			throw new Exception("删除账号绑定银行卡信息失败:" + json.getString("errorMsg"));
 		}
 	}
-	
+
 	@Override
 	public Withdrawals checkWithdrawalsById(String id, StaffEntity staffEntity) {
 		Withdrawals Detail = null;
@@ -200,14 +205,14 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		ResponseEntity<String> result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_WITHDRAWALS_DETAIL_ID, staffEntity.getToken(), true,
-				null, HttpMethod.POST,params);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_WITHDRAWALS_DETAIL_ID,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (json.getBoolean("success")) {
 			Detail = JSONUtilNew.parse(json.getJSONObject("obj").toString(), Withdrawals.class);
 		}
-		
+
 		if (Detail != null) {
 			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
 			GradeBO grade = map.get(Detail.getOperatorId());
@@ -223,8 +228,8 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 	public void auditWithdrawals(AuditModel entity, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_WITHDRAWALS_AUDIT, staffEntity.getToken(), true,
-				entity, HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_WITHDRAWALS_AUDIT, staffEntity.getToken(),
+				true, entity, HttpMethod.POST);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
@@ -239,9 +244,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gradeId", staffEntity.getGradeId());
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_LIST, staffEntity.getToken(), true, staffEntity,
-				HttpMethod.GET, params);
-		
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CARDINFO_LIST, staffEntity.getToken(),
+				true, staffEntity, HttpMethod.GET, params);
+
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		if (!json.getBoolean("success")) {
 			return retList;
@@ -264,8 +269,8 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		RestCommonHelper helper = new RestCommonHelper();
 
 		ResponseEntity<String> goodscenter_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_USER_APPLY_WITHDRAWALS, staffEntity.getToken(), true, entity,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_USER_APPLY_WITHDRAWALS,
+				staffEntity.getToken(), true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
@@ -281,8 +286,8 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("centerId", staffEntity.getGradeId());
 		ResponseEntity<String> goodscenter_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_USER_APPLY_REFILLING, staffEntity.getToken(), true, entity,
-				HttpMethod.POST, params);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_USER_APPLY_REFILLING,
+				staffEntity.getToken(), true, entity, HttpMethod.POST, params);
 
 		JSONObject json = JSONObject.fromObject(goodscenter_result.getBody());
 
@@ -298,13 +303,15 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		ResponseEntity<String> result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REFILLING_DETAIL_ID, staffEntity.getToken(), true,
-				null, HttpMethod.POST,params);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REFILLING_DETAIL_ID,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (json.getBoolean("success")) {
-//			JSONObject tjson = JSONObject.fromObject(json.getJSONObject("obj").toString());
-//			Detail = JSONUtilNew.parse(tjson.getJSONObject("obj").toString(), Refilling.class);
+			// JSONObject tjson =
+			// JSONObject.fromObject(json.getJSONObject("obj").toString());
+			// Detail = JSONUtilNew.parse(tjson.getJSONObject("obj").toString(),
+			// Refilling.class);
 			Detail = JSONUtilNew.parse(json.getJSONObject("obj").toString(), Refilling.class);
 		}
 		if (Detail != null) {
@@ -322,8 +329,8 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 	public void auditRefilling(AuditModel entity, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REFILLING_AUDIT, staffEntity.getToken(), true,
-				entity, HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_REFILLING_AUDIT, staffEntity.getToken(),
+				true, entity, HttpMethod.POST);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
@@ -337,9 +344,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("centerId", centerId);
-		ResponseEntity<String> result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_CHARGE+"?money="+money+"&payNo="+payNo, staffEntity.getToken(), true,
-				null, HttpMethod.POST,params);
+		ResponseEntity<String> result = helper.requestWithParams(URLUtils.get("gateway")
+				+ ServerCenterContants.FINANCE_CENTER_CENTER_CHARGE + "?money=" + money + "&payNo=" + payNo,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
@@ -354,15 +361,15 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("centerId", centerId);
 		ResponseEntity<String> result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_LIQUIDATION+"?money="+money, staffEntity.getToken(), true,
-				null, HttpMethod.POST,params);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CENTER_LIQUIDATION + "?money=" + money,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("资金池清算失败，请联系技术人员！");
 		}
 	}
-	
+
 	@Override
 	public Page<CapitalManagement> dataListByType(Pagination pagination, Map<String, Object> params) {
 		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
@@ -379,7 +386,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		capitalManagement.setCustomerType(entity.getCustomerType());
 		capitalManagement.setCustomerCode(entity.getCustomerCode());
 		capitalManagement.setOpt(entity.getOpt());
-		
+
 		CapitalManagementDetail capitalManagementDetail = new CapitalManagementDetail();
 		capitalManagementDetail.setCustomerId(entity.getCustomerId());
 		capitalManagementDetail.setCustomerType(entity.getCustomerType());
@@ -389,16 +396,16 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		capitalManagementDetail.setBusinessNo(entity.getBusinessNo());
 		capitalManagementDetail.setRemark(entity.getRemark());
 		capitalManagementDetail.setOpt(entity.getOpt());
-		
+
 		List<CapitalManagementBusinessItem> itemList = new ArrayList<CapitalManagementBusinessItem>();
-		for(CapitalManagementBusinessItem BusinessItem: entity.getItemList()) {
+		for (CapitalManagementBusinessItem BusinessItem : entity.getItemList()) {
 			if (BusinessItem.check()) {
 				BusinessItem.setBusinessNo(entity.getBusinessNo());
 				BusinessItem.setOpt(entity.getOpt());
 				itemList.add(BusinessItem);
 			}
 		}
-		
+
 		financeMapper.insertOrUpdateCapitalManagement(capitalManagement);
 		financeMapper.insertCapitalManagementDetail(capitalManagementDetail);
 		if (itemList.size() > 0) {
@@ -406,36 +413,78 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		}
 		financeMapper.updateCapitalManagementMoney(capitalManagementDetail);
 	}
-	
+
 	@Override
 	public CapitalManagement queryCapitalManagementByCustomerId(Map<String, Object> param) {
 		return financeMapper.selectCapitalManagementByCustomerId(param);
 	}
-	
+
 	@Override
 	public Page<CapitalManagementDetail> dataListByCustomerId(Pagination pagination, Map<String, Object> params) {
 		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
 		return financeMapper.dataListByCustomerId(params);
 	}
-	
+
 	@Override
 	public CapitalManagement totalCustomerByType(Map<String, Object> params) {
 		return financeMapper.totalCustomerByType(params);
 	}
-	
+
 	@Override
 	public CapitalManagementDetail queryCapitalManagementDetailByParam(Map<String, Object> params) {
 		return financeMapper.queryCapitalManagementDetailByParam(params);
 	}
-	
+
 	@Override
 	public Page<CapitalManagementBusinessItem> dataListByBusinessNo(Pagination pagination, Map<String, Object> params) {
 		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
 		return financeMapper.dataListByBusinessNo(params);
 	}
-	
+
 	@Override
 	public List<CapitalManagementDownLoadEntity> queryCapitalPoolInfoListForDownload(Map<String, Object> params) {
 		return financeMapper.queryInfoByParam(params);
+	}
+
+	@Override
+	public CapitalOverviewModel getCapitalOverviewModel(String token, List<GradeBO> list) {
+		RestCommonHelper helper = new RestCommonHelper();
+		List<Integer> idList = new ArrayList<Integer>();
+		if (list == null || list.size() == 0) {
+			throw new RuntimeException("没有分级ID");
+		}
+		recursion(list, idList);
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_GET_CAPITALPOOLOVERVIEW, token, true,
+				idList, HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("资金池列表异常，请联系技术人员！");
+		}
+		return JSONUtil.parse(json.get("obj").toString(), CapitalOverviewModel.class);
+	}
+
+	private void recursion(List<GradeBO> list, List<Integer> result) {
+		if (list != null && list.size() > 0) {
+			for (GradeBO bo : list) {
+				result.add(bo.getId());
+				recursion(bo.getChildren(), result);
+			}
+		}
+	}
+
+	@Override
+	public void addCapitalPool(CapitalPoolDetail entity, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		if (entity == null) {
+			throw new RuntimeException("没有分级对象");
+		}
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_ADD_CAPITALPOOL, token, true,
+				entity, HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException(json.get("errorMsg") + "");
+		}
 	}
 }

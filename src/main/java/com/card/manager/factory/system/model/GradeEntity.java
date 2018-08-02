@@ -92,6 +92,36 @@ public class GradeEntity extends Pagination{
 	
 	private Integer init;
 	
+	private String appKey;
+	
+	private String appSecret;
+	
+	private Integer type;
+	
+	public String getAppKey() {
+		return appKey;
+	}
+
+	public void setAppKey(String appKey) {
+		this.appKey = appKey;
+	}
+
+	public String getAppSecret() {
+		return appSecret;
+	}
+
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 	public Integer getGradeLevel() {
 		return gradeLevel;
 	}

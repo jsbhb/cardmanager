@@ -27,7 +27,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">银行名称</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" readonly class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
+					<input type="text" class="form-control" name="cardBank" id="cardBank" value="${card.cardBank}">
 				</div>
 			</div>
 			<div class="list-item">
@@ -76,6 +76,30 @@
 	}
 	
 	$("#submitBtn").click(function(){
+		var strCardNo = $("#cardNo").val();
+		strCardNo = $.trim(strCardNo);
+		if (strCardNo == "") {
+			layer.alert("银行卡号不能为空，请确认");
+			return;
+		}
+		var strCardBank = $("#cardBank").val();
+		strCardBank = $.trim(strCardBank);
+		if (strCardBank == "") {
+			layer.alert("银行名称不能为空，请确认");
+			return;
+		}
+		var strCardName = $("#cardName").val();
+		strCardName = $.trim(strCardName);
+		if (strCardName == "") {
+			layer.alert("持卡人名称不能为空，请确认");
+			return;
+		}
+		var strCardMobile = $("#cardMobile").val();
+		strCardMobile = $.trim(strCardMobile);
+		if (strCardMobile == "") {
+			layer.alert("预留电话不能为空，请确认");
+			return;
+		}
 		 $.ajax({
 			 url:"${wmsUrl}/admin/user/userCardMng/update.shtml",
 			 type:'post',

@@ -23,6 +23,15 @@
              	</div>
 			</div>
         </div>
+		<div class="list-item">
+			<div class="col-xs-3 item-left">标签权重<font style="color:red">*</font> </div>
+			<div class="col-xs-9 item-right">
+            	<input type="text" class="form-control" name="tagRatio" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')">
+            	<div class="item-content">
+             		（请输入数字,权重越高商品排序越优先,例：5）
+             	</div>
+			</div>
+        </div>
 		<div class="submit-btn">
             <button type="button" class="btn btn-primary" id="submitBtn">确定</button>
         </div>

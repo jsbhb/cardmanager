@@ -219,25 +219,34 @@ public class GoodsItemMngController extends BaseController {
 				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
 				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
 				GoodsBaseEntity goodsInfo = null;
+				String tmpWebUrlParam = "";
 				for (GoodsItemEntity info : list) {
 					goodsInfo = info.getBaseEntity();
+					tmpWebUrlParam = "";
 					for (FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
+							tmpWebUrlParam = tmpWebUrlParam + fce.getAccessPath();
 							goodsInfo.setFirstCatalogId(fce.getName());
 							break;
 						}
 					}
 					for (SecondCatalogEntity sce : second) {
 						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
+							tmpWebUrlParam = tmpWebUrlParam + "/" + sce.getAccessPath();
 							goodsInfo.setSecondCatalogId(sce.getName());
 							break;
 						}
 					}
 					for (ThirdCatalogEntity tce : third) {
 						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
+							tmpWebUrlParam = tmpWebUrlParam + "/" + tce.getAccessPath();
 							goodsInfo.setThirdCatalogId(tce.getName());
 							break;
 						}
+					}
+					if (!"".equals(tmpWebUrlParam)) {
+						tmpWebUrlParam = tmpWebUrlParam + "/" + info.getGoodsId() + ".html";
+						info.setWebUrlParam(tmpWebUrlParam);
 					}
 					
 					String infoStr = info.getInfo();
@@ -385,11 +394,45 @@ public class GoodsItemMngController extends BaseController {
 		context.put(OPT, opt);
 		List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 		context.put("tags", tags);
+
+		Integer gradeType = opt.getGradeType();
 		List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
-		context.put("gradeList", gradeList);
+		List<GradeTypeDTO> rootList = new ArrayList<GradeTypeDTO>();
+		if (gradeList != null && gradeList.size() > 0) {
+			for(GradeTypeDTO gtFirst:gradeList) {
+				if (gtFirst.getId() == gradeType) {
+					rootList.addAll(gradeList);
+					break;
+				} else {
+					if (gtFirst.getChildern() != null && gtFirst.getChildern().size() >0) {
+						for(GradeTypeDTO gtSecond:gtFirst.getChildern()) {
+							if (gtSecond.getId() == gradeType) {
+								rootList.add(gtSecond);
+								break;
+							} else {
+								if (gtSecond.getChildern() != null && gtSecond.getChildern().size() >0) {
+									for(GradeTypeDTO gtThird:gtSecond.getChildern()) {
+										if (gtThird.getId() == gradeType) {
+											rootList.add(gtThird);
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if (rootList != null && rootList.size() > 0) {
+			context.put("gradeList", rootList);
+		} else {
+			context.put("gradeList", gradeList);
+		}
 		List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 		context.put("firsts", catalogs);
 		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+		context.put("type", req.getParameter("type"));
 		return forword("goods/item/modelExport", context);
 	}
 
@@ -419,6 +462,8 @@ public class GoodsItemMngController extends BaseController {
 			String firstCatalogId = req.getParameter("firstCatalogId");
 			String secondCatalogId = req.getParameter("secondCatalogId");
 			String thirdCatalogId = req.getParameter("thirdCatalogId");
+			String goodsType = req.getParameter("goodsType");
+			String itemStatus = req.getParameter("itemStatus");
 			GoodsListDownloadParam param = new GoodsListDownloadParam();
 			if (!"".equals(supplierId)) {
 				param.setSupplierId(Integer.parseInt(supplierId));
@@ -464,6 +509,12 @@ public class GoodsItemMngController extends BaseController {
 //				}
 				thirdCatalogList.add(thirdCatalogId);
 				param.setThirdCatalogList(thirdCatalogList);
+			}
+			if (!StringUtil.isEmpty(itemStatus)) {
+				param.setItemStatus(Integer.parseInt(itemStatus));
+			}
+			if (!StringUtil.isEmpty(goodsType)) {
+				param.setGoodsType(Integer.parseInt(goodsType));
 			}
 			//商品报价单默认查询上架商品
 			if ("3".equals(type)) {
@@ -601,9 +652,9 @@ public class GoodsItemMngController extends BaseController {
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
 						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			} else if ("3".equals(type)) {
-				nameArray = new String[] { "分级类型", "一级类目", "二级类目", "三级类目", "商家编码", "商品条码", "商品名称", 
+				nameArray = new String[] { "分级类型", "一级类目", "二级类目", "三级类目", "商家编码", "商品条码", "商品名称", "商品品牌", 
 						"产地", "规格", "箱规", "保质期", "商品类型", "库存", "零售价", "返佣比例", "商品标签", "比价信息" };
-				colArray = new String[] { "GradeTypeName", "FirstName", "SecondName", "ThirdName", "Sku", "Encode", "GoodsName", 
+				colArray = new String[] { "GradeTypeName", "FirstName", "SecondName", "ThirdName", "Sku", "Encode", "GoodsName", "Brand", 
 						"Origin", "Info", "Carton", "ShelfLife", "GoodsTypeName", "FxQty", "RetailPrice", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			}
 

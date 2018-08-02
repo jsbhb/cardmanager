@@ -20,12 +20,14 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.GoodsUtil;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -147,6 +149,25 @@ public class MallGoodsMngController extends BaseController {
 				GoodsUtil.changeSpecsInfo(entity);
 			}
 
+			if (pcb != null) {
+				GoodsBaseEntity goodsInfo = null;
+				String tmpWebUrlParam = "";
+				for (GoodsItemEntity info : list) {
+					tmpWebUrlParam = "";
+					goodsInfo = info.getBaseEntity();
+					if (goodsInfo == null) {
+						info.setWebUrlParam(tmpWebUrlParam);
+						continue;
+					}
+//					tmpWebUrlParam = tmpWebUrlParam + goodsInfo.getFirstCatalogId();
+//					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getSecondCatalogId();
+//					tmpWebUrlParam = tmpWebUrlParam + "/" + goodsInfo.getThirdCatalogId();
+//					tmpWebUrlParam = tmpWebUrlParam + "/" + info.getGoodsId() + ".html";
+					info.setWebUrlParam(tmpWebUrlParam);
+				}
+				pcb.setObj(list);
+			}
+
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -166,6 +187,9 @@ public class MallGoodsMngController extends BaseController {
 		return pcb;
 	}
 
+	@Resource
+	SysLogger sysLogger;
+	
 	@RequestMapping(value = "/puton", method = RequestMethod.POST)
 	public void puton(HttpServletRequest req, HttpServletResponse resp) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -177,6 +201,7 @@ public class MallGoodsMngController extends BaseController {
 			}
 			goodsItemService.puton(itemId, staffEntity);
 		} catch (Exception e) {
+			sysLogger.debug("---puton---", e.getMessage());
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
@@ -195,6 +220,7 @@ public class MallGoodsMngController extends BaseController {
 			}
 			goodsItemService.putoff(itemId, staffEntity);
 		} catch (Exception e) {
+			sysLogger.debug("---putoff---", e.getMessage());
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}

@@ -199,25 +199,34 @@ public class InventoryMngController extends BaseController {
 				List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
 				List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
 				GoodsBaseEntity goodsInfo = null;
+				String tmpWebUrlParam = "";
 				for (GoodsItemEntity info : list) {
 					goodsInfo = info.getBaseEntity();
+					tmpWebUrlParam = "";
 					for (FirstCatalogEntity fce : first) {
 						if (goodsInfo.getFirstCatalogId().equals(fce.getFirstId())) {
+							tmpWebUrlParam = tmpWebUrlParam + fce.getAccessPath();
 							goodsInfo.setFirstCatalogId(fce.getName());
 							break;
 						}
 					}
 					for (SecondCatalogEntity sce : second) {
 						if (goodsInfo.getSecondCatalogId().equals(sce.getSecondId())) {
+							tmpWebUrlParam = tmpWebUrlParam + "/" + sce.getAccessPath();
 							goodsInfo.setSecondCatalogId(sce.getName());
 							break;
 						}
 					}
 					for (ThirdCatalogEntity tce : third) {
 						if (goodsInfo.getThirdCatalogId().equals(tce.getThirdId())) {
+							tmpWebUrlParam = tmpWebUrlParam + "/" + tce.getAccessPath();
 							goodsInfo.setThirdCatalogId(tce.getName());
 							break;
 						}
+					}
+					if (!"".equals(tmpWebUrlParam)) {
+						tmpWebUrlParam = tmpWebUrlParam + "/" + info.getGoodsId() + ".html";
+						info.setWebUrlParam(tmpWebUrlParam);
 					}
 					
 					String infoStr = info.getInfo();

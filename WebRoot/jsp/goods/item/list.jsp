@@ -121,9 +121,11 @@
 	
 		<div class="list-tabBar">
 			<ul>
-				<li data-id="first" class="active">上架</li>
-				<li data-id="second">下架</li>
-				<li data-id="third">分销</li>
+				<li data-id="first" class="active">上架商品</li>
+				<c:if test="${prilvl == 1}">
+					<li data-id="second">下架商品</li>
+					<li data-id="third">分销商品</li>
+				</c:if>
 			</ul>
 		</div>
 	
@@ -134,16 +136,16 @@
 					<i class="fa fa-list fa-fw active"></i>
 				</div>
 				<div class="col-md-10 list-btns">
-					<button type="button" onclick = "excelExport(1)">商品信息导出</button>
+                   	<button type="button" onclick="modelExport(3)">商品报价单导出</button>
+					<button type="button" onclick = "modelExport(1)">商品信息导出</button>
 					<c:if test="${prilvl == 1}">
-						<button type="button" onclick="jump(9)">新增商品</button>
+<!-- 						<button type="button" onclick="jump(9)">新增商品</button> -->
 						<button type="button" onclick = "puton('')">批量上架</button>
 						<button type="button" onclick = "putoff('')">批量下架</button>
 						<button type="button" onclick = "beFx('')">批量可分销</button>
 						<button type="button" onclick = "noBeFx('')">批量不可分销</button>
 						<button type="button" onclick = "bindTag()">批量打标签</button>
-                       	<button type="button" onclick="excelExport(2)">商品信息导出(运营用)</button>
-                       	<button type="button" onclick="modelExport()">商品报价单导出</button>
+                       	<button type="button" onclick="modelExport(2)">商品信息导出(运营用)</button>
 					</c:if>
 				</div>
 			</div>
@@ -281,7 +283,7 @@ function rebuildTable(data){
 		} else {
 			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}"+list[i].webUrlParam+"'>" + list[i].goodsName + "</a>";
 		if(list[i].tagList.length > 0){
 			str += '<p style="margin: 5px 0 0 0;">';
 			for(var j=0;j<list[i].tagList.length;j++){
@@ -316,7 +318,6 @@ function rebuildTable(data){
 		var prilvl = "${prilvl}";
 		var gradeId = "${opt.gradeId}";
 		var isFx = list[i].isFx;
-		console.log(isFx);
 		if(prilvl == 1){
 			if (status == 0) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
@@ -504,24 +505,24 @@ function queryDataByLabelTouch(typeId,categoryId,tabId){
 	reloadTable();
 }
 
-function excelExport(type){
-	var valArr = new Array; 
-	var itemIds;
-    $("[name='check']:checked").each(function(i){
-    	valArr[i] = $(this).val();
-    }); 
-    itemIds = valArr.join(',');//转换为逗号隔开的字符串 
-    var supplierId = $("#supplierId").val();
-    window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
-    $("#theadInp").prop("checked", false);
-}
+// function excelExport(type){
+// 	var valArr = new Array; 
+// 	var itemIds;
+//     $("[name='check']:checked").each(function(i){
+//     	valArr[i] = $(this).val();
+//     }); 
+//     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
+//     var supplierId = $("#supplierId").val();
+//     window.open("${wmsUrl}/admin/goods/itemMng/downLoadExcel.shtml?type="+type+"&supplierId="+supplierId+"&itemIds="+itemIds);
+//     $("#theadInp").prop("checked", false);
+// }
 
-function modelExport(){
+function modelExport(type){
 	var index = layer.open({
   	  title:"商品报价单导出",		
   	  type: 2,
-  	  area: ['70%','60%'],
-  	  content: '${wmsUrl}/admin/goods/itemMng/toExport.shtml',
+  	  area: ['70%','80%'],
+  	  content: '${wmsUrl}/admin/goods/itemMng/toExport.shtml?type='+type,
   	  maxmin: false
   	});
 }
@@ -530,12 +531,12 @@ function bindTag(){
 	var valArr = new Array; 
 	var itemIds;
     $("[name='check']:checked").each(function(i){
-    	if ($(this).parent().siblings().eq(9).text() != "可分销") {
+    	if ($(this).parent().siblings().eq(9).text() == "下架") {
  	        valArr[i] = $(this).val(); 
     	}
     }); 
     if(valArr.length==0){
-    	layer.alert("请选择可用或初始化状态的数据");
+    	layer.alert("请选择下架状态的数据");
     	return;
     }
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
@@ -671,7 +672,8 @@ function puton(id){
 				 layer.alert(data.msg);
 			 }
 		 },
-		 error:function(){
+		 error:function(data){
+			 console.log(data.msg);
 			 layer.alert("提交失败，请联系客服处理");
 		 }
 	 });
@@ -707,7 +709,8 @@ function putoff(id){
 				 layer.alert(data.msg);
 			 }
 		 },
-		 error:function(){
+		 error:function(data){
+			 console.log(data.msg);
 			 layer.alert("提交失败，请联系客服处理");
 		 }
 	 });

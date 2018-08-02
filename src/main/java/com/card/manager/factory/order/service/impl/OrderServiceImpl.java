@@ -337,4 +337,32 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
 		return (int) json.get("obj");
 	}
+
+	@Override
+	@Log(content = "根据订单编号同步订单商品至卖家云系统", source = Log.BACK_PLAT, type = Log.ADD)
+	public void sendStockInGoodsInfoToMJYByOrderId(String orderId, StaffEntity staff) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_SENDSTOCKINGOODINFOTOMJY + "?orderId=" + orderId, staff.getToken(), true,
+				null, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new Exception("根据订单编号同步订单商品至卖家云系统失败:" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	@Log(content = "根据订单编号取消订单商品至卖家云系统", source = Log.BACK_PLAT, type = Log.ADD)
+	public void sendStockOutGoodsInfoToMJYByOrderId(String orderId, StaffEntity staff) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_SENDSTOCKOUTGOODINFOTOMJY + "?orderId=" + orderId, staff.getToken(), true,
+				null, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new Exception("根据订单编号取消订单商品至卖家云系统失败:" + json.getString("errorMsg"));
+		}
+	}
 }

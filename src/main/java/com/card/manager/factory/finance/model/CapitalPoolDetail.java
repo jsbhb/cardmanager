@@ -1,6 +1,8 @@
 package com.card.manager.factory.finance.model;
 
-public class CapitalPoolDetail {
+import com.card.manager.factory.base.Pagination;
+
+public class CapitalPoolDetail extends Pagination{
 
 	private Integer id;
 	private Integer centerId;
@@ -12,6 +14,13 @@ public class CapitalPoolDetail {
 	private String remark;
 	private String createTime;
 	private String opt;
+	private String centerName;
+	public String getCenterName() {
+		return centerName;
+	}
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
+	}
 	public Integer getId() {
 		return id;
 	}

@@ -181,6 +181,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
 	public static final String GOODS_CENTER_CATALOG_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/navigation/publish";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_FIRST_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/updateFirstByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_SECOND_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/updateSecondByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_THIRD_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/updateThirdByParam";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_BASE_ID_SEQUENCE = "base";
@@ -339,6 +345,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}";
 	public static final String ORDER_CENTER_MAINTENANCEEXPRESS = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/maintenance/express";
+	public static final String ORDER_CENTER_SENDSTOCKINGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/stockOut/sendStockInGoodsInfoToMJY";
+	public static final String ORDER_CENTER_SENDSTOCKOUTGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/stockOut/sendStockOutGoodsInfoToMJY";
 	/*------------------------订货订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PURCHASE_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/purchase/queryForPage";
@@ -450,6 +460,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/rebate/recharge/audit";
 	public static final String FINANCE_CENTER_CENTER_LIQUIDATION = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/capitalpool/liquidation/{centerId}";
+	public static final String FINANCE_CENTER_GET_CAPITALPOOLOVERVIEW = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/capitalPoolOverview";
+	public static final String FINANCE_CENTER_QUERY_CAPITALPOOL_DETAIL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool/detail";
+	public static final String FINANCE_CENTER_ADD_CAPITALPOOL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
+			+ SERVER_CENTER_EDITION + "/finance/capitalpool";
 	
 	/**
 	 * 调度器管理中心url

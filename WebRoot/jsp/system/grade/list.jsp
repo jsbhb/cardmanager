@@ -38,7 +38,7 @@
 						<tr>
 							<th>等级编号</th>
 							<th>名称</th>
-							<th>初始化</th>
+<!-- 							<th>初始化</th> -->
 							<th>上级机构</th>
 							<th>类型</th>
 							<th>公司</th>
@@ -114,18 +114,18 @@ function rebuildTable(data){
 		str += "<td>" + list[i].id;
 		str += "</td><td>" + (list[i].gradeName == null ? "" : list[i].gradeName);
 		
-		var gradeType = list[i].gradeType;
-		var init = list[i].init;
-		if(gradeType == 2){
-			if(init == 1){
-				str += "</td><td>完成";
-			} else {
-				str += "</td><td>未完成";
-				str += "<a href='#' onclick='init("+list[i].id+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
-			}
-		} else {
-			str += "</td><td>完成";
-		}
+// 		var gradeType = list[i].gradeType;
+// 		var init = list[i].init;
+// 		if(gradeType == 2){
+// 			if(init == 1){
+// 				str += "</td><td>完成";
+// 			} else {
+// 				str += "</td><td>未完成";
+// 				str += "<a href='#' onclick='init("+list[i].id+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
+// 			}
+// 		} else {
+// 			str += "</td><td>完成";
+// 		}
 		
 		var pgName = list[i].parentGradeName;
 		

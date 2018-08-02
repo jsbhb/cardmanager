@@ -23,6 +23,11 @@ public class CatalogModel {
 	private String name;
 	private String type;
 	private String category;
+	private String accessPath;
+	private String tagPath;
+	private Integer sort;
+	private Integer status;
+	private Integer isPopular;
 
 	public String getParentId() {
 		return parentId;
@@ -62,6 +67,46 @@ public class CatalogModel {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getAccessPath() {
+		return accessPath;
+	}
+
+	public void setAccessPath(String accessPath) {
+		this.accessPath = accessPath;
+	}
+
+	public String getTagPath() {
+		return tagPath;
+	}
+
+	public void setTagPath(String tagPath) {
+		this.tagPath = tagPath;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getIsPopular() {
+		return isPopular;
+	}
+
+	public void setIsPopular(Integer isPopular) {
+		this.isPopular = isPopular;
 	}
 
 }

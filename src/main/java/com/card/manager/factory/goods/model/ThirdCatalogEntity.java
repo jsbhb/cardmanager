@@ -26,6 +26,10 @@ public class ThirdCatalogEntity {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private Integer sort;
+	private Integer status;
+	private String accessPath;
+	private Integer isPopular;
 
 	public ThirdCatalogEntity() {
 
@@ -39,6 +43,10 @@ public class ThirdCatalogEntity {
 		this.updateTime = obj.getString("updateTime");
 		this.createTime = obj.getString("createTime");
 		this.opt = obj.getString("opt");
+		this.sort = obj.getInt("sort");
+		this.status = obj.getInt("status");
+		this.accessPath = obj.getString("accessPath");
+		this.isPopular = obj.getInt("isPopular");
 	}
 
 	public int getId() {
@@ -95,6 +103,38 @@ public class ThirdCatalogEntity {
 
 	public void setOpt(String opt) {
 		this.opt = opt;
+	}
+
+	public String getAccessPath() {
+		return accessPath;
+	}
+
+	public void setAccessPath(String accessPath) {
+		this.accessPath = accessPath;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getIsPopular() {
+		return isPopular;
+	}
+
+	public void setIsPopular(Integer isPopular) {
+		this.isPopular = isPopular;
 	}
 
 }

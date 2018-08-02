@@ -30,6 +30,12 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
@@ -44,9 +50,13 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/order/stockOutMng")
@@ -232,6 +242,25 @@ public class OrderMngController extends BaseController {
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_GOODS_FOR_PAGE, OrderGoods.class);
+			
+
+			List<OrderGoods> list = (List<OrderGoods>) pcb.getObj();
+			if (pcb != null) {
+				for (OrderGoods info : list) {
+					String infoStr = info.getItemInfo();
+					if (infoStr != null && !"".equals(infoStr)) {
+						String tmpStr = "";
+						infoStr = infoStr.replace("{", "").replace("}", "");
+						String[] infoArr = infoStr.split(",");
+						for (int i = 0; i < infoArr.length; i++) {
+							tmpStr = tmpStr + infoArr[i].replace("\"", "") + "|";
+						}
+						
+						info.setItemInfo(tmpStr.substring(0, tmpStr.length()-1));
+					}
+				}
+				pcb.setObj(list);
+			}
 		} catch (Exception e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -297,6 +326,17 @@ public class OrderMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		Map<String, Object> context = getRootMap();
 		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
+		//分级信息
+		Integer gradeId = opt.getGradeId();
+		List<GradeBO> list = new ArrayList<GradeBO>();
+		List<GradeBO> result = new ArrayList<>();
+		Map<Integer, GradeBO> map = CachePoolComponent.getGrade(opt.getToken());
+		for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
+			list.add(entry.getValue());
+		}
+		result = TreePackUtil.packGradeChildren(list, gradeId);
+		Collections.sort(result);
+		context.put("list", result);
 		return forword("order/stockout/excelExport", context);
 	}
 
@@ -308,6 +348,7 @@ public class OrderMngController extends BaseController {
 			String startTime = req.getParameter("startTime");
 			String endTime = req.getParameter("endTime");
 			String supplierId = req.getParameter("supplierId");
+			String gradeId = req.getParameter("gradeId");
 			Date date = new Date();
 			// 当选择了指定日期时
 			if ("1".equals(dateType)) {
@@ -320,7 +361,7 @@ public class OrderMngController extends BaseController {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("startTime", startTime);
 			param.put("endTime", endTime);
-			param.put("gradeId", staffEntity.getGradeId());
+			param.put("gradeId", gradeId);
 			param.put("supplierId", supplierId);
 
 			List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
@@ -609,6 +650,42 @@ public class OrderMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		return forword("order/stockout/logisticsImport", context);
+	}
+
+	@RequestMapping(value = "/sendStockInGoodsInfoToMJY", method = RequestMethod.POST)
+	public void sendStockInGoodsInfoToMJY(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String orderId = req.getParameter("orderId");
+			if (StringUtil.isEmpty(orderId)) {
+				sendFailureMessage(resp, "操作失败：订单号获取失败");
+				return;
+			}
+			orderService.sendStockInGoodsInfoToMJYByOrderId(orderId, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/sendStockOutGoodsInfoToMJY", method = RequestMethod.POST)
+	public void sendStockOutGoodsInfoToMJY(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String orderId = req.getParameter("orderId");
+			if (StringUtil.isEmpty(orderId)) {
+				sendFailureMessage(resp, "操作失败：订单号获取失败");
+				return;
+			}
+			orderService.sendStockOutGoodsInfoToMJYByOrderId(orderId, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+
+		sendSuccessMessage(resp, null);
 	}
 
 }

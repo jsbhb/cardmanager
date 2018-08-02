@@ -45,16 +45,13 @@ public class UserCardMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
-			Integer operId = 0;
+			Integer operId = staffEntity.getGradeId();
 			Integer operType = 0;
-			if (staffEntity.getGradeLevel() == 1) {
-				operId = staffEntity.getUserCenterId();
-				operType = 2;
-			} else if (staffEntity.getGradeLevel() == 2) {
-				operId = staffEntity.getGradeId();
+			if (staffEntity.getGradeLevel() == 2) {
 				operType = 0;
 			} else if (staffEntity.getGradeLevel() == 3) {
-				operId = staffEntity.getShopId();
+				operType = 0;
+			} else if (staffEntity.getGradeLevel() == 4) {
 				operType = 1;
 			}
 			pagination.setTypeId(operId);
@@ -109,16 +106,13 @@ public class UserCardMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			Integer operId = 0;
+			Integer operId = staffEntity.getGradeId();
 			Integer operType = 0;
-			if (staffEntity.getGradeLevel() == 1) {
-				operId = staffEntity.getUserCenterId();
-				operType = 2;
-			} else if (staffEntity.getGradeLevel() == 2) {
-				operId = staffEntity.getGradeId();
+			if (staffEntity.getGradeLevel() == 2) {
 				operType = 0;
 			} else if (staffEntity.getGradeLevel() == 3) {
-				operId = staffEntity.getShopId();
+				operType = 0;
+			} else if (staffEntity.getGradeLevel() == 4) {
 				operType = 1;
 			}
 			cardInfo.setTypeId(operId);

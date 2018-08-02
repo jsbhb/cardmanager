@@ -22,9 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
+import com.card.manager.factory.goods.model.SecondCatalogEntity;
+import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.system.model.GradeEntity;
@@ -122,18 +126,11 @@ public class GoodsQRMngController extends BaseController {
 			
 			String tmpLink = "";
 			if (entity != null) {
-				tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getGradeId() + "&goodsId=";
-				//根据获取到的域名进行商品二维码内容的拼接
-				//内容格式：域名+商品明细地址+centerId+shopId+goodsId
-				//http://shop1.cncoopbuy.com/goodsDetail.html?centerId=13&shopId=15&goodsId=1002
-//				if (staffEntity.getGradeLevel() == 2) {
-//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?goodsId=";
-//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?goodsId=";
-//				} else if (staffEntity.getGradeLevel() == 3) {
-//					tmpLink = entity.getMobileUrl() + "/goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
-//					tmpLink = entity.getRedirectUrl() + "goodsDetail.html?shopId=" + staffEntity.getShopId() + "&goodsId=";
-//				}
+				tmpLink = entity.getMobileUrl();
 			}
+			List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+			List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+			List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
 			
 			@SuppressWarnings("unchecked")
 			List<GoodsEntity> list = (List<GoodsEntity>) pcb.getObj();
@@ -141,7 +138,26 @@ public class GoodsQRMngController extends BaseController {
 				if (tmpLink == "") {
 					gEntity.setDetailPath("");
 				} else {
-					gEntity.setDetailPath(tmpLink + gEntity.getGoodsId());
+					tmpLink = entity.getMobileUrl();
+					for (FirstCatalogEntity fce : first) {
+						if (gEntity.getBaseEntity().getFirstCatalogId().equals(fce.getFirstId())) {
+							tmpLink = tmpLink + "/" + fce.getAccessPath();
+							break;
+						}
+					}
+					for (SecondCatalogEntity sce : second) {
+						if (gEntity.getBaseEntity().getSecondCatalogId().equals(sce.getSecondId())) {
+							tmpLink = tmpLink + "/" + sce.getAccessPath();
+							break;
+						}
+					}
+					for (ThirdCatalogEntity tce : third) {
+						if (gEntity.getBaseEntity().getThirdCatalogId().equals(tce.getThirdId())) {
+							tmpLink = tmpLink + "/" + tce.getAccessPath();
+							break;
+						}
+					}
+					gEntity.setDetailPath(tmpLink + "/" + gEntity.getGoodsId() + ".html?shopId=" + staffEntity.getGradeId());
 				}
 			}
 			
@@ -196,6 +212,8 @@ public class GoodsQRMngController extends BaseController {
 	        zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
 	        //拼接模板文件
 			ImageUtil.overlapImage(null, QRPicPath, goodsExtensionInfo, QRPicPath);
+			//设置DPI300 java生成图片默认DPI72 不适用于打印
+			ImageUtil.handleDpi(QrCodeFile, 300, 300);
 			String filePath = QrCodeFile.toString();
 			String fileName = goodsId + ".jpg";
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);

@@ -113,4 +113,6 @@ public interface CatalogService {
 
 	void publish(StaffEntity staffEntity) throws Exception;
 
+	void updCategoryByParam(CatalogModel model, StaffEntity staffEntity) throws Exception;
+
 }

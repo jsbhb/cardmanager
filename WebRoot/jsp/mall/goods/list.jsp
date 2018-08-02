@@ -207,7 +207,7 @@ function rebuildTable(data){
 		} else {
 			str += "<td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
-		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}"+list[i].webUrlParam+"'>" + list[i].goodsName + "</a>";
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		str += "</td><td style='text-align:left;'>" + list[i].supplierName;

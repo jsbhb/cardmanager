@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -15,12 +17,17 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 
+@SuppressWarnings("restriction")
 @Component
 public class ImageUtil {
 
@@ -134,7 +141,6 @@ public class ImageUtil {
 			}
 			
 			g.dispose();
-			
 	        ImageIO.write(bufferedImage2, "jpg", new File(targetPath));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -162,5 +168,29 @@ public class ImageUtil {
 //		entity.setGoodsPath("C:\\Users\\wanghaiyang\\Desktop\\切图\\goodsExtensionLogo.png");
 //		ImageUtil.overlapImage(null, "C:\\Users\\wanghaiyang\\Desktop\\切图\\code.png", entity, "", "C:\\Users\\wanghaiyang\\Desktop\\切图\\goodsExtensionTemplate.jpg");
 //	}
+	
+    /**
+     * 改变图片DPI
+     *
+     * @param file
+     * @param xDensity
+     * @param yDensity
+     */
+    public static void handleDpi(File file, int xDensity, int yDensity) {
+        try {
+            BufferedImage image = ImageIO.read(file);
+            JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(new FileOutputStream(file));
+            JPEGEncodeParam jpegEncodeParam = jpegEncoder.getDefaultJPEGEncodeParam(image);
+            jpegEncodeParam.setDensityUnit(JPEGEncodeParam.DENSITY_UNIT_DOTS_INCH);
+            jpegEncoder.setJPEGEncodeParam(jpegEncodeParam);
+            jpegEncodeParam.setQuality(0.75f, false);
+            jpegEncodeParam.setXDensity(xDensity);
+            jpegEncodeParam.setYDensity(yDensity);
+            jpegEncoder.encode(image, jpegEncodeParam);
+            image.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

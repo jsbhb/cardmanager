@@ -41,7 +41,6 @@ import net.sf.json.JSONObject;
 
 /**
  * ClassName: SupplierServiceImpl <br/>
- * Function: TODO ADD FUNCTION. <br/>
  * date: Nov 7, 2017 3:22:23 PM <br/>
  * 
  * @author hebin
@@ -53,6 +52,9 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 
 	@Resource
 	StaffMapper<?> staffMapper;
+
+	@Resource
+	SysLogger sysLogger;
 
 	@Override
 	public GoodsItemEntity queryById(String id, String token) {
@@ -152,7 +154,7 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		// List<String> list = new ArrayList<String>();
 		// list.add(itemId);
 		ResponseEntity<String> query_result = helper.request(URLUtils.get("gateway")
-				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/" + staffEntity.getGradeId(),
+				+ ServerCenterContants.GOODS_CENTER_ITEM_PUT_ON + "/2",
 				staffEntity.getToken(), true, itemIdList, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -168,8 +170,8 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		RestCommonHelper helper = new RestCommonHelper();
 
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/"
-						+ staffEntity.getGradeId() + "?itemId=" + itemId,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_ITEM_PUT_OFF + "/2"
+						+ "?itemId=" + itemId,
 				staffEntity.getToken(), true, null, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
@@ -197,16 +199,13 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 			throw new Exception("商品明细同步库存操作失败:" + json.getString("errorMsg"));
 		}
 	}
-
-	@Resource
-	SysLogger sysLogger;
 	
 	@Override
 	public List<GoodsInfoListForDownload> queryGoodsInfoListForDownload(GoodsListDownloadParam param, String token) {
 
 		sysLogger.debug("商品导出处理开始", System.currentTimeMillis() / 1000 + "");
 		List<GoodsInfoListForDownload> list = new ArrayList<GoodsInfoListForDownload>();
-		RestCommonHelper helper = new RestCommonHelper(300000);
+		RestCommonHelper helper = new RestCommonHelper();
 		sysLogger.debug("商品导出发送请求", System.currentTimeMillis() / 1000 + "");
 		ResponseEntity<String> query_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSLISTFORDOWNLOAD, token, true,

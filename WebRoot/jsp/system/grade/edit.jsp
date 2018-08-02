@@ -60,6 +60,27 @@
 					</c:forEach>
            		</ul>
            	</div>
+           	<c:if test="${grade.type == 2}">
+           		<div class="list-item">
+					<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
+					<div class="col-sm-9 item-right">
+		                  <input type="text" readonly class="form-control" id="typeName" value="对接客户">
+		                  <input type="hidden" readonly class="form-control" name="type" id="type" value="${grade.type}">
+					</div>
+				</div>
+           		<div class="list-item" id="key">
+					<label class="col-sm-3 item-left" >appKey<font style="color:red"></font> </label>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" id="appKey" name="appKey" value="${grade.appKey}" readonly>
+					</div>
+				</div>
+				<div class="list-item" id="secret">
+					<label class="col-sm-3 item-left" >appSecret<font style="color:red"></font> </label>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" id="appSecret" name="appSecret" value="${grade.appSecret}" readonly>
+					</div>
+				</div>
+           	</c:if>
 			<div class="title">
 	       		<h1>负责人信息</h1>
 	       	</div>

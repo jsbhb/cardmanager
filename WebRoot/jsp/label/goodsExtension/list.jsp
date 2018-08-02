@@ -38,6 +38,14 @@
 					</div>
 				</div>
 				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="goodsType" id="goodsType">
+		                	<option selected="selected" value="0">跨境商品</option>
+		                	<option value="2">一般贸易商品</option>
+			            </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
 					<div class="searchBtns">
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
