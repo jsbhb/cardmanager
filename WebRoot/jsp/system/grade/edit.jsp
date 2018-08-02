@@ -283,28 +283,29 @@
 	       	</div>
 	       	
 	       	<div class="list-content">
-	       	<div class="row">
-				<div class="col-md-10 list-btns">
-					<button type="button" id="syncStaff" onclick="getStaff()" class="btn btn-warning">同步员工</button>
+		       	<div class="row">
+					<div class="col-md-10 list-btns">
+						<button type="button" id="syncStaff" onclick="getStaff()" class="btn btn-warning">同步员工</button>
+					</div>
 				</div>
-			</div>
-			<div class="col-md-12">
-				<table id="staffTable" class="table table-hover myClass">
-					<thead>
-						<tr>
-							<th>badge</th>
-							<th>名称</th>
-							<th>分级机构</th>
-							<th>用户中心编号</th>
-							<th>角色</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-				<div class="pagination-nav">
-					<ul id="pagination" class="pagination">
-					</ul>
+				<div class="col-md-12">
+					<table id="staffTable" class="table table-hover myClass">
+						<thead>
+							<tr>
+								<th>badge</th>
+								<th>名称</th>
+								<th>分级机构</th>
+								<th>用户中心编号</th>
+								<th>角色</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="pagination-nav">
+						<ul id="pagination" class="pagination">
+						</ul>
+					</div>
 				</div>
 			</div>
 		</form>
