@@ -40,8 +40,9 @@
 								<th width="5%"><input style="float:none;margin: 4px 0 0;" type="checkbox"></th>
 								<th width="15%">分类名称</th>
 								<th width="15%">分类图标</th>
-								<th width="15%">分类别称</th>
-								<th width="15%">分类顺序</th>
+								<th width="10%">分类别称</th>
+								<th width="10%">分类顺序</th>
+								<th width="10%">分类状态</th>
 								<th width="15%">分类维护</th>
 								<th width="20%">操作</th>
 							</tr>
@@ -63,6 +64,16 @@
 									</td>
 			                		<td>${first.accessPath}</td>
 			                		<td>${first.sort}</td>
+									<td>
+									<c:choose>
+										<c:when test="${first.status == 0}">
+											隐藏
+										</c:when>
+										<c:otherwise>
+											显示
+										</c:otherwise>
+									</c:choose>
+									</td>
 									<td>
 										<a href="javascript:void(0);" class='table-btns' onclick="toAdd('${first.firstId}',2,'${first.name}')">新增子分类</a>
 				                		<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${first.firstId}',1,'${first.name}','${first.accessPath}','${first.sort}','${first.tagPath}')">修改分类</a>
@@ -89,6 +100,16 @@
 			                			<td>${second.accessPath}</td>
 			                			<td>${second.sort}</td>
 										<td>
+										<c:choose>
+											<c:when test="${second.status == 0}">
+												隐藏
+											</c:when>
+											<c:otherwise>
+												显示
+											</c:otherwise>
+										</c:choose>
+										</td>
+										<td>
 											<a href="javascript:void(0);" class='table-btns' onclick="toAdd('${second.secondId}',3,'${second.name}')">新增子分类</a>
 					                		<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${second.secondId}',2,'${second.name}','${second.accessPath}','${second.sort}','')">修改分类</a>
 <%-- 					                		<a href="javascript:void(0);" class='table-btns' onclick="del('${second.secondId}',2)">删除分类</a> --%>
@@ -113,6 +134,16 @@
 											<td><img src="" /></td>
 			                				<td>${third.accessPath}</td>
 			                				<td>${third.sort}</td>
+											<td>
+											<c:choose>
+												<c:when test="${third.status == 0}">
+													隐藏
+												</c:when>
+												<c:otherwise>
+													显示
+												</c:otherwise>
+											</c:choose>
+											</td>
 											<td>
 												<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${third.thirdId}',3,'${third.name}','${third.accessPath}','${third.sort}','')">修改分类</a>
 <%-- 							                	<a href="javascript:void(0);" class='table-btns' onclick="del('${third.thirdId}',3)">删除分类</a> --%>
