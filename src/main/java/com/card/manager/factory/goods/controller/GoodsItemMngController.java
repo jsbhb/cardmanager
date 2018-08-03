@@ -408,6 +408,14 @@ public class GoodsItemMngController extends BaseController {
 					if (gtFirst.getChildern() != null && gtFirst.getChildern().size() >0) {
 						for(GradeTypeDTO gtSecond:gtFirst.getChildern()) {
 							if (gtSecond.getId() == gradeType) {
+								String tmpGradeName = gtSecond.getName();
+								if (tmpGradeName.indexOf("（") != -1) {
+									tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("（"));
+								}
+								if (tmpGradeName.indexOf("(") != -1) {
+									tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("("));
+								}
+								gtSecond.setName(tmpGradeName);
 								rootList.add(gtSecond);
 								break;
 							} else {
