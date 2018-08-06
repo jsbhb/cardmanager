@@ -78,7 +78,7 @@
 	</select>
 	
 	<select id="selectByOptId" resultMap="operator">
-		select * from auth_operator where userCenterId = #{optId}
+		select * from auth_operator where badge = #{optId}
 	</select>
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">

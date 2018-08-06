@@ -402,7 +402,7 @@ public class GoodsItemMngController extends BaseController {
 		if (gradeList != null && gradeList.size() > 0) {
 			for(GradeTypeDTO gtFirst:gradeList) {
 				if (gtFirst.getId() == gradeType) {
-					rootList.addAll(gradeList);
+					rootList.addAll(gtFirst.getChildern());
 					break;
 				} else {
 					if (gtFirst.getChildern() != null && gtFirst.getChildern().size() >0) {
@@ -651,13 +651,13 @@ public class GoodsItemMngController extends BaseController {
 			if ("1".equals(type)) {
 				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
 						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
-				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
+				colArray = new String[] { "ItemId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", 
 						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			} else if ("2".equals(type)) {
 				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
 						"成本价", "内供价", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
-				colArray = new String[] { "GoodsId", "Sku", "GoodsName", "Info", "ItemStatusName",
+				colArray = new String[] { "ItemId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
 						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			} else if ("3".equals(type)) {

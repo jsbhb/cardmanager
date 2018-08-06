@@ -130,6 +130,7 @@ public class StaffMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		try {
 			staffEntity.setGradeLevel(opt.getGradeLevel());
+			staffEntity.setGradeType(opt.getGradeType());
 			staffMngService.addStaff(staffEntity);
 		} catch (OperatorSaveException e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());

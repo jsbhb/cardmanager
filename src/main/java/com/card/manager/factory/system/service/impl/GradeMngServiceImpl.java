@@ -109,7 +109,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	public void saveGrade(GradeEntity gradeInfo, StaffEntity staff) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-//		// 确认当前分级负责人电话是否已经存在
+		// 确认当前分级负责人电话是否已经存在
 //		ResponseEntity<String> phonecheck_result = helper.request(URLUtils.get("gateway")
 //				+ ServerCenterContants.USER_CENTER_PHONE_CHECK + "?account=" + gradeInfo.getPhone(), staff.getToken(),
 //				true, null, HttpMethod.GET);
@@ -170,7 +170,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		registerAuthCenter(staffEntity, true);
 
 		// 自动注册微店平台
-		staffMngService.sync2S(staff, userId);
+		staffMngService.sync2S(staff, Integer.parseInt(staffEntity.getBadge()));
 
 		// 区域中心复制商城时开通资金池
 		if (gradeInfo.getCopyMall() == 1) {
