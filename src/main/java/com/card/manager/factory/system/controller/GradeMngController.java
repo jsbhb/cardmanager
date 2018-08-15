@@ -25,6 +25,7 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.system.model.CustomerTypeEntity;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
@@ -73,6 +74,8 @@ public class GradeMngController extends BaseController {
 			context.put("charges", GradeCharge);
 		}
 		context.put("opt", opt);
+		List<CustomerTypeEntity> customerTypeList = CachePoolComponent.getCustomerType();
+		context.put("customerTypeList", customerTypeList);
 		return forword("system/grade/add", context);
 	}
 
@@ -138,6 +141,26 @@ public class GradeMngController extends BaseController {
 		try {
 			pcb = gradeMngService.dataList(entity, params, opt.getToken(),
 					ServerCenterContants.USER_CENTER_GRADE_QUERY_FOR_PAGE, GradeEntity.class);
+			
+			if (opt.getRoleId() != AuthCommon.SUPER_ADMIN) {
+				int id = opt.getGradeId();
+				if (id != AuthCommon.EARA_ADMIN) {
+					if (pcb != null) {
+						List<GradeEntity> list = (List<GradeEntity>) pcb.getObj();
+						for (GradeEntity ge:list) {
+							String tmpGradeTypeName = ge.getGradeTypeName();
+							if (tmpGradeTypeName.indexOf("（") != -1) {
+								tmpGradeTypeName = tmpGradeTypeName.substring(0, tmpGradeTypeName.indexOf("（"));
+							}
+							if (tmpGradeTypeName.indexOf("(") != -1) {
+								tmpGradeTypeName = tmpGradeTypeName.substring(0, tmpGradeTypeName.indexOf("("));
+							}
+							ge.setGradeTypeName(tmpGradeTypeName);
+						}
+						pcb.setObj(list);
+					}
+				}
+			}
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -186,9 +209,14 @@ public class GradeMngController extends BaseController {
 		}
 		try {
 			GradeEntity entity = gradeMngService.queryById(gradeId, opt.getToken());
+			if (entity.getWelfareRebate() == null) {
+				entity.setWelfareRebate(0.0);
+			}
 			context.put("grade", entity);
 			GradeTypeDTO gradeType = goodsService.queryGradeTypeById(entity.getGradeType()+"", opt.getToken());
 			context.put("gradeType", gradeType);
+			List<CustomerTypeEntity> customerTypeList = CachePoolComponent.getCustomerType();
+			context.put("customerTypeList", customerTypeList);
 		} catch (Exception e) {
 			context.put("error", e.getMessage());
 			return forword("error", context);

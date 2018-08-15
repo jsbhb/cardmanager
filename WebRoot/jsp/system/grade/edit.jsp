@@ -50,6 +50,7 @@
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;" value="${gradeType.name}">
 	                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="${grade.gradeType}">
+	                <input type="hidden" readonly class="form-control" id="parentGradeId" value="${gradeType.parentId}">
 				</div>
 			</div>
 			<div class="select-content" style="width: 420px;top: 219px;">
@@ -60,27 +61,50 @@
 					</c:forEach>
            		</ul>
            	</div>
-           	<c:if test="${grade.type == 2}">
-           		<div class="list-item">
-					<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
-					<div class="col-sm-9 item-right">
-		                  <input type="text" readonly class="form-control" id="typeName" value="对接客户">
-		                  <input type="hidden" readonly class="form-control" name="type" id="type" value="${grade.type}">
-					</div>
+			<div class="list-item" id="customType" style="display: none">
+				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="type" id="type" disabled>
+	           			<c:forEach var="customerType" items="${customerTypeList}">
+	           				<c:choose>
+							   <c:when test="${grade.type == customerType.typeId}">
+							   		<option value="${customerType.typeId}" selected="selected">${customerType.typeName}</option>
+							   </c:when>
+							   <c:otherwise>
+                	    			<option value="${customerType.typeId}">${customerType.typeName}</option>
+							   </c:otherwise>
+							</c:choose> 
+						</c:forEach>
+	                </select>
 				</div>
-           		<div class="list-item" id="key">
-					<label class="col-sm-3 item-left" >appKey<font style="color:red"></font> </label>
-					<div class="col-sm-9 item-right">
-						<input type="text" class="form-control" id="appKey" name="appKey" value="${grade.appKey}" readonly>
-					</div>
+			</div>
+			<div class="list-item" id="key" style="display: none">
+				<label class="col-sm-3 item-left" >appKey<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="appKey" name="appKey" value="${grade.appKey}" readonly>
+					<div class="item-content">
+		             	（对接appKey,问技术部拿）
+		            </div>
 				</div>
-				<div class="list-item" id="secret">
-					<label class="col-sm-3 item-left" >appSecret<font style="color:red"></font> </label>
-					<div class="col-sm-9 item-right">
-						<input type="text" class="form-control" id="appSecret" name="appSecret" value="${grade.appSecret}" readonly>
-					</div>
+			</div>
+			<div class="list-item" id="secret" style="display: none">
+				<label class="col-sm-3 item-left" >appSecret<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="appSecret" name="appSecret" value="${grade.appSecret}" readonly>
+					<div class="item-content">
+		             	（对接appSecret，问技术部拿）
+		            </div>
 				</div>
-           	</c:if>
+			</div>
+			<div class="list-item" id="welfare" style="display: none">
+				<label class="col-sm-3 item-left" >福利比例<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="welfareRebate" name="welfareRebate" value="${grade.welfareRebate}" readonly>
+					<div class="item-content">
+		             	（福利网站商品的比例，例：0.17）
+		            </div>
+				</div>
+			</div>
 			<div class="title">
 	       		<h1>负责人信息</h1>
 	       	</div>
@@ -114,7 +138,7 @@
 				</div>
 			</div>
 			<div class="title">
-	       		<h1>区域中心域名信息</h1>
+	       		<h1>分级域名信息</h1>
 	       	</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >电脑商城域名<font style="color:red"></font> </label>
@@ -360,7 +384,7 @@
 	 */
 	var options = {
 				queryForm : ".query",
-				url :  "${wmsUrl}/admin/system/gradeMng/dataListForGrade.shtml?gradeId="+${grade.id},
+				url :  "${wmsUrl}/admin/system/gradeMng/dataListForGrade.shtml?gradeId="+"${grade.id}",
 				numPerPage:"10",
 				currentPage:"",
 				index:"1",
@@ -369,7 +393,20 @@
 
 
 	$(function(){
-		 $(".pagination-nav").pagination(options);
+		if ($("#parentGradeId").val() == 1) {
+			$('#customType').stop();
+			$('#customType').slideDown(300);
+		}
+		if ($("#type").val() == 2) {
+			$('#key').stop();
+			$('#key').slideDown(300);
+			$('#secret').stop();
+			$('#secret').slideDown(300);
+		} else if ($("#type").val() == 3) {
+			$('#welfare').stop();
+			$('#welfare').slideDown(300);
+		}
+		$(".pagination-nav").pagination(options);
 	})
 	
 	
@@ -381,6 +418,11 @@
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");
 			     return false; 
+			 }
+			 var tmpWelfareRebate = $('#welfareRebate').val();
+			 if(tmpWelfareRebate >= 1){
+				 layer.alert("福利比例填写有误，请重新填写！");
+				 return;
 			 }
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeMng/update.shtml",
@@ -414,7 +456,7 @@
 	
 	function getStaff(){
 		 $.ajax({
-			 url:"${wmsUrl}/admin/system/gradeMng/syncStaff.shtml?gradeId="+${grade.id},
+			 url:"${wmsUrl}/admin/system/gradeMng/syncStaff.shtml?gradeId="+"${grade.id}",
 			 type:'post',
 			 contentType: "application/json; charset=utf-8",
 			 dataType:'json',
@@ -609,7 +651,18 @@
 	                  message: '供销货架图片不能为空！'
 	              }
 	          }
-	  	  }
+	  	  },
+	  	  welfareRebate:{
+			   message: '福利比例不正确',
+			   validators: {
+				   notEmpty: {
+					   message: '福利比例不能为空'
+				   },
+				   numeric: {
+					   message: '福利比例只能输入数字'
+				   }
+			   }
+		  }
       }
   });
 	
@@ -646,13 +699,45 @@
 		if(el.nodeName != 'I'){
 			var name = $(this).attr('data-name');
 			var id = $(this).attr('data-id');
+			var parId = $(this).attr('data-par-id');
 			$('#gradeTypeId').val(name);
 			$('#gradeType').val(id);
 			$('.select-content').stop();
 			$('.select-content').slideUp(300);
+			if (parId != 1) {
+				$('#customType').stop();
+				$('#customType').slideUp(300);
+			} else {
+				$('#customType').stop();
+				$('#customType').slideDown(300);
+			}
 		}
 	});
 	
+	$("#customType").change(function(){
+		if ($("#type").val() == 1) {
+			$('#key').stop();
+			$('#key').slideUp(300);
+			$('#secret').stop();
+			$('#secret').slideUp(300);
+			$('#welfare').stop();
+			$('#welfare').slideUp(300);
+		} else if ($("#type").val() == 2) {
+			$('#key').stop();
+			$('#key').slideDown(300);
+			$('#secret').stop();
+			$('#secret').slideDown(300);
+			$('#welfare').stop();
+			$('#welfare').slideUp(300);
+		} else if ($("#type").val() == 3) {
+			$('#key').stop();
+			$('#key').slideUp(300);
+			$('#secret').stop();
+			$('#secret').slideUp(300);
+			$('#welfare').stop();
+			$('#welfare').slideDown(300);
+		}
+	});
 	
 	</script>
 </body>

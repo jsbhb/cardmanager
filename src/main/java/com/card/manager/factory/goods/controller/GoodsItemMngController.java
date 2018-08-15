@@ -416,12 +416,33 @@ public class GoodsItemMngController extends BaseController {
 									tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("("));
 								}
 								gtSecond.setName(tmpGradeName);
+								
+								if (gtSecond.getChildern() != null && gtSecond.getChildern().size() > 0) {
+									for(GradeTypeDTO gtThird:gtSecond.getChildern()) {
+										tmpGradeName = gtThird.getName();
+										if (tmpGradeName.indexOf("（") != -1) {
+											tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("（"));
+										}
+										if (tmpGradeName.indexOf("(") != -1) {
+											tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("("));
+										}
+										gtThird.setName(tmpGradeName);
+									}
+								}
 								rootList.add(gtSecond);
 								break;
 							} else {
 								if (gtSecond.getChildern() != null && gtSecond.getChildern().size() >0) {
 									for(GradeTypeDTO gtThird:gtSecond.getChildern()) {
 										if (gtThird.getId() == gradeType) {
+											String tmpGradeName = gtThird.getName();
+											if (tmpGradeName.indexOf("（") != -1) {
+												tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("（"));
+											}
+											if (tmpGradeName.indexOf("(") != -1) {
+												tmpGradeName = tmpGradeName.substring(0, tmpGradeName.indexOf("("));
+											}
+											gtThird.setName(tmpGradeName);
 											rootList.add(gtThird);
 											break;
 										}
@@ -650,21 +671,25 @@ public class GoodsItemMngController extends BaseController {
 			String[] colArray = null;
 			if ("1".equals(type)) {
 				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目",
-						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
+						"二级类目", "三级类目", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息", "条码", "单位", "产地", 
+						"保质期", "品牌", "箱规" };
 				colArray = new String[] { "ItemId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "RetailPrice", 
-						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
+						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo", "Encode", "Unit", 
+						"Origin", "ShelfLife", "Brand", "Carton" };
 			} else if ("2".equals(type)) {
 				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
-						"成本价", "内供价", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息" };
+						"成本价", "内供价", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息", "条码", "单位", "产地",
+						"保质期", "品牌", "箱规"};
 				colArray = new String[] { "ItemId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
-						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
+						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo", "Encode", "Unit", 
+						"Origin", "ShelfLife", "Brand", "Carton" };
 			} else if ("3".equals(type)) {
 				nameArray = new String[] { "分级类型", "一级类目", "二级类目", "三级类目", "商家编码", "商品条码", "商品名称", "商品品牌", 
-						"产地", "规格", "箱规", "保质期", "商品类型", "库存", "零售价", "返佣比例", "商品标签", "比价信息" };
+						"产地", "规格", "单位", "箱规", "保质期", "商品类型", "库存", "零售价", "返佣比例", "商品标签", "比价信息" };
 				colArray = new String[] { "GradeTypeName", "FirstName", "SecondName", "ThirdName", "Sku", "Encode", "GoodsName", "Brand", 
-						"Origin", "Info", "Carton", "ShelfLife", "GoodsTypeName", "FxQty", "RetailPrice", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
+						"Origin", "Info", "Unit", "Carton", "ShelfLife", "GoodsTypeName", "FxQty", "RetailPrice", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo" };
 			}
 
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);

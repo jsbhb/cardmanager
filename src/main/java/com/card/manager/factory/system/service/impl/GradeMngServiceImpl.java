@@ -173,21 +173,21 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffMngService.sync2S(staff, Integer.parseInt(staffEntity.getBadge()));
 
 		// 区域中心复制商城时开通资金池
-		if (gradeInfo.getCopyMall() == 1) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("centerId", gradeId);
-			ResponseEntity<String> finance_result = helper.requestWithParams(
-					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
-					staff.getToken(), true, null, HttpMethod.POST, params);
-
-			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-			String finance_success = finance_json.getString("success");
-			// 如果失败，提示
-			if ("true".equals(finance_success)) {
-			} else {
-				throw new Exception("开通资金池失败:" + finance_json.getString("errorMsg"));
-			}
-		}
+//		if (gradeInfo.getCopyMall() == 1) {
+//			Map<String, Object> params = new HashMap<String, Object>();
+//			params.put("centerId", gradeId);
+//			ResponseEntity<String> finance_result = helper.requestWithParams(
+//					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
+//					staff.getToken(), true, null, HttpMethod.POST, params);
+//
+//			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
+//			String finance_success = finance_json.getString("success");
+//			// 如果失败，提示
+//			if ("true".equals(finance_success)) {
+//			} else {
+//				throw new Exception("开通资金池失败:" + finance_json.getString("errorMsg"));
+//			}
+//		}
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
 	}
@@ -297,23 +297,23 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		// staffMngService.sync2S(staff, gradeInfo.getPersonInChargeId());
 
 		// 区域中心复制商城时开通资金池
-		if (gradeInfo.getCopyMall() == 1) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("centerId", gradeInfo.getId());
-			ResponseEntity<String> finance_result = helper.requestWithParams(
-					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
-					staffEntity.getToken(), true, null, HttpMethod.POST, params);
-
-			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-
-			String success = finance_json.getString("success");
-
-			// 如果失败，提示
-			if ("true".equals(success)) {
-			} else {
-				throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
-			}
-		}
+//		if (gradeInfo.getCopyMall() == 1) {
+//			Map<String, Object> params = new HashMap<String, Object>();
+//			params.put("centerId", gradeInfo.getId());
+//			ResponseEntity<String> finance_result = helper.requestWithParams(
+//					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
+//					staffEntity.getToken(), true, null, HttpMethod.POST, params);
+//
+//			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
+//
+//			String success = finance_json.getString("success");
+//
+//			// 如果失败，提示
+//			if ("true".equals(success)) {
+//			} else {
+//				throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
+//			}
+//		}
 
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());

@@ -102,6 +102,16 @@ public class ServerCenterContants {
 			+ "/cooperation/partner";
 	public static final String USER_CENTER_GRADE_INIT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/area-center/init/{id}";
+	public static final String USER_CENTER_INVITER_IMPORT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/welfare/inviter/import";
+	public static final String USER_CENTER_INVITER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/welfare/inviter/queryForPage";
+	public static final String USER_CENTER_INVITER_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/welfare/inviter/update";
+	public static final String USER_CENTER_INVITER_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/welfare/inviter/produceCode";
+	public static final String USER_CENTER_INVITER_SEND_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/welfare/inviter/sendProduceCode";
 	/**
 	 * 商品中心url
 	 */

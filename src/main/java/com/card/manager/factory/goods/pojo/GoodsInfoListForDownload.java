@@ -40,6 +40,7 @@ public class GoodsInfoListForDownload {
 	private String shelfLife;
 	private String goodsType;
 	private String goodsTypeName;
+	private String unit;
 	
 	public String getGoodsId() {
 		return goodsId;
@@ -239,5 +240,11 @@ public class GoodsInfoListForDownload {
 	}
 	public void setGoodsTypeName(String goodsTypeName) {
 		this.goodsTypeName = goodsTypeName;
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 }

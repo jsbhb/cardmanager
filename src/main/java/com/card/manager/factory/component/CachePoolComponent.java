@@ -31,6 +31,7 @@ import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.supplier.model.SupplierEntity;
+import com.card.manager.factory.system.model.CustomerTypeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -65,6 +66,7 @@ public class CachePoolComponent {
 	private static List<TagFuncEntity> TAGFUNC = new ArrayList<TagFuncEntity>();
 	private static Map<Integer, GradeBO> GRADEMAP = new HashMap<Integer, GradeBO>();
 	private static Map<Integer, GradeTypeDTO> GRADE_TYPE_CACHE = new HashMap<Integer, GradeTypeDTO>();
+	private static List<CustomerTypeEntity> CUSTOMERTYPE = new ArrayList<CustomerTypeEntity>();
 
 	private static String HEAD = "1";
 	private static String CENTER = "2";
@@ -710,5 +712,22 @@ public class CachePoolComponent {
 			JSONObject jObj = obj.getJSONObject(i);
 			TAGFUNC.add(JSONUtilNew.parse(jObj.toString(), TagFuncEntity.class));
 		}
+	}
+	
+	public static List<CustomerTypeEntity> getCustomerType() {
+		CUSTOMERTYPE.clear();
+		CustomerTypeEntity firstType = new CustomerTypeEntity();
+		firstType.setTypeId(1);
+		firstType.setTypeName("普通客户");
+		CUSTOMERTYPE.add(firstType);
+		CustomerTypeEntity secondType = new CustomerTypeEntity();
+		secondType.setTypeId(2);
+		secondType.setTypeName("对接客户");
+		CUSTOMERTYPE.add(secondType);
+		CustomerTypeEntity thirdType = new CustomerTypeEntity();
+		thirdType.setTypeId(3);
+		thirdType.setTypeName("福利客户");
+		CUSTOMERTYPE.add(thirdType);
+		return CUSTOMERTYPE;
 	}
 }

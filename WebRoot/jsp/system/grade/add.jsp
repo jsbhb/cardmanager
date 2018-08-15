@@ -50,7 +50,7 @@
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;">
+					<input type="text" readonly class="form-control" id="gradeTypeId" style="background:#fff;">
 	                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType">
 				</div>
 			</div>
@@ -62,17 +62,18 @@
 					</c:forEach>
            		</ul>
            	</div>
-			<div class="list-item" id="customType">
+			<div class="list-item" id="customType" style="display: none">
 				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="type" id="type">
-                	  <option selected="selected" value="1">普通客户</option>
-                	  <option value="2">对接客户</option>
+						<c:forEach var="customerType" items="${customerTypeList}">
+       	    				<option value="${customerType.typeId}">${customerType.typeName}</option>
+						</c:forEach>
 	                </select>
 				</div>
 			</div>
 			<div class="list-item" id="key" style="display: none">
-				<label class="col-sm-3 item-left" >appKey<font style="color:red"></font> </label>
+				<label class="col-sm-3 item-left" >appKey<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="appKey" name="appKey">
 					<div class="item-content">
@@ -81,11 +82,20 @@
 				</div>
 			</div>
 			<div class="list-item" id="secret" style="display: none">
-				<label class="col-sm-3 item-left" >appSecret<font style="color:red"></font> </label>
+				<label class="col-sm-3 item-left" >appSecret<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="appSecret" name="appSecret">
 					<div class="item-content">
 		             	（对接appSecret，问技术部拿）
+		            </div>
+				</div>
+			</div>
+			<div class="list-item" id="welfare" style="display: none">
+				<label class="col-sm-3 item-left" >福利比例<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" id="welfareRebate" name="welfareRebate" value="0">
+					<div class="item-content">
+		             	（福利网站商品的比例，例：0.17）
 		            </div>
 				</div>
 			</div>
@@ -122,7 +132,7 @@
 				</div>
 			</div>
 			<div class="title">
-	       		<h1>区域中心域名信息</h1>
+	       		<h1>分级域名信息</h1>
 	       	</div>
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >电脑商城域名<font style="color:red"></font> </label>
@@ -317,6 +327,11 @@
 				 layer.alert("供销货架图片不能为空！");
 				 return;
 			 }
+			 var tmpWelfareRebate = $('#welfareRebate').val();
+			 if(tmpWelfareRebate >= 1){
+				 layer.alert("福利比例填写有误，请重新填写！");
+				 return;
+			 }
 			 $("#image").css({
 					display : "block",
 					position : "fixed",
@@ -478,7 +493,18 @@
 	                  message: '供销货架图片不能为空！'
 	              }
 	          }
-	  	  }
+	  	  },
+	  	  welfareRebate:{
+			   message: '福利比例不正确',
+			   validators: {
+				   notEmpty: {
+					   message: '福利比例不能为空'
+				   },
+				   numeric: {
+					   message: '福利比例只能输入数字'
+				   }
+			   }
+		  }
       }
   });
 	
@@ -516,11 +542,22 @@
 			$('#key').slideUp(300);
 			$('#secret').stop();
 			$('#secret').slideUp(300);
-		} else {
+			$('#welfare').stop();
+			$('#welfare').slideUp(300);
+		} else if ($("#type").val() == 2) {
 			$('#key').stop();
 			$('#key').slideDown(300);
 			$('#secret').stop();
 			$('#secret').slideDown(300);
+			$('#welfare').stop();
+			$('#welfare').slideUp(300);
+		} else if ($("#type").val() == 3) {
+			$('#key').stop();
+			$('#key').slideUp(300);
+			$('#secret').stop();
+			$('#secret').slideUp(300);
+			$('#welfare').stop();
+			$('#welfare').slideDown(300);
 		}
 	});
 	
@@ -530,16 +567,17 @@
 		if(el.nodeName != 'I'){
 			var name = $(this).attr('data-name');
 			var id = $(this).attr('data-id');
+			var parId = $(this).attr('data-par-id');
 			$('#gradeTypeId').val(name);
 			$('#gradeType').val(id);
 			$('.select-content').stop();
 			$('.select-content').slideUp(300);
-			if(id == 2){
-				$('#copySelect').stop();
-				$('#copySelect').slideDown(300);
+			if (parId != 1) {
+				$('#customType').stop();
+				$('#customType').slideUp(300);
 			} else {
-				$('#copySelect').stop();
-				$('#copySelect').slideUp(300);
+				$('#customType').stop();
+				$('#customType').slideDown(300);
 			}
 		}
 	});

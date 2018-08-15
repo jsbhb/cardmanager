@@ -146,8 +146,8 @@
 							<tr>
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="7%">商品图片</th>
-								<th width="17%">商品名称</th>
-<!-- 								<th width="5%">商品编号</th> -->
+								<th width="12%">商品名称</th>
+								<th width="5%">商品编号</th>
 								<th width="5%">商家编码</th>
 <!-- 								<th width="5%">商品品牌</th> -->
 								<th width="7%">商品分类</th>
@@ -239,7 +239,7 @@ function rebuildTable(data){
 			str += "</td><td><img style='width:50px;height:50px;' src="+list[i].goodsEntity.files[0].path+">";
 		}
 		str += "</td><td style='text-align:left;'><a target='_blank' href='${webUrl}"+list[i].webUrlParam+"'>" + list[i].goodsName + "</a>";
-// 		str += "</td><td>" + list[i].itemId;
+		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
 // 			str += "</td><td>";
@@ -382,6 +382,7 @@ function readExcelForMaintain(filePath){
 		 dataType:'json',
 		 success:function(data){
 			 if(data.success){
+				 layer.alert("维护成功");
 				 $("#import").val();
 				 reloadTable();
 			 }else{

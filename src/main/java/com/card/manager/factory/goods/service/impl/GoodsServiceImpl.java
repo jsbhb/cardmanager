@@ -133,9 +133,10 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Override
 	public String getHtmlContext(String html, StaffEntity staffEntity) throws Exception {
+		String tmpIp = html.substring(html.indexOf("//")+2,html.lastIndexOf(":"));
+		html = html.replace(tmpIp, URLUtils.get("LanIp"));
 		Document doc = Jsoup.parse(new URL(html), 3000);
 		return htmlToCode(doc.toString());
-
 	}
 
 	private String htmlToCode(String context) {

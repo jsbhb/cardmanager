@@ -5,7 +5,7 @@
 <c:choose>
 	<c:when test="${not empty menu.childern}">
 		<li>
-			<span data-id="${menu.id}" data-name="${menu.name}"><i class="fa fa-caret-right fa-fw active"></i>${menu.name}</span>
+			<span data-id="${menu.id}" data-name="${menu.name}" data-par-id="${menu.parentId}"><i class="fa fa-caret-right fa-fw active"></i>${menu.name}</span>
 			<ul>
 				<c:forEach var="menu" items="${menu.childern}">
 					<c:set var="menu" value="${menu}" scope="request" />
@@ -15,7 +15,7 @@
 		</li>
 	</c:when>
 	<c:when test="${empty menu.childern}">
-		<li><span data-id="${menu.id}" data-name="${menu.name}" class="no-child">${menu.name}</span></li>
+		<li><span data-id="${menu.id}" data-name="${menu.name}" data-par-id="${menu.parentId}" class="no-child">${menu.name}</span></li>
 	</c:when>
 </c:choose>
 
