@@ -424,6 +424,7 @@
 				 layer.alert("福利比例填写有误，请重新填写！");
 				 return;
 			 }
+			 $("#type").attr("disabled", false);
 			 $.ajax({
 				 url:"${wmsUrl}/admin/system/gradeMng/update.shtml",
 				 type:'post',
