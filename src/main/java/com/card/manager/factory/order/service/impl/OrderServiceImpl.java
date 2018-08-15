@@ -270,6 +270,11 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				result.put("msg", "编号：" + model.getOrderId() + "," + tempMap.get("describe"));
 				return result;
 			}
+			if(!model.checkSkuConversionItemIdEmpty()){
+				result.put("success", false);
+				result.put("msg", "编号：" + model.getOrderId() + ",商品编号和（自有编码+换算比例）必须存在其中一个");
+				return result;
+			}
 			// 放入订单信息
 			if (!infoMap.containsKey(model.getOrderId())) {
 				info = new OrderInfo(model);

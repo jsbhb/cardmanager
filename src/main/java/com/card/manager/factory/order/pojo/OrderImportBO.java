@@ -10,40 +10,40 @@ import com.card.manager.factory.util.RegularUtil;
 
 public class OrderImportBO {
 
-	@FieldDescribe(describe="没有订单号")
+	@FieldDescribe(describe = "没有订单号")
 	private String orderId;
-	@FieldDescribe(describe="匹配不到分级名称，请核对和对照表是否一致")
+	@FieldDescribe(describe = "匹配不到分级名称，请核对和对照表是否一致")
 	private Integer shopId;
-	@FieldDescribe(describe="没有分级名称")
+	@FieldDescribe(describe = "没有分级名称")
 	private String shopName;
-	@FieldDescribe(describe="没有自有编码")
+	@FieldDescribe(describe = "没有自有编码")
 	private String sku;
-	@FieldDescribe(describe="没有商品编号")
+	@FieldDescribe(describe = "没有商品编号")
 	private String itemId;
-	@FieldDescribe(describe="没有零售价")
+	@FieldDescribe(describe = "没有零售价")
 	private String itemPrice;
-	@FieldDescribe(describe="没有商品数量")
+	@FieldDescribe(describe = "没有商品数量")
 	private String itemQuantity;
-	@FieldDescribe(describe="没有订单来源")
+	@FieldDescribe(describe = "没有订单来源")
 	private String orderSourceName;
-	@FieldDescribe(describe="匹配不到订单来源编号，请核对和对照表是否一致")
+	@FieldDescribe(describe = "匹配不到订单来源编号，请核对和对照表是否一致")
 	private Integer orderSource;
-	@FieldDescribe(describe="匹配不到支付类型编号，请核对和对照表是否一致")
+	@FieldDescribe(describe = "匹配不到支付类型编号，请核对和对照表是否一致")
 	private Integer payType;
-	@FieldDescribe(describe="没有支付类型")
+	@FieldDescribe(describe = "没有支付类型")
 	private String payTypeName;
 	private String payNo;
-	@FieldDescribe(describe="没有收货人姓名")
+	@FieldDescribe(describe = "没有收货人姓名")
 	private String receiveName;
-	@FieldDescribe(describe="没有收货人电话")
+	@FieldDescribe(describe = "没有收货人电话")
 	private String receivePhone;
-	@FieldDescribe(describe="没有收货人省")
+	@FieldDescribe(describe = "没有收货人省")
 	private String province;
-	@FieldDescribe(describe="没有收货人市")
+	@FieldDescribe(describe = "没有收货人市")
 	private String city;
-	@FieldDescribe(describe="没有收货人区")
+	@FieldDescribe(describe = "没有收货人区")
 	private String area;
-	@FieldDescribe(describe="没有收货人地址")
+	@FieldDescribe(describe = "没有收货人地址")
 	private String address;
 	private String taxFee;
 	private String postFee;
@@ -51,7 +51,7 @@ public class OrderImportBO {
 	private String name;
 	private String idNum;
 	private String remark;
-	@FieldDescribe(describe="没有换算比例")
+	@FieldDescribe(describe = "没有换算比例")
 	private String conversion;
 
 	public boolean init(Map<String, Integer> gradeMapTemp, Map<String, Integer> supplierMap) {
@@ -65,38 +65,56 @@ public class OrderImportBO {
 		name = name == null ? "" : name;
 		idNum = idNum == null ? "" : idNum;
 		payNo = "".equals(payNo) ? null : payNo;
-		if(itemId != null && !"".equals(itemId)){//有itemId则以itemId为准，sku和conversion置空字符串
+		if (itemId != null && !"".equals(itemId)) {// 有itemId则以itemId为准，sku和conversion置空字符串
 			sku = "";
 			conversion = "";
-		} else {//itemId没有则必须要有sku和conversion
+		} else {// itemId没有则必须要有sku和conversion
 			itemId = "";
-			if("".equals(sku) || "".equals(conversion)){
+			if ("".equals(sku) || "".equals(conversion)) {
 				sku = null;
 				conversion = null;
 			}
 		}
-		if(!RegularUtil.isPhone(receivePhone)){
+		if (!RegularUtil.isPhone(receivePhone)) {
 			return false;
 		}
-		if(!"".equals(phone)){
-			if(!RegularUtil.isPhone(phone)){
+		if (!"".equals(phone)) {
+			if (!RegularUtil.isPhone(phone)) {
 				return false;
 			}
 		}
-		if(!"".equals(idNum)){
-			if(!RegularUtil.isIdentify(idNum)){
+		if (!"".equals(idNum)) {
+			if (!RegularUtil.isIdentify(idNum)) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
-	public List<String> getUnCheckFieldName(){
+
+	public List<String> getUnCheckFieldName() {
 		List<String> fields = new ArrayList<String>();
 		fields.add("payNo");// payNo可以为null
 		fields.add("remark");
 		fields.add("itemPrice");
+		fields.add("itemId");
+		fields.add("sku");
+		fields.add("conversion");
+		fields.add("taxFee");
+		fields.add("postFee");
+		fields.add("phone");
+		fields.add("idNum");
+		fields.add("name");
+		fields.add("remark");
 		return fields;
+	}
+
+	public boolean checkSkuConversionItemIdEmpty() {
+		boolean skuConversionAllEmpty = sku == null || "".equals(sku) || conversion == null || "".equals(conversion);
+		boolean itemIdEmpty = itemId == null || "".equals(itemId);
+		if (skuConversionAllEmpty && itemIdEmpty) {
+			return false;
+		}
+		return true;
 	}
 
 	public String getRemark() {
