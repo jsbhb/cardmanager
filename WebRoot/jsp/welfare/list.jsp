@@ -39,6 +39,7 @@
 			                <option value="2">已发送</option>
 			                <option value="3">绑定</option>
 			                <option value="4">作废</option>
+			                <option value="5">发送失败</option>
 			            </select>
 					</div>
 				</div>
@@ -96,6 +97,7 @@
 								<th width="10%">邀请人手机号</th>
 								<th width="10%">邀请码</th>
 								<th width="10%">邀请码状态</th>
+								<th width="10%">备注</th>
 								<th width="10%">创建时间</th>
 								<th width="10%">绑定人名称</th>
 								<th width="10%">绑定人手机号</th>
@@ -178,8 +180,10 @@ function rebuildTable(data){
 			case 2:str += "</td><td>已发送";break;
 			case 3:str += "</td><td>绑定";break;
 			case 4:str += "</td><td>作废";break;
+			case 5:str += "</td><td>发送失败";break;
 			default:str += "</td><td>状态错误："+status;
 		}
+		str += "</td><td>" + (list[i].remark == null ? "" : list[i].remark);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		str += "</td><td>" + (list[i].bindName == null ? "" : list[i].bindName);
 		str += "</td><td>" + (list[i].bindPhone == null ? "" : list[i].bindPhone);
@@ -187,11 +191,11 @@ function rebuildTable(data){
 		if(prilvl == 1){
 			if (status == 0) {
 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEditInviter("+list[i].id+',"'+list[i].name+'","'+list[i].phone+"\")'>编辑</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='toDelInviter("+list[i].id+")'>作废</a>";
+				str += "<a href='javascript:void(0);'  onclick='toDelInviter("+list[i].id+")'>作废</a>";
 			} else if (status == 4) {
 				str += "</td><td>";
 			} else {
-				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toDelInviter("+list[i].id+")'>作废</a>";
+				str += "</td><td><a href='javascript:void(0);'  onclick='toDelInviter("+list[i].id+")'>作废</a>";
 			}
 		}
 		str += "</td></tr>";
