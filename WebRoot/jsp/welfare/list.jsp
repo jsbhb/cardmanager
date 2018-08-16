@@ -82,7 +82,7 @@
 			<div class="row">
 				<div class="col-md-12 list-btns">
                    	<button type="button" onclick="toAddInviter()">添加邀请人</button>
-					<button type="button" onclick = "toProduceCode()">生成邀请码</button>
+<!-- 					<button type="button" onclick = "toProduceCode()">生成邀请码</button> -->
 					<button type="button" onclick = "toSendProduceCode()">发送邀请码</button>
 				</div>
 			</div>
@@ -243,49 +243,49 @@ function toDelInviter(id){
 	 });
 }
 
-function toProduceCode(){
-	var ids;
-	var valArr = new Array; 
-    $("[name='check']:checked").each(function(i){
-    	if ($(this).parent().siblings().eq(4).text() == "未生成") {
- 	        valArr[i] = $(this).val(); 
-    	}
-    }); 
-	ids = valArr.join(',');//转换为逗号隔开的字符串 
-    if (valArr == undefined || valArr.length == 0) {
-    	layer.confirm('确定要为所有邀请人(未生成状态)生成邀请码吗？', {
-  		  btn: ['确认','取消'] //按钮
-  		}, function(){
-  			layer.closeAll('dialog');
-  			postToProduceCode(ids);
-  		}, function(){
-  		  	layer.close();
-  		});
-    } else {
-		postToProduceCode(ids);
-    }
-}
+// function toProduceCode(){
+// 	var ids;
+// 	var valArr = new Array; 
+//     $("[name='check']:checked").each(function(i){
+//     	if ($(this).parent().siblings().eq(4).text() == "未生成") {
+//  	        valArr[i] = $(this).val(); 
+//     	}
+//     }); 
+// 	ids = valArr.join(',');//转换为逗号隔开的字符串 
+//     if (valArr == undefined || valArr.length == 0) {
+//     	layer.confirm('确定要为所有邀请人(未生成状态)生成邀请码吗？', {
+//   		  btn: ['确认','取消'] //按钮
+//   		}, function(){
+//   			layer.closeAll('dialog');
+//   			postToProduceCode(ids);
+//   		}, function(){
+//   		  	layer.close();
+//   		});
+//     } else {
+// 		postToProduceCode(ids);
+//     }
+// }
 
-function postToProduceCode(ids) {
-	$.ajax({
-		 url:"${wmsUrl}/admin/welfare/welfareMng/produceCode.shtml?ids="+ids,
-		 type:'post',
-		 contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){	
-				 layer.alert("操作成功");
-				 reloadTable();
-				 $("#theadInp").prop("checked", false);
-			 }else{
-				 layer.alert(data.msg);
-			 }
-		 },
-		 error:function(data){
-			 layer.alert("提交失败，请联系客服处理");
-		 }
-	 });
-}
+// function postToProduceCode(ids) {
+// 	$.ajax({
+// 		 url:"${wmsUrl}/admin/welfare/welfareMng/produceCode.shtml?ids="+ids,
+// 		 type:'post',
+// 		 contentType: "application/json; charset=utf-8",
+// 		 dataType:'json',
+// 		 success:function(data){
+// 			 if(data.success){	
+// 				 layer.alert("操作成功");
+// 				 reloadTable();
+// 				 $("#theadInp").prop("checked", false);
+// 			 }else{
+// 				 layer.alert(data.msg);
+// 			 }
+// 		 },
+// 		 error:function(data){
+// 			 layer.alert("提交失败，请联系客服处理");
+// 		 }
+// 	 });
+// }
 
 function toSendProduceCode(){
 	var ids;

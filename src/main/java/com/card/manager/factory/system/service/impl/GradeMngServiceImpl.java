@@ -331,6 +331,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
+		CachePoolComponent.addGrade(convertGradeBO(gradeInfo));
 	}
 
 	@Override
