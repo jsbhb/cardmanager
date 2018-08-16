@@ -135,6 +135,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		JSONObject obj = usercenter_json.getJSONObject("obj");
 		int userId = obj.getInt("userId");
 		int gradeId = obj.getInt("gradeId");
+		gradeInfo.setId(gradeId);
 		StaffEntity staffEntity = new StaffEntity();
 		staffEntity.setGradeName(gradeInfo.getGradeName());
 		staffEntity.setParentGradeId(staff.getGradeId());
@@ -190,6 +191,19 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 //		}
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
+		CachePoolComponent.addGrade(convertGradeBO(gradeInfo));
+	}
+	
+	private GradeBO convertGradeBO(GradeEntity gradeInfo){
+		GradeBO grade = new GradeBO();
+		grade.setId(gradeInfo.getId());
+		grade.setCompany(gradeInfo.getCompany());
+		grade.setGradeType(gradeInfo.getGradeType());
+		grade.setGradeTypeName(gradeInfo.getGradeTypeName());
+		grade.setName(gradeInfo.getGradeName());
+		grade.setType(gradeInfo.getType());
+		grade.setParentId(gradeInfo.getParentId());
+		return grade;
 	}
 
 	@Override

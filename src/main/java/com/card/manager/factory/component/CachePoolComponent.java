@@ -120,7 +120,7 @@ public class CachePoolComponent {
 		}
 
 	}
-
+	
 	/**
 	 * @fun 获取gradeType信息
 	 * @param token
