@@ -15,8 +15,8 @@
 	<section class="content-iframe">
        	<form class="form-horizontal" role="form" id="brandForm" style="margin-top:20px;">
 			<div class="list-item">
-				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
-				<div class="col-sm-9 item-right">
+				<label class="col-xs-3 item-left" >客户类型<font style="color:red">*</font> </label>
+				<div class="col-xs-9 item-right">
             		<input type="hidden" class="form-control" name="id" value="${grade.id}">
 					<select class="form-control" name="welfareType" id="welfareType">
 						<c:choose>
@@ -33,8 +33,8 @@
 				</div>
 			</div>
 			<div class="list-item" id="rebate" style="display: none">
-				<label class="col-sm-3 item-left" >优惠比例<font style="color:red">*</font> </label>
-				<div class="col-sm-9 item-right">
+				<label class="col-xs-3 item-left" >优惠比例<font style="color:red">*</font> </label>
+				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" id="welfareRebate" name="welfareRebate" value="${grade.welfareRebate}">
 					<div class="item-content">
 		             	（福利网站商品的优惠比例，例：0.17）

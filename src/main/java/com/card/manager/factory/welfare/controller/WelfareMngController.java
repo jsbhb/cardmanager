@@ -399,7 +399,9 @@ public class WelfareMngController extends BaseController {
 			} else {
 				entity.setStatus(1);
 			}
-			entity.setGradeId(staffEntity.getGradeId());
+			if(!defaultGradeIdList.contains(staffEntity.getGradeId())){
+				entity.setGradeId(staffEntity.getGradeId());
+			}
 			entity.setOpt(staffEntity.getOptName());
 			Map<String, Object> result = welfareService.sendProduceCode(entity, staffEntity);
 			if ((boolean) result.get("success")) {

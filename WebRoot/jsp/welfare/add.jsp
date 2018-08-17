@@ -15,8 +15,8 @@
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
 			<div class="list-item">
-				<div class="col-sm-3 item-left">分级名称</div>
-				<div class="col-sm-9 item-right">
+				<div class="col-xs-3 item-left">分级名称</div>
+				<div class="col-xs-9 item-right">
 			   		<select class="form-control" id="welfareGradeId" name="welfareGradeId">
 		                <c:forEach var="grade" items="${gradeList}">
 		                <option value="${grade.id}">${grade.name}</option>
