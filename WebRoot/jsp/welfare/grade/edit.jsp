@@ -60,6 +60,7 @@
 		if ($("#welfareType").val() == 0) {
 			$('#rebate').stop();
 			$('#rebate').slideUp(300);
+			$("#welfareRebate").val(0);
 		} else if ($("#welfareType").val() == 1) {
 			$('#rebate').stop();
 			$('#rebate').slideDown(300);
