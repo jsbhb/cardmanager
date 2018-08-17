@@ -203,9 +203,11 @@ public class WelfareMngController extends BaseController {
 		if (!StringUtil.isEmpty(bindPhone)) {
 			entity.setBindPhone(bindPhone);
 		}
-		if(defaultGradeIdList.contains(entity.getGradeId())){
-			entity.setGradeId(0);
+		
+		if(!defaultGradeIdList.contains(opt.getGradeId())){
+			entity.setGradeId(opt.getGradeId());
 		}
+		
 		List<WelfareMembeStatistic> statisticList = welfareService.getInviterStatistic(entity.getGradeId(), opt.getToken());
 		try {
 			pcb = welfareService.dataList(entity, params, opt.getToken(),
