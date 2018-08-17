@@ -31,7 +31,7 @@
 		select * from auth_func where  funcid = #{id};
 	</select>
 	
-	<insert id="insertFunc"  useGeneratedKeys="true"  keyProperty="funcid" parameterType="object">
+	<insert id="insertFunc"  useGeneratedKeys="true"  keyProperty="funcId" parameterType="object">
          INSERT INTO auth_func (
               name,url,parentid,tag,createtime,updatetime,sort,description) VALUE (#{name},#{url},#{parentId},#{tag},now(),now(),#{sort},#{description})
     </insert>
@@ -68,5 +68,9 @@
 		left join auth_rolefunc fp on f.funcid = fp.funcid and fp.roleid = #{roleId} 
 		where f.roleid = #{parentId};
 	</select>
+	
+	<insert id="insertRoleFunc" parameterType="object">
+         INSERT INTO auth_rolefunc values ('9',#{funcId},'1',now(),now(),'admin')
+    </insert>
 
 </mapper>

@@ -243,14 +243,10 @@ public class OrderFuncMngController extends BaseController {
 					break;
 				}
 			}
-			List<StaffEntity> shop = CachePoolComponent.getShop(opt.getToken());
-			for(StaffEntity sh : shop) {
-				if (entity.getShopId() == null) {
-					break;
-				}
-				if (sh.getShopId() == entity.getShopId()) {
-					entity.setShopName(sh.getGradeName());
-					break;
+			if (entity.getShopId() != null) {
+				GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(entity.getShopId());
+				if (grade != null) {
+					entity.setShopName(grade.getName());
 				}
 			}
 			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());

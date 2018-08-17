@@ -100,6 +100,8 @@ public class GradeEntity extends Pagination{
 	
 	private Double welfareRebate;
 	
+	private Integer welfareType;
+	
 	public String getAppKey() {
 		return appKey;
 	}
@@ -437,6 +439,14 @@ public class GradeEntity extends Pagination{
 
 	public void setWelfareRebate(Double welfareRebate) {
 		this.welfareRebate = welfareRebate;
+	}
+
+	public Integer getWelfareType() {
+		return welfareType;
+	}
+
+	public void setWelfareType(Integer welfareType) {
+		this.welfareType = welfareType;
 	}
 
 }

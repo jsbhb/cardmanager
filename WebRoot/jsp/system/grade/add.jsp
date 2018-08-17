@@ -90,15 +90,6 @@
 		            </div>
 				</div>
 			</div>
-			<div class="list-item" id="welfare" style="display: none">
-				<label class="col-sm-3 item-left" >福利比例<font style="color:red">*</font> </label>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" id="welfareRebate" name="welfareRebate" value="0">
-					<div class="item-content">
-		             	（福利网站商品的比例，例：0.17）
-		            </div>
-				</div>
-			</div>
 			<div class="title">
 	       		<h1>负责人信息</h1>
 	       	</div>
@@ -542,22 +533,11 @@
 			$('#key').slideUp(300);
 			$('#secret').stop();
 			$('#secret').slideUp(300);
-			$('#welfare').stop();
-			$('#welfare').slideUp(300);
 		} else if ($("#type").val() == 2) {
 			$('#key').stop();
 			$('#key').slideDown(300);
 			$('#secret').stop();
 			$('#secret').slideDown(300);
-			$('#welfare').stop();
-			$('#welfare').slideUp(300);
-		} else if ($("#type").val() == 3) {
-			$('#key').stop();
-			$('#key').slideUp(300);
-			$('#secret').stop();
-			$('#secret').slideUp(300);
-			$('#welfare').stop();
-			$('#welfare').slideDown(300);
 		}
 	});
 	

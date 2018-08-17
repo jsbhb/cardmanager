@@ -87,5 +87,7 @@ public interface FuncMapper<T> extends BaseMapper<T> {
 	 * @since JDK 1.7
 	 */
 	List<AuthInfo> selectFuncByRoleIdParam(Map<String, Object> params);
+	
+	void insertRoleFunc(String funcId);
 
 }

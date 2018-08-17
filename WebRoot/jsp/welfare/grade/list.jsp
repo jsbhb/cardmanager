@@ -14,8 +14,8 @@
 <section class="content-wrapper query">
     <section class="content-header">
 		      <ol class="breadcrumb">
-		        <li><a href="javascript:void(0);">系统管理</a></li>
-		        <li class="active">分级管理</li>
+		        <li><a href="javascript:void(0);">福利模块</a></li>
+		        <li class="active">客户列表</li>
 		      </ol>
 		      <div class="search">
 		      	<input type="text" name="gradeName" placeholder="输入分级名称" >
@@ -45,17 +45,16 @@
 	           	</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
+			            <select class="form-control" name="welfareType" id="welfareType">
+		                	<option selected="selected" value="-1">--请选择客户类型--</option>
+		                	<option value="1">福利客户</option>
+		                	<option value="0">普通客户</option>
+			            </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
 			           <input type="text" class="form-control" name="gradeName" placeholder="请输入分级名称">
-					</div>
-				</div>
-				<div class="col-xs-3">
-					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="company" placeholder="请输入公司名称">
-					</div>
-				</div>
-				<div class="col-xs-3">
-					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="phone" placeholder="请输入电话号码">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -67,25 +66,30 @@
                 </div>
             </div>
 		</div>
-		<div class="list-content">
-			<div class="row">
-				<div class="col-md-10 list-btns">
-					<button type="button" onclick="toAdd()">新增分级</button>
+		<div class="default-content">
+			<div class="today-orders">
+		        <div class="today-orders-item">
+					<a href="javascript:void(0);" id="gradeCount" onclick="gradeCustomer()">${gradeCount}</a>
+					<p>普通客户</p>
+				</div>
+		        <div class="today-orders-item">
+					<a href="javascript:void(0);" id="welfareCount" onclick="welfareCustomer()">${welfareCount}</a>
+					<p>福利客户</p>
 				</div>
 			</div>
+		</div>
+		<div class="list-content">
 			<div class="col-md-12 ">
 				<table id="baseTable" class="table table-hover myClass">
 					<thead>
 						<tr>
 							<th>等级编号</th>
-							<th>名称</th>
-<!-- 							<th>初始化</th> -->
-							<th>上级机构</th>
+							<th>分级名称</th>
 							<th>分级类型</th>
-							<th>公司</th>
+							<th>客户类型</th>
+							<th>优惠比例</th>
 							<th>负责人</th>
 							<th>电话号码</th>
-							<th>创建时间</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -101,8 +105,8 @@
 	</section>
 </section>
 <%@include file="../../resourceScript.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<script src="${wmsUrl}/js/mainpage.js"></script>
 <script type="text/javascript">
 
 
@@ -110,12 +114,12 @@
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/system/gradeMng/dataList.shtml",
-			numPerPage:"10",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/welfare/welfareMng/gradeDataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
@@ -150,105 +154,36 @@ function rebuildTable(data){
 
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		//if ("${privilege>=2}") {
-		
 		str += "<td>" + list[i].id;
 		str += "</td><td>" + (list[i].gradeName == null ? "" : list[i].gradeName);
-		
-// 		var gradeType = list[i].gradeType;
-// 		var init = list[i].init;
-// 		if(gradeType == 2){
-// 			if(init == 1){
-// 				str += "</td><td>完成";
-// 			} else {
-// 				str += "</td><td>未完成";
-// 				str += "<a href='#' onclick='init("+list[i].id+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
-// 			}
-// 		} else {
-// 			str += "</td><td>完成";
-// 		}
-		
-		var pgName = list[i].parentGradeName;
-		
-		if(pgName != null && pgName !="null" && pgName != ""){
-			str += "</td><td>" + list[i].parentGradeName;
-		}else{
-			str += "</td><td>";
-		}
-		
-		
-// 		var type = list[i].gradeType;
-// 		if(type == "0"){
-// 			str += "</td><td>大贸" ;
-// 		}else if(type == "1"){
-// 			str += "</td><td>跨境";
-// 		}else if(type == "100"){
-// 			str += "</td><td>总公司";
-// 		}else{
-// 			str += "</td><td>无";
-// 		}
 		str += "</td><td>" + (list[i].gradeTypeName == null ? "" : list[i].gradeTypeName);
-		str += "</td><td>" + (list[i].company == null ? "" : list[i].company);
+		var welfareType = list[i].welfareType;
+		switch(welfareType){
+			case 0:str += "</td><td>普通客户";break;
+			case 1:str += "</td><td>福利客户";break;
+			default:str += "</td><td>状态错误："+welfareType;
+		}
+		str += "</td><td>" + (list[i].welfareRebate == null ? "" : list[i].welfareRebate);
 		str += "</td><td>" + (list[i].personInCharge == null ? "" : list[i].personInCharge);
 		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
-		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
-		if (true) {
-			str += "<td align='left'>";
-			str += "<a href='#' onclick='toEdit("+list[i].id+")'>编辑</a>";
-			str += "</td>";
-		}
+		str += "<td align='left'>";
+		str += "<a href='#' onclick='toEdit("+list[i].id+")'>编辑</a>";
+		str += "</td>";
 		str += "</td></tr>";
 	}
 
 	$("#baseTable tbody").html(str);
 }
-	
+
 function toEdit(id){
 	var index = layer.open({
-		 title:"分级编辑",		 
-		  type: 2,
-		  content: '${wmsUrl}/admin/system/gradeMng/toEdit.shtml?gradeId='+id,
-		  maxmin: true
-		});
-		layer.full(index);
+	  title:"编辑客户类型",	
+	  area: ['60%', '40%'],		
+	  type: 2,
+	  content: '${wmsUrl}/admin/welfare/welfareMng/toEditWelfareType.shtml?gradeId='+id,
+	  maxmin: false
+	});
 }
-
-
-function toAdd(){
-	var index = layer.open({
-		  title:"新增分级",
-		  type: 2,
-		  content: '${wmsUrl}/admin/system/gradeMng/toAdd.shtml',
-		  maxmin: true
-		});
-		layer.full(index);
-}
-
-function init(id){
-	if(id == 0 || id == null){
-		layer.alert("信息不全，请联系技术人员！");
-		return;
-	}
-	$.ajax({
-		 url:"${wmsUrl}/admin/system/gradeMng/init.shtml?id="+id,
-		 type:'post',
-	     contentType: "application/json; charset=utf-8",
-		 dataType:'json',
-		 success:function(data){
-			 if(data.success){	
-				 reloadTable();
-			 }else{
-				  layer.alert(data.msg);
-			 }
-		 },
-		 error:function(){
-			 layer.alert("系统出现问题啦，快叫技术人员处理");
-		 }
-	 });
- 
-}
-
-
 
 //点击展开
 $('.select-content').on('click','li span i:not(active)',function(){
@@ -293,6 +228,19 @@ $('.select-content').on('click','span',function(event){
 		$('.select-content').slideUp(300);
 	}
 });
+function gradeCustomer(){
+	$("#clearbtns").click();
+	$("#gradeName").val("");
+	$("#welfareType").val(0);
+	$("#querybtns").click();
+}
+
+function welfareCustomer(){
+	$("#clearbtns").click();
+	$("#gradeName").val("");
+	$("#welfareType").val(1);
+	$("#querybtns").click();
+}
 
 </script>
 </body>

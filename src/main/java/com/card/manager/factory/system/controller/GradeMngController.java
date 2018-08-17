@@ -31,6 +31,7 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
 import com.github.pagehelper.Page;
 
 @Controller
@@ -115,6 +116,13 @@ public class GradeMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
+		if (opt.getGradeType() == 0) {
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
+			context.put("gradeList", gradeList);
+		} else {
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType()+"", opt.getToken());
+			context.put("gradeList", gradeList);
+		}
 		return forword("system/grade/list", context);
 	}
 
@@ -125,8 +133,20 @@ public class GradeMngController extends BaseController {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		String gradeName = req.getParameter("gradeName");
-		if (gradeName != null && "".equals(gradeName)) {
+		if (!StringUtil.isEmpty(gradeName)) {
 			entity.setGradeName(gradeName);
+		}
+		String gradeType = req.getParameter("gradeType");
+		if (!StringUtil.isEmpty(gradeType)) {
+			entity.setGradeType(Integer.parseInt(gradeType));
+		}
+		String company = req.getParameter("company");
+		if (!StringUtil.isEmpty(company)) {
+			entity.setCompany(company);
+		}
+		String phone = req.getParameter("phone");
+		if (!StringUtil.isEmpty(phone)) {
+			entity.setPhone(phone);
 		}
 
 		StaffEntity opt = SessionUtils.getOperator(req);

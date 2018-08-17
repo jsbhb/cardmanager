@@ -34,6 +34,7 @@ import com.card.manager.factory.system.model.GradeTypeRole;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.StaffMngService;
+import com.card.manager.factory.util.ConvertUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
@@ -191,19 +192,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 //		}
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
-		CachePoolComponent.addGrade(convertGradeBO(gradeInfo));
-	}
-	
-	private GradeBO convertGradeBO(GradeEntity gradeInfo){
-		GradeBO grade = new GradeBO();
-		grade.setId(gradeInfo.getId());
-		grade.setCompany(gradeInfo.getCompany());
-		grade.setGradeType(gradeInfo.getGradeType());
-		grade.setGradeTypeName(gradeInfo.getGradeTypeName());
-		grade.setName(gradeInfo.getGradeName());
-		grade.setType(gradeInfo.getType());
-		grade.setParentId(gradeInfo.getParentId());
-		return grade;
+		CachePoolComponent.addGrade(ConvertUtil.converToGradeBO(gradeInfo));
 	}
 
 	@Override
@@ -331,7 +320,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
-		CachePoolComponent.addGrade(convertGradeBO(gradeInfo));
+		CachePoolComponent.addGrade(ConvertUtil.converToGradeBO(gradeInfo));
 	}
 
 	@Override

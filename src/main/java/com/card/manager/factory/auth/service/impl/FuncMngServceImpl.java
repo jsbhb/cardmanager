@@ -59,6 +59,8 @@ public class FuncMngServceImpl implements FuncMngService {
 		}
 
 		funcMapper.insertFunc(authInfo);
+		//给海外购账号添加新功能
+		funcMapper.insertRoleFunc(authInfo.getFuncId());
 	}
 
 	@Override

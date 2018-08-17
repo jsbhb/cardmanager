@@ -19,8 +19,15 @@ public class InviterEntity extends Pagination {
 	private String gradeName;
 	private String ids;
 	private String remark;
+	private String welfareGradeId;
 	
 	
+	public String getWelfareGradeId() {
+		return welfareGradeId;
+	}
+	public void setWelfareGradeId(String welfareGradeId) {
+		this.welfareGradeId = welfareGradeId;
+	}
 	public String getRemark() {
 		return remark;
 	}

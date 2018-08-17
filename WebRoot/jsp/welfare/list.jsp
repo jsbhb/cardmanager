@@ -94,26 +94,27 @@
 					<a href="javascript:void(0);" id="-1" onclick="listByStatus(-1)">${total}</a>
 					<p>总共</p>
 				</div>
-			<c:forEach var="item" items="${list}">
-				<div class="today-orders-item">
-					<a href="javascript:void(0);" id="${item.status}" onclick="listByStatus(${item.status})">${item.count}</a>
-					<c:if test="${item.status == 1}">
-						<p>未发送</p>
-					</c:if>
-					<c:if test="${item.status == 2}">
-						<p>已发送</p>
-					</c:if>
-					<c:if test="${item.status == 3}">
-						<p>已绑定</p>
-					</c:if>
-					<c:if test="${item.status == 4}">
-						<p>已作废</p>
-					</c:if>
-					<c:if test="${item.status == 5}">
-						<p>发送失败</p>
-					</c:if>
-				</div>
-			</c:forEach>
+				<c:forEach var="item" items="${list}">
+					<div class="today-orders-item">
+						<a href="javascript:void(0);" id="${item.status}" onclick="listByStatus(${item.status})">${item.count}</a>
+						<c:if test="${item.status == 1}">
+							<p>未发送</p>
+						</c:if>
+						<c:if test="${item.status == 2}">
+							<p>已发送</p>
+						</c:if>
+						<c:if test="${item.status == 3}">
+							<p>已绑定</p>
+						</c:if>
+						<c:if test="${item.status == 4}">
+							<p>已作废</p>
+						</c:if>
+						<c:if test="${item.status == 5}">
+							<p>发送失败</p>
+						</c:if>
+					</div>
+				</c:forEach>
+			</div>
 		</div>
 	
 		<div class="list-content">
@@ -131,14 +132,14 @@
 							<tr>
 								<th width="5%"><input type="checkbox" id="theadInp"></th>
 								<th width="15%">分级名称</th>
-								<th width="10%">邀请人名称</th>
-								<th width="10%">邀请人手机号</th>
+								<th width="7%">邀请人名称</th>
+								<th width="8%">邀请人手机号</th>
 								<th width="10%">邀请码</th>
 								<th width="10%">邀请码状态</th>
 								<th width="10%">备注</th>
 								<th width="10%">创建时间</th>
-								<th width="10%">绑定人名称</th>
-								<th width="10%">绑定人手机号</th>
+								<th width="7%">绑定人名称</th>
+								<th width="8%">绑定人手机号</th>
 								<c:if test="${prilvl == 1}">
 									<th width="10%">操作</th>
 								</c:if>

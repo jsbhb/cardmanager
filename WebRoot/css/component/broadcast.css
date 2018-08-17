@@ -1,0 +1,36 @@
+.scrollImg-content{
+	width: 400px;
+	height: 220px;
+	margin: 0 auto;
+	position: relative;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none
+}
+.scrollImg-content > img{
+	display: inline-block;
+	cursor: pointer;
+	margin-top: -28px;
+}
+.scrollImg-content img.prevBtn{
+	position: absolute;
+	left: 0;
+	top: 50%;
+}
+.scrollImg-content ul{
+	width: 100%;
+}
+.scrollImg-content ul li{
+	display: none;
+	text-align: center;
+	width: 100%;
+}
+.scrollImg-content ul li.active{
+	display: inline-block;
+}
+.scrollImg-content img.nextBtn{
+	position: absolute;
+	right: 0;
+	top: 50%;
+}

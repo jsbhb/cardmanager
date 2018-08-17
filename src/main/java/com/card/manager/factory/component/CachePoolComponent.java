@@ -724,10 +724,6 @@ public class CachePoolComponent {
 		secondType.setTypeId(2);
 		secondType.setTypeName("对接客户");
 		CUSTOMERTYPE.add(secondType);
-		CustomerTypeEntity thirdType = new CustomerTypeEntity();
-		thirdType.setTypeId(3);
-		thirdType.setTypeName("福利客户");
-		CUSTOMERTYPE.add(thirdType);
 		return CUSTOMERTYPE;
 	}
 }

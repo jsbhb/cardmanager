@@ -30,12 +30,6 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
-import com.card.manager.factory.goods.model.FirstCatalogEntity;
-import com.card.manager.factory.goods.model.GoodsBaseEntity;
-import com.card.manager.factory.goods.model.GoodsItemEntity;
-import com.card.manager.factory.goods.model.SecondCatalogEntity;
-import com.card.manager.factory.goods.model.ThirdCatalogEntity;
-import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
@@ -50,13 +44,9 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
-import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/order/stockOutMng")
@@ -302,14 +292,10 @@ public class OrderMngController extends BaseController {
 					break;
 				}
 			}
-			List<StaffEntity> shop = CachePoolComponent.getShop(opt.getToken());
-			for (StaffEntity sh : shop) {
-				if (entity.getShopId() == null) {
-					break;
-				}
-				if (sh.getShopId() == entity.getShopId()) {
-					entity.setShopName(sh.getGradeName());
-					break;
+			if (entity.getShopId() != null) {
+				GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(entity.getShopId());
+				if (grade != null) {
+					entity.setShopName(grade.getName());
 				}
 			}
 			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());
@@ -403,6 +389,12 @@ public class OrderMngController extends BaseController {
 				case 5:	oi.setOrderSourceName("展厅");break;
 				case 6:	oi.setOrderSourceName("大客户");break;
 				}
+				
+				switch (oi.getOrderFlg()) {
+				case 0:	oi.setOrderFlgName("跨境");break;
+				case 1:	oi.setOrderFlgName("大贸");break;
+				case 2:	oi.setOrderFlgName("一般贸易");break;
+				}
 
 				if (!tmpOrderId.equals(oi.getOrderId())) {
 					tmpOrderId = oi.getOrderId();
@@ -453,16 +445,16 @@ public class OrderMngController extends BaseController {
 			//广州仓
 			if ("5".equals(supplierId)) {
 				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息", "订购人", "订购人身份证", "包装数", "商品购买价格"};
+						"订单来源", "订单类型", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息", "订购人", "订购人身份证", "包装数", "商品购买价格"};
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment",
 						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince",
 						"ReceiveAddress", "CreateTime", "ExpressInfo", "OrderName", "Idnum", "Packing", "ActualPrice" };
 			} else {
 				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
+						"订单来源", "订单类型", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "Payment",
+						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment",
 						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime", "ExpressInfo" };
 			}
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
