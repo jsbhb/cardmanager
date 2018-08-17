@@ -206,8 +206,11 @@ public class WelfareMngController extends BaseController {
 		
 		if(!defaultGradeIdList.contains(opt.getGradeId())){
 			entity.setGradeId(opt.getGradeId());
+		}else if(defaultGradeIdList.contains(entity.getGradeId())){
+			entity.setGradeId(0);
 		}
 		
+		//FIXME 使用缓存技术重构此功能
 		List<WelfareMembeStatistic> statisticList = welfareService.getInviterStatistic(entity.getGradeId(), opt.getToken());
 		try {
 			pcb = welfareService.dataList(entity, params, opt.getToken(),

@@ -116,7 +116,7 @@
 				</c:forEach>
 			</div>
 		</div>
-	
+
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-12 list-btns">
@@ -187,12 +187,22 @@ function reloadTable(){
 	$.page.loadData(options);
 }
 
+function clearStatistic(){
+	$("#1").text(0);
+	$("#2").text(0);
+	$("#3").text("0");
+	$("#4").text(0);
+	$("#5").text(0);
+}
+
 /**
  * 重构table
  */
 function rebuildTable(data){
 	var total = 0;
 	var statisticList = data.object;
+	
+	clearStatistic();
 	if(statisticList != null && statisticList.length > 0){
 		for (var i = 0; i < statisticList.length; i++){
 			$("#" + statisticList[i].status).text(statisticList[i].count);
