@@ -19,15 +19,25 @@
 	        <li class="active">邀请人列表</li>
 	      </ol>
 	      <div class="search">
-	      	<input type="text" name="quickQueryPhone" placeholder="请输入邀请人手机号">
+	      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" value = "">
+			<input type="hidden" class="form-control" name="gradeId" id="gradeId">
 	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
 	      	<div class="moreSearchBtn">高级搜索</div>
 		  </div>
     </section>	
+    <div class="select-content">
+        <ul class="first-ul" style="margin-left:10px;">
+			<c:forEach var="menu" items="${gradeList}">
+				<c:set var="menu" value="${menu}" scope="request" />
+				<%@include file="recursive.jsp"%>  
+			</c:forEach>
+	   	</ul>
+	</div>
 	<section class="content">
 		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 			<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 		</div>
+		
 		<div class="moreSearchContent">
 			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
@@ -77,6 +87,34 @@
                 </div>
             </div>
 		</div>
+		
+		<div class="default-content">
+			<div class="today-orders">
+				<div class="today-orders-item">
+					<a href="javascript:void(0);" id="-1" onclick="listByStatus(-1)">${total}</a>
+					<p>总共</p>
+				</div>
+			<c:forEach var="item" items="${list}">
+				<div class="today-orders-item">
+					<a href="javascript:void(0);" id="${item.status}" onclick="listByStatus(${item.status})">${item.count}</a>
+					<c:if test="${item.status == 1}">
+						<p>未发送</p>
+					</c:if>
+					<c:if test="${item.status == 2}">
+						<p>已发送</p>
+					</c:if>
+					<c:if test="${item.status == 3}">
+						<p>已绑定</p>
+					</c:if>
+					<c:if test="${item.status == 4}">
+						<p>已作废</p>
+					</c:if>
+					<c:if test="${item.status == 5}">
+						<p>发送失败</p>
+					</c:if>
+				</div>
+			</c:forEach>
+		</div>
 	
 		<div class="list-content">
 			<div class="row">
@@ -121,6 +159,7 @@
 	
 <%@include file="../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
+<script src="${wmsUrl}/js/mainpage.js"></script>
 <script type="text/javascript">
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
@@ -151,6 +190,19 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
+	var jsonStr = '${list}';
+	var total = '${total}';
+	var statisticList
+	if(isJSON(jsonStr)){
+		statisticList = $.parseJSON(jsonStr);
+	}
+	var str = "";
+	if(list != null && list.length > 0){
+		for (var i = 0; i < list.length; i++){
+			$("#" + list[i].status).text(list[i].count);
+		}
+	}
+	$("#-1").text(total);
 	$("#baseTable tbody").html("");
 
 	if (data == null || data.length == 0) {
@@ -329,6 +381,70 @@ function postToSendProduceCode(ids) {
 			 layer.alert("提交失败，请联系客服处理");
 		 }
 	 });
+}
+
+//点击展开
+$('.select-content').on('click','li span i:not(active)',function(){
+	$(this).addClass('active');
+	$(this).parent().next().stop();
+	$(this).parent().next().slideDown(300);
+});
+//点击收缩
+$('.select-content').on('click','li span i.active',function(){
+	$(this).removeClass('active');
+	$(this).parent().next().stop();
+	$(this).parent().next().slideUp(300);
+});
+
+//点击展开下拉列表
+$('#gradeName').click(function(){
+	$('.select-content').css('width',$(this).outerWidth());
+	$('.select-content').css('left',$(this).offset().left);
+	$('.select-content').css('top',$(this).offset().top + $(this).height());
+	$('.select-content').stop();
+	$('.select-content').slideDown(300);
+});
+
+//点击空白隐藏下拉列表
+$('html').click(function(event){
+	var el = event.target || event.srcelement;
+	if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+//点击选择分类
+$('.select-content').on('click','span',function(event){
+	var el = event.target || event.srcelement;
+	if(el.nodeName != 'I'){
+		var name = $(this).attr('data-name');
+		var id = $(this).attr('data-id');
+		$('#gradeName').val(name);
+		$('#gradeId').val(id);
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+
+function listByStatus(status){
+	$("#status").val(status);
+	$("#querybtns").click();
+}
+function isJSON(str) {
+    if (typeof str == 'string') {
+        try {
+            var obj=JSON.parse(str);
+            if(typeof obj == 'object' && obj ){
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch(e) {
+            return false;
+        }
+    }
+    return false;
 }
 </script>
 </body>

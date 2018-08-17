@@ -112,6 +112,8 @@ public class ServerCenterContants {
 			+ "/welfare/inviter/produceCode";
 	public static final String USER_CENTER_INVITER_SEND_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/welfare/inviter/sendProduceCode";
+	public static final String USER_CENTER_INVITER_STATISTIC = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/welfare/inviter/statistic/{gradeId}";
 	/**
 	 * 商品中心url
 	 */

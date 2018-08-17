@@ -2,6 +2,7 @@ package com.card.manager.factory.welfare.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,33 +31,47 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.TreePackUtil;
 import com.card.manager.factory.welfare.model.InviterEntity;
+import com.card.manager.factory.welfare.model.WelfareMembeStatistic;
 import com.card.manager.factory.welfare.service.WelfareService;
 
 @Controller
 @RequestMapping("/admin/welfare/welfareMng")
 public class WelfareMngController extends BaseController {
-	
+
 	@Resource
 	WelfareService welfareService;
+
+	@SuppressWarnings("serial")
+	private final List<Integer> defaultGradeIdList = new ArrayList<Integer>() {
+		{
+			add(0);
+			add(2);
+		}
+	};
+
+	private final int WELFARE_TYPE = 1;
 
 	@RequestMapping(value = "/toBatchAddInviter")
 	public ModelAndView toBatchAddInviter(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
-		if (grade != null) {
-			if (grade.getType() != 3) {
-				return forword("welfare/notice", context);
+		if (!defaultGradeIdList.contains(opt.getGradeId())) {
+			GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+			if (grade != null) {
+				if (grade.getType() != 3) {
+					return forword("welfare/notice", context);
+				}
+			} else {
+				context.put(MSG, "没有分级信息");
+				return forword("error", context);
 			}
-		} else {
-			context.put(ERROR, "没有分级信息");
-			return forword("error", context);
 		}
 		return forword("welfare/inviterImport", context);
 	}
-	
+
 	@RequestMapping(value = "/exportInviterInfoTemplate", method = RequestMethod.GET)
 	public void exportInviterInfoTemplate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		try {
@@ -107,15 +122,36 @@ public class WelfareMngController extends BaseController {
 		} else {
 			context.put("prilvl", req.getParameter("privilege"));
 		}
-		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
-		if (grade != null) {
-			if (grade.getType() != 3) {
-				return forword("welfare/notice", context);
+		if (!defaultGradeIdList.contains(opt.getGradeId())) {
+			GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+			if (grade != null) {
+				if (grade.getType() != 3) {
+					return forword("welfare/notice", context);
+				}
+			} else {
+				context.put(MSG, "没有分级信息");
+				return forword("error", context);
 			}
-		} else {
-			context.put(ERROR, "没有分级信息");
-			return forword("error", context);
 		}
+		List<GradeBO> gradeList = new ArrayList<GradeBO>();
+		List<GradeBO> result = new ArrayList<>();
+		Map<Integer, GradeBO> map = CachePoolComponent.getGrade(opt.getToken());
+		for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
+			if (entry.getValue().getWelfareType() == WELFARE_TYPE || entry.getValue().getGradeType() == 1)
+				gradeList.add(entry.getValue());
+		}
+		result = TreePackUtil.packGradeChildren(gradeList, opt.getGradeId());
+		List<WelfareMembeStatistic> list = welfareService.getInviterStatistic(
+				defaultGradeIdList.contains(opt.getGradeId()) ? 0 : opt.getGradeId(), opt.getToken());
+		int total = 0;
+		if(list != null && list.size() > 0){
+			for(WelfareMembeStatistic temp : list){
+				total+=temp.getCount();
+			}
+		}
+		context.put("total", total);
+		context.put("gradeList", result);
+		context.put("list", list);
 		return forword("welfare/list", context);
 	}
 
@@ -124,13 +160,13 @@ public class WelfareMngController extends BaseController {
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, InviterEntity entity) {
 		PageCallBack pcb = null;
 		StaffEntity opt = SessionUtils.getOperator(req);
-		
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		String quickQueryPhone = req.getParameter("quickQueryPhone");
 		if (!StringUtil.isEmpty(quickQueryPhone)) {
 			entity.setPhone(quickQueryPhone);
 		}
-		entity.setGradeId(opt.getGradeId());
+//		entity.setGradeId(opt.getGradeId());
 		String name = req.getParameter("name");
 		if (!StringUtil.isEmpty(name)) {
 			entity.setName(name);
@@ -155,6 +191,18 @@ public class WelfareMngController extends BaseController {
 		if (!StringUtil.isEmpty(bindPhone)) {
 			entity.setBindPhone(bindPhone);
 		}
+		if(defaultGradeIdList.contains(entity.getGradeId())){
+			entity.setGradeId(0);
+		}
+		List<WelfareMembeStatistic> statisticList = welfareService.getInviterStatistic(entity.getGradeId(), opt.getToken());
+		int total = 0;
+		if(statisticList != null && statisticList.size() > 0){
+			for(WelfareMembeStatistic temp : statisticList){
+				total+=temp.getCount();
+			}
+		}
+		req.setAttribute("list", statisticList);
+		req.setAttribute("total", total);
 		try {
 			pcb = welfareService.dataList(entity, params, opt.getToken(),
 					ServerCenterContants.USER_CENTER_INVITER_QUERY_FOR_PAGE, InviterEntity.class);
@@ -162,7 +210,7 @@ public class WelfareMngController extends BaseController {
 				List<InviterEntity> list = (List<InviterEntity>) pcb.getObj();
 				Map<Integer, GradeBO> allGrade = CachePoolComponent.getGrade(opt.getToken());
 				GradeBO tmpGrade = null;
-				for (InviterEntity ie:list) {
+				for (InviterEntity ie : list) {
 					tmpGrade = allGrade.get(ie.getGradeId());
 					ie.setGradeName(tmpGrade.getName());
 				}
@@ -207,7 +255,7 @@ public class WelfareMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/addInviterInfo", method = RequestMethod.POST)
-	public void addInviterInfo(HttpServletRequest req, HttpServletResponse resp,@RequestBody InviterEntity entity) {
+	public void addInviterInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody InviterEntity entity) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			Map<String, Object> result = welfareService.addInviterInfo(entity, staffEntity);
@@ -251,7 +299,7 @@ public class WelfareMngController extends BaseController {
 	}
 
 	@RequestMapping(value = "/editInviterInfo", method = RequestMethod.POST)
-	public void editInviterInfo(HttpServletRequest req, HttpServletResponse resp,@RequestBody InviterEntity entity) {
+	public void editInviterInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody InviterEntity entity) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			Map<String, Object> result = welfareService.updateInviterInfo(entity, staffEntity);
