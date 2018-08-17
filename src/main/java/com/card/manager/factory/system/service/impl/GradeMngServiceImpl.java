@@ -137,6 +137,8 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		int userId = obj.getInt("userId");
 		int gradeId = obj.getInt("gradeId");
 		gradeInfo.setId(gradeId);
+		gradeInfo.setWelfareType(0);
+		gradeInfo.setWelfareRebate(0.0);
 		StaffEntity staffEntity = new StaffEntity();
 		staffEntity.setGradeName(gradeInfo.getGradeName());
 		staffEntity.setParentGradeId(staff.getGradeId());
@@ -154,13 +156,14 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffEntity.setOptName(gradeInfo.getPersonInCharge());
 		staffEntity.setGradeId(gradeId);
 		staffEntity.setUserCenterId(userId);
+		
 		// 加到缓存
-		GradeBO gradeBO = new GradeBO();
-		gradeBO.setGradeType(gradeInfo.getGradeType());
-		gradeBO.setId(gradeId);
-		gradeBO.setName(gradeInfo.getGradeName());
-		gradeBO.setParentId(gradeInfo.getParentId());
-		CachePoolComponent.addGrade(gradeBO);
+//		GradeBO gradeBO = new GradeBO();
+//		gradeBO.setGradeType(gradeInfo.getGradeType());
+//		gradeBO.setId(gradeId);
+//		gradeBO.setName(gradeInfo.getGradeName());
+//		gradeBO.setParentId(gradeInfo.getParentId());
+//		CachePoolComponent.addGrade(gradeBO);
 
 		// 平台账号
 		staffEntity.setPhone(gradeInfo.getPhone());

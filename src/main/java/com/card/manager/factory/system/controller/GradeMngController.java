@@ -22,6 +22,7 @@ import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.service.GoodsService;
@@ -267,6 +268,9 @@ public class GradeMngController extends BaseController {
 					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
 				}
 			}
+			GradeBO grade = CachePoolComponent.getGrade(staffEntity.getToken()).get(gradeInfo.getId());
+			gradeInfo.setWelfareType(grade.getWelfareType());
+			gradeInfo.setWelfareRebate(grade.getWelfareRebate());
 			gradeMngService.updateGrade(gradeInfo, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
