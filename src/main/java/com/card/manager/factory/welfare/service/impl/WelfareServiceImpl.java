@@ -66,7 +66,7 @@ public class WelfareServiceImpl extends AbstractServcerCenterBaseService impleme
 			}
 			if (importList.size() <= 0) {
 				result.put("success", false);
-				result.put("msg", "没有邀请人信息");
+				result.put("msg", "没有可添加的邀请人信息");
 				return result;
 			}
 			try {
@@ -87,7 +87,7 @@ public class WelfareServiceImpl extends AbstractServcerCenterBaseService impleme
 			}
 		} else { // 没有读到数据
 			result.put("success", false);
-			result.put("msg", "没有邀请人信息");
+			result.put("msg", "没有可添加的邀请人信息");
 			return result;
 		}
 	}

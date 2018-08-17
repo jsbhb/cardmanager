@@ -73,7 +73,7 @@ public class WelfareMngController extends BaseController {
 		if (!defaultGradeIdList.contains(opt.getGradeId())) {
 			GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
 			if (grade != null) {
-				if (grade.getWelfareType() != 1) {
+				if (grade.getWelfareType() != WELFARE_TYPE) {
 					return forword("welfare/notice", context);
 				}
 			} else {
@@ -137,7 +137,7 @@ public class WelfareMngController extends BaseController {
 		if (!defaultGradeIdList.contains(opt.getGradeId())) {
 			GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
 			if (grade != null) {
-				if (grade.getWelfareType() != 1) {
+				if (grade.getWelfareType() != WELFARE_TYPE) {
 					return forword("welfare/notice", context);
 				}
 			} else {
@@ -246,15 +246,26 @@ public class WelfareMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
-		context.put("gradeId", opt.getGradeId());
-		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
-		if (grade != null) {
-			if (grade.getType() != 3) {
-				return forword("welfare/notice", context);
+		List<GradeBO> gradeList = new ArrayList<GradeBO>();
+		if (!defaultGradeIdList.contains(opt.getGradeId())) {
+			GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+			if (grade != null) {
+				if (grade.getWelfareType() != WELFARE_TYPE) {
+					return forword("welfare/notice", context);
+				}
+			} else {
+				context.put(MSG, "没有分级信息");
+				return forword("error", context);
 			}
+			gradeList.add(grade);
+			context.put("gradeList", gradeList);
 		} else {
-			context.put(MSG, "没有分级信息");
-			return forword("error", context);
+			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(opt.getToken());
+			for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
+				if (entry.getValue().getWelfareType() == WELFARE_TYPE)
+					gradeList.add(entry.getValue());
+			}
+			context.put("gradeList", gradeList);
 		}
 		return forword("welfare/add", context);
 	}
@@ -291,14 +302,16 @@ public class WelfareMngController extends BaseController {
 			context.put(ERROR, e.getMessage());
 			return forword(ERROR, context);
 		}
-		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
-		if (grade != null) {
-			if (grade.getType() != 3) {
-				return forword("welfare/notice", context);
+		if (!defaultGradeIdList.contains(opt.getGradeId())) {
+			GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+			if (grade != null) {
+				if (grade.getWelfareType() != WELFARE_TYPE) {
+					return forword("welfare/notice", context);
+				}
+			} else {
+				context.put(MSG, "没有分级信息");
+				return forword("error", context);
 			}
-		} else {
-			context.put(MSG, "没有分级信息");
-			return forword("error", context);
 		}
 		return forword("welfare/edit", context);
 	}
@@ -415,7 +428,7 @@ public class WelfareMngController extends BaseController {
 		Integer tmpGradeCount = 0;
 		Integer tmpWelfareCount = 0;
 		for (GradeBO gbo: allGrade.values()) {
-			if (gbo.getWelfareType() == 1) {
+			if (gbo.getWelfareType() == WELFARE_TYPE) {
 				tmpWelfareCount++;
 			} else {
 				tmpGradeCount++;

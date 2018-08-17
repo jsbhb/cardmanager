@@ -76,7 +76,8 @@
 			 success:function(data){
 				 if(data.success){	
 					 parent.layer.closeAll();
-					 parent.reloadTable();
+// 					 parent.reloadTable();
+					 parent.location.reload()
 				 }else{
 					 layer.alert(data.msg);
 				 }
