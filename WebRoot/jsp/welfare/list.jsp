@@ -140,9 +140,9 @@
 								<th width="10%">创建时间</th>
 								<th width="7%">绑定人名称</th>
 								<th width="8%">绑定人手机号</th>
-								<c:if test="${prilvl == 1}">
-									<th width="10%">操作</th>
-								</c:if>
+<%-- 								<c:if test="${prilvl == 1}"> --%>
+<!-- 									<th width="10%">操作</th> -->
+<%-- 								</c:if> --%>
 							</tr>
 						</thead>
 						<tbody>
@@ -190,7 +190,7 @@ function reloadTable(){
 function clearStatistic(){
 	$("#1").text(0);
 	$("#2").text(0);
-	$("#3").text("0");
+	$("#3").text(0);
 	$("#4").text(0);
 	$("#5").text(0);
 }
@@ -246,17 +246,17 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		str += "</td><td>" + (list[i].bindName == null ? "" : list[i].bindName);
 		str += "</td><td>" + (list[i].bindPhone == null ? "" : list[i].bindPhone);
-		var prilvl = "${prilvl}";
-		if(prilvl == 1){
-			if (status == 0) {
-				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEditInviter("+list[i].id+',"'+list[i].name+'","'+list[i].phone+"\")'>编辑</a>";
-				str += "<a href='javascript:void(0);'  onclick='toDelInviter("+list[i].id+")'>作废</a>";
-			} else if (status == 4) {
-				str += "</td><td>";
-			} else {
-				str += "</td><td><a href='javascript:void(0);'  onclick='toDelInviter("+list[i].id+")'>作废</a>";
-			}
-		}
+// 		var prilvl = "${prilvl}";
+// 		if(prilvl == 1){
+// 			if (status == 0) {
+// 				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEditInviter("+list[i].id+',"'+list[i].name+'","'+list[i].phone+"\")'>编辑</a>";
+// 				str += "<a href='javascript:void(0);'  onclick='toDelInviter("+list[i].id+")'>作废</a>";
+// 			} else if (status == 4) {
+// 				str += "</td><td>";
+// 			} else {
+// 				str += "</td><td><a href='javascript:void(0);'  onclick='toDelInviter("+list[i].id+")'>作废</a>";
+// 			}
+// 		}
 		str += "</td></tr>";
 	}
 	$("#baseTable tbody").html(str);
