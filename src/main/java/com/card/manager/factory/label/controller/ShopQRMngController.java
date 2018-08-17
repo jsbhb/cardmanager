@@ -16,14 +16,16 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
+import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.ImageUtil;
-import com.card.manager.factory.util.QrCodeUtil;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.URLUtils;
 import com.card.manager.factory.util.ZXingCodeUtil;
 
 @Controller
@@ -48,7 +50,7 @@ public class ShopQRMngController extends BaseController {
 		int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(opt.getGradeId()+"");
 		//如果是admin进入则显示海外购的内容
 		if (firstGradeId == 0) {
-			firstGradeId = 4;
+			firstGradeId = 2;
 		}
 		GradeEntity entity = gradeMngService.queryById(firstGradeId+"", opt.getToken());
 		String strLink = "";
@@ -56,6 +58,16 @@ public class ShopQRMngController extends BaseController {
 			strLink = entity.getMobileUrl() + "/index.html?shopId=" + opt.getGradeId();
 		}
 		context.put("strLink", strLink);
+		
+		String strWelfareUrlLink = "";
+		String strWelfareType = "";
+		GradeBO gradeInfo = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+		if (gradeInfo != null && gradeInfo.getWelfareType() == 1) {
+			strWelfareType = gradeInfo.getWelfareType() + "";
+			strWelfareUrlLink = URLUtils.get("welfareShopQrUrl") + "?shopId=" + opt.getGradeId();
+		}
+		context.put("strWelfareType", strWelfareType);
+		context.put("strWelfareUrlLink", strWelfareUrlLink);
 		
 		return forword("label/shop/mng", context);
 	}
