@@ -191,16 +191,12 @@ function reloadTable(){
  * 重构table
  */
 function rebuildTable(data){
-	var jsonStr = '${list}';
-	var total = '${total}';
-	var statisticList
-	if(isJSON(jsonStr)){
-		statisticList = $.parseJSON(jsonStr);
-	}
-	var str = "";
-	if(list != null && list.length > 0){
-		for (var i = 0; i < list.length; i++){
-			$("#" + list[i].status).text(list[i].count);
+	var total = 0;
+	var statisticList = data.object;
+	if(statisticList != null && statisticList.length > 0){
+		for (var i = 0; i < statisticList.length; i++){
+			$("#" + statisticList[i].status).text(statisticList[i].count);
+			total = Number(total) + Number(statisticList[i].count) 
 		}
 	}
 	$("#-1").text(total);

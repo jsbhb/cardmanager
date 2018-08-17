@@ -207,14 +207,6 @@ public class WelfareMngController extends BaseController {
 			entity.setGradeId(0);
 		}
 		List<WelfareMembeStatistic> statisticList = welfareService.getInviterStatistic(entity.getGradeId(), opt.getToken());
-		int total = 0;
-		if(statisticList != null && statisticList.size() > 0){
-			for(WelfareMembeStatistic temp : statisticList){
-				total+=temp.getCount();
-			}
-		}
-		req.setAttribute("list", statisticList);
-		req.setAttribute("total", total);
 		try {
 			pcb = welfareService.dataList(entity, params, opt.getToken(),
 					ServerCenterContants.USER_CENTER_INVITER_QUERY_FOR_PAGE, InviterEntity.class);
@@ -228,6 +220,7 @@ public class WelfareMngController extends BaseController {
 				}
 				pcb.setObj(list);
 			}
+			pcb.setObject(statisticList);
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
