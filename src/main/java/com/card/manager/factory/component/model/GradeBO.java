@@ -12,6 +12,21 @@ public class GradeBO implements Comparable<GradeBO>{
 	private List<GradeBO> children;
 	private String gradeTypeName;
 	private Integer type;
+	private Integer welfareType;
+	private Double welfareRebate;
+	
+	public Integer getWelfareType() {
+		return welfareType;
+	}
+	public void setWelfareType(Integer welfareType) {
+		this.welfareType = welfareType;
+	}
+	public Double getWelfareRebate() {
+		return welfareRebate;
+	}
+	public void setWelfareRebate(Double welfareRebate) {
+		this.welfareRebate = welfareRebate;
+	}
 	public String getGradeTypeName() {
 		return gradeTypeName;
 	}
