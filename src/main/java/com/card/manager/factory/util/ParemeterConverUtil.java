@@ -26,6 +26,7 @@ public class ParemeterConverUtil {
 			put("线下", 4);
 			put("展厅", 5);
 			put("大客户", 6);
+			put("福利商城", 7);
 		}
 	};
 	

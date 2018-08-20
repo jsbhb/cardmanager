@@ -443,6 +443,7 @@ public class RebateMngController extends BaseController {
 				case 4:	oi.setOrderSourceName("线下");break;
 				case 5:	oi.setOrderSourceName("展厅");break;
 				case 6:	oi.setOrderSourceName("大客户");break;
+				case 7:	oi.setOrderSourceName("福利商城");break;
 				}
 
 				if (!tmpOrderId.equals(oi.getOrderId())) {

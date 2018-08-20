@@ -263,6 +263,7 @@ function rebuildTable(data){
 			case 4:str += "</td><td>线下";break;
 			case 5:str += "</td><td>展厅";break;
 			case 6:str += "</td><td>大客户";break;
+			case 7:str += "</td><td>福利商城";break;
 			default:str += "</td><td>";
 		}
 // 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
