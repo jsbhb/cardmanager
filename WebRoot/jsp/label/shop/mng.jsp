@@ -41,6 +41,12 @@
 					<input type="text" readonly class="form-control" name="strLink" value="${strLink}">
 				</div>
 			</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">店铺推广地址</div>
+				<div class="col-sm-9 item-right">
+					<input type="text" readonly class="form-control" name="strExtensionLink" value="${strExtensionLink}">
+				</div>
+			</div>
 			<c:if test="${strWelfareType == 1}">
 				<div class="list-item">
 					<div class="col-sm-3 item-left">福利网站地址</div>
@@ -51,6 +57,7 @@
 			</c:if>
 	        <div class="submit-btn">
 	           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strLink}+')">下载微店地址</button>
+	           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strExtensionLink}+')">下载店铺推广地址</button>
 				<c:if test="${strWelfareType == 1}">
 		           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strWelfareUrlLink}+')">下载福利网站地址</button>
 				</c:if>

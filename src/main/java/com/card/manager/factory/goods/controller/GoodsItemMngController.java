@@ -194,6 +194,12 @@ public class GoodsItemMngController extends BaseController {
 			if (!StringUtil.isEmpty(encode)) {
 				item.setEncode(encode);
 			}
+			String searchTime = req.getParameter("searchTime");
+			if (!StringUtil.isEmpty(searchTime)) {
+				String[] times = searchTime.split("~");
+				item.setStartTime(times[0].trim());
+				item.setEndTime(times[1].trim());
+			}
 
 			params.put("centerId", staffEntity.getGradeId());
 			params.put("shopId", staffEntity.getShopId());

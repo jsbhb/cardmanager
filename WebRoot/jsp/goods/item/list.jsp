@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resourceLink.jsp"%>
+<script src="${wmsUrl}/plugins/laydate/laydate.js"></script>
 </head>
 <body>
 <section class="content-wrapper query">
@@ -92,11 +93,18 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
+			           <input type="text" class="form-control" name="goodsId" placeholder="请输入商品ID">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
 	                  	<input type="text" class="form-control" name="itemId" placeholder="请输入商品编号">
 					</div>
            			<input type="hidden" class="form-control" name="hidTabId" id="hidTabId" value="first">
            			<input type="hidden" class="form-control" name="typeId" id="typeId" value="">
            			<input type="hidden" class="form-control" name="categoryId" id="categoryId" value="">
+                	<input type="hidden" class="form-control" name="orderByParam" id="orderByParam"/>
+                	<input type="hidden" class="form-control" name="orderByProperty" id="orderByProperty"/>
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
@@ -105,7 +113,12 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="encode" placeholder="条形码">
+	                  	<input type="text" class="form-control" name="encode" placeholder="请输入条形码">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="chooseTime" id="searchTime" name="searchTime" placeholder="请选择查询时间" readonly>
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -193,21 +206,22 @@
 							<tr>
 								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
-								<th width="8%">商品图片</th>
-								<th width="14%">商品名称</th>
-								<th width="5%">商品编号</th>
-								<th width="8%">商家编码</th>
-								<th width="8%">商品品牌</th>
+								<th width="6%">商品图片</th>
+								<th database-name="g.goods_name" width="14%">商品名称<i class="fa fa-arrows-v"></i></th>
+								<th database-name="i.goods_id" width="6%">商品ID<i class="fa fa-arrows-v"></i></th>
+								<th database-name="i.item_id" width="6%">商品编号<i class="fa fa-arrows-v"></i></th>
+								<th database-name="i.item_code" width="7%">商家编码<i class="fa fa-arrows-v"></i></th>
+								<th database-name="b.brand" width="7%">商品品牌<i class="fa fa-arrows-v"></i></th>
 								<th width="10%">商品分类</th>
-								<th width="5%">供应商</th>
+								<th database-name="g.supplier_name" width="6%">供应商<i class="fa fa-arrows-v"></i></th>
 <!-- 								<th width="5%">商品标签</th> -->
 <!-- 								<th width="5%">增值税率</th> -->
 <!-- 								<th width="5%">消费税率</th> -->
-								<th width="5%">商品价格</th>
-								<th width="5%">商品库存</th>
-								<th width="5%">商品状态</th>
-								<th width="5%">商品规格</th>
-								<th width="5%">创建时间</th>
+								<th database-name="p.retail_price" width="5%">商品价格<i class="fa fa-arrows-v"></i></th>
+								<th database-name="s.fxqty" width="5%">商品库存<i class="fa fa-arrows-v"></i></th>
+								<th database-name="i.status" width="5%">商品状态<i class="fa fa-arrows-v"></i></th>
+								<th database-name="i.info" width="5%">商品规格<i class="fa fa-arrows-v"></i></th>
+								<th database-name="i.create_time" width="5%">创建时间<i class="fa fa-arrows-v"></i></th>
 								<c:choose>
 									<c:when test="${prilvl == 1}">
 										<th width="10%">操作</th>
@@ -245,6 +259,13 @@ $('#searchBrand').on('compositionend', function () {
 $('.searchBtn').on('click',function(){
 	$("#querybtns").click();
 });
+
+laydate.render({
+    elem: '#searchTime', //指定元素
+    type: 'datetime',
+    range: '~',
+    value: null
+  });
 
 /**
  * 初始化分页信息
@@ -305,6 +326,7 @@ function rebuildTable(data){
 			}
 			str += '</p>';
 		}
+		str += "</td><td>" + list[i].goodsId;
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
@@ -396,7 +418,7 @@ function beFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "上架") {
+	    	if ($(this).parent().siblings().eq(10).text() == "上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -433,7 +455,7 @@ function noBeFx(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "上架") {
+	    	if ($(this).parent().siblings().eq(10).text() == "上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -545,7 +567,7 @@ function bindTag(){
 	var valArr = new Array; 
 	var itemIds;
     $("[name='check']:checked").each(function(i){
-    	if ($(this).parent().siblings().eq(9).text() == "下架") {
+    	if ($(this).parent().siblings().eq(10).text() == "下架") {
  	        valArr[i] = $(this).val(); 
     	}
     }); 
@@ -660,7 +682,7 @@ function puton(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "下架") {
+	    	if ($(this).parent().siblings().eq(10).text() == "下架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -697,7 +719,7 @@ function putoff(id){
 		var valArr = new Array; 
 		var itemIds;
 	    $("[name='check']:checked").each(function(i){
-	    	if ($(this).parent().siblings().eq(9).text() == "上架") {
+	    	if ($(this).parent().siblings().eq(10).text() == "上架") {
 	 	        valArr[i] = $(this).val(); 
 	    	}
 	    }); 
@@ -729,6 +751,29 @@ function putoff(id){
 		 }
 	 });
 }
+
+//绑定table排序事件
+$("thead tr th").on("click",function(){
+	var $icon = $(this).find("i");
+	$(this).parent().find("i").not($icon).removeClass("fa-long-arrow-down fa-long-arrow-up").addClass("fa-arrows-v");
+	if ($icon.length>0) {
+		$("#orderByProperty").val($(this).attr("database-name"));
+		if($icon.hasClass("fa-arrows-v")) {
+			$icon.removeClass("fa-arrows-v");
+			$icon.addClass("fa-long-arrow-up");
+			$("#orderByParam").val("asc");
+		}else if($icon.hasClass("fa-long-arrow-up")){
+			$icon.removeClass("fa-long-arrow-up");
+			$icon.addClass("fa-long-arrow-down");
+			$("#orderByParam").val("desc");
+		}else if($icon.hasClass("fa-long-arrow-down")){
+			$icon.removeClass("fa-long-arrow-down");
+			$icon.addClass("fa-long-arrow-up");
+			$("#orderByParam").val("asc");
+		}
+		reloadTable();
+	}
+})
 </script>
 </body>
 </html>

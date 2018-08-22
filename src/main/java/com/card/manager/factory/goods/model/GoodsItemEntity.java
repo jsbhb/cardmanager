@@ -56,12 +56,16 @@ public class GoodsItemEntity extends Pagination {
 	private String shelfLife;
 	private List<GoodsTagEntity> tagList;
 	private String carTon;
-	private List<GoodsRebateEntity> goodsRebateList; 
-	private String isCreate; //是否创建
+	private List<GoodsRebateEntity> goodsRebateList;
+	private String isCreate; // 是否创建
 	private List<ItemSpecsPojo> specs;
 	private Integer type;
 	private Integer isFx;
-	private String webUrlParam;//跳转到商城商详页面的参数信息
+	private String webUrlParam;// 跳转到商城商详页面的参数信息
+	private String orderByProperty;
+	private String orderByParam;
+	private String startTime;
+	private String endTime;
 
 	public boolean check() {
 		return goodsId != null && !"".equals(goodsId) && itemCode != null && !"".equals(itemCode) && sku != null
@@ -388,4 +392,35 @@ public class GoodsItemEntity extends Pagination {
 		this.webUrlParam = webUrlParam;
 	}
 
+	public String getOrderByProperty() {
+		return orderByProperty;
+	}
+
+	public void setOrderByProperty(String orderByProperty) {
+		this.orderByProperty = orderByProperty;
+	}
+
+	public String getOrderByParam() {
+		return orderByParam;
+	}
+
+	public void setOrderByParam(String orderByParam) {
+		this.orderByParam = orderByParam;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 }

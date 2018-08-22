@@ -59,6 +59,9 @@ public class ShopQRMngController extends BaseController {
 		}
 		context.put("strLink", strLink);
 		
+		String strExtensionLink = URLUtils.get("mobileUrl") + "amount-access.html?shopId=" + opt.getGradeId();
+		context.put("strExtensionLink", strExtensionLink);
+		
 		String strWelfareUrlLink = "";
 		String strWelfareType = "";
 		GradeBO gradeInfo = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
