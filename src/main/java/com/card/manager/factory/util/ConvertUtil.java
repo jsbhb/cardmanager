@@ -2,6 +2,8 @@ package com.card.manager.factory.util;
 
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.system.model.GradeEntity;
+import com.card.manager.factory.system.model.RebateFormula;
+import com.card.manager.factory.system.model.RebateFormulaBO;
 
 public class ConvertUtil {
 
@@ -17,5 +19,12 @@ public class ConvertUtil {
 		grade.setWelfareType(gradeInfo.getWelfareType());
 		grade.setWelfareRebate(gradeInfo.getWelfareRebate());
 		return grade;
+	}
+	
+	public static RebateFormulaBO converToRebateFormulaBO(RebateFormula temp) {
+		RebateFormulaBO bo = new RebateFormulaBO();
+		bo.setFormula(temp.getFormula());
+		bo.setGradeTypeId(temp.getGradeTypeId());
+		return bo;
 	}
 }

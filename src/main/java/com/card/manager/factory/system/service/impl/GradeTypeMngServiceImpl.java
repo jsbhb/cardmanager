@@ -7,6 +7,9 @@
  */
 package com.card.manager.factory.system.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpMethod;
@@ -23,8 +26,11 @@ import com.card.manager.factory.system.mapper.RoleMapper;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.GradeTypeEntity;
 import com.card.manager.factory.system.model.GradeTypeRole;
+import com.card.manager.factory.system.model.RebateFormula;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeTypeMngService;
+import com.card.manager.factory.util.ConvertUtil;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONObject;
@@ -95,7 +101,7 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 		GradeTypeRole role = new GradeTypeRole(entity.getId(), entity.getRole());
 
 		roleMapper.updateByGradeTypeId(role);
-		
+
 		CachePoolComponent.syncGradeType(staff.getToken());
 	}
 
@@ -116,8 +122,58 @@ public class GradeTypeMngServiceImpl extends AbstractServcerCenterBaseService im
 		if (!success) {
 			throw new Exception("删除失败:" + json.getString("errorMsg"));
 		}
-		
+
 		CachePoolComponent.syncGradeType(staffEntity.getToken());
+	}
+
+	@Override
+	public RebateFormula queryGradeTypeRebateFormulaById(String id, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", id);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GET_GRADE_TYPE_REBATEFORMULA, token, true,
+				null, HttpMethod.GET, param);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), RebateFormula.class);
+	}
+
+	@Override
+	public void saveGradeTypeRebate(RebateFormula entity, StaffEntity operator) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_SAVE_GRADE_TYPE_REBATEFORMULA,
+				operator.getToken(), true, entity, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!(boolean) json.get("success")) {
+			throw new Exception(json.get("errorMsg") + "");
+		}
+
+		CachePoolComponent.addRebateFormula(ConvertUtil.converToRebateFormulaBO(entity), operator.getToken());
+	}
+
+	@Override
+	public void updateGradeTypeRebate(RebateFormula entity, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_UPDATE_GRADE_TYPE_REBATEFORMULA, token, true,
+				entity, HttpMethod.POST);
+
+		try {
+			JSONObject json = JSONObject.fromObject(result.getBody());
+			if (!(boolean) json.get("success")) {
+				throw new RuntimeException(json.get("errMsg") + "");
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("修改分级返佣公式失败！" + e.getMessage());
+		}
+
+		CachePoolComponent.addRebateFormula(ConvertUtil.converToRebateFormulaBO(entity), token);
+
 	}
 
 }

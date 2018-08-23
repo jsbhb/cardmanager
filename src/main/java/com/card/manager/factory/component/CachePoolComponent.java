@@ -32,6 +32,8 @@ import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.CustomerTypeEntity;
+import com.card.manager.factory.system.model.RebateFormula;
+import com.card.manager.factory.system.model.RebateFormulaBO;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -67,6 +69,7 @@ public class CachePoolComponent {
 	private static Map<Integer, GradeBO> GRADEMAP = new HashMap<Integer, GradeBO>();
 	private static Map<Integer, GradeTypeDTO> GRADE_TYPE_CACHE = new HashMap<Integer, GradeTypeDTO>();
 	private static List<CustomerTypeEntity> CUSTOMERTYPE = new ArrayList<CustomerTypeEntity>();
+	private static Map<Integer, RebateFormulaBO> REBATE_FORMULA_MAP = new HashMap<Integer, RebateFormulaBO>();
 
 	private static String HEAD = "1";
 	private static String CENTER = "2";
@@ -120,7 +123,7 @@ public class CachePoolComponent {
 		}
 
 	}
-	
+
 	/**
 	 * @fun 获取gradeType信息
 	 * @param token
@@ -169,7 +172,7 @@ public class CachePoolComponent {
 	 * @since JDK 1.7
 	 */
 	private static void capGradeType(List<GradeTypeDTO> children) {
-		if(children == null){
+		if (children == null) {
 			return;
 		}
 		for (GradeTypeDTO child : children) {
@@ -289,7 +292,7 @@ public class CachePoolComponent {
 		syncCenter(token);
 		return CENTERS;
 	}
-	
+
 	/**
 	 * 
 	 * getSupplier:获取全局供应商信息. <br/>
@@ -713,7 +716,7 @@ public class CachePoolComponent {
 			TAGFUNC.add(JSONUtilNew.parse(jObj.toString(), TagFuncEntity.class));
 		}
 	}
-	
+
 	public static List<CustomerTypeEntity> getCustomerType() {
 		CUSTOMERTYPE.clear();
 		CustomerTypeEntity firstType = new CustomerTypeEntity();
@@ -726,4 +729,52 @@ public class CachePoolComponent {
 		CUSTOMERTYPE.add(secondType);
 		return CUSTOMERTYPE;
 	}
+
+	/**
+	 * @fun 获取grade信息
+	 * @param token
+	 * @return
+	 */
+	public static Map<Integer, RebateFormulaBO> getRebateFormula(String token) {
+		if (REBATE_FORMULA_MAP.size() == 0) {
+			syncRebateFormula(token);
+		}
+		return REBATE_FORMULA_MAP;
+	}
+
+	public static void addRebateFormula(RebateFormulaBO bo, String token) {
+		if (REBATE_FORMULA_MAP.size() == 0) {
+			syncRebateFormula(token);
+		} else {
+			REBATE_FORMULA_MAP.put(bo.getGradeTypeId(), bo);
+		}
+	}
+
+	private static void syncRebateFormula(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("needPaging", false);
+		RebateFormula temp = new RebateFormula();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_LIST_GRADE_TYPE_REBATEFORMULA, token, true,
+				temp, HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		if (index == 0) {
+			return;
+		}
+
+		REBATE_FORMULA_MAP.clear();
+		RebateFormulaBO bo = null;
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			bo = JSONUtilNew.parse(jObj.toString(), RebateFormulaBO.class);
+			REBATE_FORMULA_MAP.put(bo.getGradeTypeId(), bo);
+		}
+	}
+
 }

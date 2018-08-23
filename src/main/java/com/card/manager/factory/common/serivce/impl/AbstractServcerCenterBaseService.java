@@ -55,7 +55,6 @@ public abstract class AbstractServcerCenterBaseService implements ServerCenterSe
 			}
 		}
 
-		// 调用权限中心 验证是否可以登录
 		RestCommonHelper helper = new RestCommonHelper(pagination);
 
 		ResponseEntity<String> result = helper.requestForPage(URLUtils.get(GATE_WAY) + url, params, token,

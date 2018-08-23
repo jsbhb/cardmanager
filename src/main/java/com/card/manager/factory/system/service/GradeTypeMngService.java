@@ -8,8 +8,8 @@
 package com.card.manager.factory.system.service;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
-import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.GradeTypeEntity;
+import com.card.manager.factory.system.model.RebateFormula;
 import com.card.manager.factory.system.model.StaffEntity;
 
 /**
@@ -66,6 +66,20 @@ public interface GradeTypeMngService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void delete(String id,StaffEntity staffEntity) throws Exception;
+	
+	/**
+	 * @fun 根据ID获取分级返佣公式
+	 * @param id
+	 * @param token
+	 * @return
+	 */
+	RebateFormula queryGradeTypeRebateFormulaById(String id, String token);
+
+
+	void saveGradeTypeRebate(RebateFormula entity, StaffEntity operator) throws Exception;
+
+
+	void updateGradeTypeRebate(RebateFormula entity, String token);
 	
 
 }
