@@ -1039,7 +1039,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		// 根据返佣公式设置没有填写的返佣比例
 		Map<Integer, RebateFormulaBO> rebateFormulaMap = CachePoolComponent.getRebateFormula(staffEntity.getToken());
-		renderDefaultRebateForUnSet(rebateList, result, gradeMap, rebateFormulaMap, goodsItem.getItemId());
+		renderDefaultRebateForUnSet(rebateList, result, gradeMap, rebateFormulaMap, goodsItem.getItemId(),
+				model.getId());
 		if (!(boolean) result.get("success")) {
 			return;
 		}
@@ -1095,7 +1096,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	private final int AREA_CENTER_GRADE_TYPE = 2;
 
 	private void renderDefaultRebateForUnSet(List<GoodsRebateEntity> rebateList, Map<String, Object> result,
-			Map<Integer, GradeTypeDTO> gradeTypeMap, Map<Integer, RebateFormulaBO> rebateFormulaMap, String itemId) {
+			Map<Integer, GradeTypeDTO> gradeTypeMap, Map<Integer, RebateFormulaBO> rebateFormulaMap, String itemId,
+			String id) {
 
 		Double rebate = null;
 		// 去除已经设置返佣的分级类型并获得区域中心的返佣值
@@ -1129,9 +1131,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				tempRebate.setGradeType(entry.getKey());
 				try {
 					double rebateTemp = FormulaUtil.calRebate(bo.getFormula(), rebate);
-					if(rebateTemp < 0){
+					if (rebateTemp < 0) {
 						result.put("success", false);
-						result.put("msg", entry.getValue().getName() + ":该分级返佣计算后存在负数，请确认");
+						result.put("msg", "编号：" + id + ":该分级返佣计算后存在负数，请确认");
 						return;
 					}
 					tempRebate.setProportion(rebateTemp);
