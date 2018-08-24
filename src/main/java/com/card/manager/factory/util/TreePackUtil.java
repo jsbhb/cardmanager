@@ -35,7 +35,10 @@ public class TreePackUtil {
 			for (GradeBO grade : list) {
 				grade.setChildren(null);
 				if (gradeId != 0) {
-					if (grade.getId() == gradeId) {
+//					if (grade.getId() == gradeId) {
+//						rootList.add(grade);
+//					}
+					if (grade.getId().equals(gradeId)) {
 						rootList.add(grade);
 					}
 				} else {

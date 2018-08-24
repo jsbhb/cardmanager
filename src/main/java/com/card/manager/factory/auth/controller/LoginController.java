@@ -35,6 +35,7 @@ import com.card.manager.factory.annotation.Auth;
 import com.card.manager.factory.auth.model.AuthInfo;
 import com.card.manager.factory.auth.model.DiagramPojo;
 import com.card.manager.factory.auth.model.PlatUserType;
+import com.card.manager.factory.auth.model.StatisticPojo;
 import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.auth.service.StatisticMngService;
@@ -357,11 +358,20 @@ public class LoginController extends BaseController {
 
 		context.put(TITLE_DATA, diagramList);
 
-		context.put(ORDER_DATA_DIAGRAM_WEEK, statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
-				StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_ORDER, operator));
-		context.put(ORDER_DATA_DIAGRAM_MONTH,
-				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
-						StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		try {
+			context.put(ORDER_DATA_DIAGRAM_WEEK,
+					statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+							StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		} catch (Exception e) {
+			context.put(ORDER_DATA_DIAGRAM_WEEK, new StatisticPojo());
+		}
+		try {
+			context.put(ORDER_DATA_DIAGRAM_MONTH,
+					statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+							StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		} catch (Exception e) {
+			context.put(ORDER_DATA_DIAGRAM_MONTH, new StatisticPojo());
+		}
 	}
 
 	private void staticGrade(Map<Integer, Integer> gradeSumMap, List<GradeBO> children) {
@@ -387,14 +397,26 @@ public class LoginController extends BaseController {
 	 * @since JDK 1.7
 	 */
 	private void financialDiagram(StaffEntity operator, Map<String, Object> context) {
-		context.put(TITLE_DATA, statisticMngService.queryStaticHead(StatisticMngService.DATA_TYPE_HEAD,
-				StatisticMngService.MODEL_TYPE_FINANCE, operator));
-		context.put(FINANCE_DATA_DIAGRAM_WEEK,
-				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
-						StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_FINANCE, operator));
-		context.put(FINANCE_DATA_DIAGRAM_MONTH,
-				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
-						StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_FINANCE, operator));
+		try {
+			context.put(TITLE_DATA, statisticMngService.queryStaticHead(StatisticMngService.DATA_TYPE_HEAD,
+					StatisticMngService.MODEL_TYPE_FINANCE, operator));
+		} catch (Exception e) {
+			context.put(TITLE_DATA, new ArrayList<DiagramPojo>());
+		}
+		try {
+			context.put(FINANCE_DATA_DIAGRAM_WEEK,
+					statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+							StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_FINANCE, operator));
+		} catch (Exception e) {
+			context.put(FINANCE_DATA_DIAGRAM_WEEK, new StatisticPojo());
+		}
+		try {
+			context.put(FINANCE_DATA_DIAGRAM_MONTH,
+					statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+							StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_FINANCE, operator));
+		} catch (Exception e) {
+			context.put(FINANCE_DATA_DIAGRAM_MONTH, new StatisticPojo());
+		}
 
 	}
 
@@ -407,14 +429,26 @@ public class LoginController extends BaseController {
 	 * @since JDK 1.7
 	 */
 	private void orderDiagram(StaffEntity operator, Map<String, Object> context) {
-		context.put(TITLE_DATA, statisticMngService.queryStaticHead(StatisticMngService.DATA_TYPE_HEAD,
-				StatisticMngService.MODEL_TYPE_ORDER, operator));
-		context.put(ORDER_DATA_DIAGRAM_WEEK, statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
-				StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_ORDER, operator));
-		context.put(ORDER_DATA_DIAGRAM_MONTH,
-				statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
-						StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
-
+		try {
+			context.put(TITLE_DATA, statisticMngService.queryStaticHead(StatisticMngService.DATA_TYPE_HEAD,
+					StatisticMngService.MODEL_TYPE_ORDER, operator));
+		} catch (Exception e) {
+			context.put(TITLE_DATA, new ArrayList<DiagramPojo>());
+		}
+		try {
+			context.put(ORDER_DATA_DIAGRAM_WEEK,
+					statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+							StatisticMngService.TIME_MODE_WEEK, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		} catch (Exception e) {
+			context.put(ORDER_DATA_DIAGRAM_WEEK, new StatisticPojo());
+		}
+		try {
+			context.put(ORDER_DATA_DIAGRAM_MONTH,
+					statisticMngService.queryStaticDiagram(StatisticMngService.DATA_TYPE_CHART,
+							StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
+		} catch (Exception e) {
+			context.put(ORDER_DATA_DIAGRAM_MONTH, new StatisticPojo());
+		}
 	}
 
 	@RequestMapping("/modifyPwd")
@@ -529,33 +563,33 @@ public class LoginController extends BaseController {
 					sendFailureMessage(resp, "文件格式有误！");
 					return;
 				}
-				
+
 				WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 				ServletContext servletContext = webApplicationContext.getServletContext();
-				
+
 				String filePath = servletContext.getRealPath("/") + "UPLOADEXCEL/";
 				String saveFileName;
-				if(path != null){
+				if (path != null) {
 					filePath += path + "/";
 					saveFileName = DateUtil.getNowLongTime() + "-" + entity.getOptName() + suffix;
 				} else {
 					saveFileName = UUID.randomUUID().toString() + suffix;
 				}
-		    	File obj = null;
-		    	obj = new File(filePath);
+				File obj = null;
+				obj = new File(filePath);
 				if (!obj.exists()) {
 					obj.mkdirs();
 				}
-				
+
 				fileName = filePath + "/" + saveFileName;
-				
+
 				FileOutputStream fos = null;
 				byte[] fileData = excel.getBytes();
 				fos = new FileOutputStream(fileName);
 				fos.write(fileData);
 				fos.close();
-				
-				sendSuccessMessage(resp, URLEncoder.encode(fileName,"UTF-8"));
+
+				sendSuccessMessage(resp, URLEncoder.encode(fileName, "UTF-8"));
 			}
 
 		} catch (Exception e) {

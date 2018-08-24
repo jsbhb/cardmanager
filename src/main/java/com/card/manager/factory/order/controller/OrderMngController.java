@@ -370,7 +370,7 @@ public class OrderMngController extends BaseController {
 				case 8:	oi.setStatusName("退单");break;
 				case 9:	oi.setStatusName("超时取消");	break;
 				case 11:oi.setStatusName("资金池不足");break;
-				case 12:oi.setStatusName("已付款");break;
+				case 12:oi.setStatusName("海关申报中");break;
 				case 21:oi.setStatusName("退款中");break;
 				case 99:oi.setStatusName("异常状态");	break;
 				}

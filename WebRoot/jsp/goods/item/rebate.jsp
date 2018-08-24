@@ -24,6 +24,13 @@
 		1.订单由下级产生时：该级获取的返佣比例  = 该级设置的返佣比例 - 该下级设置的返佣比例。
 		2.订单由该级产生时：该级获取的返佣比例  = 该级设置的返佣比例。
 	</p>
+	<div class="list-item" style="display:none">
+		<select id="gradeTypeRebate">
+			<c:forEach var="gradeTypeRebate" items="${rebateFormulaList}">
+				<option value="${gradeTypeRebate.formula}">${gradeTypeRebate.gradeTypeId}</option>
+			</c:forEach>
+        </select>
+	</div>
 </div>
 
 <div class="treeList">
@@ -126,6 +133,31 @@ $(function(){
         var r = window.location.search.substr(1).match(reg);
         if(r!=null)return  unescape(r[2]); return null;
    }
+});
+
+$('.treeList').on('input','input',function(){
+	var inputId = $(this).attr('id');
+	var inputValue = $(this).val();
+	if(inputId == 2){
+		var gradeTypeSelect = document.getElementById("gradeTypeRebate");
+		var gtoptions = gradeTypeSelect.options;
+		for(var j=0;j<gtoptions.length;j++){
+			var tmpInputId = gtoptions[j].text;
+			var tmpInputMula = gtoptions[j].value.replace("rebate","");
+			var tmpSymbol = tmpInputMula.substring(0,1);
+			var tmpValue = tmpInputMula.substring(1,tmpInputMula.length);
+			if (tmpSymbol == "+") {
+				tmpValue = inputValue + tmpValue;
+			} else if (tmpSymbol == "-") {
+				tmpValue = inputValue - tmpValue;
+			} else if (tmpSymbol == "*") {
+				tmpValue = inputValue * tmpValue;
+			} else if (tmpSymbol == "/") {
+				tmpValue = inputValue / tmpValue;
+			}
+	 		$('#'+ tmpInputId).val(tmpValue);
+		}
+	}
 });
 	
 </script>

@@ -134,14 +134,12 @@
 	
 		<div class="list-tabBar">
 			<ul>
-				<c:if test="${prilvl == 1}">
-					
-				</c:if>
 				<c:choose>
 					<c:when test="${prilvl == 1}">
 						<li data-id="first" class="active">上架商品</li>
 						<li data-id="second">下架商品</li>
 						<li data-id="third">分销商品</li>
+						<li data-id="fourth">无库存商品</li>
 					</c:when>
 					<c:when test="${customType == 1}">
 						<li data-id="first" class="active">上架商品</li>
@@ -309,6 +307,7 @@ function rebuildTable(data){
 		$("#baseTable tbody").html(str);
 		return;
 	}
+	var tmpHidTabId = $("#hidTabId").val();
 
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
@@ -354,39 +353,44 @@ function rebuildTable(data){
 		var prilvl = "${prilvl}";
 		var gradeId = "${opt.gradeId}";
 		var isFx = list[i].isFx;
-		if(prilvl == 1){
-			if (status == 0) {
-				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")' >上架</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
-			} else {
-				str += "</td><td>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].itemId+")'>查看信息</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='putoff("+list[i].itemId+")' >下架</a>";
-				if (isFx == 0) {
-					str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >分销</a>";
-				} else {
-					str += "<a href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
-				}
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
-			}
-			if(list[i].supplierName!="一般贸易仓"
-				&&list[i].supplierName!="广州仓库"
-				&&list[i].supplierName!="广州仓gzc"
-				&&list[i].supplierName!="天天仓"
-				&&list[i].supplierName!=null){
-				str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
-			}
+		if (tmpHidTabId == "fourth") {
+			str += "</td><td>";
 		} else {
-			if (gradeId == 0 || gradeId == 2) {
-				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+			if(prilvl == 1){
+				if (status == 0) {
+					str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")' >上架</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+				} else {
+					str += "</td><td>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].itemId+")'>查看信息</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='toEditRatio("+list[i].itemId+',"'+list[i].goodsName+'","'+list[i].info+"\")'>设置比价</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='putoff("+list[i].itemId+")' >下架</a>";
+					if (isFx == 0) {
+						str += "<a href='javascript:void(0);' class='table-btns' onclick='beFx("+list[i].itemId+")' >分销</a>";
+					} else {
+						str += "<a href='javascript:void(0);' class='table-btns' onclick='noBeFx("+list[i].itemId+")' >不可分销</a>";
+					}
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+				}
+				if(list[i].supplierName!="一般贸易仓"
+					&&list[i].supplierName!="广州仓库"
+					&&list[i].supplierName!="广州仓gzc"
+					&&list[i].supplierName!="天天仓"
+					&&list[i].supplierName!=null){
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
+				}
 			} else {
-				str += "</td><td>" + list[i].rebate;
+				if (gradeId == 0 || gradeId == 2) {
+					str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+				} else {
+					str += "</td><td>" + list[i].rebate;
+				}
 			}
 		}
+		
 		str += "</td></tr>";
 	}
 	$("#baseTable tbody").html(str);
