@@ -725,7 +725,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				}
 				String tempId = i + DateUtil.getintTimePlusString();
 				if (!infoMap.containsKey(model.getId())) {// 不存在新增base和goods
-					//处理goods
+					// 处理goods
 					goodsInfo = goodsHandler(staffEntity, infoMap, goodsInfoList, model, tempId);
 					repeatList = new ArrayList<List<GoodsSpecsBO>>();// 判断多规格是否重复用
 				} else {
@@ -814,8 +814,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setShelfLife(model.getShelfLife());
 		goodsItem.setCarTon(model.getCarTon());
 		try {
-			goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
-					: Utils.convert(model.getWeight()));
+			goodsItem.setWeight(
+					model.getWeight() == null || "".equals(model.getWeight()) ? 0 : Utils.convert(model.getWeight()));
 			goodsItem.setExciseTax(Double.valueOf(model.getExciseFax()));
 			goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
 					: Utils.convert(model.getConversion()));
@@ -929,7 +929,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsInfo.setGoods(goods);
 		infoMap.put(model.getId(), goodsInfo);
 		goodsInfoList.add(goodsInfo);
-		
+
 		return goodsInfo;
 	}
 
@@ -1060,12 +1060,12 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		for (GoodsTagEntity tagEntity : tagList) {
 			tempMap.put(tagEntity.getTagName(), tagEntity);
 		}
-		//生成标签绑定实体类
+		// 生成标签绑定实体类
 		GoodsTagEntity temp = null;
 		List<GoodsTagBindEntity> bindList = null;
 		GoodsTagBindEntity tempBindEntity = null;
-		//判断之前goods里是否有标签绑定的list，有的话在原来基础上加，没有就新建
-		if(goodsInfo.getGoods().getGoodsTagBindList() == null){
+		// 判断之前goods里是否有标签绑定的list，有的话在原来基础上加，没有就新建
+		if (goodsInfo.getGoods().getGoodsTagBindList() == null) {
 			bindList = new ArrayList<GoodsTagBindEntity>();
 			goodsInfo.getGoods().setGoodsTagBindList(bindList);
 		} else {
@@ -1073,7 +1073,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		for (String tagName : tagNameArr) {
 			temp = tempMap.get(tagName.trim());
-			if(temp == null){
+			if (temp == null) {
 				result.put("success", false);
 				result.put("msg", "编号：" + model.getId() + ",找不到对应的标签ID，请检查标签是否正确，或通过后台新增标签");
 				return;
@@ -1100,7 +1100,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		Double rebate = null;
 		// 去除已经设置返佣的分级类型并获得区域中心的返佣值
 		Map<Integer, GradeTypeDTO> temp = new HashMap<Integer, GradeTypeDTO>();
-		for (Map.Entry<Integer, GradeTypeDTO> entry : gradeTypeMap.entrySet()){
+		for (Map.Entry<Integer, GradeTypeDTO> entry : gradeTypeMap.entrySet()) {
 			temp.put(entry.getKey(), entry.getValue());
 		}
 		for (GoodsRebateEntity entity : rebateList) {
@@ -1128,9 +1128,15 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				tempRebate.setItemId(itemId);
 				tempRebate.setGradeType(entry.getKey());
 				try {
-					tempRebate.setProportion(FormulaUtil.calRebate(bo.getFormula(), rebate));
+					double rebateTemp = FormulaUtil.calRebate(bo.getFormula(), rebate);
+					if(rebateTemp < 0){
+						result.put("success", false);
+						result.put("msg", entry.getValue().getName() + ":该分级返佣计算后存在负数，请确认");
+						return;
+					}
+					tempRebate.setProportion(rebateTemp);
 				} catch (NoSuchMethodException | ScriptException e) {
-					LogUtil.writeErrorLog("返佣公式计算出错==", e);
+					LogUtil.writeErrorLog("返佣公式计算出错==" + bo.getFormula(), e);
 					result.put("success", false);
 					result.put("msg", entry.getValue().getName() + ":该分级返佣存在问题，请确认");
 					return;
