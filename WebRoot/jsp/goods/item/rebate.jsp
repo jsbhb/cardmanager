@@ -143,9 +143,9 @@ $('.treeList').on('input','input',function(){
 		var gtoptions = gradeTypeSelect.options;
 		for(var j=0;j<gtoptions.length;j++){
 			var tmpInputId = gtoptions[j].text;
-			var tmpInputMula = gtoptions[j].value.replace("rebate","");
+			var tmpInputMula = gtoptions[j].value.replace("rebate","").trim();
 			var tmpSymbol = tmpInputMula.substring(0,1);
-			var tmpValue = tmpInputMula.substring(1,tmpInputMula.length);
+			var tmpValue = tmpInputMula.substring(1,tmpInputMula.length).trim();
 			if (tmpSymbol == "+") {
 				tmpValue = inputValue + tmpValue;
 			} else if (tmpSymbol == "-") {
@@ -154,8 +154,11 @@ $('.treeList').on('input','input',function(){
 				tmpValue = inputValue * tmpValue;
 			} else if (tmpSymbol == "/") {
 				tmpValue = inputValue / tmpValue;
+			} else {
+				layer.alert("返佣公式解析有误，请确认公式是否正确！");
+				return;
 			}
-	 		$('#'+ tmpInputId).val(tmpValue);
+	 		$('#'+ tmpInputId).val(tmpValue.toFixed(2));
 		}
 	}
 });

@@ -128,21 +128,23 @@
 	                  <input type="text" class="form-control" readonly name="phone" id="phone" value="${grade.phone}">
 				</div>
 			</div>
-			<div class="title">
-	       		<h1>分级域名信息</h1>
-	       	</div>
-			<div class="list-item">
-				<label class="col-sm-3 item-left" >电脑商城域名<font style="color:red"></font> </label>
-				<div class="col-sm-9 item-right">
-	                  <input type="text" class="form-control" name="redirectUrl" value="${grade.redirectUrl}">
+			<c:if test="${urlShow==true}">
+				<div class="title">
+		       		<h1>分级域名信息</h1>
+		       	</div>
+				<div class="list-item">
+					<label class="col-sm-3 item-left" >电脑商城域名<font style="color:red"></font> </label>
+					<div class="col-sm-9 item-right">
+		                  <input type="text" class="form-control" name="redirectUrl" value="${grade.redirectUrl}">
+					</div>
 				</div>
-			</div>
-			<div class="list-item">
-				<label class="col-sm-3 item-left" >手机商城域名<font style="color:red"></font> </label>
-				<div class="col-sm-9 item-right">
-	                  <input type="text" class="form-control" name="mobileUrl" value="${grade.mobileUrl}">
+				<div class="list-item">
+					<label class="col-sm-3 item-left" >手机商城域名<font style="color:red"></font> </label>
+					<div class="col-sm-9 item-right">
+		                  <input type="text" class="form-control" name="mobileUrl" value="${grade.mobileUrl}">
+					</div>
 				</div>
-			</div>
+			</c:if>
 			<div class="title">
 	       		<h1>注册信息</h1>
 	       	</div>

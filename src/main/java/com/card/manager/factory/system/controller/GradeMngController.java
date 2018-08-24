@@ -78,6 +78,12 @@ public class GradeMngController extends BaseController {
 		context.put("opt", opt);
 		List<CustomerTypeEntity> customerTypeList = CachePoolComponent.getCustomerType();
 		context.put("customerTypeList", customerTypeList);
+		
+		if (opt.getGradeType() == 0 || opt.getGradeType() == 1) {
+			context.put("urlShow", "true");
+		} else {
+			context.put("urlShow", "false");
+		}
 		return forword("system/grade/add", context);
 	}
 
@@ -242,7 +248,11 @@ public class GradeMngController extends BaseController {
 			context.put("error", e.getMessage());
 			return forword("error", context);
 		}
-
+		if (opt.getGradeType() == 0 || opt.getGradeType() == 1) {
+			context.put("urlShow", "true");
+		} else {
+			context.put("urlShow", "false");
+		}
 		return forword("system/grade/edit", context);
 	}
 
