@@ -688,7 +688,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), Map.class);
 	}
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> importGoodsInfo(String filePath, StaffEntity staffEntity) {
 		List<ImportGoodsBO> list = ExcelUtils.instance().readExcel(filePath, ImportGoodsBO.class, true);
@@ -724,8 +724,13 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 					return result;
 				}
 				String tempId = i + DateUtil.getintTimePlusString();
-				// 封装goods
-				goodsInfo = goodsInfoHandler(staffEntity, infoMap, goodsInfoList, model, tempId, repeatList);
+				if (!infoMap.containsKey(model.getId())) {// 不存在新增base和goods
+					//处理goods
+					goodsInfo = goodsHandler(staffEntity, infoMap, goodsInfoList, model, tempId);
+					repeatList = new ArrayList<List<GoodsSpecsBO>>();// 判断多规格是否重复用
+				} else {
+					goodsInfo = infoMap.get(model.getId());
+				}
 
 				// goodsItem
 				goodsItem = goodsItemHandler(staffEntity, result, helper, specsNameMap, specsValueMap, goodsInfo,
@@ -809,8 +814,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setShelfLife(model.getShelfLife());
 		goodsItem.setCarTon(model.getCarTon());
 		try {
-			goodsItem.setWeight(
-					model.getWeight() == null || "".equals(model.getWeight()) ? 0 : Utils.convert(model.getWeight()));
+			goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
+					: Utils.convert(model.getWeight()));
 			goodsItem.setExciseTax(Double.valueOf(model.getExciseFax()));
 			goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
 					: Utils.convert(model.getConversion()));
@@ -884,54 +889,47 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	 * @fun 封装goods
 	 * @param staffEntity
 	 * @param infoMap
+	 * @param goodsInfo
 	 * @param goodsInfoList
 	 * @param model
 	 * @param tempId
-	 * @param repeatList
-	 * @return
 	 */
-	private GoodsInfoEntity goodsInfoHandler(StaffEntity staffEntity, Map<String, GoodsInfoEntity> infoMap,
-			List<GoodsInfoEntity> goodsInfoList, ImportGoodsBO model, String tempId,
-			List<List<GoodsSpecsBO>> repeatList) {
+	private GoodsInfoEntity goodsHandler(StaffEntity staffEntity, Map<String, GoodsInfoEntity> infoMap,
+			List<GoodsInfoEntity> goodsInfoList, ImportGoodsBO model, String tempId) {
 		GoodsBaseEntity goodsBase;
 		GoodsEntity goods;
-		GoodsInfoEntity goodsInfo;
-		if (!infoMap.containsKey(model.getId())) {// 不存在新增base和goods
-			goodsInfo = new GoodsInfoEntity();
-			// 基础商品
-			goodsBase = new GoodsBaseEntity();
-			goodsBase.setBrandId(model.getBrandId());
-			goodsBase.setGoodsName(model.getGoodsName());
-			goodsBase.setBrand(model.getBrandName());
-			goodsBase.setIncrementTax(model.getIncrementTax());
-			goodsBase.setTariff(model.getTariff());
-			goodsBase.setUnit(model.getUnit());
-			goodsBase.setHscode(model.getHscode());
-			goodsBase.setFirstCatalogId(model.getFirstCatalogId());
-			goodsBase.setSecondCatalogId(model.getSecondCatalogId());
-			goodsBase.setThirdCatalogId(model.getThirdCatalogId());
-			goodsBase.setCenterId(staffEntity.getGradeId());
-			int baseId = Integer.valueOf(tempId);
-			goodsBase.setId(baseId);
-			goodsInfo.setGoodsBase(goodsBase);
+		GoodsInfoEntity goodsInfo = new GoodsInfoEntity();
+		// 基础商品
+		goodsBase = new GoodsBaseEntity();
+		goodsBase.setBrandId(model.getBrandId());
+		goodsBase.setGoodsName(model.getGoodsName());
+		goodsBase.setBrand(model.getBrandName());
+		goodsBase.setIncrementTax(model.getIncrementTax());
+		goodsBase.setTariff(model.getTariff());
+		goodsBase.setUnit(model.getUnit());
+		goodsBase.setHscode(model.getHscode());
+		goodsBase.setFirstCatalogId(model.getFirstCatalogId());
+		goodsBase.setSecondCatalogId(model.getSecondCatalogId());
+		goodsBase.setThirdCatalogId(model.getThirdCatalogId());
+		goodsBase.setCenterId(staffEntity.getGradeId());
+		int baseId = Integer.valueOf(tempId);
+		goodsBase.setId(baseId);
+		goodsInfo.setGoodsBase(goodsBase);
 
-			// goods表
-			goods = new GoodsEntity();
-			goods.setSupplierId(model.getSupplierId());
-			goods.setType(model.getType());
-			goods.setSupplierName(model.getSupplierName());
-			goods.setTemplateId(0);
-			goods.setGoodsName(model.getGoodsName());
-			goods.setOrigin(model.getOrigin());
-			goods.setGoodsId(tempId);
-			goods.setBaseId(baseId);
-			goodsInfo.setGoods(goods);
-			infoMap.put(model.getId(), goodsInfo);
-			goodsInfoList.add(goodsInfo);
-			repeatList = new ArrayList<List<GoodsSpecsBO>>();// 判断多规格是否重复用
-		} else {
-			goodsInfo = infoMap.get(model.getId());
-		}
+		// goods表
+		goods = new GoodsEntity();
+		goods.setSupplierId(model.getSupplierId());
+		goods.setType(model.getType());
+		goods.setSupplierName(model.getSupplierName());
+		goods.setTemplateId(0);
+		goods.setGoodsName(model.getGoodsName());
+		goods.setOrigin(model.getOrigin());
+		goods.setGoodsId(tempId);
+		goods.setBaseId(baseId);
+		goodsInfo.setGoods(goods);
+		infoMap.put(model.getId(), goodsInfo);
+		goodsInfoList.add(goodsInfo);
+		
 		return goodsInfo;
 	}
 
@@ -1062,12 +1060,12 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		for (GoodsTagEntity tagEntity : tagList) {
 			tempMap.put(tagEntity.getTagName(), tagEntity);
 		}
-		// 生成标签绑定实体类
+		//生成标签绑定实体类
 		GoodsTagEntity temp = null;
 		List<GoodsTagBindEntity> bindList = null;
 		GoodsTagBindEntity tempBindEntity = null;
-		// 判断之前goods里是否有标签绑定的list，有的话在原来基础上加，没有就新建
-		if (goodsInfo.getGoods().getGoodsTagBindList() == null) {
+		//判断之前goods里是否有标签绑定的list，有的话在原来基础上加，没有就新建
+		if(goodsInfo.getGoods().getGoodsTagBindList() == null){
 			bindList = new ArrayList<GoodsTagBindEntity>();
 			goodsInfo.getGoods().setGoodsTagBindList(bindList);
 		} else {
@@ -1075,9 +1073,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		for (String tagName : tagNameArr) {
 			temp = tempMap.get(tagName.trim());
-			if (temp == null) {
+			if(temp == null){
 				result.put("success", false);
-				result.put("msg", "编号：" + model.getId() + ",找不到对应的标签，前检查标签是否正确");
+				result.put("msg", "编号：" + model.getId() + ",找不到对应的标签ID，请检查标签是否正确，或通过后台新增标签");
 				return;
 			}
 			tempBindEntity = new GoodsTagBindEntity();
@@ -1101,11 +1099,15 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		Double rebate = null;
 		// 去除已经设置返佣的分级类型并获得区域中心的返佣值
+		Map<Integer, GradeTypeDTO> temp = new HashMap<Integer, GradeTypeDTO>();
+		for (Map.Entry<Integer, GradeTypeDTO> entry : gradeTypeMap.entrySet()){
+			temp.put(entry.getKey(), entry.getValue());
+		}
 		for (GoodsRebateEntity entity : rebateList) {
 			if (entity.getGradeType() == AREA_CENTER_GRADE_TYPE) {
 				rebate = entity.getProportion();
 			}
-			gradeTypeMap.remove(entity.getGradeType());
+			temp.remove(entity.getGradeType());
 		}
 		if (rebate == null) {
 			result.put("success", false);
@@ -1114,8 +1116,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		RebateFormulaBO bo = null;
 		GoodsRebateEntity tempRebate = null;
-		if (gradeTypeMap != null && gradeTypeMap.size() > 0) {
-			for (Map.Entry<Integer, GradeTypeDTO> entry : gradeTypeMap.entrySet()) {
+		if (temp != null && temp.size() > 0) {
+			for (Map.Entry<Integer, GradeTypeDTO> entry : temp.entrySet()) {
 				bo = rebateFormulaMap.get(entry.getKey());// 获取该分级的返佣公式
 				if (bo == null || bo.getFormula() == null || "".equals(bo.getFormula())) {
 					result.put("success", false);
