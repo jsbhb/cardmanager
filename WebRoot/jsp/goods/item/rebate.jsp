@@ -103,13 +103,21 @@ $(function(){
     	var itemId = ${itemId};
     	var inputArr = $('.treeList input');
     	var data = [];
+    	var errFlg = false;
     	$.each(inputArr,function(k,v){
+    		if ($(v).val() < 0) {
+    			errFlg = true;
+    		}
     		data.push({
     			'itemId': itemId,
     			'gradeType': $(v).attr('id'),
     			'proportion': $(v).val() == '' ? 0 : $(v).val()
     		});
     	});
+    	if (errFlg) {
+    		layer.alert("计算后结果存在负数，请修改后重试！");
+    		return;
+    	}
     	$.ajax({
    		 url:"${wmsUrl}/admin/goods/itemMng/rebate.shtml",
    		 type:'post',
