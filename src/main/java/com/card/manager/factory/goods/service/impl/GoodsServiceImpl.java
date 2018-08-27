@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.script.ScriptException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,13 +70,16 @@ import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
 import com.card.manager.factory.goods.pojo.ImportGoodsBO;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.log.LogUtil;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
+import com.card.manager.factory.system.model.RebateFormulaBO;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.ExcelUtils;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.FormulaUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SequeceRule;
 import com.card.manager.factory.util.URLUtils;
@@ -133,7 +137,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Override
 	public String getHtmlContext(String html, StaffEntity staffEntity) throws Exception {
-		String tmpIp = html.substring(html.indexOf("//")+2,html.lastIndexOf(":"));
+		String tmpIp = html.substring(html.indexOf("//") + 2, html.lastIndexOf(":"));
 		html = html.replace(tmpIp, URLUtils.get("LanIp"));
 		Document doc = Jsoup.parse(new URL(html), 3000);
 		return htmlToCode(doc.toString());
@@ -344,7 +348,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setDetailPath(invitePath + goods.getGoodsId() + ResourceContants.HTML_SUFFIX);
 		// -------------------保存商品详情---------------------//
 		// goods.setDetailPath(entity.getDetailInfo());
-		
+
 		List<GoodsFile> files = new ArrayList<GoodsFile>();
 		if (entity.getPicPath() != null) {
 			String[] goodsFiles = entity.getPicPath().split(",");
@@ -359,7 +363,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
 		if (entity.getItems() != null && entity.getItems().size() > 0) {
-			for (GoodsItemEntity gie:entity.getItems()) {
+			for (GoodsItemEntity gie : entity.getItems()) {
 				GoodsItemEntity goodsItem = new GoodsItemEntity();
 				goodsItem.setGoodsId(goods.getGoodsId());
 				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
@@ -373,7 +377,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setEncode(gie.getEncode());
 				goodsItem.setShelfLife(gie.getShelfLife());
 				goodsItem.setCarTon(gie.getCarTon());
-				
+
 				GoodsPrice goodsPrice = new GoodsPrice();
 				goodsPrice.setItemId(goodsItem.getItemId());
 				goodsPrice.setMin(gie.getGoodsPrice().getMin());
@@ -385,7 +389,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 				goodsItem.setGoodsPrice(goodsPrice);
 				goodsItem.setOpt(entity.getOpt());
-				
+
 				String keys = gie.getInfo();
 				List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
 				if ((keys != null && !"".equals(keys))) {
@@ -443,7 +447,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
 			GoodsTagBindEntity goodsTagBindEntity = null;
 			String[] tagArray = entity.getTagId().split("\\|");
-			for(GoodsItemEntity gie:items) {
+			for (GoodsItemEntity gie : items) {
 				for (int i = 0; i < tagArray.length; i++) {
 					if (tagArray[i].trim() != null || !"".equals(tagArray[i].trim())) {
 						goodsTagBindEntity = new GoodsTagBindEntity();
@@ -539,7 +543,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
 		GoodsItemEntity goodsItem = new GoodsItemEntity();
 		goodsItem.setGoodsId(goods.getGoodsId());
-		goodsItem.setItemId(entity.getItemId()+"");
+		goodsItem.setItemId(entity.getItemId() + "");
 		goodsItem.setItemCode(entity.getItemCode());
 		goodsItem.setSku(entity.getSku());
 		goodsItem.setWeight(entity.getWeight());
@@ -549,7 +553,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsItem.setEncode(entity.getEncode());
 		goodsItem.setShelfLife(entity.getShelfLife());
 		goodsItem.setCarTon(entity.getCarTon());
-		
+
 		GoodsPrice goodsPrice = new GoodsPrice();
 		goodsPrice.setItemId(goodsItem.getItemId());
 		goodsPrice.setMin(entity.getMin());
@@ -561,7 +565,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		goodsItem.setGoodsPrice(goodsPrice);
 		goodsItem.setOpt(entity.getOpt());
-		
+
 		String keys = entity.getKeys();
 		List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
 		if ((keys != null && !"".equals(keys))) {
@@ -586,7 +590,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		}
 		items.add(goodsItem);
 		goods.setItems(items);
-		
+
 		// 新增商品时判断是否添加商品标签
 		if (!"".equals(entity.getTagId()) && entity.getTagId() != null) {
 			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
@@ -605,7 +609,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		GoodsInfoEntity goodsInfoEntity = new GoodsInfoEntity();
 		goodsInfoEntity.setGoods(goods);
-		
+
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_UPDATE_GOODSINFO, staffEntity.getToken(),
 				true, goodsInfoEntity, HttpMethod.POST);
@@ -705,21 +709,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		Map<String, GoodsInfoEntity> infoMap = new HashMap<String, GoodsInfoEntity>();
 		int i = 1;
 		if (list != null && list.size() > 0) {
-			StringBuilder sb = null;// 拼接规格信息
-			GoodsBaseEntity goodsBase = null;
-			GoodsEntity goods = null;
 			GoodsItemEntity goodsItem = null;
-			GoodsPrice goodsPrice = null;
-			GoodsRebateEntity goodsRebate = null;
-			GoodsStockEntity goodsStock = null;
 			GoodsInfoEntity goodsInfo = null;
 			List<List<GoodsSpecsBO>> repeatList = null;// 判断规格是否重复
-			GradeTypeDTO gradeType = null;
-			List<GoodsItemEntity> items = null;
-			List<GoodsRebateEntity> rebateList = null;
-			Map<String, Integer> spv = null;
 			List<GoodsInfoEntity> goodsInfoList = new ArrayList<GoodsInfoEntity>();
-			Map<Integer, GoodsRebateEntity> tempMap = null;
+			List<GoodsTagEntity> tagList = queryGoodsTags(staffEntity.getToken());
 			Map<Integer, GradeTypeDTO> gradeMap = CachePoolComponent.getGradeType(staffEntity.getToken());
 			for (ImportGoodsBO model : list) {
 				model.init(supplierMap, gradeMapTemp, firstMapTemp, secondMapTemp, thirdMapTemp, brandMapTemp,
@@ -731,189 +725,42 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				}
 				String tempId = i + DateUtil.getintTimePlusString();
 				if (!infoMap.containsKey(model.getId())) {// 不存在新增base和goods
-					goodsInfo = new GoodsInfoEntity();
-					// 基础商品
-					goodsBase = new GoodsBaseEntity();
-					goodsBase.setBrandId(model.getBrandId());
-					goodsBase.setGoodsName(model.getGoodsName());
-					goodsBase.setBrand(model.getBrandName());
-					goodsBase.setIncrementTax(model.getIncrementTax());
-					goodsBase.setTariff(model.getTariff());
-					goodsBase.setUnit(model.getUnit());
-					goodsBase.setHscode(model.getHscode());
-					goodsBase.setFirstCatalogId(model.getFirstCatalogId());
-					goodsBase.setSecondCatalogId(model.getSecondCatalogId());
-					goodsBase.setThirdCatalogId(model.getThirdCatalogId());
-					goodsBase.setCenterId(staffEntity.getGradeId());
-					int baseId = Integer.valueOf(tempId);
-					goodsBase.setId(baseId);
-					goodsInfo.setGoodsBase(goodsBase);
-
-					// goods表
-					goods = new GoodsEntity();
-					goods.setSupplierId(model.getSupplierId());
-					goods.setType(model.getType());
-					goods.setSupplierName(model.getSupplierName());
-					goods.setTemplateId(0);
-					goods.setGoodsName(model.getGoodsName());
-					goods.setOrigin(model.getOrigin());
-					goods.setGoodsId(tempId);
-					goods.setBaseId(baseId);
-					goodsInfo.setGoods(goods);
-					infoMap.put(model.getId(), goodsInfo);
-					goodsInfoList.add(goodsInfo);
+					// 处理goods
+					goodsInfo = goodsHandler(staffEntity, infoMap, goodsInfoList, model, tempId);
 					repeatList = new ArrayList<List<GoodsSpecsBO>>();// 判断多规格是否重复用
 				} else {
 					goodsInfo = infoMap.get(model.getId());
 				}
 
 				// goodsItem
-				goodsItem = new GoodsItemEntity();
-				goodsItem.setGoodsId(goodsInfo.getGoods().getGoodsId());
-				goodsItem.setItemCode(Utils.removePoint(model.getItemCode()));
-				goodsItem.setSku(Utils.removePoint(model.getSku()));
-				goodsItem.setShelfLife(model.getShelfLife());
-				goodsItem.setCarTon(model.getCarTon());
-				try {
-					goodsItem.setWeight(model.getWeight() == null || "".equals(model.getWeight()) ? 0
-							: Utils.convert(model.getWeight()));
-					goodsItem.setExciseTax(Double.valueOf(model.getExciseFax()));
-					goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
-							: Utils.convert(model.getConversion()));
-				} catch (Exception e) {
-					result.put("success", false);
-					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+				goodsItem = goodsItemHandler(staffEntity, result, helper, specsNameMap, specsValueMap, goodsInfo,
+						repeatList, model, tempId);
+				if (!(boolean) result.get("success")) {
 					return result;
-				}
-				goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
-				goodsItem.setEncode(Utils.removePoint(model.getEncode()));
-				if (model.getSpecsList() != null) {
-					sb = new StringBuilder("[");
-					for (GoodsSpecsBO specs : model.getSpecsList()) {
-						if (specs.getSpecsNameId() == null) {
-							int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_ADD,
-									staffEntity.getToken());
-							specs.setSpecsNameId(id);
-							specsNameMap.put(specs.getSpecsName(), id);// 放入map，如果该excel里有其他商品使用该规格就不需要请求微服务
-						}
-						if (specs.getSpecsValueId() == null) {
-							int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_VALUE_ADD,
-									staffEntity.getToken());
-							specs.setSpecsValueId(id);
-							// 同specsName
-							if (specsValueMap.get(specs.getSpecsNameId()) == null) {
-								spv = new CaseInsensitiveMap();
-								spv.put(specs.getSpecsValue(), id);
-								specsValueMap.put(specs.getSpecsNameId(), spv);
-							} else {
-								specsValueMap.get(specs.getSpecsNameId()).put(specs.getSpecsValue(), id);
-							}
-						}
-						sb.append("{\"svV\":\"" + specs.getSpecsValue() + "\",\"skV\":\"" + specs.getSpecsName()
-								+ "\",\"svId\":\"" + specs.getSpecsValueId() + "\",\"skId\":\"" + specs.getSpecsNameId()
-								+ "\"},");
-					}
-					String info = sb.substring(0, sb.length() - 1) + "]";
-					goodsItem.setInfo(info);
-				} else {
-					if (goodsInfo.getGoods().getItems() != null) {
-						result.put("success", false);
-						result.put("msg", "编号：" + model.getId() + ",请填写规格,如果没有规格,id请不要重复");
-						return result;
-					}
-				}
-				goodsItem.setItemId(tempId);
-				if (goodsInfo.getGoods().getItems() == null) {
-					items = new ArrayList<GoodsItemEntity>();
-					items.add(goodsItem);
-					goodsInfo.getGoods().setItems(items);
-				} else {
-					goodsInfo.getGoods().getItems().add(goodsItem);
-				}
-				// 判断规格是否重复
-				if (repeatList.size() == 0) {
-					repeatList.add(model.getSpecsList());
-				} else {
-					for (List<GoodsSpecsBO> temp : repeatList) {
-						if (Utils.isEqualCollection(temp, model.getSpecsList())) {
-							result.put("success", false);
-							result.put("msg", "编号：" + model.getId() + ",规格有重复");
-							return result;
-						}
-					}
-					repeatList.add(model.getSpecsList());
 				}
 
 				// goodsPrice
-				goodsPrice = new GoodsPrice();
-				goodsPrice.setItemId(goodsItem.getItemId());
-				try {
-					goodsPrice.setMin(Utils.convert(model.getMin()));
-					goodsPrice.setMax("-1".equals(Utils.removePoint(model.getMax())) || null == model.getMax() ? null
-							: Utils.convert(model.getMax()));
-					goodsPrice.setProxyPrice(Double.valueOf(model.getProxyPrice()));
-					goodsPrice.setFxPrice(Double.valueOf(model.getFxPrice()));
-					goodsPrice.setRetailPrice(Double.valueOf(model.getRetailPrice()));
-					goodsPrice.setOpt(staffEntity.getOptName());
-				} catch (Exception e) {
-					result.put("success", false);
-					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+				priceHandler(staffEntity, result, goodsItem, model);
+				if (!(boolean) result.get("success")) {
 					return result;
 				}
-
-				goodsItem.setGoodsPrice(goodsPrice);
-				goodsItem.setOpt(staffEntity.getOptName());
-
 				// 库存设置
-				goodsStock = new GoodsStockEntity();
-				try {
-					goodsStock.setItemId(goodsItem.getItemId());
-					goodsStock.setFxQty(Utils.convert(model.getStock()));
-					goodsStock.setQpQty(Utils.convert(model.getStock()));
-				} catch (Exception e) {
-					result.put("success", false);
-					result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+				stockHandler(result, goodsItem, model);
+				if (!(boolean) result.get("success")) {
 					return result;
 				}
-				goodsItem.setStock(goodsStock);
-
 				// 返佣设置
-				tempMap = new HashMap<Integer, GoodsRebateEntity>();
-				rebateList = new ArrayList<GoodsRebateEntity>();
-				if (model.getRebateList() != null) {
-					for (GoodsRebateBO rebate : model.getRebateList()) {
-						if (Double.valueOf(rebate.getProportion()) > 1) {
-							result.put("success", false);
-							result.put("msg", "编号：" + model.getId() + ",返佣比例设置不能大于1");
-							return result;
-						}
-						gradeType = gradeMap.get(rebate.getGradeNameId());
-						goodsRebate = tempMap.get(gradeType.getParentId());
-						if (goodsRebate != null) {
-							if (gradeType.getParentId() != 1) {// 因为海外购返佣比例为0所以不校验
-								if (Double.valueOf(rebate.getProportion()) > goodsRebate.getProportion()) {
-									result.put("success", false);
-									result.put("msg", "编号：" + model.getId() + ",下级返佣不能大于上级返佣");
-									return result;
-								}
-							}
-						} else {
-							if (gradeType.getParentId() != 1 && gradeType.getParentId() != 0) {
-								result.put("success", false);
-								result.put("msg", "编号：" + model.getId() + ",请先填写上一级返佣");
-								return result;
-							}
-						}
-						goodsRebate = new GoodsRebateEntity();
-						goodsRebate.setGradeType(rebate.getGradeNameId());
-						goodsRebate.setItemId(goodsItem.getItemId());
-						goodsRebate.setProportion(Double.valueOf(rebate.getProportion()));
-						rebateList.add(goodsRebate);
-						tempMap.put(rebate.getGradeNameId(), goodsRebate);
-					}
+				rebateHandler(staffEntity, result, goodsItem, gradeMap, model);
+				if (!(boolean) result.get("success")) {
+					return result;
 				}
-
-				goodsItem.setGoodsRebateList(rebateList);
+				// 处理标签
+				if (model.getTagNames() != null) {
+					tagHandler(model, result, goodsInfo, tagList, goodsItem.getItemId());
+				}
+				if (!(boolean) result.get("success")) {
+					return result;
+				}
 				i++;
 			}
 			try {
@@ -935,6 +782,369 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			result.put("success", false);
 			result.put("msg", "没有商品信息");
 			return result;
+		}
+	}
+
+	/**
+	 * @fun 封装goodsItem
+	 * @param staffEntity
+	 * @param result
+	 * @param helper
+	 * @param specsNameMap
+	 * @param specsValueMap
+	 * @param goodsInfo
+	 * @param repeatList
+	 * @param model
+	 * @param tempId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	private GoodsItemEntity goodsItemHandler(StaffEntity staffEntity, Map<String, Object> result,
+			RestCommonHelper helper, Map<String, Integer> specsNameMap,
+			Map<Integer, Map<String, Integer>> specsValueMap, GoodsInfoEntity goodsInfo,
+			List<List<GoodsSpecsBO>> repeatList, ImportGoodsBO model, String tempId) {
+		StringBuilder sb;
+		GoodsItemEntity goodsItem;
+		List<GoodsItemEntity> items;
+		Map<String, Integer> spv;
+		goodsItem = new GoodsItemEntity();
+		goodsItem.setGoodsId(goodsInfo.getGoods().getGoodsId());
+		goodsItem.setItemCode(Utils.removePoint(model.getItemCode()));
+		goodsItem.setSku(Utils.removePoint(model.getSku()));
+		goodsItem.setShelfLife(model.getShelfLife());
+		goodsItem.setCarTon(model.getCarTon());
+		try {
+			goodsItem.setWeight(
+					model.getWeight() == null || "".equals(model.getWeight()) ? 0 : Utils.convert(model.getWeight()));
+			goodsItem.setExciseTax(Double.valueOf(model.getExciseFax()));
+			goodsItem.setConversion(model.getConversion() == null || "".equals(model.getConversion()) ? 1
+					: Utils.convert(model.getConversion()));
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+			return null;
+		}
+		goodsItem.setStatus(GoodsStatusEnum.DOWNSHELF.getIndex() + "");
+		goodsItem.setEncode(Utils.removePoint(model.getEncode()));
+		if (model.getSpecsList() != null) {
+			sb = new StringBuilder("[");
+			for (GoodsSpecsBO specs : model.getSpecsList()) {
+				if (specs.getSpecsNameId() == null) {
+					int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_ADD,
+							staffEntity.getToken());
+					specs.setSpecsNameId(id);
+					specsNameMap.put(specs.getSpecsName(), id);// 放入map，如果该excel里有其他商品使用该规格就不需要请求微服务
+				}
+				if (specs.getSpecsValueId() == null) {
+					int id = addSpecs(helper, specs, ServerCenterContants.GOODS_CENTER_SPECS_VALUE_ADD,
+							staffEntity.getToken());
+					specs.setSpecsValueId(id);
+					// 同specsName
+					if (specsValueMap.get(specs.getSpecsNameId()) == null) {
+						spv = new CaseInsensitiveMap();
+						spv.put(specs.getSpecsValue(), id);
+						specsValueMap.put(specs.getSpecsNameId(), spv);
+					} else {
+						specsValueMap.get(specs.getSpecsNameId()).put(specs.getSpecsValue(), id);
+					}
+				}
+				sb.append("{\"svV\":\"" + specs.getSpecsValue() + "\",\"skV\":\"" + specs.getSpecsName()
+						+ "\",\"svId\":\"" + specs.getSpecsValueId() + "\",\"skId\":\"" + specs.getSpecsNameId()
+						+ "\"},");
+			}
+			String info = sb.substring(0, sb.length() - 1) + "]";
+			goodsItem.setInfo(info);
+		} else {
+			if (goodsInfo.getGoods().getItems() != null) {
+				result.put("success", false);
+				result.put("msg", "编号：" + model.getId() + ",请填写规格,如果没有规格,id请不要重复");
+				return null;
+			}
+		}
+		goodsItem.setItemId(tempId);
+		if (goodsInfo.getGoods().getItems() == null) {
+			items = new ArrayList<GoodsItemEntity>();
+			items.add(goodsItem);
+			goodsInfo.getGoods().setItems(items);
+		} else {
+			goodsInfo.getGoods().getItems().add(goodsItem);
+		}
+		// 判断规格是否重复
+		if (repeatList.size() == 0) {
+			repeatList.add(model.getSpecsList());
+		} else {
+			for (List<GoodsSpecsBO> temp : repeatList) {
+				if (Utils.isEqualCollection(temp, model.getSpecsList())) {
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + ",规格有重复");
+					return null;
+				}
+			}
+			repeatList.add(model.getSpecsList());
+		}
+		return goodsItem;
+	}
+
+	/**
+	 * @fun 封装goods
+	 * @param staffEntity
+	 * @param infoMap
+	 * @param goodsInfo
+	 * @param goodsInfoList
+	 * @param model
+	 * @param tempId
+	 */
+	private GoodsInfoEntity goodsHandler(StaffEntity staffEntity, Map<String, GoodsInfoEntity> infoMap,
+			List<GoodsInfoEntity> goodsInfoList, ImportGoodsBO model, String tempId) {
+		GoodsBaseEntity goodsBase;
+		GoodsEntity goods;
+		GoodsInfoEntity goodsInfo = new GoodsInfoEntity();
+		// 基础商品
+		goodsBase = new GoodsBaseEntity();
+		goodsBase.setBrandId(model.getBrandId());
+		goodsBase.setGoodsName(model.getGoodsName());
+		goodsBase.setBrand(model.getBrandName());
+		goodsBase.setIncrementTax(model.getIncrementTax());
+		goodsBase.setTariff(model.getTariff());
+		goodsBase.setUnit(model.getUnit());
+		goodsBase.setHscode(model.getHscode());
+		goodsBase.setFirstCatalogId(model.getFirstCatalogId());
+		goodsBase.setSecondCatalogId(model.getSecondCatalogId());
+		goodsBase.setThirdCatalogId(model.getThirdCatalogId());
+		goodsBase.setCenterId(staffEntity.getGradeId());
+		int baseId = Integer.valueOf(tempId);
+		goodsBase.setId(baseId);
+		goodsInfo.setGoodsBase(goodsBase);
+
+		// goods表
+		goods = new GoodsEntity();
+		goods.setSupplierId(model.getSupplierId());
+		goods.setType(model.getType());
+		goods.setSupplierName(model.getSupplierName());
+		goods.setTemplateId(0);
+		goods.setGoodsName(model.getGoodsName());
+		goods.setOrigin(model.getOrigin());
+		goods.setGoodsId(tempId);
+		goods.setBaseId(baseId);
+		goodsInfo.setGoods(goods);
+		infoMap.put(model.getId(), goodsInfo);
+		goodsInfoList.add(goodsInfo);
+
+		return goodsInfo;
+	}
+
+	/**
+	 * @fun 价格处理
+	 * @param staffEntity
+	 * @param result
+	 * @param goodsItem
+	 * @param model
+	 */
+	private void priceHandler(StaffEntity staffEntity, Map<String, Object> result, GoodsItemEntity goodsItem,
+			ImportGoodsBO model) {
+		GoodsPrice goodsPrice;
+		goodsPrice = new GoodsPrice();
+		goodsPrice.setItemId(goodsItem.getItemId());
+		try {
+			goodsPrice.setMin(Utils.convert(model.getMin()));
+			goodsPrice.setMax("-1".equals(Utils.removePoint(model.getMax())) || null == model.getMax() ? null
+					: Utils.convert(model.getMax()));
+			goodsPrice.setProxyPrice(Double.valueOf(model.getProxyPrice()));
+			goodsPrice.setFxPrice(Double.valueOf(model.getFxPrice()));
+			goodsPrice.setRetailPrice(Double.valueOf(model.getRetailPrice()));
+			goodsPrice.setOpt(staffEntity.getOptName());
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+			return;
+		}
+
+		goodsItem.setGoodsPrice(goodsPrice);
+		goodsItem.setOpt(staffEntity.getOptName());
+	}
+
+	/**
+	 * @fun 库存处理
+	 * @param result
+	 * @param goodsItem
+	 * @param model
+	 */
+	private void stockHandler(Map<String, Object> result, GoodsItemEntity goodsItem, ImportGoodsBO model) {
+		GoodsStockEntity goodsStock;
+		goodsStock = new GoodsStockEntity();
+		try {
+			goodsStock.setItemId(goodsItem.getItemId());
+			goodsStock.setFxQty(Utils.convert(model.getStock()));
+			goodsStock.setQpQty(Utils.convert(model.getStock()));
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("msg", "编号：" + model.getId() + "请检查数字是否填写准确,并使用文本格式");
+			return;
+		}
+		goodsItem.setStock(goodsStock);
+	}
+
+	/**
+	 * @fun 返佣对象封装
+	 * @param staffEntity
+	 * @param result
+	 * @param goodsItem
+	 * @param gradeMap
+	 * @param model
+	 */
+	private void rebateHandler(StaffEntity staffEntity, Map<String, Object> result, GoodsItemEntity goodsItem,
+			Map<Integer, GradeTypeDTO> gradeMap, ImportGoodsBO model) {
+		GoodsRebateEntity goodsRebate;
+		GradeTypeDTO gradeType;
+		List<GoodsRebateEntity> rebateList;
+		Map<Integer, GoodsRebateEntity> tempMap;
+		tempMap = new HashMap<Integer, GoodsRebateEntity>();
+		rebateList = new ArrayList<GoodsRebateEntity>();
+		if (model.getRebateList() != null) {
+			for (GoodsRebateBO rebate : model.getRebateList()) {
+				if (Double.valueOf(rebate.getProportion()) > 1) {
+					result.put("success", false);
+					result.put("msg", "编号：" + model.getId() + ",返佣比例设置不能大于1");
+					return;
+				}
+				gradeType = gradeMap.get(rebate.getGradeNameId());
+				goodsRebate = tempMap.get(gradeType.getParentId());
+				if (goodsRebate != null) {
+					if (gradeType.getParentId() != 1) {// 因为海外购返佣比例为0所以不校验
+						if (Double.valueOf(rebate.getProportion()) > goodsRebate.getProportion()) {
+							result.put("success", false);
+							result.put("msg", "编号：" + model.getId() + ",下级返佣不能大于上级返佣");
+							return;
+						}
+					}
+				} else {
+					if (gradeType.getParentId() != 1 && gradeType.getParentId() != 0) {
+						result.put("success", false);
+						result.put("msg", "编号：" + model.getId() + ",请先填写上一级返佣");
+						return;
+					}
+				}
+				goodsRebate = new GoodsRebateEntity();
+				goodsRebate.setGradeType(rebate.getGradeNameId());
+				goodsRebate.setItemId(goodsItem.getItemId());
+				goodsRebate.setProportion(Double.valueOf(rebate.getProportion()));
+				rebateList.add(goodsRebate);
+				tempMap.put(rebate.getGradeNameId(), goodsRebate);
+			}
+		} else {
+			result.put("success", false);
+			result.put("msg", "编号：" + model.getId() + ",请至少填写区域中心的返佣比例");
+			return;
+		}
+
+		// 根据返佣公式设置没有填写的返佣比例
+		Map<Integer, RebateFormulaBO> rebateFormulaMap = CachePoolComponent.getRebateFormula(staffEntity.getToken());
+		renderDefaultRebateForUnSet(rebateList, result, gradeMap, rebateFormulaMap, goodsItem.getItemId(),
+				model.getId());
+		if (!(boolean) result.get("success")) {
+			return;
+		}
+		goodsItem.setGoodsRebateList(rebateList);
+	}
+
+	/**
+	 * @fun 标签设置
+	 * @param tagNames
+	 * @param goodsInfo
+	 * @param helper
+	 */
+	private void tagHandler(ImportGoodsBO model, Map<String, Object> result, GoodsInfoEntity goodsInfo,
+			List<GoodsTagEntity> tagList, String itemId) {
+		String[] tagNameArr = model.getTagNames().split(",");
+		// 标签封装成名称和对象的map
+		Map<String, GoodsTagEntity> tempMap = new HashMap<String, GoodsTagEntity>();
+		for (GoodsTagEntity tagEntity : tagList) {
+			tempMap.put(tagEntity.getTagName(), tagEntity);
+		}
+		// 生成标签绑定实体类
+		GoodsTagEntity temp = null;
+		List<GoodsTagBindEntity> bindList = null;
+		GoodsTagBindEntity tempBindEntity = null;
+		// 判断之前goods里是否有标签绑定的list，有的话在原来基础上加，没有就新建
+		if (goodsInfo.getGoods().getGoodsTagBindList() == null) {
+			bindList = new ArrayList<GoodsTagBindEntity>();
+			goodsInfo.getGoods().setGoodsTagBindList(bindList);
+		} else {
+			bindList = goodsInfo.getGoods().getGoodsTagBindList();
+		}
+		for (String tagName : tagNameArr) {
+			temp = tempMap.get(tagName.trim());
+			if (temp == null) {
+				result.put("success", false);
+				result.put("msg", "编号：" + model.getId() + ",找不到对应的标签ID，请检查标签是否正确，或通过后台新增标签");
+				return;
+			}
+			tempBindEntity = new GoodsTagBindEntity();
+			tempBindEntity.setItemId(itemId);
+			tempBindEntity.setTagId(temp.getId());
+			bindList.add(tempBindEntity);
+		}
+	}
+
+	/**
+	 * @fun 把没有设置返佣的分级根据提取设置的公式进行计算
+	 * @param rebateList
+	 * @param result
+	 * @param gradeTypeMap
+	 * @param rebateFormulaMap
+	 */
+	private final int AREA_CENTER_GRADE_TYPE = 2;
+
+	private void renderDefaultRebateForUnSet(List<GoodsRebateEntity> rebateList, Map<String, Object> result,
+			Map<Integer, GradeTypeDTO> gradeTypeMap, Map<Integer, RebateFormulaBO> rebateFormulaMap, String itemId,
+			String id) {
+
+		Double rebate = null;
+		// 去除已经设置返佣的分级类型并获得区域中心的返佣值
+		Map<Integer, GradeTypeDTO> temp = new HashMap<Integer, GradeTypeDTO>();
+		for (Map.Entry<Integer, GradeTypeDTO> entry : gradeTypeMap.entrySet()) {
+			temp.put(entry.getKey(), entry.getValue());
+		}
+		for (GoodsRebateEntity entity : rebateList) {
+			if (entity.getGradeType() == AREA_CENTER_GRADE_TYPE) {
+				rebate = entity.getProportion();
+			}
+			temp.remove(entity.getGradeType());
+		}
+		if (rebate == null) {
+			result.put("success", false);
+			result.put("msg", "区域中心的返佣必须填写");
+			return;
+		}
+		RebateFormulaBO bo = null;
+		GoodsRebateEntity tempRebate = null;
+		if (temp != null && temp.size() > 0) {
+			for (Map.Entry<Integer, GradeTypeDTO> entry : temp.entrySet()) {
+				bo = rebateFormulaMap.get(entry.getKey());// 获取该分级的返佣公式
+				if (bo == null || bo.getFormula() == null || "".equals(bo.getFormula())) {
+					result.put("success", false);
+					result.put("msg", entry.getValue().getName() + ":该分级返佣公式不存在，请确认");
+					return;
+				}
+				tempRebate = new GoodsRebateEntity();
+				tempRebate.setItemId(itemId);
+				tempRebate.setGradeType(entry.getKey());
+				try {
+					double rebateTemp = FormulaUtil.calRebate(bo.getFormula(), rebate);
+					if (rebateTemp < 0) {
+						result.put("success", false);
+						result.put("msg", "编号：" + id + ":该分级返佣计算后存在负数，请确认");
+						return;
+					}
+					tempRebate.setProportion(rebateTemp);
+				} catch (NoSuchMethodException | ScriptException e) {
+					LogUtil.writeErrorLog("返佣公式计算出错==" + bo.getFormula(), e);
+					result.put("success", false);
+					result.put("msg", entry.getValue().getName() + ":该分级返佣存在问题，请确认");
+					return;
+				}
+				rebateList.add(tempRebate);
+			}
 		}
 	}
 
@@ -1134,6 +1344,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String[] specsValueHead = new String[] { "规格项", "规格值" };
 		String[] specsValueField = new String[] { "Specs", "SpecsValue" };
 		ExcelUtil.createExcel(specsBOList, specsValueHead, specsValueField, filePath, 0, "规格对照表", xssfWorkbook);
+		// 生成标签sheet
+		List<GoodsTagEntity> tagList = queryGoodsTags(staffEntity.getToken());
+		String[] tagValueHead = new String[] { "标签名称" };
+		String[] tagValueField = new String[] { "TagName" };
+		ExcelUtil.createExcel(tagList, tagValueHead, tagValueField, filePath, 0, "标签对照表", xssfWorkbook);
 		ExcelUtil.writeToExcel(xssfWorkbook, filePath);
 		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, FILE_NAME);
 	}
@@ -1229,7 +1444,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		List<GoodsItemEntity> items = new ArrayList<GoodsItemEntity>();
 		if (entity.getItems() != null && entity.getItems().size() > 0) {
-			for (GoodsItemEntity gie:entity.getItems()) {
+			for (GoodsItemEntity gie : entity.getItems()) {
 				GoodsItemEntity goodsItem = new GoodsItemEntity();
 				goodsItem.setGoodsId(goods.getGoodsId());
 				int itemid = staffMapper.nextVal(ServerCenterContants.GOODS_ITEM_ID_SEQUENCE);
@@ -1243,7 +1458,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsItem.setEncode(gie.getEncode());
 				goodsItem.setShelfLife(gie.getShelfLife());
 				goodsItem.setCarTon(gie.getCarTon());
-				
+
 				GoodsPrice goodsPrice = new GoodsPrice();
 				goodsPrice.setItemId(goodsItem.getItemId());
 				goodsPrice.setMin(gie.getGoodsPrice().getMin());
@@ -1255,7 +1470,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 				goodsItem.setGoodsPrice(goodsPrice);
 				goodsItem.setOpt(entity.getOpt());
-				
+
 				String keys = gie.getInfo();
 				List<ItemSpecsPojo> specsPojos = new ArrayList<ItemSpecsPojo>();
 				if ((keys != null && !"".equals(keys))) {
@@ -1313,7 +1528,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			List<GoodsTagBindEntity> goodsTagBindList = new ArrayList<GoodsTagBindEntity>();
 			GoodsTagBindEntity goodsTagBindEntity = null;
 			String[] tagArray = entity.getTagId().split("\\|");
-			for(GoodsItemEntity gie:items) {
+			for (GoodsItemEntity gie : items) {
 				for (int i = 0; i < tagArray.length; i++) {
 					if (tagArray[i].trim() != null || !"".equals(tagArray[i].trim())) {
 						goodsTagBindEntity = new GoodsTagBindEntity();
@@ -1345,8 +1560,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	public List<GoodsPriceRatioEntity> queryGoodsPriceRatioList(GoodsItemEntity entity, String token) {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO, token, true, entity,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO, token,
+				true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		JSONArray obj = json.getJSONArray("obj");
@@ -1364,14 +1579,14 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 	@Log(content = "同步商品比价信息操作", source = Log.BACK_PLAT, type = Log.ADD)
 	public void syncRatioGoodsInfo(List<GoodsPriceRatioEntity> list, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
-		for(GoodsPriceRatioEntity gpre:list) {
+		for (GoodsPriceRatioEntity gpre : list) {
 			gpre.setStatus(0);
 			gpre.setOpt(staffEntity.getOpt());
 		}
 
 		ResponseEntity<String> result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO, staffEntity.getToken(),
-				true, list, HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO,
+				staffEntity.getToken(), true, list, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
@@ -1388,8 +1603,8 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSINFO_BY_GOODSID, token, true, entity,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSINFO_BY_GOODSID, token, true,
+				entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsEntity.class);

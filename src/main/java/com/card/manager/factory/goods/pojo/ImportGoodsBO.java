@@ -71,6 +71,7 @@ public class ImportGoodsBO {
 	private String stock;
 	private List<GoodsSpecsBO> specsList;
 	private List<GoodsRebateBO> rebateList;
+	private String tagNames;
 
 	public void init(Map<String, Integer> supplierMap, Map<String, Integer> gradeMapTemp,
 			Map<String, String> firstMapTemp, Map<String, String> secondMapTemp, Map<String, String> thirdMapTemp,
@@ -146,6 +147,7 @@ public class ImportGoodsBO {
 		list.add("unit");
 		list.add("origin");
 		list.add("goodsName");
+		list.add("tagNames");
 		return list;
 	}
 
@@ -161,7 +163,16 @@ public class ImportGoodsBO {
 		list.add("incrementTax");
 		list.add("specsList");
 		list.add("rebateList");
+		list.add("tagNames");
 		return list;
+	}
+
+	public String getTagNames() {
+		return tagNames;
+	}
+
+	public void setTagNames(String tagNames) {
+		this.tagNames = tagNames;
 	}
 
 	public String getId() {

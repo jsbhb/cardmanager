@@ -47,6 +47,7 @@ import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
+import com.card.manager.factory.system.model.RebateFormulaBO;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.DateUtil;
@@ -140,6 +141,8 @@ public class GoodsItemMngController extends BaseController {
 				item.setStatus("0");
 			} else if ("third".equals(tabId)) {
 				item.setStatus("2");
+			} else if ("fourth".equals(tabId)) {
+				item.setStatus("3");
 			}
 
 			String typeId = item.getTypeId();
@@ -193,6 +196,12 @@ public class GoodsItemMngController extends BaseController {
 			String encode = req.getParameter("encode");
 			if (!StringUtil.isEmpty(encode)) {
 				item.setEncode(encode);
+			}
+			String searchTime = req.getParameter("searchTime");
+			if (!StringUtil.isEmpty(searchTime)) {
+				String[] times = searchTime.split("~");
+				item.setStartTime(times[0].trim());
+				item.setEndTime(times[1].trim());
 			}
 
 			params.put("centerId", staffEntity.getGradeId());
@@ -314,6 +323,14 @@ public class GoodsItemMngController extends BaseController {
 			}
 			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
 			context.put("gradeList", gradeList);
+			
+			//获取所有分级的返佣公式
+			List<RebateFormulaBO> rebateFormulaList = new ArrayList<RebateFormulaBO>();
+			Map<Integer, RebateFormulaBO> rebateFormulaMap = CachePoolComponent.getRebateFormula(opt.getToken());
+			for (RebateFormulaBO rfbo:rebateFormulaMap.values()) {
+				rebateFormulaList.add(rfbo);
+			}
+			context.put("rebateFormulaList", rebateFormulaList);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);

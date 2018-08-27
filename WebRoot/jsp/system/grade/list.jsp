@@ -152,7 +152,7 @@ function rebuildTable(data){
 		str += "<tr>";
 		//if ("${privilege>=2}") {
 		
-		str += "<td>" + list[i].id;
+		str += "<td>" + (list[i].id+3000);
 		str += "</td><td>" + (list[i].gradeName == null ? "" : list[i].gradeName);
 		
 // 		var gradeType = list[i].gradeType;

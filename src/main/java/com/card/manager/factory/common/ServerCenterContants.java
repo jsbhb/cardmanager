@@ -116,6 +116,14 @@ public class ServerCenterContants {
 			+ "/welfare/inviter/statistic/{gradeId}";
 	public static final String USER_CENTER_UPDATE_WELFARE_TYPE_INFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/updateWelfareType";
+	public static final String USER_CENTER_GET_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/rebate/formula/{id}";
+	public static final String USER_CENTER_SAVE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/rebate/formula";
+	public static final String USER_CENTER_LIST_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/rebate/formula/{needPaging}";
+	public static final String USER_CENTER_UPDATE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/rebate/formula/update";
 	/**
 	 * 商品中心url
 	 */

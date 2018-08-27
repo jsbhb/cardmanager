@@ -185,7 +185,7 @@ function rebuildTable(data){
 			case 8:str += "</td><td>退单";break;
 			case 9:str += "</td><td>超时取消";break;
 			case 11:str += "</td><td>资金池不足";break;
-			case 12:str += "</td><td>资金池已扣款";break;
+			case 12:str += "</td><td>海关申报中";break;
 			case 21:str += "</td><td>退款中";break;
 			case 99:str += "</td><td>异常状态";break;
 			default:str += "</td><td>未知状态";

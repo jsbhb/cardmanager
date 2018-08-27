@@ -39,7 +39,7 @@
 	                <c:if test="${order.status==3}">已发仓库</c:if>
 	                <c:if test="${order.status==4}">已报海关</c:if>
 	                <c:if test="${order.status==5}">单证放行</c:if>
-	                <c:if test="${order.status==12}">已付款</c:if>
+	                <c:if test="${order.status==12}">海关申报中</c:if>
 	                <c:if test="${order.status==99}">异常状态</c:if>
 				</div>
 			</div>
@@ -138,6 +138,8 @@
 		ht = ht + '<option value="YPFL">洋浦物流</option>';
 		ht = ht + '<option value="FXTK">福兴特快</option>';
 		ht = ht + '<option value="SSFX">盛世风行</option>';
+		ht = ht + '<option value="JD">京东物流</option>';
+		ht = ht + '<option value="YCWL">远成物流</option>';
 		ht = ht + '<option value="OTHER">其他</option>';
 		ht = ht + '</select></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">快递单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="expressIdV"></div></div>';

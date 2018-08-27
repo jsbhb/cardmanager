@@ -350,7 +350,9 @@ function toSendProduceCode(){
 	var ids;
 	var valArr = new Array; 
     $("[name='check']:checked").each(function(i){
-    	if ($(this).parent().siblings().eq(4).text() == "未发送" || $(this).parent().siblings().eq(4).text() == "已发送") {
+    	if ($(this).parent().siblings().eq(4).text() == "未发送" 
+    		|| $(this).parent().siblings().eq(4).text() == "已发送"
+    		|| $(this).parent().siblings().eq(4).text() == "发送失败") {
  	        valArr[i] = $(this).val(); 
     	}
     }); 

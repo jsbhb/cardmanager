@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -58,6 +59,28 @@ public class ShopQRMngController extends BaseController {
 			strLink = entity.getMobileUrl() + "/index.html?shopId=" + opt.getGradeId();
 		}
 		context.put("strLink", strLink);
+
+		Map<Integer, GradeTypeDTO> gradeTypes = CachePoolComponent.getGradeType(opt.getToken());
+		String strExtensionLink = "";
+		//admin或者海外购账号
+		if (opt.getGradeType() == 0 || opt.getGradeType() == 1) {
+			strExtensionLink = URLUtils.get("mobileUrl") + "amount-access.html?shopId=2";
+		} else {
+			//海外购以外所有分级
+			strExtensionLink = URLUtils.get("mobileUrl") + "amount-access.html?shopId=" + opt.getGradeId();
+			GradeTypeDTO tmpGradeType = gradeTypes.get(opt.getGradeType());
+			if (tmpGradeType.getName().indexOf("线上合伙人") != -1 ||
+				tmpGradeType.getName().indexOf("门店") != -1 ||
+				tmpGradeType.getName().indexOf("店中店") != -1) {
+				strExtensionLink = "";
+			}
+		}
+		context.put("strExtensionLink", strExtensionLink);
+		if ("".equals(strExtensionLink)) {
+			context.put("strExtensionLinkShow", "false");
+		} else {
+			context.put("strExtensionLinkShow", "true");
+		}
 		
 		String strWelfareUrlLink = "";
 		String strWelfareType = "";

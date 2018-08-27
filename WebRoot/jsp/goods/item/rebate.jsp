@@ -24,6 +24,13 @@
 		1.订单由下级产生时：该级获取的返佣比例  = 该级设置的返佣比例 - 该下级设置的返佣比例。
 		2.订单由该级产生时：该级获取的返佣比例  = 该级设置的返佣比例。
 	</p>
+	<div class="list-item" style="display:none">
+		<select id="gradeTypeRebate">
+			<c:forEach var="gradeTypeRebate" items="${rebateFormulaList}">
+				<option value="${gradeTypeRebate.formula}">${gradeTypeRebate.gradeTypeId}</option>
+			</c:forEach>
+        </select>
+	</div>
 </div>
 
 <div class="treeList">
@@ -96,13 +103,21 @@ $(function(){
     	var itemId = ${itemId};
     	var inputArr = $('.treeList input');
     	var data = [];
+    	var errFlg = false;
     	$.each(inputArr,function(k,v){
+    		if ($(v).val() < 0) {
+    			errFlg = true;
+    		}
     		data.push({
     			'itemId': itemId,
     			'gradeType': $(v).attr('id'),
     			'proportion': $(v).val() == '' ? 0 : $(v).val()
     		});
     	});
+    	if (errFlg) {
+    		layer.alert("计算后结果存在负数，请修改后重试！");
+    		return;
+    	}
     	$.ajax({
    		 url:"${wmsUrl}/admin/goods/itemMng/rebate.shtml",
    		 type:'post',
@@ -126,6 +141,34 @@ $(function(){
         var r = window.location.search.substr(1).match(reg);
         if(r!=null)return  unescape(r[2]); return null;
    }
+});
+
+$('.treeList').on('input','input',function(){
+	var inputId = $(this).attr('id');
+	var inputValue = $(this).val();
+	if(inputId == 2){
+		var gradeTypeSelect = document.getElementById("gradeTypeRebate");
+		var gtoptions = gradeTypeSelect.options;
+		for(var j=0;j<gtoptions.length;j++){
+			var tmpInputId = gtoptions[j].text;
+			var tmpInputMula = gtoptions[j].value.replace("rebate","").trim();
+			var tmpSymbol = tmpInputMula.substring(0,1);
+			var tmpValue = tmpInputMula.substring(1,tmpInputMula.length).trim();
+			if (tmpSymbol == "+") {
+				tmpValue = inputValue + tmpValue;
+			} else if (tmpSymbol == "-") {
+				tmpValue = inputValue - tmpValue;
+			} else if (tmpSymbol == "*") {
+				tmpValue = inputValue * tmpValue;
+			} else if (tmpSymbol == "/") {
+				tmpValue = inputValue / tmpValue;
+			} else {
+				layer.alert("返佣公式解析有误，请确认公式是否正确！");
+				return;
+			}
+	 		$('#'+ tmpInputId).val(tmpValue.toFixed(2));
+		}
+	}
 });
 	
 </script>

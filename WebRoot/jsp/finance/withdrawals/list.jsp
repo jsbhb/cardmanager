@@ -80,6 +80,7 @@
 								<th>银行名称</th>
 								<th>银行卡号</th>
 								<th>持卡人姓名</th>
+								<th>申请时间</th>
 								<th>转账流水号</th>
 								<th>操作</th>
 							</tr>
@@ -162,6 +163,7 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].cardBank;
 		str += "</td><td>" + list[i].cardNo;
 		str += "</td><td>" + list[i].cardName;
+		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		str += "</td><td>" + (list[i].payNo == null ? "" : list[i].payNo);
 		str += "</td><td align='left'>";
 		if (status == 1) {

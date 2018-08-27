@@ -140,7 +140,40 @@ $.page = {
 		a.append(dataSpan);
 		
 		var li = $('<li/>').append(a);
+		
+		
+		var jumpHref = $('<a/>')
+		var jumpInput = $("<input class='jumpInput' style='width: 40px;height:18.8px'>").bind("blur",function(){
+			var value = $(this).val();
+			if(isNaN(parseInt(value))){
+				$(this).val("");
+			}
+		});
+		
+		var jumpBtn = $("<input type='button' class='jumpBtn' value='跳转'>").bind("click",function(){
+			var jumpPage = $(".jumpInput").val();
+			if(jumpPage == ''){
+				o.index = 1;
+			}else{
+				if(parseInt(jumpPage)> parseInt(totalPages)){
+					o.index = totalPages;
+				}else if (parseInt(jumpPage)<1){
+					o.index = 1;
+				} else {
+					o.index = jumpPage;
+				}
+			}
+			
+			that.loadData(o);
+		});
+		
+		var jumpSpan = $("<span/>").append(jumpInput).append("页  ").append(jumpBtn);
+		jumpHref.append(jumpSpan);
+		
+		var jumpLi = $('<li/>').append(jumpHref)
+		
 		$("#pagination").append(li);
+		$("#pagination").append(jumpLi);
 	},
 	
 	generateData : function(o) {
