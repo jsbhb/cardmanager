@@ -39,7 +39,14 @@
 	                <c:if test="${order.status==3}">已发仓库</c:if>
 	                <c:if test="${order.status==4}">已报海关</c:if>
 	                <c:if test="${order.status==5}">单证放行</c:if>
+	                <c:choose>
+	                <c:when test="${order.orderFlag==0}">
 	                <c:if test="${order.status==12}">海关申报中</c:if>
+	                </c:when>
+	                <c:when test="${order.orderFlag==2}">
+	                <c:if test="${order.status==12}">待发货</c:if>
+	                </c:when>
+	                </c:choose>
 	                <c:if test="${order.status==99}">异常状态</c:if>
 				</div>
 			</div>

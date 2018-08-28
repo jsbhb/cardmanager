@@ -151,25 +151,27 @@ $('.treeList').on('input','input',function(){
 		var gtoptions = gradeTypeSelect.options;
 		for(var j=0;j<gtoptions.length;j++){
 			var tmpInputId = gtoptions[j].text;
-			var tmpInputMula = gtoptions[j].value.replace("rebate","").trim();
-			var tmpSymbol = tmpInputMula.substring(0,1);
-			var tmpValue = tmpInputMula.substring(1,tmpInputMula.length).trim();
-			if (tmpSymbol == "+") {
-				tmpValue = inputValue + tmpValue;
-			} else if (tmpSymbol == "-") {
-				tmpValue = inputValue - tmpValue;
-			} else if (tmpSymbol == "*") {
-				tmpValue = inputValue * tmpValue;
-			} else if (tmpSymbol == "/") {
-				tmpValue = inputValue / tmpValue;
-			} else {
-				layer.alert("返佣公式解析有误，请确认公式是否正确！");
-				return;
-			}
-	 		$('#'+ tmpInputId).val(tmpValue.toFixed(2));
+			var tmpInputMula = gtoptions[j].value.replace("rebate",inputValue).trim();
+			var tmpValue = eval(tmpInputMula);
+// 	 		$('#'+ tmpInputId).val(tmpValue.toFixed(2));
+	 		$('#'+ tmpInputId).val(GetValueDigit(tmpValue));
 		}
 	}
 });
+
+function GetValueDigit(value){
+	var strValue = value+"";
+	var valueArr = strValue.split(".");
+	var digitLength = 0;
+	if (valueArr.length>0) {
+		if (valueArr[1].length>6) {
+			digitLength = 6;
+		}else{
+			digitLength = valueArr[1].length;
+		}
+	}
+	return value.toFixed(digitLength);
+}
 	
 </script>
 </body>

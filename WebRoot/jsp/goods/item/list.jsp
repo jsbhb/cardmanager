@@ -353,10 +353,17 @@ function rebuildTable(data){
 		var prilvl = "${prilvl}";
 		var gradeId = "${opt.gradeId}";
 		var isFx = list[i].isFx;
-		if (tmpHidTabId == "fourth") {
-			str += "</td><td>";
-		} else {
-			if(prilvl == 1){
+		if(prilvl == 1){
+			if (tmpHidTabId == "fourth") {
+				if (status == 0) {
+					str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='puton("+list[i].itemId+")' >上架</a>";
+				}else {
+					str += "</td><td>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='toShow("+list[i].itemId+")'>查看信息</a>";
+					str += "<a href='javascript:void(0);' class='table-btns' onclick='putoff("+list[i].itemId+")' >下架</a>";
+				}
+			} else {
 				if (status == 0) {
 					str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toEdit("+list[i].itemId+")'>编辑</a>";
 					str += "<a href='javascript:void(0);' class='table-btns' onclick='toCreateItem("+list[i].itemId+")'>添加规格</a>";
@@ -382,15 +389,14 @@ function rebuildTable(data){
 					&&list[i].supplierName!=null){
 					str += "<a href='javascript:void(0);' class='table-btns' onclick='syncStock("+list[i].itemId+")' >同步库存</a>";
 				}
-			} else {
-				if (gradeId == 0 || gradeId == 2) {
-					str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
-				} else {
-					str += "</td><td>" + list[i].rebate;
-				}
 			}
-		}
-		
+		} else {
+			if (gradeId == 0 || gradeId == 2) {
+				str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='setRebate("+list[i].itemId+","+prilvl+")' >返佣比例</a>";
+			} else {
+				str += "</td><td>" + list[i].rebate;
+			}
+		}		
 		str += "</td></tr>";
 	}
 	$("#baseTable tbody").html(str);

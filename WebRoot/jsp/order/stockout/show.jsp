@@ -49,7 +49,14 @@
                 <c:if test="${order.status==8}">退单</c:if>
                 <c:if test="${order.status==9}">超时取消</c:if>
                 <c:if test="${order.status==11}">资金池不足</c:if>
+                <c:choose>
+                <c:when test="${order.orderFlag==0}">
                 <c:if test="${order.status==12}">海关申报中</c:if>
+                </c:when>
+                <c:when test="${order.orderFlag==2}">
+                <c:if test="${order.status==12}">待发货</c:if>
+                </c:when>
+                </c:choose>
                 <c:if test="${order.status==21}">退款中</c:if>
                 <c:if test="${order.status==99}">异常状态</c:if>
 			</div>

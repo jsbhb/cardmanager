@@ -55,9 +55,18 @@
 	                   	  <option value="8">退单</option>
 	                   	  <option value="9">超时取消</option>
 	                   	  <option value="11">资金池不足</option>
-	                   	  <option value="12">海关申报中</option>
+	                   	  <option value="12">待发货</option>
 	                   	  <option value="21">退款中</option>
 	                   	  <option value="99">异常状态</option>
+		                </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="orderFlag" id="orderFlag">
+	                   	  <option selected="selected" value="">订单类型</option>
+	                   	  <option value="0">跨境</option>
+	                   	  <option value="2">一般贸易</option>
 		                </select>
 					</div>
 				</div>
@@ -222,7 +231,7 @@ function rebuildTable(data){
 			case 8:str += "</td><td>退单";break;
 			case 9:str += "</td><td>超时取消";break;
 			case 11:str += "</td><td>资金池不足";break;
-			case 12:str += "</td><td>海关申报中";break;
+			case 12:str += "</td><td>待发货";break;
 			case 21:str += "</td><td>退款中";break;
 			case 99:str += "</td><td>异常状态";break;
 			default:str += "</td><td>未知状态";

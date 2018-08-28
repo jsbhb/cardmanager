@@ -55,13 +55,21 @@
 	                   	  <option value="8">退单</option>
 	                   	  <option value="9">超时取消</option>
 	                   	  <option value="11">资金池不足</option>
-	                   	  <option value="12">海关申报中</option>
+	                   	  <option value="12">待发货</option>
 	                   	  <option value="21">退款中</option>
 	                   	  <option value="99">异常状态</option>
 		                </select>
 					</div>
 				</div>
-				
+				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="orderFlag" id="orderFlag">
+	                   	  <option selected="selected" value="">订单类型</option>
+	                   	  <option value="0">跨境</option>
+	                   	  <option value="2">一般贸易</option>
+		                </select>
+					</div>
+				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" >
@@ -214,6 +222,7 @@ function rebuildTable(data){
 		
 		var status = list[i].status;
 		str += "</td><td>" + list[i].orderId;
+		var orderFlag = list[i].orderFlag;
 		switch(status){
 			case 0:str += "</td><td>待支付";break;
 			case 1:str += "</td><td>已付款";break;
@@ -226,7 +235,13 @@ function rebuildTable(data){
 			case 8:str += "</td><td>退单";break;
 			case 9:str += "</td><td>超时取消";break;
 			case 11:str += "</td><td>资金池不足";break;
-			case 12:str += "</td><td>海关申报中";break;
+			case 12:
+				if (orderFlag == 0) {
+					str += "</td><td>海关申报中";
+				} else if (orderFlag == 2) {
+					str += "</td><td>待发货";
+				}
+				break;
 			case 21:str += "</td><td>退款中";break;
 			case 99:str += "</td><td>异常状态";break;
 			default:str += "</td><td>未知状态";
@@ -247,7 +262,7 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
 		str += "</td><td>" + (list[i].customerName == null ? "" : list[i].customerName);
-		switch(list[i].orderFlag){
+		switch(orderFlag){
 			case 0:str += "</td><td>跨境";break;
 			case 1:str += "</td><td>大贸";break;
 			case 2:str += "</td><td>一般贸易";break;
