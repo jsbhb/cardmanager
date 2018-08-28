@@ -58,27 +58,26 @@ public class MallGoodsMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		// 分级类型不是海外购时，提示无法使用功能
-		// if (opt.getGradeType() != 1) {
-		// return forword("mall/goods/notice", context);
-		// }
-		if (opt.getGradeId() == 0) {
-			return forword("mall/goods/notice", context);
-		}
-		try {
-			// set page privilege
-			if (opt.getRoleId() == 1) {
-				context.put("prilvl", "1");
-			} else {
-				context.put("prilvl", req.getParameter("privilege"));
-			}
-			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
-			context.put("tags", tags);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-		return forword("mall/goods/list", context);
+//		if (opt.getGradeType() != 1 && opt.getRoleId() != 1) {
+//			return forword("mall/goods/notice", context);
+//		}
+		//商城管理在线商品页面不允许使用
+		return forword("mall/goods/notice", context);
+//		try {
+//			// set page privilege
+//			if (opt.getRoleId() == 1) {
+//				context.put("prilvl", "1");
+//			} else {
+//				context.put("prilvl", req.getParameter("privilege"));
+//			}
+//			context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
+//			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
+//			context.put("tags", tags);
+//		} catch (Exception e) {
+//			context.put(ERROR, e.getMessage());
+//			return forword(ERROR, context);
+//		}
+//		return forword("mall/goods/list", context);
 	}
 
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
@@ -309,7 +308,7 @@ public class MallGoodsMngController extends BaseController {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
-		if (opt.getGradeId() == 0) {
+		if (opt.getGradeType() != 1 && opt.getRoleId() != 1) {
 			return forword("mall/goods/notice", context);
 		}
 		try {

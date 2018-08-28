@@ -96,7 +96,7 @@
 									<tr class="second-rows" data-id="${second.secondId}" parentId="${first.firstId}">
 										<td><input type="checkbox"></td>
 										<td><i class="fa fa-fw fa-plus"></i>${second.name}</td>
-										<td><img src="" /></td>
+										<td></td>
 			                			<td>${second.accessPath}</td>
 			                			<td>${second.sort}</td>
 										<td>
@@ -131,7 +131,7 @@
 										<tr class="thrid-rows" data-id="${third.thirdId}" parentId="${second.secondId}">
 											<td><input type="checkbox"></td>
 											<td>${third.name}</td>
-											<td><img src="" /></td>
+											<td></td>
 			                				<td>${third.accessPath}</td>
 			                				<td>${third.sort}</td>
 											<td>

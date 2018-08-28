@@ -1,36 +1,65 @@
 .scrollImg-content{
-	width: 400px;
-	height: 220px;
-	margin: 0 auto;
-	position: relative;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
-.scrollImg-content > img{
-	display: inline-block;
-	cursor: pointer;
-	margin-top: -28px;
+.scrollImg-bg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 9999999;
+}
+.scrollImg-content span.cancelBtn{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border:1px solid #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+.scrollImg-container{
+    position: absolute;
+    width: 400px;
+    height: 220px;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -110px;
+}
+.scrollImg-container > img{
+    display: inline-block;
+    cursor: pointer;
+    margin-top: -28px;
 }
 .scrollImg-content img.prevBtn{
-	position: absolute;
-	left: 0;
-	top: 50%;
+    position: absolute;
+    left: 0;
+    top: 50%;
 }
 .scrollImg-content ul{
-	width: 100%;
+    width: 100%;
 }
 .scrollImg-content ul li{
-	display: none;
-	text-align: center;
-	width: 100%;
+    display: none;
+    text-align: center;
+    width: 100%;
 }
 .scrollImg-content ul li.active{
-	display: inline-block;
+    display: inline-block;
 }
 .scrollImg-content img.nextBtn{
-	position: absolute;
-	right: 0;
-	top: 50%;
+    position: absolute;
+    right: 0;
+    top: 50%;
 }

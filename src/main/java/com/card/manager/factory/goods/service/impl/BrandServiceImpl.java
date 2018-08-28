@@ -117,6 +117,8 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("更新品牌信息操作失败:" + json.getString("errorMsg"));
 		}
+		
+		CachePoolComponent.syncBrand(staffEntity.getToken());
 	}
 
 }

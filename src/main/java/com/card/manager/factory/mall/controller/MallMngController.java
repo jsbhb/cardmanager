@@ -56,7 +56,7 @@ public class MallMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
 		//分级类型不是海外购时，提示无法使用功能
-		if (opt.getGradeType() != 1) {
+		if (opt.getGradeType() != 1 && opt.getRoleId() != 1) {
 			return forword("mall/goods/notice", context);
 		}
 		return forword("mall/index/mng", context);
@@ -134,7 +134,11 @@ public class MallMngController extends BaseController {
 
 		Layout layout = new Layout();
 		layout.setCode("module_00006");
-		layout.setCenterId(staffEntity.getGradeId());
+		if (staffEntity.getGradeId() == 0) {
+			layout.setCenterId(2);
+		} else {
+			layout.setCenterId(staffEntity.getGradeId());
+		}
 
 		List<DictData> dictDataList;
 		try {
@@ -157,7 +161,11 @@ public class MallMngController extends BaseController {
 		Layout layout = new Layout();
 		layout.setCode("module_00003");
 		layout.setPageType(PageTypeEnum.PC.getIndex());
-		layout.setCenterId(staffEntity.getGradeId());
+		if (staffEntity.getGradeId() == 0) {
+			layout.setCenterId(2);
+		} else {
+			layout.setCenterId(staffEntity.getGradeId());
+		}
 
 		List<DictData> dictDataList;
 		try {
@@ -180,7 +188,11 @@ public class MallMngController extends BaseController {
 		Layout layout = new Layout();
 		layout.setCode("module_00003");
 		layout.setPageType(PageTypeEnum.H5.getIndex());
-		layout.setCenterId(staffEntity.getGradeId());
+		if (staffEntity.getGradeId() == 0) {
+			layout.setCenterId(2);
+		} else {
+			layout.setCenterId(staffEntity.getGradeId());
+		}
 
 		List<DictData> dictDataList;
 		try {
@@ -220,7 +232,11 @@ public class MallMngController extends BaseController {
 		try {
 			String code = req.getParameter("code");
 			params.put("code", code);
-			params.put("centerId", staffEntity.getGradeId());
+			if (staffEntity.getGradeId() == 0) {
+				params.put("centerId", 2);
+			} else {
+				params.put("centerId", staffEntity.getGradeId());
+			}
 
 			pcb = mallService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.GOODS_CENTER_MALL_QUERY_DICT_FOR_PAGE, PopularizeDict.class);
@@ -244,7 +260,11 @@ public class MallMngController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			String dictId = req.getParameter("dictId");
-			params.put("centerId", staffEntity.getGradeId());
+			if (staffEntity.getGradeId() == 0) {
+				params.put("centerId", 2);
+			} else {
+				params.put("centerId", staffEntity.getGradeId());
+			}
 			params.put("dictId", dictId);
 
 			pcb = mallService.dataList(pagination, params, staffEntity.getToken(),
@@ -265,7 +285,11 @@ public class MallMngController extends BaseController {
 	public void save(HttpServletRequest req, HttpServletResponse resp, @RequestBody FloorDictPojo pojo) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		pojo.setOpt(staffEntity.getOptid());
-		pojo.setCenterId(staffEntity.getGradeId());
+		if (staffEntity.getGradeId() == 0) {
+			pojo.setCenterId(2);
+		} else {
+			pojo.setCenterId(staffEntity.getGradeId());
+		}
 
 		try {
 
@@ -282,7 +306,11 @@ public class MallMngController extends BaseController {
 	public void save(HttpServletRequest req, HttpServletResponse resp, @RequestBody DictData data) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		data.setOpt(staffEntity.getOptid());
-		data.setCenterId(staffEntity.getGradeId());
+		if (staffEntity.getGradeId() == 0) {
+			data.setCenterId(2);
+		} else {
+			data.setCenterId(staffEntity.getGradeId());
+		}
 		try {
 			mallService.addData(data, staffEntity.getToken());
 		} catch (Exception e) {
@@ -297,7 +325,11 @@ public class MallMngController extends BaseController {
 	public void updateAd(HttpServletRequest req, HttpServletResponse resp, @RequestBody DictData data) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		data.setOpt(staffEntity.getOptid());
-		data.setCenterId(staffEntity.getGradeId());
+		if (staffEntity.getGradeId() == 0) {
+			data.setCenterId(2);
+		} else {
+			data.setCenterId(staffEntity.getGradeId());
+		}
 		try {
 			mallService.updateData(data, staffEntity.getToken());
 		} catch (Exception e) {
@@ -385,13 +417,21 @@ public class MallMngController extends BaseController {
 			layout.setShow(1);
 			layout.setType(0);
 			layout.setPage("index");
-			layout.setCenterId(staffEntity.getGradeId());
+			if (staffEntity.getGradeId() == 0) {
+				layout.setCenterId(2);
+			} else {
+				layout.setCenterId(staffEntity.getGradeId());
+			}
 
 			PopularizeDict dict = new PopularizeDict();
 			dict.setCenterId(staffEntity.getGradeId());
 			dict.setType(PopularizeDictTypeEnum.NORMAL.getIndex());
 			dict.setLayout(layout);
-			dict.setCenterId(staffEntity.getGradeId());
+			if (staffEntity.getGradeId() == 0) {
+				dict.setCenterId(2);
+			} else {
+				dict.setCenterId(staffEntity.getGradeId());
+			}
 
 			mallService.initDict(dict, staffEntity.getToken());
 		} catch (Exception e) {
