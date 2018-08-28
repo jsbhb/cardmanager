@@ -139,7 +139,7 @@ function rebuildTable(data){
 		} else {
 			str += "<td><img style='width:50px;height:50px;' src="+list[i].files[0].path+">";
 		}
-		str += "</td><td style='text-align:center;'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:center;'>" + list[i].goodsName;
 		str += "</td><td>" + list[i].goodsId;
 		str += "</td><td>" + list[i].supplierName;
 
