@@ -83,6 +83,7 @@
 				<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly value="银联"></c:if>
 				<c:if test="${order.orderDetail.payType==4}"><input type="text" class="form-control" readonly value="转账"></c:if>
 				<c:if test="${order.orderDetail.payType==5}"><input type="text" class="form-control" readonly value="其他"></c:if>
+				<c:if test="${order.orderDetail.payType==6}"><input type="text" class="form-control" readonly value="月结"></c:if>
 			</div>
 		</div>
        	<div class="list-item">
