@@ -304,7 +304,8 @@ function rebuildTable(data){
 		if(prilvl == 1 
 			&& (list[i].supplierName=="一般贸易仓"
 			|| list[i].supplierName=="广州仓库"
-			|| list[i].supplierName=="广州仓gzc")){
+			|| list[i].supplierName=="广州仓gzc"
+			|| list[i].supplierName=="一般贸易（包邮）仓")){
 			var arr = [1,2,3,4,5,6,12,99];
 			var index = $.inArray(status,arr);
 			if(index >= 0){
