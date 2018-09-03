@@ -72,6 +72,20 @@
 				</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
+			            <select class="form-control" name="orderSource" id="orderSource">
+	                   	  <option selected="selected" value="">订单来源</option>
+	                   	  <option value="0">PC商城</option>
+	                   	  <option value="1">手机商城</option>
+	                   	  <option value="3">有赞</option>
+	                   	  <option value="4">线下</option>
+	                   	  <option value="5">展厅</option>
+	                   	  <option value="6">大客户</option>
+	                   	  <option value="7">福利商城</option>
+		                </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
 			            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" >
 						<input type="hidden" class="form-control" name="gradeId" id="gradeId" >
 					</div>
