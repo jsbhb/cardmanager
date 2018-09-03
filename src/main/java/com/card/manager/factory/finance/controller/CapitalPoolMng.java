@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,8 +104,14 @@ public class CapitalPoolMng extends BaseController {
 			Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
 			if (pcb.getObj() != null) {
 				List<CapitalPool> pooList = (List<CapitalPool>) pcb.getObj();
-				for (CapitalPool pool : pooList) {
+				Iterator<CapitalPool> it = pooList.iterator();
+				while(it.hasNext()) {
+					CapitalPool pool = it.next();
 					GradeBO grade = map.get(pool.getCenterId());
+					if(grade == null){
+						it.remove();
+						continue;
+					}
 					pool.setCenterName(grade.getName());
 					pool.setGradeTypeName(grade.getGradeTypeName());
 					pool.setCompany(grade.getCompany());
