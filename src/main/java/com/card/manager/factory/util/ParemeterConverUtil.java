@@ -14,6 +14,7 @@ public class ParemeterConverUtil {
 			put("银联", 3);
 			put("转账", 4);
 			put("其他", 5);
+			put("月结", 6);
 		}
 	};
 	

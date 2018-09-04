@@ -425,7 +425,7 @@ public class RebateMngController extends BaseController {
 				case 8:	oi.setStatusName("退单");break;
 				case 9:	oi.setStatusName("超时取消");	break;
 				case 11:oi.setStatusName("资金池不足");break;
-				case 12:oi.setStatusName("海关申报中");break;
+				case 12:oi.setStatusName("待发货");break;
 				case 21:oi.setStatusName("退款中");break;
 				case 99:oi.setStatusName("异常状态");	break;
 				}
@@ -433,6 +433,10 @@ public class RebateMngController extends BaseController {
 				switch (oi.getPayType()) {
 				case 1:	oi.setPayTypeName("微信");break;
 				case 2:	oi.setPayTypeName("支付宝");break;
+				case 3:	oi.setPayTypeName("银联");break;
+				case 4:	oi.setPayTypeName("转账");break;
+				case 5:	oi.setPayTypeName("其他");break;
+				case 6:	oi.setPayTypeName("月结");break;
 				}
 				
 				switch (oi.getOrderSource()) {

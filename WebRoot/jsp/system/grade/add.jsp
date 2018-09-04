@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 </head>
 
@@ -241,16 +241,17 @@
 					</div>
 				</div>
 			</div>
-             <div class="submit-btn">
-           			<button type="button" class="btn btn-primary" id="submitBtn">提交</button>
-                    <button type="button" class="btn btn-info" id="resetBtn">重置</button>
-                  	<button type="button" class="btn btn-info" id="closeBtn">关闭</button>
+			<div class="scrollImg-content broadcast"></div>
+            <div class="submit-btn">
+       			<button type="button" class="btn btn-primary" id="submitBtn">提交</button>
+                <button type="button" class="btn btn-info" id="resetBtn">重置</button>
+              	<button type="button" class="btn btn-info" id="closeBtn">关闭</button>
        		</div>
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
-	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
 	<script src="${wmsUrl}/js/jquery.picker.js"></script>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	$(".picker-country").picker();
@@ -270,7 +271,7 @@
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
-					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
 					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath'+id+'">'
 					$("#content"+id).html(imgPath);
 					$("#content"+id).addClass('choose');
@@ -281,7 +282,7 @@
 		})
 	});
 	//删除主图
-	$('.item-right').on('click','.bgColor i',function(){
+	$('.item-right').on('click','.bgColor i.fa-trash',function(){
 		var id = $(this).parent().parent().attr("data-id");
 		var ht = '<div class="item-img" id="content'+id+'" data-id="'+id+'">+<input type="file" id="pic'+id+'" name="pic"/><input type="hidden" name="picPath'+id+'" id="picPath'+id+'" value=""></div>';
 		$(this).parent().parent().removeClass("choose");
@@ -564,6 +565,32 @@
 		}
 	});
 	
+	function setPicImgListData() {
+		var valArr = new Array;
+		var tmpPicPath="";
+		for(var i=1;i<5;i++) {
+			tmpPicPath = $("#picPath"+i).val();
+			if (tmpPicPath != null && tmpPicPath != "") {
+				valArr.push(tmpPicPath);
+			}
+		}
+		if (valArr != undefined && valArr.length > 0) {
+			var data = {
+		        imgList: valArr,
+		        imgWidth: 500,
+		        imgHeight: 500,
+		        activeIndex: 0,
+		        host: "${wmsUrl}"
+		    };
+		    setImgScroll('broadcast',data);
+		} else {
+			layer.alert("请先上传图片！");
+		}
+	}
+	//图片放大
+	$('.item-right').on('click','.bgColor i.fa-search',function(){
+		setPicImgListData();
+	});
 	</script>
 </body>
 </html>

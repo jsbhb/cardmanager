@@ -69,7 +69,7 @@
 				                  <c:if test="${order.status==8}">退单</c:if>
 				                  <c:if test="${order.status==9}">超时取消</c:if>
 				                  <c:if test="${order.status==11}">资金池不足</c:if>
-				                  <c:if test="${order.status==12}">海关申报中</c:if>
+				                  <c:if test="${order.status==12}">待发货</c:if>
 				                  <c:if test="${order.status==21}">退款中</c:if>
 				                  <c:if test="${order.status==99}">异常状态</c:if>
 				                </div>
@@ -141,6 +141,7 @@
 									<c:if test="${order.orderDetail.payType==3}"><input type="text" class="form-control" readonly value="银联"></c:if>
 									<c:if test="${order.orderDetail.payType==4}"><input type="text" class="form-control" readonly value="转账"></c:if>
 									<c:if test="${order.orderDetail.payType==5}"><input type="text" class="form-control" readonly value="其他"></c:if>
+									<c:if test="${order.orderDetail.payType==6}"><input type="text" class="form-control" readonly value="月结"></c:if>
 				                </div>
 							</div>
 							<label class="col-sm-1 control-label no-padding-right">支付金额</label>

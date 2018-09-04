@@ -53,6 +53,7 @@ public class BrandMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		entity.setOpt(staffEntity.getOptid());
 		try {
+			entity.setBrand(entity.getBrand().trim());
 			brandService.addBrand(entity, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -130,6 +131,7 @@ public class BrandMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			entity.setBrand(entity.getBrand().trim());
 			brandService.modify(entity, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());

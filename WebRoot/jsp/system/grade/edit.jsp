@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="${wmsUrl}/validator/css/bootstrapValidator.min.css">
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 </head>
 
@@ -214,7 +214,7 @@
 					   <c:when test="${grade.picPath1 != null && grade.picPath1 != ''}">
                	  			<div class="item-img choose" id="content1" data-id="1">
 								<img src="${grade.picPath1}">
-								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 								<input value="${grade.picPath1}" type="hidden" name="picPath1" id="picPath1">
 							</div>
 					   </c:when>
@@ -235,7 +235,7 @@
 					   <c:when test="${grade.picPath2 != null && grade.picPath2 != ''}">
                	  			<div class="item-img choose" id="content2" data-id="2">
 								<img src="${grade.picPath2}">
-								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 								<input value="${grade.picPath2}" type="hidden" name="picPath2" id="picPath2">
 							</div>
 					   </c:when>
@@ -256,7 +256,7 @@
 					   <c:when test="${grade.picPath3 != null && grade.picPath3 != ''}">
                	  			<div class="item-img choose" id="content3" data-id="3">
 								<img src="${grade.picPath3}">
-								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 								<input value="${grade.picPath3}" type="hidden" name="picPath3" id="picPath3">
 							</div>
 					   </c:when>
@@ -277,7 +277,7 @@
 					   <c:when test="${grade.picPath4 != null && grade.picPath4 != ''}">
                	  			<div class="item-img choose" id="content2" data-id="4">
 								<img src="${grade.picPath4}">
-								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 								<input value="${grade.picPath4}" type="hidden" name="picPath4" id="picPath4">
 							</div>
 					   </c:when>
@@ -291,9 +291,10 @@
 					</c:choose>
 				</div>
 			</div>
+			<div class="scrollImg-content broadcast"></div>
 			<div class="submit-btn">
-           			 <button type="button" class="btn btn-primary" id="submitBtn">保存</button>
-                  	<button type="button" class="btn btn-info" id="closeBtn">关闭</button>
+       			<button type="button" class="btn btn-primary" id="submitBtn">保存</button>
+              	<button type="button" class="btn btn-info" id="closeBtn">关闭</button>
        		</div>
             <div class="title">
 	       		<h1>员工列表</h1>
@@ -328,7 +329,7 @@
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
-	<script src="${wmsUrl}/validator/js/bootstrapValidator.min.js"></script>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
 	<script src="${wmsUrl}/js/pagination.js"></script>
 	<script src="${wmsUrl}/js/jquery.picker.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
@@ -361,7 +362,7 @@
 		})
 	});
 	//删除主图
-	$('.item-right').on('click','.bgColor i',function(){
+	$('.item-right').on('click','.bgColor i.fa-trash',function(){
 		var id = $(this).parent().parent().attr("data-id");
 		var ht = '<div class="item-img" id="content'+id+'" data-id="'+id+'">+<input type="file" id="pic'+id+'" name="pic"/><input type="hidden" name="picPath'+id+'" id="picPath'+id+'" value=""></div>';
 		$(this).parent().parent().removeClass("choose");
@@ -719,6 +720,33 @@
 		}
 	});
 	
+	function setPicImgListData() {
+		var valArr = new Array;
+		var tmpPicPath="";
+		for(var i=1;i<5;i++) {
+			tmpPicPath = $("#picPath"+i).val();
+			if (tmpPicPath != null && tmpPicPath != "") {
+				valArr.push(tmpPicPath);
+			}
+		}
+		console.log(valArr);
+		if (valArr != undefined && valArr.length > 0) {
+			var data = {
+		        imgList: valArr,
+		        imgWidth: 500,
+		        imgHeight: 500,
+		        activeIndex: 0,
+		        host: "${wmsUrl}"
+		    };
+		    setImgScroll('broadcast',data);
+		} else {
+			layer.alert("请先上传图片！");
+		}
+	}
+	//图片放大
+	$('.item-right').on('click','.bgColor i.fa-search',function(){
+		setPicImgListData();
+	});
 	</script>
 </body>
 </html>

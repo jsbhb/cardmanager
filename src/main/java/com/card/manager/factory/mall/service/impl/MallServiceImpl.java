@@ -44,7 +44,11 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 	public PopularizeDict queryById(String id,int centerId, String token) {
 		PopularizeDict entity = new PopularizeDict();
 		entity.setId(Integer.parseInt(id));
-		entity.setCenterId(centerId);
+		if (centerId == 0) {
+			entity.setCenterId(2);
+		} else {
+			entity.setCenterId(centerId);
+		}
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
@@ -59,7 +63,11 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 	public DictData queryDataById(String id, int gradeId, String token) {
 		DictData data = new DictData();
 		data.setId(Integer.parseInt(id));
-		data.setCenterId(gradeId);
+		if (gradeId == 0) {
+			data.setCenterId(2);
+		} else {
+			data.setCenterId(gradeId);
+		}
 
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(

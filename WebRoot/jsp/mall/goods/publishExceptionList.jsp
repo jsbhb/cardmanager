@@ -81,9 +81,9 @@
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 //点击搜索按钮
-$('.searchBtn').on('click',function(){
-	$("#querybtns").click();
-});
+// $('.searchBtn').on('click',function(){
+// 	$("#querybtns").click();
+// });
 
 /**
  * 初始化分页信息
@@ -139,7 +139,7 @@ function rebuildTable(data){
 		} else {
 			str += "<td><img style='width:50px;height:50px;' src="+list[i].files[0].path+">";
 		}
-		str += "</td><td style='text-align:center;'><a target='_blank' href='${webUrl}?goodsId="+list[i].goodsId+"'>" + list[i].goodsName + "</a>";
+		str += "</td><td style='text-align:center;'>" + list[i].goodsName;
 		str += "</td><td>" + list[i].goodsId;
 		str += "</td><td>" + list[i].supplierName;
 
