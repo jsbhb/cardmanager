@@ -144,6 +144,7 @@
 <script src="${wmsUrl}/js/mainpage.js"></script>
 <script src="${wmsUrl}/js/mainPageNav.js"></script>
 <script src="${wmsUrl}/adminLTE/js/app.js"></script>
+<script src="${wmsUrl}/js/use-chart.js"></script>
 <script>
 
 $.widget.bridge('uibutton', $.ui.button);
