@@ -709,9 +709,9 @@ body.hold-transition .main-header .logo {
 }
 .list-item > .item-right > .item-img{
 	float: left;
-	width: 62px;
-	height: 62px;
-	line-height: 62px;
+	width: 70px;
+	height: 70px;
+	line-height: 70px;
 	text-align: center;
 	border: 1px dashed #d9d9d9;
 	margin-right: 5px;
@@ -736,8 +736,8 @@ body.hold-transition .main-header .logo {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width:62px;
-	height:62px;
+	width:70px;
+	height:70px;
 	opacity: 0;
 }
 .list-item > .item-right > .item-img:hover{
