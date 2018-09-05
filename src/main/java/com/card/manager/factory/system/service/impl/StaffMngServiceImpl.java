@@ -262,4 +262,9 @@ public class StaffMngServiceImpl implements StaffMngService {
 	public List<StaffEntity> queryByParam(Map<String, String> params) {
 		return staffMapper.selectByParam(params);
 	}
+
+	@Override
+	public StaffEntity queryStaffInfoByGradeId(String gradeId) {
+		return staffMapper.selectStaffInfoByGradeId(gradeId);
+	}
 }

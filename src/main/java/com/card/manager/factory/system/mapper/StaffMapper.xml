@@ -177,7 +177,7 @@
 		<if test="phone != '' and phone != null">
 			,phone = #{phone}
 		</if>
-		where userCenterId = #{userCenterId}
+		where badge = #{badge}
     </update>
 	
 	<select id="queryGradeTypeIdByRoleId" resultType="java.lang.Integer">
@@ -186,5 +186,11 @@
 	
 	<select id="queryFirstGradeIdByOpt" resultType="java.lang.Integer">
 		select getFirstGradeId(#{gradeId});
+	</select>
+	
+	<select id="selectStaffInfoByGradeId" resultMap="operator">
+		select * from auth_operator 
+		where gradeid = #{gradeId} and shopid = #{gradeId}
+		order by optid limit 1
 	</select>
 </mapper>

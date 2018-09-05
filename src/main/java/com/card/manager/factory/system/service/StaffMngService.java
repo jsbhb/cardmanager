@@ -125,4 +125,6 @@ public interface StaffMngService {
 	 * @since JDK 1.7
 	 */
 	List<StaffEntity> queryByParam(Map<String, String> params);
+	
+	StaffEntity queryStaffInfoByGradeId(String gradeId);
 }
