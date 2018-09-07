@@ -25,6 +25,7 @@
             		<input type="hidden" class="form-control" name="id" value="${grade.id}">
             		<input type="hidden" class="form-control" name="gradeLevel" value="${grade.gradeLevel}">
             		<input type="hidden" class="form-control" name="personInChargeId" value="${grade.personInChargeId}">
+            		<input type="hidden" class="form-control" name="badge" value="${editStaff.badge}">
 	                <div class="item-content">
 		             	（例：XX的店）
 		            </div>

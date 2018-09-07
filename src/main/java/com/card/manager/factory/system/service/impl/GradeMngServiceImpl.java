@@ -25,7 +25,6 @@ import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
-import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.mapper.RoleMapper;
 import com.card.manager.factory.system.mapper.StaffMapper;
@@ -297,6 +296,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staff.setOptName(gradeInfo.getPersonInCharge());
 		staff.setGradeName(gradeInfo.getGradeName());
 		staff.setPhone(gradeInfo.getPhone());
+		staff.setBadge(gradeInfo.getBadge());
 		staffMapper.updateOperatorInfo(staff);
 
 		// 自动注册微店平台

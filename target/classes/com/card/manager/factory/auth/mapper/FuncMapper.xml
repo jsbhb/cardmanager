@@ -24,14 +24,14 @@
 	</select>
 	
 	<select id="selectFuncByRoleId" resultMap="authInfo">
-		select c.* from auth_role r right join auth_rolefunc f on f.roleid = r.roleid right join auth_func c on c.funcid = f.funcid where f.roleid = #{roleId};
+		select c.*,f.privilege from auth_role r right join auth_rolefunc f on f.roleid = r.roleid right join auth_func c on c.funcid = f.funcid where f.roleid = #{roleId};
 	</select>
 	
 	<select id="queryById" resultMap="authInfo">
 		select * from auth_func where  funcid = #{id};
 	</select>
 	
-	<insert id="insertFunc"  useGeneratedKeys="true"  keyProperty="funcid" parameterType="object">
+	<insert id="insertFunc"  useGeneratedKeys="true"  keyProperty="funcId" parameterType="object">
          INSERT INTO auth_func (
               name,url,parentid,tag,createtime,updatetime,sort,description) VALUE (#{name},#{url},#{parentId},#{tag},now(),now(),#{sort},#{description})
     </insert>
@@ -58,6 +58,19 @@
 			,tag = #{tag}
 		</if> 
 		where funcid = #{funcId}
+    </insert>
+	
+	<select id="selectFuncByRoleIdParam" resultMap="authInfo">
+		select c.*,fp.privilege 
+		from auth_role r 
+		right join auth_rolefunc f on f.roleid = r.roleid 
+		right join auth_func c on c.funcid = f.funcid 
+		left join auth_rolefunc fp on f.funcid = fp.funcid and fp.roleid = #{roleId} 
+		where f.roleid = #{parentId};
+	</select>
+	
+	<insert id="insertRoleFunc" parameterType="object">
+         INSERT INTO auth_rolefunc values ('9',#{funcId},'1',now(),now(),'admin')
     </insert>
 
 </mapper>

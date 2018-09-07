@@ -1,7 +1,8 @@
 eclipse.preferences.version=1
+encoding//WebRoot/adminLTE/css/AdminLTE.css=gbk
+encoding//WebRoot/css/component/component.css=UTF-8
 encoding//WebRoot/css/core.css=UTF-8
 encoding//WebRoot/css/mainpage.css=UTF-8
-encoding//WebRoot/jquey-confirm/jquery-confirm.css=UTF-8
 encoding//WebRoot/jsp/error.jsp=UTF-8
 encoding//WebRoot/jsp/footer.jsp=UTF-8
 encoding//WebRoot/jsp/main.jsp=UTF-8

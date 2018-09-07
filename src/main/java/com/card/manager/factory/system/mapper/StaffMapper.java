@@ -172,4 +172,6 @@ public interface StaffMapper<T> extends BaseMapper<T>{
 	int queryGradeTypeIdByRoleId(String roleId);
 
 	int queryFirstGradeIdByOpt(String gradeId);
+	
+	StaffEntity selectStaffInfoByGradeId(String gradeId);
 }

@@ -202,24 +202,24 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<!-- 这里增加了字段列，需要调整批量功能取值的列数 -->
+								<!-- 这里增加了字段列，需要调整批量功能取值的列数11111 -->
 								<th width="3%"><input type="checkbox" id="theadInp"></th>
 								<th width="6%">商品图片</th>
-								<th database-name="g.goods_name" width="14%">商品名称<i class="fa fa-arrows-v"></i></th>
-								<th database-name="i.goods_id" width="6%">商品ID<i class="fa fa-arrows-v"></i></th>
-								<th database-name="i.item_id" width="6%">商品编号<i class="fa fa-arrows-v"></i></th>
-								<th database-name="i.item_code" width="7%">商家编码<i class="fa fa-arrows-v"></i></th>
-								<th database-name="b.brand" width="7%">商品品牌<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="g.goods_name" width="14%">商品名称<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="i.goods_id" width="6%">商品ID<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="i.item_id" width="6%">商品编号<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="i.item_code" width="7%">商家编码<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="b.brand" width="7%">商品品牌<i class="fa fa-arrows-v"></i></th>
 								<th width="10%">商品分类</th>
-								<th database-name="g.supplier_name" width="6%">供应商<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="g.supplier_name" width="6%">供应商<i class="fa fa-arrows-v"></i></th>
 <!-- 								<th width="5%">商品标签</th> -->
 <!-- 								<th width="5%">增值税率</th> -->
 <!-- 								<th width="5%">消费税率</th> -->
-								<th database-name="p.retail_price" width="5%">商品价格<i class="fa fa-arrows-v"></i></th>
-								<th database-name="s.fxqty" width="5%">商品库存<i class="fa fa-arrows-v"></i></th>
-								<th database-name="i.status" width="5%">商品状态<i class="fa fa-arrows-v"></i></th>
-								<th database-name="i.info" width="5%">商品规格<i class="fa fa-arrows-v"></i></th>
-								<th database-name="i.create_time" width="5%">创建时间<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="p.retail_price" width="5%">商品价格<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="s.fxqty" width="5%">商品库存<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="i.status" width="5%">商品状态<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="i.info" width="5%">商品规格<i class="fa fa-arrows-v"></i></th>
+								<th class="cursor-pointer" database-name="i.create_time" width="5%">创建时间<i class="fa fa-arrows-v"></i></th>
 								<c:choose>
 									<c:when test="${prilvl == 1}">
 										<th width="10%">操作</th>
