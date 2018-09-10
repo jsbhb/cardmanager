@@ -39,6 +39,7 @@ import com.card.manager.factory.order.model.OrderDetail;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
+import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.pojo.OrderImportBO;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
@@ -369,5 +370,20 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 		if (!json.getBoolean("success")) {
 			throw new Exception("根据订单编号取消订单商品至卖家云系统失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public UserInfo queryUserInfoByUserId(String userId, String token) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("centerId", "2");
+		params.put("userId", userId);
+
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GET_USERINFO_BY_USERID, token, true, null,
+				HttpMethod.GET, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), UserInfo.class);
 	}
 }

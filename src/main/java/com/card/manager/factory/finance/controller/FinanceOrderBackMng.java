@@ -28,6 +28,7 @@ import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.model.UserDetail;
+import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -214,6 +215,8 @@ public class FinanceOrderBackMng extends BaseController {
 			String orderId = req.getParameter("orderId");
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
+			UserInfo user = orderService.queryUserInfoByUserId(entity.getUserId()+"", opt.getToken());
+			context.put("user", user);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for(SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {

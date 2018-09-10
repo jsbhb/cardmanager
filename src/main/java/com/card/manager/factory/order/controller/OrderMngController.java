@@ -35,6 +35,7 @@ import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
 import com.card.manager.factory.order.model.UserDetail;
+import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.pojo.ExpressMaintenanceBO;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
@@ -171,31 +172,31 @@ public class OrderMngController extends BaseController {
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
 
-			if (pcb != null) {
-				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
-				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
-				List<Object> list = (ArrayList<Object>) pcb.getObj();
-				OrderInfo orderInfo = null;
-				for (Object info : list) {
-					orderInfo = (OrderInfo) info;
-					for (UserDetail ud : user) {
-						if (orderInfo.getUserId().toString().equals(ud.getUserId().toString())) {
-							orderInfo.setCustomerName(ud.getName());
-							break;
-						}
-					}
-					if (orderInfo.getPushUserId() != null) {
-						for (PushUser pu : push) {
-							if (orderInfo.getShopId().toString().equals(pu.getGradeId().toString())
-									&& orderInfo.getPushUserId().toString().equals(pu.getUserId().toString())) {
-								orderInfo.setPushUserName(pu.getName());
-								break;
-							}
-						}
-					}
-				}
-				pcb.setObj(list);
-			}
+//			if (pcb != null) {
+//				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
+//				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
+//				List<Object> list = (ArrayList<Object>) pcb.getObj();
+//				OrderInfo orderInfo = null;
+//				for (Object info : list) {
+//					orderInfo = (OrderInfo) info;
+//					for (UserDetail ud : user) {
+//						if (orderInfo.getUserId().toString().equals(ud.getUserId().toString())) {
+//							orderInfo.setCustomerName(ud.getName());
+//							break;
+//						}
+//					}
+//					if (orderInfo.getPushUserId() != null) {
+//						for (PushUser pu : push) {
+//							if (orderInfo.getShopId().toString().equals(pu.getGradeId().toString())
+//									&& orderInfo.getPushUserId().toString().equals(pu.getUserId().toString())) {
+//								orderInfo.setPushUserName(pu.getName());
+//								break;
+//							}
+//						}
+//					}
+//				}
+//				pcb.setObj(list);
+//			}
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -272,6 +273,8 @@ public class OrderMngController extends BaseController {
 			String orderId = req.getParameter("orderId");
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
+			UserInfo user = orderService.queryUserInfoByUserId(entity.getUserId()+"", opt.getToken());
+			context.put("user", user);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for (SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {

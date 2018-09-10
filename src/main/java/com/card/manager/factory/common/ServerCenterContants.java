@@ -124,6 +124,8 @@ public class ServerCenterContants {
 			+ "/grade/rebate/formula/{needPaging}";
 	public static final String USER_CENTER_UPDATE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/rebate/formula/update";
+	public static final String USER_CENTER_GET_USERINFO_BY_USERID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/{centerId}/{userId}";
 	/**
 	 * 商品中心url
 	 */
