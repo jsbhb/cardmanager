@@ -36,6 +36,12 @@
 			</div>
 		</div>
        	<div class="list-item">
+			<div class="col-sm-3 item-left">消费者名称</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${user.userDetail.name}">
+			</div>
+		</div>
+       	<div class="list-item">
 			<div class="col-sm-3 item-left">状态</div>
 			<div class="col-sm-9 item-right">
 				<c:if test="${order.status==0}">待支付</c:if>
@@ -202,7 +208,7 @@
 								<th>商品价格</th>
 								<th>实际价格</th>
 								<th>数量</th>
-<!-- 								<th>返佣金额</th> -->
+								<th>返佣金额</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -226,7 +232,7 @@
 	 */
 	var options = {
 		queryForm : ".query",
-		url :  "${wmsUrl}/admin/user/rebateMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}&shopId="+"${order.shopId}",
+		url :  "${wmsUrl}/admin/user/rebateMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}&shopId="+"${order.shopId}&gradeId=${gradeId}",
 		numPerPage:"10",
 		currentPage:"",
 		index:"1",
@@ -271,11 +277,16 @@
 			str += "</td><td>" + list[i].itemPrice;
 			str += "</td><td>" + list[i].actualPrice;
 			str += "</td><td>" + list[i].itemQuantity;
-// 			str += "</td><td>" + list[i].remark;
+			str += "</td><td>" + calRebate(list[i]);
 			str += "</td></tr>";
 		}
 
 		$("#goodsTable tbody").html(str);
+	}
+	
+	function calRebate(obj){
+		var rebate = Number(obj.itemPrice)*Number(obj.itemQuantity)*Number(obj.rebate);
+		return Math.round(rebate*100)/100
 	}
 	</script>
 </body>

@@ -63,6 +63,7 @@
 								<thead>
 									<tr>
 										<th>订单编号</th>
+										<th>订单类型</th>
 										<th>返佣金额</th>
 										<th>返佣状态</th>
 										<th>创建时间</th>
@@ -145,6 +146,12 @@
 		for (var i = 0; i < list.length; i++) {
 			str += "<tr><td>";
 			str += list[i].orderId;
+			var orderFlag = list[i].orderFlag;
+			switch(status) {
+			case 0:str += "</td><td>跨境订单";break;
+			case 2:str += "</td><td>一般贸易订单";break;
+			default : str += "</td><td>未知类型："+status;
+			}
 			str += "</td><td>" + list[i].rebateMoney;
 			var status = list[i].status;
 			switch(status) {
@@ -207,10 +214,11 @@
 	});
 	
 	function toShow(orderId){
+		var gradeId = $("#gradeId").val();
 		var index = layer.open({
 			  title:"查看订单详情",		
 			  type: 2,
-			  content: '${wmsUrl}/admin/user/rebateMng/toShow.shtml?orderId='+orderId,
+			  content: '${wmsUrl}/admin/user/rebateMng/toShow.shtml?orderId='+orderId+'&gradeId='+gradeId,
 			  maxmin: true
 			});
 			layer.full(index);

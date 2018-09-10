@@ -6,6 +6,7 @@ public class RebateDetail extends Pagination {
 
 	private Integer id;
 	private String orderId;
+	private Integer orderFlag;
 	private Integer gradeId;
 	private Double rebateMoney;
 	private Integer status;
@@ -14,6 +15,12 @@ public class RebateDetail extends Pagination {
 	private String remark;
 	private String opt;
 	
+	public Integer getOrderFlag() {
+		return orderFlag;
+	}
+	public void setOrderFlag(Integer orderFlag) {
+		this.orderFlag = orderFlag;
+	}
 	public Integer getGradeId() {
 		return gradeId;
 	}

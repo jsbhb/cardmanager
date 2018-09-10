@@ -27,6 +27,7 @@ public class OrderGoods {
 	private Double actualPrice;
 	private String remark;
 	private Integer conversion;
+	private String rebate;
 
 	public OrderGoods() {
 	}
@@ -43,6 +44,14 @@ public class OrderGoods {
 				? Double.valueOf(model.getItemPrice()) : null;
 		conversion = model.getConversion() != null && !"".equals(model.getConversion())
 				? Utils.convert(model.getConversion()) : null;
+	}
+	
+	public String getRebate() {
+		return rebate;
+	}
+
+	public void setRebate(String rebate) {
+		this.rebate = rebate;
 	}
 
 	public Integer getConversion() {

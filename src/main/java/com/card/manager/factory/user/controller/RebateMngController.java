@@ -34,6 +34,7 @@ import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
+import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
@@ -48,6 +49,7 @@ import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.TreePackUtil;
@@ -148,8 +150,11 @@ public class RebateMngController extends BaseController {
 		context.put(OPT, opt);
 		try {
 			String orderId = req.getParameter("orderId");
+			String gradeId = req.getParameter("gradeId");
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
+			UserInfo user = orderService.queryUserInfoByUserId(entity.getUserId()+"", opt.getToken());
+			context.put("user", user);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for(SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {
@@ -178,6 +183,7 @@ public class RebateMngController extends BaseController {
 			}
 			List<ThirdOrderInfo> orderExpressList = orderService.queryThirdOrderInfoByOrderId(orderId, opt.getToken());
 			context.put("orderExpressList", orderExpressList);
+			context.put("gradeId", gradeId);
 			return forword("user/rebate/show", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -195,6 +201,7 @@ public class RebateMngController extends BaseController {
 
 			String orderId = req.getParameter("orderId");
 			String shopId = req.getParameter("shopId");
+			String gradeId = req.getParameter("gradeId");
 			if (StringUtil.isEmpty(orderId)) {
 				params.put("orderId", "");
 			} else {
@@ -205,19 +212,21 @@ public class RebateMngController extends BaseController {
 					ServerCenterContants.ORDER_CENTER_QUERY_GOODS_FOR_PAGE, OrderGoods.class);
 			
 			if (pcb != null) {
-				List<Object> list = (ArrayList<Object>) pcb.getObj();
+				List<OrderGoods> list = (ArrayList<OrderGoods>) pcb.getObj();
 				OrderGoods orderGoods = null;
 				Map<String, String> rebateMap = null;
 				Map<Integer, GradeBO> map = CachePoolComponent.getGrade(staffEntity.getToken());
-				for (Object info : list) {
-					orderGoods = (OrderGoods) info;
-					rebateMap = goodsService.getGoodsRebate(orderGoods.getItemId(), staffEntity.getToken());
-					String rebateStr = rebateMap.get(map.get(Integer.parseInt(shopId)).getGradeType().toString());
-					double rebate = Double.valueOf(rebateStr == null ? "0" : rebateStr);
-					orderGoods.setRemark(
-							CalculationUtils.round(2,CalculationUtils.mul(
-							CalculationUtils.mul(orderGoods.getActualPrice(), rebate),
-							Double.valueOf(orderGoods.getItemQuantity().toString()).doubleValue()))+"");
+				for(OrderGoods goods : list){
+					if(goods.getRebate() != null){
+						try {
+							rebateMap = JSONUtilNew.parse(goods.getRebate(), Map.class);
+							goods.setRebate(rebateMap.get(gradeId) == null ? "0" : rebateMap.get(gradeId));
+						} catch (Exception e) {
+							goods.setRebate("0");
+						}
+					} else {
+						goods.setRebate("0");
+					}
 				}
 				pcb.setObj(list);
 			}
