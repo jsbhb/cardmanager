@@ -232,7 +232,7 @@
 	 */
 	var options = {
 		queryForm : ".query",
-		url :  "${wmsUrl}/admin/user/rebateMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}&shopId="+"${order.shopId}&gradeId=${gradeId}",
+		url :  "${wmsUrl}/admin/user/rebateMng/dataListForOrderGoods.shtml?orderId="+"${order.orderId}&gradeId=${gradeId}",
 		numPerPage:"10",
 		currentPage:"",
 		index:"1",

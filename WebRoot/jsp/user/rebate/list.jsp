@@ -24,7 +24,8 @@
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 			  </div>
 			  <c:if test="${prilvl == 1}">
-		      	<button class="default-btn position-btn" type="button" onclick="excelExport()">订单导出</button>
+			    <button class="default-btn position-btn" type="button" onclick="excelExport(1)">返佣导出</button>
+		      	<button class="default-btn position-btn" type="button" onclick="excelExport(0)">订单导出</button>
 		      </c:if>
 	    </section>
 		<div class="select-content">
@@ -147,10 +148,10 @@
 			str += "<tr><td>";
 			str += list[i].orderId;
 			var orderFlag = list[i].orderFlag;
-			switch(status) {
+			switch(orderFlag) {
 			case 0:str += "</td><td>跨境订单";break;
 			case 2:str += "</td><td>一般贸易订单";break;
-			default : str += "</td><td>未知类型："+status;
+			default : str += "</td><td>未知类型："+orderFlag;
 			}
 			str += "</td><td>" + list[i].rebateMoney;
 			var status = list[i].status;
@@ -235,12 +236,19 @@
 			layer.full(index);
 	}
 
-	function excelExport(){
+	function excelExport(type){
+		var titleName;
+		if(0 == type){
+			titleName = "订单导出";
+		}
+		if(1 == type){
+			titleName = "返佣导出";
+		}
 		var index = layer.open({
-		  title:"订单导出",		
+		  title:titleName,		
 		  type: 2,
 		  area: ['55%','65%'],
-		  content: '${wmsUrl}/admin/user/rebateMng/excelExport.shtml',
+		  content: '${wmsUrl}/admin/user/rebateMng/excelExport.shtml?type='+type,
 		  maxmin: false
 		});
 	}

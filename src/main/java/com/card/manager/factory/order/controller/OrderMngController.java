@@ -352,6 +352,7 @@ public class OrderMngController extends BaseController {
 			param.put("endTime", endTime);
 			param.put("gradeId", gradeId);
 			param.put("supplierId", supplierId);
+			param.put("type", "0");
 
 			List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
 			ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());

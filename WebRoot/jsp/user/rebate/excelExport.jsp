@@ -37,19 +37,21 @@
              	</div>
 			</div>
 		</div>
-		<div class="list-item">
-			<div class="col-xs-3 item-left">供应商</div>
-			<div class="col-xs-9 item-right">
-				<select class="form-control" name="supplierId" id="supplierId">
-                  	  <option selected="selected" value="-1">供应商</option>
-                  	  <c:forEach var="supplier" items="${supplierId}">
-                  	  	<option value="${supplier.id}">${supplier.supplierName}</option>
-                  	  </c:forEach>
-                </select>
+		<c:if test="${type == 0}">
+			<div class="list-item">
+				<div class="col-xs-3 item-left">供应商</div>
+				<div class="col-xs-9 item-right">
+					<select class="form-control" name="supplierId" id="supplierId">
+	                  	  <option selected="selected" value="-1">供应商</option>
+	                  	  <c:forEach var="supplier" items="${supplierId}">
+	                  	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+	                  	  </c:forEach>
+	                </select>
+				</div>
 			</div>
-		</div>
+		</c:if>
 		<div class="submit-btn">
-           	<button type="button" onclick="downLoadExcel()">确认导出</button>
+           	<button type="button" onclick="downLoadExcel(${type})">确认导出</button>
        	</div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
@@ -106,7 +108,7 @@
     	    return year + '-' + month + '-' + day; 
 	    }
 
-	    function downLoadExcel(){
+	    function downLoadExcel(type){
 	    	var startTime = $("#startTime").val();
 	    	var endTime = $("#endTime").val();
 	    	var dateType = $('#dateType li.active').attr('data-id');
@@ -117,7 +119,7 @@
 			    	return;
 		    	}
 	    	}
-	    	window.open("${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId);
+	    	window.open("${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId+"&type="+type);
 // 	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId;
 	    }
 	</script>
