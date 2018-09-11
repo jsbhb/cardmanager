@@ -148,6 +148,8 @@
 		ht = ht + '<option value="JD">京东物流</option>';
 		ht = ht + '<option value="YCWL">远成物流</option>';
 		ht = ht + '<option value="ZJS">宅急送</option>';
+		ht = ht + '<option value="CGWL">诚冠物流</option>';
+		ht = ht + '<option value="WCWL">旺成物流</option>';
 		ht = ht + '<option value="OTHER">其他</option>';
 		ht = ht + '</select></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">快递单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="expressIdV"></div></div>';
