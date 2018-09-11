@@ -24,9 +24,9 @@
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 			  </div>
 			  <c:if test="${prilvl == 1}">
-			    <button class="default-btn position-btn" type="button" onclick="excelExport(1)">返佣导出</button>
 		      	<button class="default-btn position-btn" type="button" onclick="excelExport(0)">订单导出</button>
 		      </c:if>
+		       <button class="default-btn position-btn" type="button" onclick="excelExport(1)">返佣导出</button>
 	    </section>
 		<div class="select-content">
             <ul class="first-ul" style="margin-left:10px;">
