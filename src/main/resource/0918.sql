@@ -40,4 +40,22 @@ insert into deliverymanagement (delivery_name,delivery_code,status,create_time,u
 ('远成物流','YCWL','1',now(),now(),'admin'),
 ('宅急送','ZJS','1',now(),now(),'admin'),
 ('诚冠物流','CGWL','1',now(),now(),'admin'),
-('旺成物流','WCWL','1',now(),now(),'admin')
+('旺成物流','WCWL','1',now(),now(),'admin');
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`%` FUNCTION `getRoleChildLst`(rootId INT) RETURNS varchar(2000) CHARSET utf8
+BEGIN
+       DECLARE sTemp VARCHAR(2000);
+       DECLARE sTempChd VARCHAR(2000);
+  
+       set sTemp = '$';
+       SET sTempChd =cast(rootId as CHAR);
+    
+       WHILE sTempChd is not null DO
+        SET sTemp = concat(sTemp,',',sTempChd);
+         SELECT group_concat(roleid) INTO sTempChd FROM auth_role where FIND_IN_SET(parentId,sTempChd)>0;
+       END WHILE;
+       RETURN sTemp;
+     END$$
+DELIMITER ;
