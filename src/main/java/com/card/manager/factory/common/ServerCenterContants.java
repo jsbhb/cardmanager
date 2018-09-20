@@ -232,6 +232,8 @@ public class ServerCenterContants {
 			+ "/goods/goods/save";
 	public static final String GOODS_PIC_BATCH_UPLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/maintain/files";
+	public static final String GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/maintain/files/queryGoodsIdByItemCode";
 	public static final String GOODS_CENTER_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/query";
 	public static final String GOODS_CENTER_THIRD_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")

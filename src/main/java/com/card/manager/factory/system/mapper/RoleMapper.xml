@@ -33,6 +33,10 @@
 		roleState = 1 and roleId > 1
 	</select>
 
+	<select id="queryAll" resultMap="roleEntity">
+		select * from auth_role where roleId > 1
+	</select>
+
 	<select id="queryById" resultMap="roleEntity">
 		select r.*,r1.roleName as parentName from auth_role r left join auth_role r1 on r.parentId = r1.roleid where
 		r.roleid = #{roleId}
@@ -86,5 +90,20 @@
 	<delete id="deleteAllFunc">
 		delete from auth_rolefunc where roleid=#{roleId};
 	</delete>
+	
+	<select id="getSubRoleIdList" resultType="String">
+		select getRoleChildLst(#{roleId});
+	</select>
+	
+	<select id="checkRoleInfoByIds" resultMap="roleEntity">
+		select * from auth_role
+		where roleid in (
+			<foreach collection="list" item="item" index="index"
+				separator=",">
+				#{item}
+			</foreach>
+		)
+		and roleState = '1'
+	</select>
 
 </mapper>

@@ -30,11 +30,11 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.express.model.DeliveryEntity;
+import com.card.manager.factory.express.service.ExpressService;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
-import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
-import com.card.manager.factory.order.model.UserDetail;
 import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.pojo.ExpressMaintenanceBO;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
@@ -55,6 +55,9 @@ public class OrderMngController extends BaseController {
 
 	@Resource
 	OrderService orderService;
+	
+	@Resource
+	ExpressService expressService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -89,7 +92,6 @@ public class OrderMngController extends BaseController {
 		return forword("order/stockout/list", context);
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, OrderInfo pagination) {
@@ -489,6 +491,8 @@ public class OrderMngController extends BaseController {
 			String orderId = req.getParameter("orderId");
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
+			List<DeliveryEntity> deliveryList = expressService.getAllDeliveryInfo();
+			context.put("deliveryList", deliveryList);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for (SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {

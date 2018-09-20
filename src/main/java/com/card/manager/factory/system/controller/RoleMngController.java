@@ -152,7 +152,7 @@ public class RoleMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 
-		List<RoleEntity> roleList = roleMngService.queryAll();
+		List<RoleEntity> roleList = roleMngService.queryAllRole();
 
 		List<RoleEntity> roleTree = RoleCommon.treeRole(roleList, opt.getRoleId());
 		context.put("roleTree", roleTree);

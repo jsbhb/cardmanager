@@ -56,6 +56,7 @@ public class RoleCommon {
 					parent.setChildren(temp);
 				} else {
 					parent.getChildren().add(role);
+					addChild(role, roleList);
 				}
 			}
 		}

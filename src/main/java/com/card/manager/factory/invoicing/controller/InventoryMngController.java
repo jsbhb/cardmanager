@@ -396,7 +396,11 @@ public class InventoryMngController extends BaseController {
 			}
 			inventoryService.maintainStock(stocks, staffEntity);
 		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			if ("java.lang.NumberFormatException".equals(e.getClass().getName())) {
+				sendFailureMessage(resp, "操作失败：请确认文档的数据是否正确！");
+			} else {
+				sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			}
 			return;
 		}
 

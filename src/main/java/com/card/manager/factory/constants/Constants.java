@@ -266,4 +266,7 @@ public class Constants {
 	public static final String CUSTOMER_TYPE_SUPPLIER = "0";
 	public static final String CUSTOMER_TYPE_CENTER = "1";
 	public static final String CUSTOMER_WARNING_MONEY = "3000";
+	
+	//Socket客户端线程池内线程的数量
+	public static final int CLIENT_THREAD_NUMBER = 10;
 }

@@ -48,6 +48,8 @@ public interface RoleMapper<T> extends BaseMapper<T>{
 	 */
 	List<T> queryNormal();
 	
+	List<T> queryAll();
+	
 	/**
 	 * 
 	 * insert:插入. <br/>   
@@ -104,6 +106,10 @@ public interface RoleMapper<T> extends BaseMapper<T>{
 	 * @since JDK 1.7  
 	 */
 	void updateByGradeTypeId(GradeTypeRole role);
+
+	String getSubRoleIdList(int roleId);
+	
+	List<T> checkRoleInfoByIds(List<String> ids);
 
 
 }
