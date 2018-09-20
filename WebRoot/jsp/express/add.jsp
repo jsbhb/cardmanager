@@ -114,6 +114,11 @@
 		if($("#post .active").attr("data-id") == '0'){
 			initTable(list);
 		}
+		jsonStr = '${template.ruleBindList}';
+		if(isJSON(jsonStr)){
+			list = $.parseJSON(jsonStr);
+		}
+		initRuleTable(list);
 	});
 		
 		var status = true;
@@ -175,6 +180,11 @@
 			formData["supplierId"] = $("#supplierId option:selected").val();
 			formData["templateName"] = $("#templateName").val();
 			
+			var description = new Array()
+			$("#ruleTable tbody").find("tr").each(function(){
+				description.push($(this).children("td").eq(1).text());
+			})
+			formData["ruleName"] = description.join(",");
 			var array = new Array();
 			$("[id=province]").each(function(){
 				var express = {};
@@ -185,7 +195,40 @@
 				express["heavyFee"] = $(this).parent().next().next().next().find("#heavyFee").val();
 				array.push(express);
 			})
+			var ruleBindList = new Array();
+			$("#ruleTable tbody").find("tr").each(function(){
+				var ruleBind = {};
+				ruleBind["id"] = $(this).children("td").eq(0).text();
+				ruleBind["ruleId"] = $(this).children("td").eq(1).find("input").val();
+				ruleBind["paramId"] = $(this).children("td").eq(2).find("input").val();
+				ruleBindList.push(ruleBind);
+			})
 			formData["expressList"] = array;
+			formData["ruleBindList"] = ruleBindList;
+		}
+		
+		function initRuleTable(list){
+			var str = "";
+			if(list != null && list.length > 0){
+				str = "<h4 style='text-align:center' id = 'ruleTitle'>规则列表</h4>"
+				str += "<table id=\"ruleTable\" class=\"table table-hover myClass\">";
+				str += "<thead><tr>";
+				str += "<th width=\"10%\">编号</th>";
+				str += "<th width=\"35%\">规则描述</th>";
+				str += "<th width=\"35%\">规则参数</th>";
+				str += "<th width=\"20%\">操作</th>";
+				str += "</tr></thead><tbody>";
+				for (var i = 0; i < list.length; i++){
+					str += "<tr><td>"+list[i].id+"</td>"
+					str += "<td>"+list[i].description+"<input type='hidden' value='"+list[i].ruleId+"'/></td>";
+					str += "<td>"+list[i].param+"<input type='hidden' value='"+list[i].paramId+"'/></td>";
+					str += "<td><a href='javascript:void(0);' onclick='toDel(this,"+list[i].id+")' >删除</a></td></tr>";
+				}
+				str += "</tbody></table>";
+			} 
+			str += "<div id =\"addRule\" style='margin-top:20px'><a class=\"addBtn\" href=\"javascript:void(0);\" onclick=\"toAddRule()\">新增规则</a></div>";
+
+			$(".submit-btn:last").before(str);
 		}
 
 		function valid() {
@@ -200,7 +243,7 @@
 			}
 			$('[id=province]').each(function() {
 				temp = $(this).text().trim();
-				if (temp == null || temp == '' || temp == 'undefined') {
+				if (temp == null || temp == '' || temp == undefined) {
 					layer.alert("请选择省份");
 					flag = false
 					return flag;
@@ -425,6 +468,82 @@
 		        }
 		    }
 		    return false;
+		}
+		
+		function toDel(temp,id){
+			if(id != null && id != '' && id != "undefined"){
+				$.ajax({
+					 url:"${wmsUrl}/admin/expressMng/delRule.shtml?id="+id,
+					 type:'post',
+					 contentType: "application/json; charset=utf-8",
+					 dataType:'json',
+					 success:function(data){
+						 if(data.success){	
+							 $(temp).parent().parent().remove();
+							 var table =document.getElementById("ruleTable");
+							 var rows = table.rows.length;
+							 if(rows <=1){
+								 $("#ruleTable").remove();
+								 $("#ruleTitle").remove();
+							 }
+						 }else{
+							 layer.alert(data.msg);
+						 }
+					 },
+					 error:function(){
+						 layer.alert("删除失败，请联系客服处理");
+					 }
+				 });
+			}else{
+				$(temp).parent().parent().remove();
+				var table =document.getElementById("ruleTable");
+				 var rows = table.rows.length;
+				 if(rows <=1){
+					 $("#ruleTable").remove();
+					 $("#ruleTitle").remove();
+				 }
+			}
+		}
+		
+		function toAddRule(){
+			var ids = new Array();
+			$("#ruleTable tbody").find("tr").each(function(){
+				var id = $(this).children("td").eq(1).find("input").val();
+				ids.push(id);
+			})
+			var index = layer.open({
+				  title:"绑定规则",		
+				  type: 2,
+				  area: ['55%','65%'],
+				  content: '${wmsUrl}/admin/expressMng/bindRule.shtml?id='+ids.join(","),
+				  maxmin: false
+				});
+		}
+		
+		function addRule(obj){
+			var str = "";
+			if($("#ruleTable").length > 0){
+				str += "<tr><td></td>"
+				str += "<td>"+obj.description+"<input type='hidden' value='"+obj.ruleId+"'/></td>";
+				str += "<td>"+obj.param+"<input type='hidden' value='"+obj.paramId+"'/></td>";
+				str += "<td><a href='javascript:void(0);' onclick='toDel(this,"+obj.id+")' >删除</a></td></tr>";
+				$("#ruleTable tbody").children("tr:last").after(str);
+			} else {
+				str = "<h4 style='text-align:center' id = 'ruleTitle'>规则列表</h4>"
+				str += "<table id=\"ruleTable\" class=\"table table-hover myClass\">";
+				str += "<thead><tr>";
+				str += "<th width=\"10%\">编号</th>";
+				str += "<th width=\"35%\">规则描述</th>";
+				str += "<th width=\"35%\">规则参数</th>";
+				str += "<th width=\"20%\">操作</th>";
+				str += "</tr></thead><tbody>";
+				str += "<tr><td></td>"
+				str += "<td>"+obj.description+"<input type='hidden' value='"+obj.ruleId+"'/></td>";
+				str += "<td>"+obj.param+"<input type='hidden' value='"+obj.paramId+"'/></td>";
+				str += "<td><a href='javascript:void(0);' onclick='toDel(this,"+obj.id+")' >删除</a></td></tr>";
+				str += "</tbody></table>";
+				$("#addRule:last").before(str);
+			}
 		}
 	</script>
 </body>

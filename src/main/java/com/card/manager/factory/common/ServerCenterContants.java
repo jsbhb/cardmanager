@@ -396,6 +396,14 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/express/template/list";
 	public static final String ORDER_CENTER_POST_EXPRESS_DELETE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/express/template/express-fee/{id}";
+	public static final String ORDER_CENTER_POST_EXPRESS_DELETE_RULEBIND = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rulebind/{id}";
+	public static final String ORDER_CENTER_POST_EXPRESS_RULE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rule";
+	public static final String ORDER_CENTER_POST_EXPRESS_RULE_PARAM = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rule/param/{id}";
+	public static final String ORDER_CENTER_POST_EXPRESS_RULE_PARAM_SAVE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rule/param";
 
 	/*------------------------商城管理-----------------------*/
 	public static final int PC = 0;
