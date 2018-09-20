@@ -18,7 +18,7 @@ package com.card.manager.factory.common;
  */
 public class ResourceContants {
 
-//	public static final String RESOURCE_BASE_PATH = "/opt/static";
+	public static final String RESOURCE_BASE_PATH = "/opt/static";
 	public static final String CMS = "cms";
 	public static final String IMAGE = "images";
 	public static final String GRADE = "grade";
@@ -30,5 +30,5 @@ public class ResourceContants {
 	public static final String DETAIL = "detail";
 	public static final String SOCKET_SERVER_IP = "192.168.2.159";
 	public static final Integer SOCKET_SERVER_PORT = 10086;
-	public static final String RESOURCE_BASE_PATH = "E:\\socketserver";
+//	public static final String RESOURCE_BASE_PATH = "E:\\socketserver";
 }
