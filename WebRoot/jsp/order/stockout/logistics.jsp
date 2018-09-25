@@ -56,6 +56,16 @@
 					<input type="text" class="form-control" readonly name="createTime" value="${order.createTime}">
 				</div>
 			</div>
+	       	<div class="list-item" style="display: none;">
+				<div class="col-sm-3 item-left">快递公司</div>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="deliveryList" id="deliveryList">
+				       	<c:forEach var="delivery" items="${deliveryList}">
+					       	<option value="${delivery.deliveryCode}">${delivery.deliveryName}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">订单来源</div>
 				<div class="col-sm-9 item-right">
@@ -127,30 +137,11 @@
 	
 	$("#newLogisticsBtn").click(function(){
 		var ht = '<div class="list-item"><div class="col-sm-3 item-left">快递公司</div><div class="col-sm-9 item-right"><select class="form-control" name="expressNameK">';
-		ht = ht + '<option value="SF">顺丰速运</option>';
-		ht = ht + '<option value="HTKY">百世快递</option>';
-		ht = ht + '<option value="ZTO">中通快递</option>';
-		ht = ht + '<option value="STO">申通快递</option>';
-		ht = ht + '<option value="YTO">圆通速递</option>';
-		ht = ht + '<option value="YD">韵达速递</option>';
-		ht = ht + '<option value="EMS">EMS</option>';
-		ht = ht + '<option value="HHTT">天天快递</option>';
-		ht = ht + '<option value="QFKD">全峰快递</option>';
-		ht = ht + '<option value="GTO">国通快递</option>';
-		ht = ht + '<option value="UC">优速快递</option>';
-		ht = ht + '<option value="DBL">德邦</option>';
-		ht = ht + '<option value="YXHY">源星货运</option>';
-		ht = ht + '<option value="ANE">安能物流</option>';
-		ht = ht + '<option value="JXWL">家馨物流</option>';
-		ht = ht + '<option value="YPFL">洋浦物流</option>';
-		ht = ht + '<option value="FXTK">福兴特快</option>';
-		ht = ht + '<option value="SSFX">盛世风行</option>';
-		ht = ht + '<option value="JD">京东物流</option>';
-		ht = ht + '<option value="YCWL">远成物流</option>';
-		ht = ht + '<option value="ZJS">宅急送</option>';
-		ht = ht + '<option value="CGWL">诚冠物流</option>';
-		ht = ht + '<option value="WCWL">旺成物流</option>';
-		ht = ht + '<option value="OTHER">其他</option>';
+		var deliverySelect = document.getElementById("deliveryList");
+		var doptions = deliverySelect.options;
+		for(var j=0;j<doptions.length;j++){
+			ht = ht + '<option value="'+doptions[j].value+'">'+doptions[j].text+'</option>';
+		}
 		ht = ht + '</select></div></div>';
 		ht = ht + '<div class="list-item"><div class="col-sm-3 item-left">快递单号</div><div class="col-sm-9 item-right"><input type="text" class="form-control" name="expressIdV"></div></div>';
 		$('#logisticsInfo').append(ht);

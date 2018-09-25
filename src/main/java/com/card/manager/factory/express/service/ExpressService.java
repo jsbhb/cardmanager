@@ -1,12 +1,16 @@
 package com.card.manager.factory.express.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.express.model.DeliveryEntity;
 import com.card.manager.factory.express.model.ExpressRule;
 import com.card.manager.factory.express.model.ExpressTemplateBO;
 import com.card.manager.factory.express.model.RuleParameter;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.github.pagehelper.Page;
 
 public interface ExpressService extends ServerCenterService{
 
@@ -25,4 +29,24 @@ public interface ExpressService extends ServerCenterService{
 	List<RuleParameter> listRuleParam(StaffEntity staffEntity, Integer id, String param);
 
 	void addRuleParam(StaffEntity staffEntity, RuleParameter ruleParameter);
+	
+	/**
+	 * 
+	 * dataList:分页查询. <br/>
+	 * 
+	 * @author hebin
+	 * @param pagination
+	 * @param params
+	 * @return
+	 * @since JDK 1.7
+	 */
+	Page<DeliveryEntity> deliveryDataList(Pagination pagination, Map<String, Object> params);
+	
+	DeliveryEntity queryDeliveryInfoById(String id);
+
+	void saveDelivery(DeliveryEntity entity);
+
+	void updateDelivery(DeliveryEntity entity);
+	
+	List<DeliveryEntity> getAllDeliveryInfo();
 }

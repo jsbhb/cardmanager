@@ -254,5 +254,7 @@ public interface GoodsService extends ServerCenterService {
 	void syncRatioGoodsInfo(List<GoodsPriceRatioEntity> list, StaffEntity staffEntity) throws Exception;
 	
 	GoodsEntity queryGoodsInfoByGoodsId(String goodsId, String token);
+	
+	List<String> queryGoodsIdByItemCode(String itemCode, String token);
 
 }

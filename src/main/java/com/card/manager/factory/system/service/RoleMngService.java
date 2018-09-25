@@ -46,6 +46,8 @@ public interface RoleMngService {
 	 * @since JDK 1.7
 	 */
 	List<RoleEntity> queryAll();
+	
+	List<RoleEntity> queryAllRole();
 
 	/**  
 	 * queryById:根据Id查询角色实体类. <br/>   

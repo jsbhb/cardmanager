@@ -309,7 +309,10 @@ public class CapitalPoolMng extends BaseController {
 				param.put("customerId", entity.getCustomerId().toString());
 				param.put("customerType", entity.getCustomerType().toString());
 				CapitalManagement capitalManagement = financeMngService.queryCapitalManagementByCustomerId(param);
-				if (capitalManagement.getMoney() - entity.getMoney() < 0) {
+				if (capitalManagement == null) {
+					sendFailureMessage(resp, "操作失败：客户：" + entity.getCustomerName() + "可用金额(0)小于本次消费金额(" + entity.getMoney() + ")");
+					return;
+				} else if (capitalManagement.getMoney() - entity.getMoney() < 0) {
 					sendFailureMessage(resp, "操作失败：客户：" + entity.getCustomerName() + "可用金额("
 							+ capitalManagement.getMoney() + ")小于本次消费金额(" + entity.getMoney() + ")");
 					return;

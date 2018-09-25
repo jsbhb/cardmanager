@@ -17,9 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.express.model.DeliveryEntity;
 import com.card.manager.factory.express.model.ExpressRule;
 import com.card.manager.factory.express.model.ExpressTemplateBO;
 import com.card.manager.factory.express.model.RuleParameter;
@@ -27,6 +29,8 @@ import com.card.manager.factory.express.service.ExpressService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.SessionUtils;
+import com.card.manager.factory.util.StringUtil;
+import com.github.pagehelper.Page;
 
 @Controller
 @RequestMapping("/admin/expressMng")
@@ -220,6 +224,94 @@ public class ExpressMngController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			sendFailureMessage(res, e.getMessage());
+		}
+	}
+	
+	@RequestMapping("/deliveryList")
+	public ModelAndView deliveryList(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> context = getRootMap();
+		return forword("express/delivery/list", context);
+	}
+
+	@RequestMapping("/deliveryDataList")
+	@ResponseBody
+	public PageCallBack deliveryDataList(HttpServletRequest req, HttpServletResponse res, Pagination pagination) {
+		PageCallBack pcb = null;
+		try {
+			Page<DeliveryEntity> page = null;
+			Map<String, Object> params = new HashMap<String, Object>();
+			String deliveryName = req.getParameter("deliveryName");
+			String hidDeliveryName = req.getParameter("hidDeliveryName");
+			String deliveryCode = req.getParameter("deliveryCode");
+			String status = req.getParameter("status");
+			if (!StringUtil.isEmpty(deliveryName)) {
+				params.put("deliveryName", deliveryName);
+			}
+			if (!StringUtil.isEmpty(hidDeliveryName)) {
+				params.put("deliveryName", hidDeliveryName);
+			}
+			if (!StringUtil.isEmpty(deliveryCode)) {
+				params.put("deliveryCode", deliveryCode);
+			}
+			if (!StringUtil.isEmpty(status)) {
+				params.put("status", status);
+			}
+			page = expressService.deliveryDataList(pagination, params);
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setObj(page);
+			pcb.setSuccess(true);
+			pcb.setPagination(webPageConverter(page));
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			sendFailureMessage(res, "操作失败：" + e.getMessage());
+			return pcb;
+		}
+
+		return pcb;
+	}
+
+	@RequestMapping("/toEditDelivery")
+	public ModelAndView toEditDelivery(HttpServletRequest req, HttpServletResponse res) {
+		Map<String, Object> context = getRootMap();
+		String id = req.getParameter("id");
+		if (id != null) {
+			DeliveryEntity info = expressService.queryDeliveryInfoById(id);
+			context.put("info", info);
+			return forword("express/delivery/edit", context);
+		}
+
+		return forword("express/delivery/add", context);
+	}
+
+	@RequestMapping("/toSaveDelivery")
+	public void toSaveDelivery(HttpServletRequest req, HttpServletResponse res, @RequestBody DeliveryEntity entity) {
+		try {
+			StaffEntity staffEntity = SessionUtils.getOperator(req);
+			entity.setOpt(staffEntity.getOptName());
+			expressService.saveDelivery(entity);
+			sendSuccessMessage(res, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(res, "系统出现异常，请联系技术");
+		}
+	}
+
+	@RequestMapping("/toUpdateDelivery")
+	public void toUpdateDelivery(HttpServletRequest req, HttpServletResponse res, @RequestBody DeliveryEntity entity) {
+		try {
+			StaffEntity staffEntity = SessionUtils.getOperator(req);
+			entity.setOpt(staffEntity.getOptName());
+			expressService.updateDelivery(entity);
+			sendSuccessMessage(res, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(res, "系统出现异常，请联系技术");
 		}
 	}
 }

@@ -564,8 +564,14 @@ function queryDataByLabelTouch(typeId,categoryId,tabId){
 // }
 
 function modelExport(type){
+	var showTitle = "";
+	if (type == 3) {
+		showTitle = "商品报价单导出";
+	} else {
+		showTitle = "商品信息导出";
+	}
 	var index = layer.open({
-  	  title:"商品报价单导出",		
+  	  title: showTitle,		
   	  type: 2,
   	  area: ['70%','80%'],
   	  content: '${wmsUrl}/admin/goods/itemMng/toExport.shtml?type='+type,

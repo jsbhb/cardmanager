@@ -25,4 +25,10 @@ public class ResourceContants {
 	public static final String MSHOP = "shop";
 	public static final String HTML = "html";
 	public static final String HTML_SUFFIX = ".html";
+	public static final String GOODS = "goods";
+	public static final String MASTER = "master";
+	public static final String DETAIL = "detail";
+	public static final String SOCKET_SERVER_IP = "192.168.2.159";
+	public static final Integer SOCKET_SERVER_PORT = 10086;
+//	public static final String RESOURCE_BASE_PATH = "E:\\socketserver";
 }

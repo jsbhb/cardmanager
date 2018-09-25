@@ -10,6 +10,7 @@ package com.card.manager.factory.goods.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.net.ssl.HttpsURLConnection;
 import javax.script.ScriptException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -137,10 +137,28 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Override
 	public String getHtmlContext(String html, StaffEntity staffEntity) throws Exception {
-		String tmpIp = html.substring(html.indexOf("//") + 2, html.lastIndexOf(":"));
-		html = html.replace(tmpIp, URLUtils.get("LanIp"));
-		Document doc = Jsoup.parse(new URL(html), 3000);
-		return htmlToCode(doc.toString());
+//		String tmpIp = html.substring(html.indexOf("//") + 2, html.lastIndexOf(":"));
+//		html = html.replace(tmpIp, URLUtils.get("LanIp"));
+//		Document doc = Jsoup.parse(new URL(html), 3000);
+		
+		String htmlContext = "";
+		// 创建URL对象
+        URL myURL = new URL(html);
+        // 创建HttpsURLConnection对象，并设置其SSLSocketFactory对象
+        HttpsURLConnection httpsConn = (HttpsURLConnection) myURL.openConnection();
+        // 取得该连接的输入流，以读取响应内容
+        InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream());
+        // 读取服务器的响应内容并显示
+        int respInt = insr.read();
+        while (respInt != -1) {
+        	htmlContext = htmlContext + (char) respInt;
+//            System.out.print((char) respInt);
+            respInt = insr.read();
+        }
+        insr.close();
+		
+		return htmlContext;
+//		return htmlToCode(doc.toString());
 	}
 
 	private String htmlToCode(String context) {
@@ -1608,6 +1626,27 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), GoodsEntity.class);
+	}
+
+	@Override
+	public List<String> queryGoodsIdByItemCode(String itemCode, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE, token, true,
+				itemCode, HttpMethod.POST);
+		
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		
+		if (index == 0) {
+			return null;
+		}
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < index; i++) {
+			list.add(obj.get(i).toString());
+		}
+		return list;
 	}
 
 }

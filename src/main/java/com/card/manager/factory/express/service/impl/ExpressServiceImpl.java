@@ -5,13 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
+import com.card.manager.factory.express.mapper.ExpressMapper;
+import com.card.manager.factory.express.model.DeliveryEntity;
 import com.card.manager.factory.express.model.ExpressFee;
 import com.card.manager.factory.express.model.ExpressRule;
 import com.card.manager.factory.express.model.ExpressRuleBind;
@@ -21,6 +26,8 @@ import com.card.manager.factory.express.service.ExpressService;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,6 +35,9 @@ import net.sf.json.JSONObject;
 @Service
 public class ExpressServiceImpl extends AbstractServcerCenterBaseService implements ExpressService {
 
+	@Resource
+	ExpressMapper<DeliveryEntity> expressMapper;
+	
 	@Override
 	public void enable(StaffEntity staffEntity, Integer id) {
 		RestCommonHelper helper = new RestCommonHelper();
@@ -213,4 +223,29 @@ public class ExpressServiceImpl extends AbstractServcerCenterBaseService impleme
 		}
 	}
 
+	@Override
+	public Page<DeliveryEntity> deliveryDataList(Pagination pagination, Map<String, Object> params) {
+		PageHelper.startPage(pagination.getCurrentPage(), pagination.getNumPerPage(), true);
+		return expressMapper.queryByList(params);
+	}
+	
+	@Override
+	public DeliveryEntity queryDeliveryInfoById(String id) {
+		return expressMapper.queryById(id);
+	}
+	
+	@Override
+	public void saveDelivery(DeliveryEntity entity) {
+		expressMapper.add(entity);
+	}
+	
+	@Override
+	public void updateDelivery(DeliveryEntity entity) {
+		expressMapper.update(entity);
+	}
+	
+	@Override
+	public List<DeliveryEntity> getAllDeliveryInfo() {
+		return expressMapper.queryAllDeliveryInfo();
+	}
 }

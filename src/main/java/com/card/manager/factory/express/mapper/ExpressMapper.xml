@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.card.manager.factory.express.mapper.ExpressMapper">
+	<!-- Result Map -->
+	<resultMap id="delivery" type="com.card.manager.factory.express.model.DeliveryEntity">
+		<id column="id" property="id" />
+		<result column="delivery_name" property="deliveryName" />
+		<result column="delivery_code" property="deliveryCode" />
+		<result column="status" property="status" />
+		<result column="remark" property="remark" />
+		<result column="updateTime" property="updateTime" />
+		<result column="createTime" property="createTime" />
+		<result column="opt" property="opt" />
+	</resultMap>
+	
+	<select id="queryByList" resultMap="delivery">
+		select * from deliverymanagement
+		where 1=1
+		<if test="id !=0 and id != null">
+			 and id = #{id}
+		</if> 
+		<if test="deliveryName !=null and deliveryName !=''">
+			 and delivery_name like concat('%',#{deliveryName},'%')  
+		</if>
+		<if test="deliveryCode !=null and deliveryCode !=''">
+			 and delivery_code = #{deliveryCode}
+		</if>
+		<if test="status != null">
+			 and status = #{status}
+		</if> 
+		order by create_time desc
+	</select>
+	
+	<select id="queryById" resultMap="delivery">
+		select * from deliverymanagement
+		where 1=1 and id = #{id}
+	</select>
+	
+	<insert id="add" parameterType="object">
+    	insert into deliverymanagement (delivery_name,delivery_code,status,create_time,update_time,opt) 
+    	values (#{deliveryName},#{deliveryCode},#{status},now(),now(),#{opt})
+    </insert>
+	
+	<update id="update" parameterType="object">
+    	update deliverymanagement set delivery_name = #{deliveryName},delivery_code = #{deliveryCode},
+    	status = #{status},update_time = now(),opt = #{opt} where id= #{id}
+    </update>
+	
+	<select id="queryAllDeliveryInfo" resultMap="delivery">
+		select * from deliverymanagement
+		where 1=1 and status = '1'
+		order by id asc
+	</select>
+	
+</mapper>

@@ -266,6 +266,7 @@
 		}
 		$.ajaxFileUpload({
 			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 			url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=grade&key=', //你处理上传文件的服务端
 			secureuri : false,
 			fileElementId : "pic"+id,
 			dataType : 'json',
@@ -295,8 +296,10 @@
 	
 	 $("#submitBtn").click(function(){
 		 if($('#form').data("bootstrapValidator").isValid()){
+			 var tmpPhone = $("#phone").val();
+			 tmpPhone = tmpPhone.replace(/[^0-9]/ig,"");
 			 var reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
-			 if(!reg.test($("#phone").val())) 
+			 if(!reg.test(tmpPhone)) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");
 			     return false; 

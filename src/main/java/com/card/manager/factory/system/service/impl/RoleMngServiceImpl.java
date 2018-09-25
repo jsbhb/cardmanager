@@ -8,6 +8,7 @@
 package com.card.manager.factory.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +71,17 @@ public class RoleMngServiceImpl implements RoleMngService {
 			throw new Exception("角色编号获取有误！");
 		}
 
+		if ("0".equals(role.getRoleState())) {
+			String subRoleList = roleMapper.getSubRoleIdList(role.getRoleId());
+			int index = subRoleList.indexOf(",");
+			index = subRoleList.indexOf(",",index+1);
+			String[] searchIds = subRoleList.substring(index+1).split(",");
+			List<String> ids = Arrays.asList(searchIds);
+			List<RoleEntity> roleList = roleMapper.checkRoleInfoByIds(ids);
+			if (roleList.size() > 0) {
+				throw new Exception("当前角色下存在未停用的角色，请先停用下级角色！");
+			}
+		}
 		roleMapper.update(role);
 		
 		if(needUpdateFunc){
@@ -127,6 +139,11 @@ public class RoleMngServiceImpl implements RoleMngService {
 	@Override
 	public List<RoleEntity> queryAll() {
 		return roleMapper.queryNormal();
+	}
+
+	@Override
+	public List<RoleEntity> queryAllRole() {
+		return roleMapper.queryAll();
 	}
 
 	@Override
