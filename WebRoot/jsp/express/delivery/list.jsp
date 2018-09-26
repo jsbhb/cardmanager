@@ -57,6 +57,7 @@
 		<div class="list-content">
 			<div class="row">
 				<div class="col-md-10 list-btns">
+					<button type="button" onclick="excelModelExport()">下载附件</button>
 					<button type="button" onclick="toEdit(-1)">新增快递</button>
 				</div>
 			</div>
@@ -88,6 +89,9 @@
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 
+function excelModelExport(){
+	window.open("${wmsUrl}/admin/expressMng/downLoadExcel.shtml");
+}
 
 /**
  * 初始化分页信息

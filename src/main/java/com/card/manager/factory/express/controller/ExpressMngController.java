@@ -1,18 +1,23 @@
 package com.card.manager.factory.express.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.base.BaseController;
@@ -28,6 +33,7 @@ import com.card.manager.factory.express.model.RuleParameter;
 import com.card.manager.factory.express.service.ExpressService;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.github.pagehelper.Page;
@@ -312,6 +318,24 @@ public class ExpressMngController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			sendFailureMessage(res, "系统出现异常，请联系技术");
+		}
+	}
+	
+	@RequestMapping(value = "/downLoadExcel", method = RequestMethod.GET)
+	public void downLoadExcel(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		try {
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+
+			String fileName = "expressModel.xlsx";
+			String filePath = servletContext.getRealPath("/") + "WEB-INF/classes/" + fileName;
+
+			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
+		} catch (Exception e) {
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
+			return;
 		}
 	}
 }
