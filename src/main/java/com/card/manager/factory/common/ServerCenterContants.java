@@ -370,7 +370,7 @@ public class ServerCenterContants {
 	public static final String ORDER_CENTER_CACHE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/cache?gradeId={gradeId}&dataType={dataType}&time={time}&modelType={modelType}";
 	public static final String ORDER_CENTER_QUERY_ORDERLISTFORDOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}&type={type}";
+			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}&type={type}&exportType={exportType}";
 	public static final String ORDER_CENTER_MAINTENANCEEXPRESS = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/maintenance/express";
 	public static final String ORDER_CENTER_SENDSTOCKINGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")

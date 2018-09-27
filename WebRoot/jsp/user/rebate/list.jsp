@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resourceLink.jsp"%>
+<script src="${wmsUrl}/plugins/laydate/laydate.js"></script>
 </head>
 
 <body>
@@ -22,6 +23,7 @@
 		      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" value = "${list[0].name}">
 				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+		      	<div class="moreSearchBtn">高级搜索</div>
 			  </div>
 			  <c:if test="${prilvl == 1}">
 		      	<button class="default-btn position-btn" type="button" onclick="excelExport(0)">订单导出</button>
@@ -39,6 +41,52 @@
        	<section class="content-iframe content">
        		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+			</div>
+			<div class="moreSearchContent">
+				<div class="row form-horizontal list-content">
+					<div class="col-xs-3">
+						<div class="searchItem">
+				            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value = "${list[0].name}">
+							<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
+						</div>
+					</div>
+					<div class="col-xs-3">
+							<div class="searchItem">
+								<input type="text" class="form-control" name="orderId" placeholder="请输入订单号">
+							</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+				            <select class="form-control" name="orderFlag" id="orderFlag">
+		                   	  <option selected="selected" value="">订单类型</option>
+		                   	  <option value="0">跨境</option>
+		                   	  <option value="2">一般贸易</option>
+			                </select>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+				            <select class="form-control" name="status" id="status">
+		                   	  <option selected="selected" value="">订单状态</option>
+		                   	  <option value="0">待到账</option>
+		                   	  <option value="1">已到账</option>
+		                   	  <option value="2">已退款</option>
+			                </select>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+							<input type="text" class="chooseTime" id="searchTime" name="searchTime" placeholder="请选择查询时间" readonly>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchBtns">
+							 <div class="lessSearchBtn">简易搜索</div>
+	                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+	                         <button type="button" class="clear">清除选项</button>
+	                    </div>
+                	</div>
+				</div>
 			</div>
 			<div class="default-content">
 				<div class="today-orders">
@@ -185,7 +233,7 @@
 	});
 	
 	//点击展开下拉列表
-	$('#gradeName').click(function(){
+	$("[id='gradeName']").click(function(){
 		$('.select-content').css('width',$(this).outerWidth());
 		$('.select-content').css('left',$(this).offset().left);
 		$('.select-content').css('top',$(this).offset().top + $(this).height());
@@ -207,8 +255,8 @@
 		if(el.nodeName != 'I'){
 			var name = $(this).attr('data-name');
 			var id = $(this).attr('data-id');
-			$('#gradeName').val(name);
-			$('#gradeId').val(id);
+			$("[id='gradeName']").val(name);
+			$("[id='gradeId']").val(id);
 			$('.select-content').stop();
 			$('.select-content').slideUp(300);
 		}
@@ -252,6 +300,12 @@
 		  maxmin: false
 		});
 	}
+	laydate.render({
+	    elem: '#searchTime', //指定元素
+	    type: 'datetime',
+	    range: '~',
+	    value: null
+	  });
 	</script>
 </body>
 </html>

@@ -108,6 +108,15 @@ public class RebateMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
 		Integer gradeId = pagination.getGradeId();
+		if (gradeId == null) {
+			gradeId = staffEntity.getGradeId();
+		}
+		String searchTime = req.getParameter("searchTime");
+		if (!StringUtil.isEmpty(searchTime)) {
+			String[] times = searchTime.split("~");
+			pagination.setCreateTime(times[0].trim());
+			pagination.setUpdateTime(times[1].trim());
+		}
 		Rebate rebate = financeMngService.queryRebate(gradeId, staffEntity.getToken());
 		if (rebate.getCanBePresented() != null) {
 			rebate.setCanBePresented(CalculationUtils.round(2, Double.valueOf(rebate.getCanBePresented())));
@@ -117,6 +126,9 @@ public class RebateMngController extends BaseController {
 		}
 		if (rebate.getStayToAccount() != null) {
 			rebate.setStayToAccount(CalculationUtils.round(2, Double.valueOf(rebate.getStayToAccount())));
+		}
+		if (pagination.getGradeId() == null) {
+			pagination.setGradeId(gradeId);
 		}
 		try {
 			pcb = financeMngService.dataList(pagination, params, staffEntity.getToken(),
@@ -390,6 +402,17 @@ public class RebateMngController extends BaseController {
 		String type = req.getParameter("type");
 		context.put("supplierId", CachePoolComponent.getSupplier(opt.getToken()));
 		context.put("type", type);
+		// 分级信息
+		Integer gradeId = opt.getGradeId();
+		List<GradeBO> list = new ArrayList<GradeBO>();
+		List<GradeBO> result = new ArrayList<>();
+		Map<Integer, GradeBO> map = CachePoolComponent.getGrade(opt.getToken());
+		for (Map.Entry<Integer, GradeBO> entry : map.entrySet()) {
+			list.add(entry.getValue());
+		}
+		result = TreePackUtil.packGradeChildren(list, gradeId);
+		Collections.sort(result);
+		context.put("list", result);
 		return forword("user/rebate/excelExport", context);
 	}
 
@@ -417,10 +440,15 @@ public class RebateMngController extends BaseController {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("startTime", startTime);
 			param.put("endTime", endTime);
-			param.put("gradeId", staffEntity.getGradeId());
+			String gradeId = req.getParameter("gradeId");
+			if (gradeId == null) {
+				gradeId = staffEntity.getGradeId() + "";
+			}
+			param.put("gradeId", gradeId);
 			param.put("supplierId", supplierId);
+			param.put("type", type);
+			param.put("exportType", req.getParameter("exportType"));
 			if (ORDER_EXPORT.equals(type)) {
-				param.put("type", type);
 				List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
 				ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());
 
@@ -582,7 +610,6 @@ public class RebateMngController extends BaseController {
 				FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
 			}
 			if (REBATE_EXPORT.equals(type)) {
-				param.put("type", type);
 				financeMngService.exportRebate(req, resp, param, staffEntity);
 			}
 		} catch (Exception e) {
