@@ -75,13 +75,13 @@ public class OrderImportBO {
 				conversion = null;
 			}
 		}
-		if (!RegularUtil.isPhone(receivePhone)) {
-			return false;
-		}
+//		if (!RegularUtil.isPhone(receivePhone)) {
+//			return false;
+//		}
 		if (!"".equals(phone)) {
-			if (!RegularUtil.isPhone(phone)) {
-				return false;
-			}
+//			if (!RegularUtil.isPhone(phone)) {
+//				return false;
+//			}
 		}
 		if (!"".equals(idNum)) {
 			if (!RegularUtil.isIdentify(idNum)) {
