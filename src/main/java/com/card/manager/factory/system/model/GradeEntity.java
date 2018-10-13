@@ -102,6 +102,8 @@ public class GradeEntity extends Pagination{
 	
 	private Integer welfareType;
 	
+	private String badge;
+	
 	public String getAppKey() {
 		return appKey;
 	}
@@ -447,6 +449,14 @@ public class GradeEntity extends Pagination{
 
 	public void setWelfareType(Integer welfareType) {
 		this.welfareType = welfareType;
+	}
+
+	public String getBadge() {
+		return badge;
+	}
+
+	public void setBadge(String badge) {
+		this.badge = badge;
 	}
 
 }

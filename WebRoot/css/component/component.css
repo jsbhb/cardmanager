@@ -102,7 +102,10 @@ span.table_icon{
 	font-size: 12px;
 	color: #e31436;
 }
-
+.cursor-pointer,
+.cursor-pointer:hover{
+	cursor: pointer;
+}
 
 
 

@@ -14,7 +14,21 @@ public class ExpressTemplateBO extends Pagination{
 	private Integer freeTax;
 	private Integer enable;
 	private List<ExpressFee> expressList;
+	private List<ExpressRuleBind> ruleBindList;
 	private String opt;
+	private String ruleName;
+	public String getRuleName() {
+		return ruleName;
+	}
+	public void setRuleName(String ruleName) {
+		this.ruleName = ruleName;
+	}
+	public List<ExpressRuleBind> getRuleBindList() {
+		return ruleBindList;
+	}
+	public void setRuleBindList(List<ExpressRuleBind> ruleBindList) {
+		this.ruleBindList = ruleBindList;
+	}
 	public String getOpt() {
 		return opt;
 	}

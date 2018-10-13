@@ -155,7 +155,7 @@
 								<th>物流单号</th>
 								<th>供应商</th>
 								<th>支付总金额</th>
-								<th>消费者</th>
+								<th>收货人</th>
 								<th>订单类型</th>
 								<th>订单来源</th>
 								<th>所属分级</th>
@@ -275,7 +275,8 @@ function rebuildTable(data){
 		str += "</td><td>" + expressId;
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
-		str += "</td><td>" + (list[i].customerName == null ? "" : list[i].customerName);
+		str += "</td><td>" + (list[i].orderDetail.receiveName == null ? "" : list[i].orderDetail.receiveName);
+// 		str += "</td><td>" + (list[i].customerName == null ? "" : list[i].customerName);
 		switch(orderFlag){
 			case 0:str += "</td><td>跨境";break;
 			case 1:str += "</td><td>大贸";break;

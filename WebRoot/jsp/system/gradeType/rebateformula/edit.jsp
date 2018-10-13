@@ -43,11 +43,11 @@
 		 $('#form').data("bootstrapValidator").validate();
 		 if($('#form').data("bootstrapValidator").isValid()){
 			 var formula = $("#formula").val();
-			 var reg = /^rebate\s*[\+\-\*\/]\s*\d+(\.\d+)?$/;
-			 if(!reg.test(formula)){
-				 layer.alert("请确认公式是否正确");
-				 return 
-			 }
+// 			 var reg = /^rebate\s*[\+\-\*\/]\s*\d+(\.\d+)?$/;
+// 			 if(!reg.test(formula)){
+// 				 layer.alert("请确认公式是否正确");
+// 				 return 
+// 			 }
 			 var gradeTypeId = $("#gradeTypeId").val();
 			 var id = $("#id").val();
 			 var obj = {};

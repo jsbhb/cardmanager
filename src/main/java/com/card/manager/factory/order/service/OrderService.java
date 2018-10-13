@@ -17,6 +17,7 @@ import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.order.model.OperatorEntity;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
+import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -83,4 +84,6 @@ public interface OrderService extends ServerCenterService {
 	void sendStockInGoodsInfoToMJYByOrderId(String orderId, StaffEntity staff) throws Exception;
 
 	void sendStockOutGoodsInfoToMJYByOrderId(String orderId, StaffEntity staff) throws Exception;
+	
+	UserInfo queryUserInfoByUserId(String userId, String token);
 }

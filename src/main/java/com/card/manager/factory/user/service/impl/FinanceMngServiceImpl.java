@@ -7,18 +7,25 @@
  */
 package com.card.manager.factory.user.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.base.Pagination;
@@ -37,12 +44,17 @@ import com.card.manager.factory.finance.model.CapitalOverviewModel;
 import com.card.manager.factory.finance.model.CapitalPoolDetail;
 import com.card.manager.factory.finance.model.Refilling;
 import com.card.manager.factory.finance.model.Withdrawals;
+import com.card.manager.factory.log.LogUtil;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.mapper.FinanceMapper;
 import com.card.manager.factory.user.model.CardEntity;
 import com.card.manager.factory.user.model.Rebate;
+import com.card.manager.factory.user.model.RebateDownload;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
+import com.card.manager.factory.util.DateUtil;
+import com.card.manager.factory.util.ExcelUtil;
+import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.JSONUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
@@ -480,11 +492,98 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 			throw new RuntimeException("没有分级对象");
 		}
 		ResponseEntity<String> result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_ADD_CAPITALPOOL, token, true,
-				entity, HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_ADD_CAPITALPOOL, token, true, entity,
+				HttpMethod.POST);
 		JSONObject json = JSONObject.fromObject(result.getBody());
 		if (!json.getBoolean("success")) {
 			throw new RuntimeException(json.get("errorMsg") + "");
 		}
+	}
+
+	@Override
+	public void exportRebate(HttpServletRequest req, HttpServletResponse resp, Map<String, Object> param,
+			StaffEntity staffEntity) {
+		//获取要下载的数据
+		List<RebateDownload> list = listDownLoadModel(param, staffEntity);
+		//生成excel并下载
+		try {
+			createExcelAndDownLoad(req, resp, staffEntity, list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("生成excel出错");
+		}
+	}
+
+	private void createExcelAndDownLoad(HttpServletRequest req, HttpServletResponse resp, StaffEntity staffEntity,
+			List<RebateDownload> list) throws Exception, IOException {
+		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+		ServletContext servletContext = webApplicationContext.getServletContext();
+
+		String fileName = "rebate_" + DateUtil.getNowLongTime() + ".xlsx";
+		String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
+
+		String[] nameArray = new String[] { "订单号", "状态", "订单类型", "分级名称", "订单返佣", "自有编码", "商品编号", "品名", "零售价", "商品规格",
+				"商品数量", "商品返佣" };
+		String[] colArray = new String[] { "OrderId", "StatusName", "OrderType", "GradeName", "TotalRebate", "ItemCode",
+				"ItemId", "GoodsName", "ItemPrice", "Info", "Quantity", "Rebate" };
+		SXSSFWorkbook swb = new SXSSFWorkbook(100);
+		ExcelUtil.createExcel(list, nameArray, colArray, filePath, 0, "rebate_" + DateUtil.getNowLongTime(), swb);
+		ExcelUtil.writeToExcel(swb, filePath);
+
+		FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
+	}
+
+	private List<RebateDownload> listDownLoadModel(Map<String, Object> param, StaffEntity staffEntity) {
+		List<RebateDownload> list = new ArrayList<RebateDownload>();
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_QUERY_ORDERLISTFORDOWNLOAD,
+				staffEntity.getToken(), true, null, HttpMethod.POST, param);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException("获取返佣信息失败");
+		}
+
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		Map<Integer, GradeBO> gradeMap = CachePoolComponent.getGrade(staffEntity.getToken());
+		try {
+			for (int i = 0; i < index; i++) {
+				JSONObject jObj = obj.getJSONObject(i);
+				RebateDownload temp = JSONUtilNew.parse(jObj.toString(), RebateDownload.class);
+				temp.setGradeName(gradeMap.get(Integer.valueOf(temp.getGradeId())).getName());
+				switch (temp.getOrderFlag()) {
+				case 0:
+					temp.setOrderType("跨境订单");
+					break;
+				case 2:
+					temp.setOrderType("一般贸易订单");
+					break;
+				default:
+					temp.setOrderType("未知" + temp.getOrderFlag());
+					break;
+				}
+				switch (temp.getStatus()) {
+				case 0:
+					temp.setStatusName("待到账");
+					break;
+				case 1:
+					temp.setStatusName("已到账");
+					break;
+				case 2:
+					temp.setStatusName("已退款");
+					break;
+				default:
+					temp.setStatusName("未知：" + temp.getStatus());
+					break;
+				}
+				list.add(temp);
+			}
+		} catch (Exception e) {
+			LogUtil.writeErrorLog("获取分级中文名称出错", e);
+		}
+		return list;
 	}
 }

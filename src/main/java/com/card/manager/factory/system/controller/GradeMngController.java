@@ -244,6 +244,9 @@ public class GradeMngController extends BaseController {
 			context.put("gradeType", gradeType);
 			List<CustomerTypeEntity> customerTypeList = CachePoolComponent.getCustomerType();
 			context.put("customerTypeList", customerTypeList);
+			
+			StaffEntity editStaff = staffMngService.queryStaffInfoByGradeId(gradeId);
+			context.put("editStaff", editStaff);
 		} catch (Exception e) {
 			context.put("error", e.getMessage());
 			return forword("error", context);

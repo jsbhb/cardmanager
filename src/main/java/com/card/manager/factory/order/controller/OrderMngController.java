@@ -30,11 +30,12 @@ import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
+import com.card.manager.factory.express.model.DeliveryEntity;
+import com.card.manager.factory.express.service.ExpressService;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
-import com.card.manager.factory.order.model.PushUser;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
-import com.card.manager.factory.order.model.UserDetail;
+import com.card.manager.factory.order.model.UserInfo;
 import com.card.manager.factory.order.pojo.ExpressMaintenanceBO;
 import com.card.manager.factory.order.pojo.OrderInfoListForDownload;
 import com.card.manager.factory.order.pojo.OrderMaintenanceBO;
@@ -54,6 +55,9 @@ public class OrderMngController extends BaseController {
 
 	@Resource
 	OrderService orderService;
+	
+	@Resource
+	ExpressService expressService;
 
 	@RequestMapping(value = "/mng")
 	public ModelAndView toFuncList(HttpServletRequest req, HttpServletResponse resp) {
@@ -88,7 +92,6 @@ public class OrderMngController extends BaseController {
 		return forword("order/stockout/list", context);
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, OrderInfo pagination) {
@@ -171,31 +174,31 @@ public class OrderMngController extends BaseController {
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
 
-			if (pcb != null) {
-				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
-				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
-				List<Object> list = (ArrayList<Object>) pcb.getObj();
-				OrderInfo orderInfo = null;
-				for (Object info : list) {
-					orderInfo = (OrderInfo) info;
-					for (UserDetail ud : user) {
-						if (orderInfo.getUserId().toString().equals(ud.getUserId().toString())) {
-							orderInfo.setCustomerName(ud.getName());
-							break;
-						}
-					}
-					if (orderInfo.getPushUserId() != null) {
-						for (PushUser pu : push) {
-							if (orderInfo.getShopId().toString().equals(pu.getGradeId().toString())
-									&& orderInfo.getPushUserId().toString().equals(pu.getUserId().toString())) {
-								orderInfo.setPushUserName(pu.getName());
-								break;
-							}
-						}
-					}
-				}
-				pcb.setObj(list);
-			}
+//			if (pcb != null) {
+//				List<UserDetail> user = CachePoolComponent.getCustomers(staffEntity.getToken());
+//				List<PushUser> push = CachePoolComponent.getPushUsers(staffEntity.getToken());
+//				List<Object> list = (ArrayList<Object>) pcb.getObj();
+//				OrderInfo orderInfo = null;
+//				for (Object info : list) {
+//					orderInfo = (OrderInfo) info;
+//					for (UserDetail ud : user) {
+//						if (orderInfo.getUserId().toString().equals(ud.getUserId().toString())) {
+//							orderInfo.setCustomerName(ud.getName());
+//							break;
+//						}
+//					}
+//					if (orderInfo.getPushUserId() != null) {
+//						for (PushUser pu : push) {
+//							if (orderInfo.getShopId().toString().equals(pu.getGradeId().toString())
+//									&& orderInfo.getPushUserId().toString().equals(pu.getUserId().toString())) {
+//								orderInfo.setPushUserName(pu.getName());
+//								break;
+//							}
+//						}
+//					}
+//				}
+//				pcb.setObj(list);
+//			}
 		} catch (ServerCenterNullDataException e) {
 			if (pcb == null) {
 				pcb = new PageCallBack();
@@ -272,6 +275,8 @@ public class OrderMngController extends BaseController {
 			String orderId = req.getParameter("orderId");
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
+			UserInfo user = orderService.queryUserInfoByUserId(entity.getUserId()+"", opt.getToken());
+			context.put("user", user);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for (SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {
@@ -349,6 +354,7 @@ public class OrderMngController extends BaseController {
 			param.put("endTime", endTime);
 			param.put("gradeId", gradeId);
 			param.put("supplierId", supplierId);
+			param.put("type", "0");
 
 			List<OrderInfoListForDownload> ReportList = new ArrayList<OrderInfoListForDownload>();
 			ReportList = orderService.queryOrderInfoListForDownload(param, staffEntity.getToken());
@@ -450,17 +456,18 @@ public class OrderMngController extends BaseController {
 			//广州仓
 			if ("5".equals(supplierId)) {
 				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "订单类型", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息", "订购人", "订购人身份证", "包装数", "商品购买价格"};
+						"订单来源", "订单类型", "支付金额", "邮费金额", "税费金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息", 
+						"收货时间", "订购人", "订购人身份证", "包装数", "商品购买价格"};
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
 						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment",
-						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince",
-						"ReceiveAddress", "CreateTime", "ExpressInfo", "OrderName", "Idnum", "Packing", "ActualPrice" };
+						"PostFee", "TaxFee", "PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince",
+						"ReceiveAddress", "CreateTime", "ExpressInfo", "DeliveryTime", "OrderName", "Idnum", "Packing", "ActualPrice" };
 			} else {
 				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "订单类型", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
+						"订单来源", "订单类型", "支付金额", "邮费金额", "税费金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息", "收货时间"};
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
-						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment",
-						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime", "ExpressInfo" };
+						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment", "PostFee", "TaxFee",
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime", "ExpressInfo", "DeliveryTime" };
 			}
 			SXSSFWorkbook swb = new SXSSFWorkbook(100);
 			ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime+"~"+endTime, swb);
@@ -484,6 +491,8 @@ public class OrderMngController extends BaseController {
 			String orderId = req.getParameter("orderId");
 			OrderInfo entity = orderService.queryByOrderId(orderId, opt.getToken());
 			context.put("order", entity);
+			List<DeliveryEntity> deliveryList = expressService.getAllDeliveryInfo();
+			context.put("deliveryList", deliveryList);
 			List<SupplierEntity> supplier = CachePoolComponent.getSupplier(opt.getToken());
 			for (SupplierEntity sup : supplier) {
 				if (entity.getSupplierId() == null) {

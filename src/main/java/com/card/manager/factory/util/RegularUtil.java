@@ -7,7 +7,7 @@ import org.apache.commons.lang.ArrayUtils;
 
 public class RegularUtil {
 
-	private static final String MOBILE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0-1,5-9]))\\d{8}$";
+	private static final String MOBILE_REGEX = "^((13[0-9])|(14[0-9])|(15[0-9])|(18[0-9])|(17[0-9]))\\d{8}$";
 
 	private static final String ID_REGEX = "^\\d{6}(18|19|20)?\\d{2}(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}(\\d|[xX])$";
 	
@@ -108,6 +108,6 @@ public class RegularUtil {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(isIdentify("330206991111112"));
+		System.out.println(isPhone("17330191613"));
 	}
 }

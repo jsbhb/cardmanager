@@ -124,6 +124,8 @@ public class ServerCenterContants {
 			+ "/grade/rebate/formula/{needPaging}";
 	public static final String USER_CENTER_UPDATE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/rebate/formula/update";
+	public static final String USER_CENTER_GET_USERINFO_BY_USERID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/{centerId}/{userId}";
 	/**
 	 * 商品中心url
 	 */
@@ -230,6 +232,8 @@ public class ServerCenterContants {
 			+ "/goods/goods/save";
 	public static final String GOODS_PIC_BATCH_UPLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/maintain/files";
+	public static final String GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/maintain/files/queryGoodsIdByItemCode";
 	public static final String GOODS_CENTER_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/query";
 	public static final String GOODS_CENTER_THIRD_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -366,7 +370,7 @@ public class ServerCenterContants {
 	public static final String ORDER_CENTER_CACHE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/cache?gradeId={gradeId}&dataType={dataType}&time={time}&modelType={modelType}";
 	public static final String ORDER_CENTER_QUERY_ORDERLISTFORDOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}";
+			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}&type={type}&exportType={exportType}";
 	public static final String ORDER_CENTER_MAINTENANCEEXPRESS = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/maintenance/express";
 	public static final String ORDER_CENTER_SENDSTOCKINGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
@@ -394,6 +398,14 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/express/template/list";
 	public static final String ORDER_CENTER_POST_EXPRESS_DELETE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/express/template/express-fee/{id}";
+	public static final String ORDER_CENTER_POST_EXPRESS_DELETE_RULEBIND = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rulebind/{id}";
+	public static final String ORDER_CENTER_POST_EXPRESS_RULE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rule";
+	public static final String ORDER_CENTER_POST_EXPRESS_RULE_PARAM = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rule/param/{id}";
+	public static final String ORDER_CENTER_POST_EXPRESS_RULE_PARAM_SAVE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/express/template/rule/param";
 
 	/*------------------------商城管理-----------------------*/
 	public static final int PC = 0;

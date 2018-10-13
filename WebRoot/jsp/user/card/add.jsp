@@ -19,11 +19,11 @@
 	       	<div class="list-item">
 				<div class="col-sm-3 item-left">银行卡号</div>
 				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="cardNo" id="cardNo" onblur="checkCardNo()">
+					<input type="text" class="form-control" name="cardNo" id="cardNo">
 				</div>
 			</div>
 	       	<div class="list-item">
-				<div class="col-sm-3 item-left">银行名称</div>
+				<div class="col-sm-3 item-left">开户行名称</div>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" name="cardBank" id="cardBank">
 				</div>

@@ -37,7 +37,7 @@
 					<table id="baseTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th width="5%"><input style="float:none;margin: 4px 0 0;" type="checkbox"></th>
+								<th width="5%"></th>
 								<th width="15%">分类名称</th>
 								<th width="15%">分类图标</th>
 								<th width="10%">分类别称</th>
@@ -50,7 +50,7 @@
 						<tbody>
 							<c:forEach var="first" items="${firsts}">
 								<tr class="first-rows" data-id="${first.firstId}">
-									<td><input type="checkbox"></td>
+									<td></td>
 									<td><i class="fa fa-fw fa-plus"></i>${first.name}</td>
 									<td>
 									<c:choose>
@@ -94,7 +94,7 @@
 								</tr>
 								<c:forEach var="second" items="${first.seconds}">
 									<tr class="second-rows" data-id="${second.secondId}" parentId="${first.firstId}">
-										<td><input type="checkbox"></td>
+										<td></td>
 										<td><i class="fa fa-fw fa-plus"></i>${second.name}</td>
 										<td></td>
 			                			<td>${second.accessPath}</td>
@@ -129,7 +129,7 @@
 									</tr>
 									<c:forEach var="third" items="${second.thirds}">
 										<tr class="thrid-rows" data-id="${third.thirdId}" parentId="${second.secondId}">
-											<td><input type="checkbox"></td>
+											<td></td>
 											<td>${third.name}</td>
 											<td></td>
 			                				<td>${third.accessPath}</td>

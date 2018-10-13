@@ -37,19 +37,48 @@
              	</div>
 			</div>
 		</div>
-		<div class="list-item">
-			<div class="col-xs-3 item-left">供应商</div>
-			<div class="col-xs-9 item-right">
-				<select class="form-control" name="supplierId" id="supplierId">
-                  	  <option selected="selected" value="-1">供应商</option>
-                  	  <c:forEach var="supplier" items="${supplierId}">
-                  	  	<option value="${supplier.id}">${supplier.supplierName}</option>
-                  	  </c:forEach>
-                </select>
+		<c:if test="${type == 1}">
+			<div class="list-item">
+				<div class="col-xs-3 item-left">分级列表</div>
+				<div class="col-xs-9 item-right">
+					<input type="text" class="form-control" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value="${list[0].name}">
+					<input type="hidden" class="form-control" name="gradeId" id="gradeId" value="${list[0].id}">
+					<div class="item-content">
+             		（不选择分级时以登录账号的分级为准）
+             		</div>
+				</div>
 			</div>
-		</div>
+			<div class="list-item">
+				<div class="col-xs-3 item-left">导出类型</div>
+				<div class="col-xs-9 item-right">
+					<input type="radio" checked value="1" name="exportType" style="width: 35px;height:31px;float: left;vertical-align: middle; display: inline-block;"><span style="width: 100px;height:31px;float: left;line-height: 31px;vertical-align: middle;display: inline-block;margin-top: 4px;">本级及包括下级</span>
+					<input type="radio" value="0" name="exportType" style="width:35px;height:31px;float: left;"><span style="width: 100px;height: 31px;float: left;line-height:31px;vertical-align: middle;display: inline-block;margin-top: 4px;">仅包含本级</span>
+				</div>
+			</div>
+			<div class="select-content">
+	            <ul class="first-ul" style="margin-left:10px;">
+	           		<c:forEach var="menu" items="${list}">
+	           			<c:set var="menu" value="${menu}" scope="request" />
+	           			<%@include file="recursive.jsp"%>  
+					</c:forEach>
+	           	</ul>
+       		</div>
+		</c:if>
+		<c:if test="${type == 0}">
+			<div class="list-item">
+				<div class="col-xs-3 item-left">供应商</div>
+				<div class="col-xs-9 item-right">
+					<select class="form-control" name="supplierId" id="supplierId">
+	                  	  <option selected="selected" value="-1">供应商</option>
+	                  	  <c:forEach var="supplier" items="${supplierId}">
+	                  	  	<option value="${supplier.id}">${supplier.supplierName}</option>
+	                  	  </c:forEach>
+	                </select>
+				</div>
+			</div>
+		</c:if>
 		<div class="submit-btn">
-           	<button type="button" onclick="downLoadExcel()">确认导出</button>
+           	<button type="button" onclick="downLoadExcel(${type})">确认导出</button>
        	</div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
@@ -106,10 +135,12 @@
     	    return year + '-' + month + '-' + day; 
 	    }
 
-	    function downLoadExcel(){
+	    function downLoadExcel(type){
+	    	var gradeId = $("#gradeId").val();
 	    	var startTime = $("#startTime").val();
 	    	var endTime = $("#endTime").val();
 	    	var dateType = $('#dateType li.active').attr('data-id');
+	    	var exportType = $('input[name="exportType"]:checked').val();
 	    	var supplierId = $("#supplierId").val();
 	    	if (dateType == 0) {
 		    	if (startTime == "" || endTime == "") {
@@ -117,9 +148,56 @@
 			    	return;
 		    	}
 	    	}
-	    	window.open("${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId);
+	    	if(type == 0){
+	    		window.open("${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId+"&type="+type);
+	    	}else {
+	    		window.open("${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId+"&type="+type+"&gradeId="+gradeId+"&exportType="+exportType);
+	    	}
 // 	    	location.href="${wmsUrl}/admin/user/rebateMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId;
 	    }
+	    
+	  //点击展开
+		$('.select-content').on('click','li span i:not(active)',function(){
+			$(this).addClass('active');
+			$(this).parent().next().stop();
+			$(this).parent().next().slideDown(300);
+		});
+		//点击收缩
+		$('.select-content').on('click','li span i.active',function(){
+			$(this).removeClass('active');
+			$(this).parent().next().stop();
+			$(this).parent().next().slideUp(300);
+		});
+		
+		//点击展开下拉列表
+		$("[id='gradeName']").click(function(){
+			$('.select-content').css('width',$(this).outerWidth());
+			$('.select-content').css('left',$(this).offset().left);
+			$('.select-content').css('top',$(this).offset().top + $(this).height());
+			$('.select-content').stop();
+			$('.select-content').slideDown(300);
+		});
+		
+		//点击空白隐藏下拉列表
+		$('html').click(function(event){
+			var el = event.target || event.srcelement;
+			if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
+		//点击选择分类
+		$('.select-content').on('click','span',function(event){
+			var el = event.target || event.srcelement;
+			if(el.nodeName != 'I'){
+				var name = $(this).attr('data-name');
+				var id = $(this).attr('data-id');
+				$("[id='gradeName']").val(name);
+				$("[id='gradeId']").val(id);
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
 	</script>
 </body>
 </html>

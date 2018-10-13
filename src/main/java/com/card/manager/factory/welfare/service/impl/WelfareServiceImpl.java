@@ -17,6 +17,7 @@ import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.ExcelUtils;
 import com.card.manager.factory.util.JSONUtilNew;
+import com.card.manager.factory.util.RegularUtil;
 import com.card.manager.factory.util.URLUtils;
 import com.card.manager.factory.welfare.model.InviterEntity;
 import com.card.manager.factory.welfare.model.WelfareMembeStatistic;
@@ -58,6 +59,9 @@ public class WelfareServiceImpl extends AbstractServcerCenterBaseService impleme
 							continue;
 						}
 					}
+					if (!RegularUtil.isPhone(ie.getPhone())) {
+						continue;
+					}
 					ie.setGradeId(Integer.parseInt(ie.getWelfareGradeId()));
 					ie.setStatus(0);
 					ie.setOpt(staffEntity.getOptName());
@@ -66,7 +70,7 @@ public class WelfareServiceImpl extends AbstractServcerCenterBaseService impleme
 			}
 			if (importList.size() <= 0) {
 				result.put("success", false);
-				result.put("msg", "没有可添加的邀请人信息");
+				result.put("msg", "没有可添加的邀请人信息，请确认文档内信息是否正确！");
 				return result;
 			}
 			try {

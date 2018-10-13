@@ -36,6 +36,12 @@
 			</div>
 		</div>
        	<div class="list-item">
+			<div class="col-sm-3 item-left">消费者名称</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${user.userDetail.name}">
+			</div>
+		</div>
+       	<div class="list-item">
 			<div class="col-sm-3 item-left">状态</div>
 			<div class="col-sm-9 item-right">
 				<c:if test="${order.status==0}">待支付</c:if>
@@ -150,6 +156,12 @@
 			</div>
 		</div>
        	<div class="list-item">
+			<div class="col-sm-3 item-left">增值税</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.incrementTax}">
+			</div>
+		</div>
+       	<div class="list-item">
 			<div class="col-sm-3 item-left">支付时间</div>
 			<div class="col-sm-9 item-right">
 				<input type="text" class="form-control" readonly  value="${order.orderDetail.payTime}">
@@ -211,6 +223,12 @@
 			<div class="col-sm-3 item-left">买家留言</div>
 			<div class="col-sm-9 item-right">
 				<input type="text" class="form-control" readonly  value="${order.remark}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">收货时间</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.deliveryTime}">
 			</div>
 		</div>
 		<div class="title">

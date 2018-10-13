@@ -10,6 +10,9 @@ package com.card.manager.factory.user.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.component.model.GradeBO;
@@ -123,5 +126,8 @@ public interface FinanceMngService extends ServerCenterService {
 	CapitalOverviewModel getCapitalOverviewModel(String token, List<GradeBO> list);
 
 	void addCapitalPool(CapitalPoolDetail entity, String token);
+
+	void exportRebate(HttpServletRequest req, HttpServletResponse resp, Map<String, Object> param,
+			StaffEntity staffEntity);
 
 }

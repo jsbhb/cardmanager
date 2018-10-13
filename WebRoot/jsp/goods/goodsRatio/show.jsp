@@ -126,6 +126,11 @@ function submitInfo() {
 		}
 	});
 	
+	if (dataList === undefined || dataList.length == 0) {
+		layer.alert("比价信息为空，请填写比价信息！");
+		return;
+	}
+	
 	syncFlg = true;
 	var url = "${wmsUrl}/admin/goods/goodsMng/syncRatioGoodsInfo.shtml";
 	$.ajax({

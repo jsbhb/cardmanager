@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resourceLink.jsp"%>
+<script src="${wmsUrl}/plugins/laydate/laydate.js"></script>
 </head>
 
 <body>
@@ -22,10 +23,12 @@
 		      	<input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;width:200px;" placeholder="选择分级" value = "${list[0].name}">
 				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
+		      	<div class="moreSearchBtn">高级搜索</div>
 			  </div>
 			  <c:if test="${prilvl == 1}">
-		      	<button class="default-btn position-btn" type="button" onclick="excelExport()">订单导出</button>
+		      	<button class="default-btn position-btn" type="button" onclick="excelExport(0)">订单导出</button>
 		      </c:if>
+		       <button class="default-btn position-btn" type="button" onclick="excelExport(1)">返佣导出</button>
 	    </section>
 		<div class="select-content">
             <ul class="first-ul" style="margin-left:10px;">
@@ -38,6 +41,52 @@
        	<section class="content-iframe content">
        		<div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
+			</div>
+			<div class="moreSearchContent">
+				<div class="row form-horizontal list-content">
+					<div class="col-xs-3">
+						<div class="searchItem">
+				            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value = "${list[0].name}">
+							<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
+						</div>
+					</div>
+					<div class="col-xs-3">
+							<div class="searchItem">
+								<input type="text" class="form-control" name="orderId" placeholder="请输入订单号">
+							</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+				            <select class="form-control" name="orderFlag" id="orderFlag">
+		                   	  <option selected="selected" value="">订单类型</option>
+		                   	  <option value="0">跨境</option>
+		                   	  <option value="2">一般贸易</option>
+			                </select>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+				            <select class="form-control" name="status" id="status">
+		                   	  <option selected="selected" value="">订单状态</option>
+		                   	  <option value="0">待到账</option>
+		                   	  <option value="1">已到账</option>
+		                   	  <option value="2">已退款</option>
+			                </select>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+							<input type="text" class="chooseTime" id="searchTime" name="searchTime" placeholder="请选择查询时间" readonly>
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchBtns">
+							 <div class="lessSearchBtn">简易搜索</div>
+	                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+	                         <button type="button" class="clear">清除选项</button>
+	                    </div>
+                	</div>
+				</div>
 			</div>
 			<div class="default-content">
 				<div class="today-orders">
@@ -63,6 +112,7 @@
 								<thead>
 									<tr>
 										<th>订单编号</th>
+										<th>订单类型</th>
 										<th>返佣金额</th>
 										<th>返佣状态</th>
 										<th>创建时间</th>
@@ -145,6 +195,12 @@
 		for (var i = 0; i < list.length; i++) {
 			str += "<tr><td>";
 			str += list[i].orderId;
+			var orderFlag = list[i].orderFlag;
+			switch(orderFlag) {
+			case 0:str += "</td><td>跨境订单";break;
+			case 2:str += "</td><td>一般贸易订单";break;
+			default : str += "</td><td>未知类型："+orderFlag;
+			}
 			str += "</td><td>" + list[i].rebateMoney;
 			var status = list[i].status;
 			switch(status) {
@@ -177,7 +233,7 @@
 	});
 	
 	//点击展开下拉列表
-	$('#gradeName').click(function(){
+	$("[id='gradeName']").click(function(){
 		$('.select-content').css('width',$(this).outerWidth());
 		$('.select-content').css('left',$(this).offset().left);
 		$('.select-content').css('top',$(this).offset().top + $(this).height());
@@ -199,18 +255,19 @@
 		if(el.nodeName != 'I'){
 			var name = $(this).attr('data-name');
 			var id = $(this).attr('data-id');
-			$('#gradeName').val(name);
-			$('#gradeId').val(id);
+			$("[id='gradeName']").val(name);
+			$("[id='gradeId']").val(id);
 			$('.select-content').stop();
 			$('.select-content').slideUp(300);
 		}
 	});
 	
 	function toShow(orderId){
+		var gradeId = $("#gradeId").val();
 		var index = layer.open({
 			  title:"查看订单详情",		
 			  type: 2,
-			  content: '${wmsUrl}/admin/user/rebateMng/toShow.shtml?orderId='+orderId,
+			  content: '${wmsUrl}/admin/user/rebateMng/toShow.shtml?orderId='+orderId+'&gradeId='+gradeId,
 			  maxmin: true
 			});
 			layer.full(index);
@@ -227,15 +284,28 @@
 			layer.full(index);
 	}
 
-	function excelExport(){
+	function excelExport(type){
+		var titleName;
+		if(0 == type){
+			titleName = "订单导出";
+		}
+		if(1 == type){
+			titleName = "返佣导出";
+		}
 		var index = layer.open({
-		  title:"订单导出",		
+		  title:titleName,		
 		  type: 2,
 		  area: ['55%','65%'],
-		  content: '${wmsUrl}/admin/user/rebateMng/excelExport.shtml',
+		  content: '${wmsUrl}/admin/user/rebateMng/excelExport.shtml?type='+type,
 		  maxmin: false
 		});
 	}
+	laydate.render({
+	    elem: '#searchTime', //指定元素
+	    type: 'datetime',
+	    range: '~',
+	    value: null
+	  });
 	</script>
 </body>
 </html>

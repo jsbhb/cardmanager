@@ -291,6 +291,7 @@ public class InventoryMngController extends BaseController {
 			GoodsStockEntity goodsStockEntity = new GoodsStockEntity();
 			goodsStockEntity.setItemId(Integer.parseInt(itemId)+"");
 			goodsStockEntity.setFxQty(Integer.parseInt(qty));
+			goodsStockEntity.setOpt(staffEntity.getOptid());
 			stocks.add(goodsStockEntity);
 			inventoryService.maintainStock(stocks, staffEntity);
 		} catch (Exception e) {
@@ -390,11 +391,16 @@ public class InventoryMngController extends BaseController {
 				stock = new GoodsStockEntity();
 				stock.setItemId(info.getItemId());
 				stock.setFxQty(Integer.parseInt(info.getFxQty()));
+				stock.setOpt(staffEntity.getOptid());
 				stocks.add(stock);
 			}
 			inventoryService.maintainStock(stocks, staffEntity);
 		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			if ("java.lang.NumberFormatException".equals(e.getClass().getName())) {
+				sendFailureMessage(resp, "操作失败：请确认文档的数据是否正确！");
+			} else {
+				sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			}
 			return;
 		}
 
