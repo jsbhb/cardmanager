@@ -330,10 +330,10 @@ function rebuildTable(data){
 		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
 		var prilvl = "${prilvl}";
 		if(prilvl == 1 
-			&& (list[i].supplierName=="一般贸易仓"
-			|| list[i].supplierName=="广州仓库"
-			|| list[i].supplierName=="广州仓gzc"
-			|| list[i].supplierName=="一般贸易（包邮）仓")){
+			&& (list[i].supplierName!="天天仓"
+			&& list[i].supplierName!="2489仓"
+			&& list[i].supplierName!="行云仓"
+			&& list[i].supplierName!="6232仓")){
 			var arr = [1,2,3,4,5,6,12,99];
 			var index = $.inArray(status,arr);
 			if(index >= 0){
