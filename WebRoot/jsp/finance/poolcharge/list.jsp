@@ -24,7 +24,19 @@
 	      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 		  </div>
     </section>
+	<div class="list-item" style="display:none">
+		<div class="col-sm-3 item-left">分级列表</div>
+		<div class="col-sm-9 item-right">
+            <ul id="hidGrade">
+           		<c:forEach var="menu" items="${list}">
+           			<c:set var="menu" value="${menu}" scope="request" />
+           			<%@include file="recursive.jsp"%>  
+				</c:forEach>
+           	</ul>
+		</div>
+	</div>
 	<div class="select-content">
+		<input type="text" placeholder="请输入分级名称" id="searchGrade"/>
         <ul class="first-ul" style="margin-left:10px;">
 			<c:forEach var="menu" items="${list}">
 				<c:set var="menu" value="${menu}" scope="request" />
@@ -92,7 +104,13 @@
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script src="${wmsUrl}/js/mainpage.js"></script>
 <script type="text/javascript">
-
+var cpLock = false;
+$('#searchGrade').on('compositionstart', function () {
+    cpLock = true;
+});
+$('#searchGrade').on('compositionend', function () {
+    cpLock = false;
+});
 /**
  * 初始化分页信息
  */
@@ -235,10 +253,37 @@ $('.select-content').on('click','span',function(event){
 		var id = $(this).attr('data-id');
 		$('#gradeName').val(name);
 		$('#gradeId').val(id);
+		$('#searchGrade').val("");
+		reSetDefaultInfo();
 		$('.select-content').stop();
 		$('.select-content').slideUp(300);
 	}
 });
+
+$('#searchGrade').on("input",function(){
+	if (!cpLock) {
+		var tmpSearchKey = $(this).val();
+		if (tmpSearchKey !='') {
+			var searched = "";
+			$('.first-ul li').each(function(li_obj){
+				var tmpLiId = $(this).find("span").attr('data-id');
+				var tmpLiText = $(this).find("span").attr('data-name');
+				var flag = tmpLiText.indexOf(tmpSearchKey);
+				if(flag >=0) {
+					searched = searched + "<li><span data-id=\""+tmpLiId+"\" data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+				}
+			});
+			$('.first-ul').html(searched);
+		} else {
+			reSetDefaultInfo();
+		}
+}
+});
+
+function reSetDefaultInfo() {
+	var $clone = $('#hidGrade').find('>li').clone();
+	$('.first-ul').empty().append($clone);
+}
 </script>
 </body>
 </html>

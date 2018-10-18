@@ -125,6 +125,7 @@ public class UserWithdrawalsMngController extends BaseController {
 	public void apply(HttpServletRequest req, HttpServletResponse resp, @RequestBody Withdrawals entity) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			entity.setOpt(staffEntity.getOptName());
 			financeMngService.applyWithdrawals(entity, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "新增提现申请失败：" + e.getMessage());

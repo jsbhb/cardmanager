@@ -90,7 +90,7 @@ function toEdit(id){
 	var index = layer.open({
 		  title:"广告编辑",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id,
+		  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id+'&pageType=0&bussinessType=ad&key='+id,
 		  maxmin: false
 		});
 		layer.full(index);

@@ -80,6 +80,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/pushuser/register/{code}";
 	public static final String USER_CENTER_MICRO_SHOP_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
 			+ SERVER_CENTER_EDITION + "/shop/query";
+	public static final String USER_CENTER_MICRO_SHOP_USERINFO_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/shop/userInfo/query/{needPaging}";
 	public static final String USER_CENTER_MICRO_SHOP_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
 			+ SERVER_CENTER_EDITION + "/shop/update";
 	public static final String USER_CENTER_ALL_PUSH_USER = (TOKEN_NOT_NEED ? "/" : "/usercenter/")

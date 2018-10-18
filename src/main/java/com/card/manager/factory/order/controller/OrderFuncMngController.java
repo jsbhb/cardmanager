@@ -139,6 +139,12 @@ public class OrderFuncMngController extends BaseController {
 			if(gradeIdStr != null){
 				pagination.setShopId(Integer.valueOf(gradeIdStr));
 			}
+			String searchTime = req.getParameter("searchTime");
+			if (!StringUtil.isEmpty(searchTime)) {
+				String[] times = searchTime.split("~");
+				pagination.setStartTime(times[0].trim());
+				pagination.setEndTime(times[1].trim());
+			}
 
 			pcb = orderService.dataList(pagination, params, staffEntity.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_PRESELL_FOR_PAGE, OrderInfo.class);

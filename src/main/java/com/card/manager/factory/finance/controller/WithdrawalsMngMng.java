@@ -127,6 +127,7 @@ public class WithdrawalsMngMng extends BaseController {
 	public void audit(HttpServletRequest req, HttpServletResponse resp, @RequestBody AuditModel entity) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
+			entity.setOperatorName(staffEntity.getOptName());
 			financeMngService.auditWithdrawals(entity,staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());

@@ -20,6 +20,7 @@ import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.base.Pagination;
 import com.card.manager.factory.common.AuthCommon;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
@@ -31,6 +32,7 @@ import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.StaffMngService;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.github.pagehelper.Page;
@@ -84,6 +86,17 @@ public class GradeMngController extends BaseController {
 		} else {
 			context.put("urlShow", "false");
 		}
+		
+		// 自动产生业务流水号：tmp+GradeId+账号+时间+4位随机数
+		Integer num = (int) (Math.random() * 9000) + 1000;
+		String key = "";
+		try {
+			key = "tmpGradeId" + opt.getBadge() + DateUtil.getNowPlusTimeMill() + num;
+		} catch (Exception e) {
+			e.printStackTrace();
+			key = "tmpGradeId" + opt.getBadge() + num;
+		}
+		context.put("key", key);
 		return forword("system/grade/add", context);
 	}
 
@@ -91,6 +104,7 @@ public class GradeMngController extends BaseController {
 	public void addGrade(HttpServletRequest req, HttpServletResponse resp, @RequestBody GradeEntity gradeInfo) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		String backStr = "";
 		try {
 			//判断域名是否以/结尾  如果是去掉/
 			String tmpUrl = "";
@@ -110,12 +124,21 @@ public class GradeMngController extends BaseController {
 				}
 			}
 			gradeMngService.saveGrade(gradeInfo, staffEntity);
+			if (gradeInfo.getId() == null || gradeInfo.getId() <= 0) {
+				sendFailureMessage(resp, "新增分级时图片保存失败，未获取到对应的分级编号！");
+				return;
+			}
+			String tmpPicPath = gradeInfo.getPicPath1();
+			tmpPicPath = tmpPicPath.substring(tmpPicPath.indexOf("tmp"),
+					tmpPicPath.indexOf("/", tmpPicPath.indexOf("tmp")));
+			String tmpBasePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GRADE + "/";
+			backStr = tmpBasePath + tmpPicPath + "|" + tmpBasePath + gradeInfo.getId();
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
 
-		sendSuccessMessage(resp, null);
+		sendSuccessMessage(resp, backStr);
 	}
 
 	@RequestMapping(value = "/list")

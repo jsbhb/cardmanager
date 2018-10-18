@@ -8,6 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 </head>
 
@@ -68,7 +69,7 @@
 						   <c:when test="${dict.picPath1 != null && dict.picPath1 != ''}">
 	               	  			<div class="item-img choose" id="content1" data-id="1">
 									<img src="${dict.picPath1}">
-									<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+									<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 									<input value="${dict.picPath1}" type="hidden" name="picPath1" id="picPath1">
 								</div>
 						   </c:when>
@@ -82,6 +83,7 @@
 						</c:choose> 
 					</div>
 				</div>
+				<div class="scrollImg-content broadcast"></div>
 		        <div class="submit-btn">
 		           	<button type="button" id="submitBtn">提交</button>
 		       	</div>
@@ -119,6 +121,7 @@
 		</section>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	
@@ -143,14 +146,26 @@
 			layer.alert("图片大小请控制在3M以内，当前图片为："+(imagSize/(1024*1024)).toFixed(2)+"M");
 			return true;
 		}
+
+		var baseUrl = "${wmsUrl}/admin/uploadFileWithType.shtml";
+		var pageTypeValue = "${dict.layout.pageType}";
+		var tmpType = "";
+		if (pageTypeValue == 0) {
+			tmpType = "PC-floor";
+		} else if (pageTypeValue == 1) {
+			tmpType = "H5-floor";
+		}
+		baseUrl = baseUrl + "?type=" + tmpType + "&key=${dict.id}";
+		
 		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			url : baseUrl, //你处理上传文件的服务端
 			secureuri : false,
 			fileElementId : "pic"+id,
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
-					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
 					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath'+id+'">'
 					$("#content"+id).html(imgPath);
 					$("#content"+id).addClass('choose');
@@ -161,7 +176,7 @@
 		})
 	});
 	//删除主图
-	$('.item-right').on('click','.bgColor i',function(){
+	$('.item-right').on('click','.bgColor i.fa-trash',function(){
 		var id = $(this).parent().parent().attr("data-id");
 		var ht = '<div class="item-img" id="content'+id+'" data-id="'+id+'">+<input type="file" id="pic'+id+'" name="pic"/><input type="hidden" name="picPath'+id+'" id="picPath'+id+'" value=""></div>';
 		$(this).parent().parent().removeClass("choose");
@@ -172,7 +187,7 @@
 		var index = layer.open({
 			  title:"新增内容编辑",		
 			  type: 2,
-			  content: '${wmsUrl}/admin/mall/indexMng/toAddFloorContent.shtml?id=${dict.id}',
+			  content: '${wmsUrl}/admin/mall/indexMng/toAddFloorContent.shtml?id=${dict.id}&pageType=${dict.layout.pageType}',
 			  maxmin: false
 			});
 			layer.full(index);
@@ -182,7 +197,7 @@
 		var index = layer.open({
 			  title:"内容编辑",		
 			  type: 2,
-			  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id,
+			  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id+'&pageType=${dict.layout.pageType}&bussinessType=floorGoods&key=${dict.id}',
 			  maxmin: false
 			});
 			layer.full(index);
@@ -286,7 +301,33 @@
       }
   });
 	
-
+	function setPicImgListData() {
+		var valArr = new Array;
+		var tmpPicPath="";
+		for(var i=1;i<5;i++) {
+			tmpPicPath = $("#picPath"+i).val();
+			if (tmpPicPath != null && tmpPicPath != "") {
+				valArr.push(tmpPicPath);
+			}
+		}
+		if (valArr != undefined && valArr.length > 0) {
+			var data = {
+		        imgList: valArr,
+		        imgWidth: 500,
+		        imgHeight: 500,
+		        activeIndex: 0,
+		        host: "${wmsUrl}"
+		    };
+		    setImgScroll('broadcast',data);
+		} else {
+			layer.alert("请先上传图片！");
+		}
+	}
+	
+	//图片放大
+	$('.item-right').on('click','.bgColor i.fa-search',function(){
+		setPicImgListData();
+	});
 	</script>
 </body>
 </html>

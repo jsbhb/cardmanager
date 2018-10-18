@@ -346,13 +346,14 @@
 			return true;
 		}
 		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=grade&key='+"${grade.id}", //你处理上传文件的服务端
 			secureuri : false,
 			fileElementId : "pic"+id,
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
-					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
 					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath'+id+'">'
 					$("#content"+id).html(imgPath);
 					$("#content"+id).addClass('choose');
@@ -528,11 +529,11 @@
                   notEmpty: {
                       message: '分级名称不能为空'
                   },
-                  stringLength: {
-                      min: 4,
-                      max: 30,
-                      message: '分级名称必须在4-30位字符'
-                  },
+//                   stringLength: {
+//                       min: 4,
+//                       max: 30,
+//                       message: '分级名称必须在4-30位字符'
+//                   },
               }
       	  },
       	  personInCharge: {
@@ -732,7 +733,6 @@
 				valArr.push(tmpPicPath);
 			}
 		}
-		console.log(valArr);
 		if (valArr != undefined && valArr.length > 0) {
 			var data = {
 		        imgList: valArr,

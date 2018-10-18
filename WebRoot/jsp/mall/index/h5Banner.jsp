@@ -90,7 +90,7 @@ function toEdit(id){
 	var index = layer.open({
 		  title:"h5轮播编辑",		
 		  type: 2,
-		  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id,
+		  content: '${wmsUrl}/admin/mall/indexMng/toEditContent.shtml?id='+id+'&pageType=1&bussinessType=banner&key='+id,
 		  maxmin: false
 		});
 		layer.full(index);

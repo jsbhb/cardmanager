@@ -695,10 +695,10 @@ public class GoodsItemMngController extends BaseController {
 						"GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo", "Encode", "Unit", 
 						"Origin", "ShelfLife", "Brand", "Carton" };
 			} else if ("2".equals(type)) {
-				nameArray = new String[] { "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
+				nameArray = new String[] { "商品ID", "商品编号", "商家编码", "商品名称", "规格", "上架状态", "供应商", "库存", "一级类目", "二级类目", "三级类目",
 						"成本价", "内供价", "零售价", "分级类型", "返佣比例", "商品标签", "比价信息", "条码", "单位", "产地",
 						"保质期", "品牌", "箱规"};
-				colArray = new String[] { "ItemId", "Sku", "GoodsName", "Info", "ItemStatusName",
+				colArray = new String[] { "GoodsId", "ItemId", "Sku", "GoodsName", "Info", "ItemStatusName",
 						"SupplierName", "FxQty", "FirstName", "SecondName", "ThirdName", "ProxyPrice", "FxPrice",
 						"RetailPrice", "GradeTypeName", "Proportion", "GoodsTagName", "GoodsPriceRatioInfo", "Encode", "Unit", 
 						"Origin", "ShelfLife", "Brand", "Carton" };

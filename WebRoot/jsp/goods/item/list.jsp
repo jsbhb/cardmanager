@@ -33,7 +33,7 @@
 			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                	<input type="text" class="form-control" id="brand" placeholder="选择品牌"/>
+	                	<input type="text" class="form-control" id="brand" readonly style="background:#fff;" placeholder="选择品牌"/>
 	                	<input type="hidden" class="form-control" name="brandId" id="brandId"/>
 					</div>
 				</div>

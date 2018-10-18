@@ -56,14 +56,29 @@
 				<c:if test="${centerId!=null}">
 					<div class="col-xs-3">
 						<div class="searchItem">
-				            <select class="form-control" name="centerId" id="centerId">
-		                   	  <option selected="selected" value="">区域中心</option>
+		                	<input type="text" class="form-control" id="center" readonly style="background:#fff;" placeholder="选择区域中心"/>
+		                	<input type="hidden" class="form-control" name="centerId" id="centerId"/>
+						</div>
+					</div>
+					<div class="list-item" style="display:none">
+						<div class="col-sm-3 item-left">区域中心</div>
+						<div class="col-sm-9 item-right">
+				            <select class="form-control" id="hidCenter">
 		                   	  <c:forEach var="center" items="${centerId}">
 		                   	  	<option value="${center.gradeId}">${center.gradeName}</option>
 		                   	  </c:forEach>
 			                </select>
 						</div>
 					</div>
+					<div class="select-content">
+						<input type="text" placeholder="请输入区域中心名称" id="searchCenter"/>
+			            <ul class="first-ul" style="margin-left:5px;">
+			           		<c:forEach var="center" items="${centerId}">
+			           			<c:set var="center" value="${center}" scope="request" />
+								<li><span data-id="${center.gradeId}" data-name="${center.gradeName}" class="no-child">${center.gradeName}</span></li>
+							</c:forEach>
+			           	</ul>
+			       	</div>
 				</c:if>
 				<div class="col-xs-3">
 					<div class="searchItem">
@@ -155,6 +170,13 @@
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script src="${wmsUrl}/js/mainpage.js"></script>
 <script type="text/javascript">
+var cpLock = false;
+$('#searchCenter').on('compositionstart', function () {
+    cpLock = true;
+});
+$('#searchCenter').on('compositionend', function () {
+    cpLock = false;
+});
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
 	$("#querybtns").click();
@@ -270,6 +292,68 @@ function totalCustomer(){
 	$("#clearbtns").click();
 	$("#customerName").val("");
 	$("#querybtns").click();
+}
+
+//点击展开下拉列表
+$('#center').click(function(){
+	$('.select-content').css('width',$(this).outerWidth());
+	$('.select-content').css('left',$(this).offset().left);
+	$('.select-content').css('top',$(this).offset().top + $(this).height());
+	$('.select-content').stop();
+	$('.select-content').slideDown(300);
+});
+
+//点击空白隐藏下拉列表
+$('html').click(function(event){
+	var el = event.target || event.srcelement;
+	if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "center"){
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+//点击选择分类
+$('.select-content').on('click','span',function(event){
+	var el = event.target || event.srcelement;
+	if(el.nodeName != 'I'){
+		var id = $(this).attr('data-id');
+		var name = $(this).attr('data-name');
+		$('#centerId').val(id);
+		$('#center').val(name);
+		$('#searchCenter').val("");
+		reSetDefaultInfo();
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+
+$('#searchCenter').on("input",function(){
+	if (!cpLock) {
+		var tmpSearchKey = $(this).val();
+		if (tmpSearchKey !='') {
+			var searched = "";
+			$('.first-ul li').each(function(li_obj){
+				var tmpLiId = $(this).find("span").attr('data-id');
+				var tmpLiText = $(this).find("span").attr('data-name');
+				var flag = tmpLiText.indexOf(tmpSearchKey);
+				if(flag >=0) {
+					searched = searched + "<li><span data-id=\""+tmpLiId+"\" data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+				}
+			});
+			$('.first-ul').html(searched);
+		} else {
+			reSetDefaultInfo();
+		}
+}
+});
+
+function reSetDefaultInfo() {
+	var tmpBrands = "";
+	var hidBrandSelect = document.getElementById("hidCenter");
+	var options = hidBrandSelect.options;
+	for(var j=0;j<options.length;j++){
+		tmpBrands = tmpBrands + "<li><span data-id=\""+options[j].value+"\" data-name=\""+options[j].text+"\" class=\"no-child\">"+options[j].text+"</span></li>";
+	}
+	$('.first-ul').html(tmpBrands);
 }
 </script>
 </body>

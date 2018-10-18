@@ -28,9 +28,21 @@
 			  <c:if test="${prilvl == 1}">
 		      	<button class="default-btn position-btn" type="button" onclick="excelExport(0)">订单导出</button>
 		      </c:if>
-		       <button class="default-btn position-btn" type="button" onclick="excelExport(1)">返佣导出</button>
+		      <button class="default-btn position-btn" type="button" onclick="excelExport(1)">返佣导出</button>
 	    </section>
+		<div class="list-item" style="display:none">
+			<div class="col-sm-3 item-left">分级列表</div>
+			<div class="col-sm-9 item-right">
+	            <ul id="hidGrade">
+	           		<c:forEach var="menu" items="${list}">
+	           			<c:set var="menu" value="${menu}" scope="request" />
+	           			<%@include file="recursive.jsp"%>  
+					</c:forEach>
+	           	</ul>
+			</div>
+		</div>
 		<div class="select-content">
+			<input type="text" placeholder="请输入分级名称" id="searchGrade"/>
             <ul class="first-ul" style="margin-left:10px;">
            		<c:forEach var="menu" items="${list}">
            			<c:set var="menu" value="${menu}" scope="request" />
@@ -46,8 +58,8 @@
 				<div class="row form-horizontal list-content">
 					<div class="col-xs-3">
 						<div class="searchItem">
-				            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级" value = "${list[0].name}">
-							<input type="hidden" class="form-control" name="gradeId" id="gradeId" value = "${list[0].id}">
+				            <input type="text"  name="gradeName" id="gradeName" readonly style="background:#fff;" placeholder="选择分级">
+							<input type="hidden" class="form-control" name="gradeId" id="gradeId">
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -133,11 +145,16 @@
 	       	</form>
        	</section>
 	</section>
-	<script src="${wmsUrl}/js/jquery.picker.min.js"></script>
 	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/js/mainpage.js"></script>
 	<script type="text/javascript">
-	
+	var cpLock = false;
+	$('#searchGrade').on('compositionstart', function () {
+	    cpLock = true;
+	});
+	$('#searchGrade').on('compositionend', function () {
+	    cpLock = false;
+	});
 	/**
 	 * 初始化分页信息
 	 */
@@ -171,8 +188,8 @@
 		var list = data.obj;
 		
 		var rebate = data.object;
-		var gradeName = $("#gradeName").val();
-		$("#gradeName_1").val(gradeName);
+// 		var gradeName = $("#gradeName").val();
+// 		$("#gradeName_1").val(gradeName);
 		if(rebate != null){
 			$("#canBePresented").html(rebate.canBePresented == null ? "￥0.00" : "￥"+rebate.canBePresented);
 			$("#alreadyPresented").html(rebate.alreadyPresented == null ? "￥0.00" : "￥"+rebate.alreadyPresented);
@@ -257,10 +274,37 @@
 			var id = $(this).attr('data-id');
 			$("[id='gradeName']").val(name);
 			$("[id='gradeId']").val(id);
+			$('#searchGrade').val("");
+			reSetDefaultInfo();
 			$('.select-content').stop();
 			$('.select-content').slideUp(300);
 		}
 	});
+
+	$('#searchGrade').on("input",function(){
+		if (!cpLock) {
+			var tmpSearchKey = $(this).val();
+			if (tmpSearchKey !='') {
+				var searched = "";
+				$('.first-ul li').each(function(li_obj){
+					var tmpLiId = $(this).find("span").attr('data-id');
+					var tmpLiText = $(this).find("span").attr('data-name');
+					var flag = tmpLiText.indexOf(tmpSearchKey);
+					if(flag >=0) {
+						searched = searched + "<li><span data-id=\""+tmpLiId+"\" data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+					}
+				});
+				$('.first-ul').html(searched);
+			} else {
+				reSetDefaultInfo();
+			}
+	}
+	});
+
+	function reSetDefaultInfo() {
+		var $clone = $('#hidGrade').find('>li').clone();
+		$('.first-ul').empty().append($clone);
+	}
 	
 	function toShow(orderId){
 		var gradeId = $("#gradeId").val();

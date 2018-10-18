@@ -51,7 +51,7 @@
 		</section>
 	</section>
 <%@include file="../../resourceScript.jsp"%>
-<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<%-- <script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript">
  
  $("#submitBtn").click(function(){

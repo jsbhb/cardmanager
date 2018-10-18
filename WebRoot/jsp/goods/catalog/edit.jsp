@@ -83,7 +83,7 @@
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
-	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	

@@ -378,10 +378,11 @@
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/js/component/broadcast.js"></script>
-	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/lang/zh-cn/zh-cn.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/js/goodsJs/goods.js"></script>
 	<script type="text/javascript">	 
 	var cpLock = false;
@@ -620,7 +621,11 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
-						 jump(10);
+						 if (data.msg != null) {
+							 updateStaticFolderNameById(data.msg);
+						 } else {
+	 						 jump(10);
+						 }
 					 }else{
 						 layer.alert(data.msg);
 					 }
@@ -633,6 +638,29 @@
 			 layer.alert("信息填写有误");
 		 }
 	 });
+	 
+	 function updateStaticFolderNameById(movePath) {
+		var oldPath = movePath.split("|")[0];
+		var newPath = movePath.split("|")[1];
+		
+		$.ajax({
+			 url:"${renameApiUrl}",
+			 method:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 data:JSON.stringify([{"old":oldPath,"new":newPath}]),
+			 success:function(data){
+				 if(data.success){	
+					 jump(10);
+				 }else{
+					 layer.alert("商品图片保存目录重命名失败，请联系客服处理");
+				 }
+			 },
+			 error:function(){
+				 layer.alert("新建商品时重命名目录异常，请联系客服处理");
+			 }
+		 });
+	 }
 	 
 		function showBaseGoods(){
 			var index = layer.open({
@@ -874,7 +902,8 @@
 			}
 			
 			$.ajaxFileUpload({
-				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+				url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=goods&key='+"${key}", //你处理上传文件的服务端
 				secureuri : false,
 				fileElementId : "pic"+id,
 				dataType : 'json',
@@ -962,6 +991,12 @@
 		//实例化编辑器
 	    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
 	    var ue = UE.getEditor('editor');
+		//自定义请求参数
+	    ue.ready(function() {
+	        ue.execCommand('serverparam', {
+	            'goodsId': '${key}'
+	        });
+	    });
 	    function sleep(numberMillis) { 
 	    	var now = new Date(); 
 	    	var exitTime = now.getTime() + numberMillis; 

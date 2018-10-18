@@ -28,7 +28,19 @@ public class ResourceContants {
 	public static final String GOODS = "goods";
 	public static final String MASTER = "master";
 	public static final String DETAIL = "detail";
-	public static final String SOCKET_SERVER_IP = "192.168.2.159";
-	public static final Integer SOCKET_SERVER_PORT = 10086;
-//	public static final String RESOURCE_BASE_PATH = "E:\\socketserver";
+	public static final String GOODS_EXTENSION = "goodsExtension";
+	public static final String PC_FLOOR = "PC-floor";
+	public static final String H5_FLOOR = "H5-floor";
+	public static final String PC_FLOORGOODS = "PC-floorGoods";
+	public static final String H5_FLOORGOODS = "H5-floorGoods";
+	public static final String PC_BANNER = "PC-banner";
+	public static final String H5_BANNER = "H5-banner";
+	public static final String PC_AD = "PC-ad";
+	public static final String H5_AD = "H5-ad";
+	public static final String PC = "PC";
+	public static final String H5 = "H5";
+	public static final String FLOOR = "floor";
+	public static final String FLOORGOODS = "floorGoods";
+	public static final String BANNER = "banner";
+	public static final String AD = "ad";
 }

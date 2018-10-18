@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,14 +46,15 @@ import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.component.impl.GoodsFileUploadComponentImpl;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.log.SysLogger;
-import com.card.manager.factory.socketThreadPool.SocketManager;
-import com.card.manager.factory.socketThreadPool.task.SocketClient;
+import com.card.manager.factory.socket.exception.ConnetionParamErrorException;
+import com.card.manager.factory.socket.task.SocketClient;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.DateUtil;
@@ -509,7 +511,7 @@ public class LoginController extends BaseController {
 		try {
 			if (pic != null) {
 				String fileName = pic.getOriginalFilename();
-			    
+
 				// 当前上传文件的文件后缀
 				String suffix = fileName.indexOf(".") != -1
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
@@ -610,9 +612,8 @@ public class LoginController extends BaseController {
 			HttpServletResponse resp) {
 		try {
 			if (pic != null) {
-				StaffEntity staffEntity = SessionUtils.getOperator(req);
 				String fileName = pic.getOriginalFilename();
-				
+
 				// 当前上传文件的文件后缀
 				String suffix = fileName.indexOf(".") != -1
 						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
@@ -624,24 +625,23 @@ public class LoginController extends BaseController {
 				}
 				// 重命名上传后的文件名
 				String saveFileName = UUID.randomUUID().toString() + suffix;
-				
-				//通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
-				String path =  req.getSession().getServletContext().getRealPath("fileUpload");
+
+				// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+				String path = req.getSession().getServletContext().getRealPath("fileUpload");
 				File tmpFile = null;
-			    InputStream ins = pic.getInputStream();
-			    File fd = new File(path);
-			    if (!fd.exists()) {
-			    	fd.mkdirs();
-			    }
-			    tmpFile = new File(path+"\\"+saveFileName);
-			    FileUtil.inputStreamToFile(ins, tmpFile);
-				
+				InputStream ins = pic.getInputStream();
+				File fd = new File(path);
+				if (!fd.exists()) {
+					fd.mkdirs();
+				}
+				tmpFile = new File(path + "/" + saveFileName);
+				FileUtil.inputStreamToFile(ins, tmpFile);
+
 				String type = req.getParameter("type");
 				String key = req.getParameter("key");
-				// 自动产生业务流水号：tmp+账号+时间+4位随机数
 				if (key.equals("") || key == null) {
-					Integer num = (int) (Math.random() * 9000) + 1000;
-					key = "tmp" + staffEntity.getBadge() + DateUtil.getNowPlusTimeMill() + num;
+					sendFailureMessage(resp, "文件上传失败，未获取到对应的key，请刷新页面重试！");
+					return;
 				}
 
 				// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
@@ -650,48 +650,168 @@ public class LoginController extends BaseController {
 					String remotePath = "";
 					String invitePath = "";
 					if (type.equals(ResourceContants.GRADE)) {
-						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GRADE + "/" +
-									 key + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
-						invitePath = URLUtils.get("static") + "/" + ResourceContants.GRADE + "/" +
-								 	 key + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GRADE + "/" + key
+								+ "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.GRADE + "/" + key + "/"
+								+ ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + saveFileName;
 					} else if (type.equals(ResourceContants.GOODS)) {
-						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" +
-								 	 key + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
-						invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" +
-								 	 key + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + key
+								+ "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + key + "/"
+								+ ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + saveFileName;
 					} else if (type.equals(ResourceContants.MSHOP)) {
-						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GRADE + "/" +
-									 ResourceContants.MSHOP + "/" + key + "/" + ResourceContants.IMAGE + "/";
-						invitePath = URLUtils.get("static") + "/" + ResourceContants.GRADE + "/" +
-									 ResourceContants.MSHOP + "/" + key + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GRADE + "/" + key
+								+ "/" + ResourceContants.MSHOP + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.GRADE + "/" + key + "/"
+								+ ResourceContants.MSHOP + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.GOODS_EXTENSION)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + key
+								+ "/" + ResourceContants.GOODS_EXTENSION + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + key + "/"
+								+ ResourceContants.GOODS_EXTENSION + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.PC_FLOOR)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.PC + "/"
+								+ ResourceContants.FLOOR + "/" + key + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.PC + "/" + ResourceContants.FLOOR
+								+ "/" + key + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.H5_FLOOR)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.H5 + "/"
+								+ ResourceContants.FLOOR + "/" + key + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.H5 + "/" + ResourceContants.FLOOR
+								+ "/" + key + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.PC_FLOORGOODS)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.PC + "/"
+								+ ResourceContants.FLOOR + "/" + key + "/" + ResourceContants.FLOORGOODS + "/"
+								+ ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.PC + "/" + ResourceContants.FLOOR
+								+ "/" + key + "/" + ResourceContants.FLOORGOODS + "/" + ResourceContants.IMAGE + "/"
+								+ saveFileName;
+					} else if (type.equals(ResourceContants.H5_FLOORGOODS)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.H5 + "/"
+								+ ResourceContants.FLOOR + "/" + key + "/" + ResourceContants.FLOORGOODS + "/"
+								+ ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.H5 + "/" + ResourceContants.FLOOR
+								+ "/" + key + "/" + ResourceContants.FLOORGOODS + "/" + ResourceContants.IMAGE + "/"
+								+ saveFileName;
+					} else if (type.equals(ResourceContants.PC_BANNER)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.PC + "/"
+								+ ResourceContants.BANNER + "/" + key + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.PC + "/" + ResourceContants.BANNER
+								+ "/" + key + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.H5_BANNER)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.H5 + "/"
+								+ ResourceContants.BANNER + "/" + key + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.H5 + "/" + ResourceContants.BANNER
+								+ "/" + key + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.PC_AD)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.PC + "/"
+								+ ResourceContants.AD + "/" + key + "/" + ResourceContants.IMAGE + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.PC + "/" + ResourceContants.AD
+								+ "/" + key + "/" + ResourceContants.IMAGE + "/" + saveFileName;
 					} else {
 						sendFailureMessage(resp, "操作失败：没有文件处理类型信息");
+						return;
 					}
-					
-					SocketManager.executor.execute(new SocketClient(ResourceContants.SOCKET_SERVER_IP, ResourceContants.SOCKET_SERVER_PORT, tmpFile.getPath(), remotePath));
-					
-//					SocketClient client = null;
-//					try {
-//						client = new SocketClient(ResourceContants.SOCKET_SERVER_IP, ResourceContants.SOCKET_SERVER_PORT);
-//						client.sendFile(tmpFile.getPath(), remotePath);
-//						client.quit();
-//						client.close();
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//						sendFailureMessage(resp, "操作失败：文件上传服务异常");
-//						return;
-//					} finally {
-//						if (client != null) {
-//							client.close();
-//						}
-//						//将临时文件删除
-//				   		File del = new File(tmpFile.toURI());
-//				   		del.delete();
-//					}
-					
-					sendSuccessMessage(resp, invitePath);
+
+					SocketClient client = null;
+					try {
+						client = new SocketClient();
+						client.sendFile(tmpFile.getPath(), remotePath);
+						client.quit();
+						client.close();
+						sendSuccessMessage(resp, invitePath);
+					} catch (Exception e) {
+						e.printStackTrace();
+						sendFailureMessage(resp, "操作失败：文件上传服务异常");
+						return;
+					} finally {
+						if (client != null) {
+							client.close();
+						}
+						// 将临时文件删除
+						File del = new File(tmpFile.toURI());
+						del.delete();
+					}
+					return;
 				} else {
 					sendFailureMessage(resp, "操作失败：没有文件信息");
+					return;
+				}
+			}
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+	}
+	
+	@RequestMapping(value = "/uploadGoodsFile", method = RequestMethod.POST)
+	@Auth(verifyLogin = false, verifyURL = false)
+	public void uploadGoodsFile(@RequestParam("pic") MultipartFile pic, HttpServletRequest req,
+			HttpServletResponse resp) {
+		try {
+			if (pic != null) {
+				String fileName = pic.getOriginalFilename();
+
+				// 当前上传文件的文件后缀
+				String suffix = fileName.indexOf(".") != -1
+						? fileName.substring(fileName.lastIndexOf("."), fileName.length()) : null;
+
+				if (!".png".equalsIgnoreCase(suffix) && !".jpg".equalsIgnoreCase(suffix)
+						&& !".jpeg".equalsIgnoreCase(suffix) && !".gif".equalsIgnoreCase(suffix)) {
+					sendFailureMessage(resp, "文件格式有误！");
+					return;
+				}
+				// 重命名上传后的文件名
+				String saveFileName = UUID.randomUUID().toString() + suffix;
+
+				// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+				String path = req.getSession().getServletContext().getRealPath("fileUpload");
+				File tmpFile = null;
+				InputStream ins = pic.getInputStream();
+				File fd = new File(path);
+				if (!fd.exists()) {
+					fd.mkdirs();
+				}
+				tmpFile = new File(path + "/" + saveFileName);
+				FileUtil.inputStreamToFile(ins, tmpFile);
+
+				String key = req.getParameter("key");
+				if (key.equals("") || key == null) {
+					sendFailureMessage(resp, "文件上传失败，未获取到对应的key，请刷新页面重试！");
+					return;
+				}
+
+				// 如果名称不为“”,说明该文件存在，否则说明该文件不存在
+				if (!StringUtils.isBlank(fileName)) {
+					// 定义上传路径
+					String invitePath = "";
+					invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + key + "/"
+							+ ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + saveFileName;
+					
+					GoodsFileUploadComponentImpl fuc = new GoodsFileUploadComponentImpl(key);
+					try {
+						fuc.fileUpload(tmpFile.getPath(), fuc.createRemotePath(),URLUtils.get("socketServerIp"),URLUtils.get("socketServerPort"));
+						sendSuccessMessage(resp, invitePath);
+					} catch (UnknownHostException e) {
+						e.printStackTrace();
+						sendFailureMessage(resp, "操作失败：" + e.getMessage());
+						return;
+					} catch (IOException e) {
+						e.printStackTrace();
+						sendFailureMessage(resp, "操作失败：" + e.getMessage());
+						return;
+					} catch (ConnetionParamErrorException e) {
+						e.printStackTrace();
+						sendFailureMessage(resp, "操作失败：" + e.getMessage());
+						return;
+					} finally {
+						// 将临时文件删除
+						File del = new File(tmpFile.toURI());
+						del.delete();
+					}
+				} else {
+					sendFailureMessage(resp, "操作失败：没有文件信息");
+					return;
 				}
 			}
 		} catch (Exception e) {

@@ -96,5 +96,7 @@ public interface GradeMngService extends ServerCenterService {
 	int queryFirstGradeIdByOpt(String gradeId);
 
 	void gradeInit(Integer id, String token);
+	
+	List<com.card.manager.factory.system.model.UserInfo> queryAllUserInfoByShopIdForDownload(com.card.manager.factory.system.model.UserInfo info, String token);
 
 }

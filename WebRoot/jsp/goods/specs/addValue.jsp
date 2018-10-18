@@ -47,7 +47,7 @@
 		</form>
 	</section>
 </section>
-<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<%-- <script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 <%@include file="../../resourceScript.jsp"%>
 <script type="text/javascript">
  

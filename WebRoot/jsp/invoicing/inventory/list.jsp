@@ -31,19 +31,32 @@
 			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
-			            <select class="form-control" name="brandId" id="brandId">
-		                	<option selected="selected" value="">--请选择商品品牌--</option>
+	                	<input type="text" class="form-control" id="brand" readonly style="background:#fff;" placeholder="选择品牌"/>
+	                	<input type="hidden" class="form-control" name="brandId" id="brandId"/>
+					</div>
+				</div>
+				<div class="list-item" style="display:none">
+					<div class="col-sm-3 item-left">商品品牌</div>
+					<div class="col-sm-9 item-right">
+				   		<select class="form-control" id="hidBrand">
 			                <c:forEach var="brand" items="${brands}">
 			                <option value="${brand.brandId}">${brand.brand}</option>
 			                </c:forEach>
 			            </select>
 					</div>
 				</div>
+				<div class="select-content">
+					<input type="text" placeholder="请输入品牌名称" id="searchBrand"/>
+		            <ul class="first-ul" style="margin-left:5px;">
+		           		<c:forEach var="brand" items="${brands}">
+		           			<c:set var="brand" value="${brand}" scope="request" />
+							<li><span data-id="${brand.brandId}" data-name="${brand.brand}" class="no-child">${brand.brand}</span></li>
+						</c:forEach>
+		           	</ul>
+		       	</div>
 				<div class="col-xs-3">
 					<div class="searchItem">
 			            <select class="form-control" name="supplierId" id="supplierId">
-<!-- 		                	<option value="5">广州仓</option> -->
-<!-- 		                	<option selected="selected" value="6">一般贸易仓</option> -->
 		                	<option selected="selected" value="">--请选择供应商--</option>
 			                <c:forEach var="supplier" items="${suppliers}">
 			                <option value="${supplier.id}">${supplier.supplierName}</option>
@@ -149,7 +162,6 @@
 								<th width="12%">商品名称</th>
 								<th width="5%">商品编号</th>
 								<th width="5%">商家编码</th>
-<!-- 								<th width="5%">商品品牌</th> -->
 								<th width="7%">商品分类</th>
 								<th width="5%">单位</th>
 								<th width="9%">规格</th>
@@ -158,7 +170,6 @@
 								<th width="5%">产地</th>
 								<th width="5%">条形码</th>
 								<th width="5%">供应商</th>
-<!-- 								<th width="4%">商品标签</th> -->
 								<th width="5%">商品价格</th>
 								<th width="5%">现有库存</th>
 								<th width="5%">虚拟库存</th>
@@ -182,6 +193,13 @@
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 <script type="text/javascript">
+var cpLock = false;
+$('#searchBrand').on('compositionstart', function () {
+    cpLock = true;
+});
+$('#searchBrand').on('compositionend', function () {
+    cpLock = false;
+});
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
 	$("#querybtns").click();
@@ -242,11 +260,9 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].itemId;
 		str += "</td><td>" + list[i].itemCode;
 		if (list[i].baseEntity == null) {
-// 			str += "</td><td>";
 			str += "</td><td>";
 			str += "</td><td>";
 		} else {
-// 			str += "</td><td>" + list[i].baseEntity.brand;
 			str += "</td><td style='text-align:left;'>" + list[i].baseEntity.firstCatalogId+"-"+list[i].baseEntity.secondCatalogId+"-"+list[i].baseEntity.thirdCatalogId;
 			str += "</td><td>" + list[i].baseEntity.unit;
 		}
@@ -256,21 +272,6 @@ function rebuildTable(data){
 		str += "</td><td>" + list[i].goodsEntity.origin;
 		str += "</td><td>" + (list[i].encode == null ? "" : list[i].encode);
 		str += "</td><td style='text-align:left;'>" + list[i].supplierName;
-// 		if (list[i].tagBindEntity != null) {
-// 			var tmpTagId = list[i].tagBindEntity.tagId;
-// 			var tmpTagName = "普通";
-// 			var tagSelect = document.getElementById("tagId");
-// 			var options = tagSelect.options;
-// 			for(var j=0;j<options.length;j++){
-// 				if (tmpTagId==options[j].value) {
-// 					tmpTagName = options[j].text;
-// 					break;
-// 				}
-// 			}
-// 			str += "</td><td>" + tmpTagName;
-// 		} else {
-// 			str += "</td><td>普通";
-// 		}
 		str += "</td><td>" + list[i].goodsPrice.retailPrice;
 		if (list[i].stock != null) {
 			str += "</td><td>" + list[i].stock.fxQty;
@@ -340,7 +341,6 @@ function excelExport(){
     itemIds = valArr.join(',');//转换为逗号隔开的字符串 
     var supplierId = $("#supplierId").val();
     window.open("${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds);
-// 	location.href="${wmsUrl}/admin/invoicing/inventoryMng/downLoadExcel.shtml?supplierId="+supplierId+"&itemIds="+itemIds;
 	$("#theadInp").prop("checked", false);
 }
 
@@ -393,6 +393,68 @@ function readExcelForMaintain(filePath){
 			 layer.alert("处理失败，请联系客服处理");
 		 }
 	 });
+}
+
+//点击展开下拉列表
+$('#brand').click(function(){
+	$('.select-content').css('width',$(this).outerWidth());
+	$('.select-content').css('left',$(this).offset().left);
+	$('.select-content').css('top',$(this).offset().top + $(this).height());
+	$('.select-content').stop();
+	$('.select-content').slideDown(300);
+});
+
+//点击空白隐藏下拉列表
+$('html').click(function(event){
+	var el = event.target || event.srcelement;
+	if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "brand"){
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+//点击选择分类
+$('.select-content').on('click','span',function(event){
+	var el = event.target || event.srcelement;
+	if(el.nodeName != 'I'){
+		var id = $(this).attr('data-id');
+		var name = $(this).attr('data-name');
+		$('#brandId').val(id);
+		$('#brand').val(name);
+		$('#searchBrand').val("");
+		reSetDefaultInfo();
+		$('.select-content').stop();
+		$('.select-content').slideUp(300);
+	}
+});
+
+$('#searchBrand').on("input",function(){
+	if (!cpLock) {
+		var tmpSearchKey = $(this).val();
+		if (tmpSearchKey !='') {
+			var searched = "";
+			$('.first-ul li').each(function(li_obj){
+				var tmpLiId = $(this).find("span").attr('data-id');
+				var tmpLiText = $(this).find("span").attr('data-name');
+				var flag = tmpLiText.indexOf(tmpSearchKey);
+				if(flag >=0) {
+					searched = searched + "<li><span data-id=\""+tmpLiId+"\" data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+				}
+			});
+			$('.first-ul').html(searched);
+		} else {
+			reSetDefaultInfo();
+		}
+}
+});
+
+function reSetDefaultInfo() {
+	var tmpBrands = "";
+	var hidBrandSelect = document.getElementById("hidBrand");
+	var options = hidBrandSelect.options;
+	for(var j=0;j<options.length;j++){
+		tmpBrands = tmpBrands + "<li><span data-id=\""+options[j].value+"\" data-name=\""+options[j].text+"\" class=\"no-child\">"+options[j].text+"</span></li>";
+	}
+	$('.first-ul').html(tmpBrands);
 }
 </script>
 </body>

@@ -1,8 +1,12 @@
 package com.card.manager.factory.goods.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,8 +49,10 @@ import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
 import com.card.manager.factory.log.SysLogger;
+import com.card.manager.factory.socket.task.SocketClient;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.CompressFileUtils;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -70,7 +76,7 @@ public class GoodsMngController extends BaseController {
 
 	@Resource
 	SftpService sftpService;
-	
+
 	@Resource
 	SysLogger sysLogger;
 
@@ -95,6 +101,16 @@ public class GoodsMngController extends BaseController {
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 			context.put("tags", tags);
 
+			// 自动产生业务流水号：tmp+GoodsId+账号+时间+4位随机数
+			Integer num = (int) (Math.random() * 9000) + 1000;
+			String key = "";
+			try {
+				key = "tmpGoodsId" + opt.getBadge() + DateUtil.getNowPlusTimeMill() + num;
+			} catch (Exception e) {
+				e.printStackTrace();
+				key = "tmpGoodsId" + opt.getBadge() + num;
+			}
+			context.put("key", key);
 			return forword("goods/goods/add", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -140,8 +156,7 @@ public class GoodsMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-
-		sendSuccessMessage(resp, null);
+		sendSuccessMessage(resp, entity.getPicPath());
 	}
 
 	@RequestMapping(value = "/importGoodsInfo", method = RequestMethod.POST)
@@ -207,10 +222,10 @@ public class GoodsMngController extends BaseController {
 				}
 			}
 			context.put("goodsInfo", goodsInfo);
-			
+
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			for (GoodsTagEntity gte: tags) {
-				for(GoodsTagBindEntity gtbe:goodsInfo.getGoods().getGoodsTagBindList()) {
+			for (GoodsTagEntity gte : tags) {
+				for (GoodsTagBindEntity gtbe : goodsInfo.getGoods().getGoodsTagBindList()) {
 					if (gte.getId() == gtbe.getTagId()) {
 						gte.setTagFunId(1);
 						break;
@@ -350,6 +365,19 @@ public class GoodsMngController extends BaseController {
 
 			String itemCode = fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf(".")) : null;
 
+			// 通过itemCode获得对应的goodsId
+			List<String> goodsIds = goodsService.queryGoodsIdByItemCode(itemCode, staffEntity.getToken());
+			if (goodsIds.size() <= 0) {
+				sendFailureMessage(resp, "该自有编码未匹配到对应的商品ID，请确认自有编码是否正确！");
+				return;
+			} else if (goodsIds.size() > 1) {
+				sendFailureMessage(resp, "该自有编码匹配到多个商品ID，请联系技术先合并商品ID！");
+				return;
+			} else {
+				// 将查询到的goodsId 替换itemCode的值
+				itemCode = goodsIds.get(0);
+			}
+
 			// 源文件名称
 			String sourceNameWithoutSuffix = itemCode + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge();
 			// 源文件名称
@@ -386,11 +414,23 @@ public class GoodsMngController extends BaseController {
 
 				File directory = new File(compressedFilePath + sourceNameWithoutSuffix);
 
+				//解压后的目录结构
 				String[] itemCodeList = directory.list();
 				if (itemCodeList == null || itemCodeList.length == 0) {
-					sendFailureMessage(resp, "没有商品信息！：");
+					sendFailureMessage(resp, "没有商品信息！");
 					return;
 				}
+				
+				//重命名目录结构
+				for (String itemCodeFile : itemCodeList) {
+					File fileDir = new File(compressedFilePath + sourceNameWithoutSuffix + "/" + itemCodeFile);
+					File newFileDir = new File(compressedFilePath + sourceNameWithoutSuffix + "/" + itemCode);
+					if (!fileDir.renameTo(newFileDir)) {
+						sendFailureMessage(resp, "自有编码装换为商品ID时异常，请重新上传压缩包！");
+						return;
+					}
+				}
+				itemCodeList = directory.list();
 
 				GoodsFielsMaintainBO bo;
 				List<GoodsFielsMaintainBO> list = new ArrayList<GoodsFielsMaintainBO>();
@@ -403,6 +443,7 @@ public class GoodsMngController extends BaseController {
 						bo.setItemCode(itemCodeFile);
 						list.add(bo);
 					} catch (Exception e) {
+						e.printStackTrace();
 						sendFailureMessage(resp, "操作失败：" + e.getMessage());
 					}
 				}
@@ -465,17 +506,17 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
-	private String getNewFileName(String itemCode, String fileName, StaffEntity staffEntity, Integer i) {
-		// 文件后缀
-		String suffix = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf("."), fileName.length())
-				: null;
-
-		// 源文件名称
-		String sourceNameWithoutSuffix = (fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf("."))
-				: null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge() + "-" + i;
-		// 源文件名称
-		return itemCode + "_" + sourceNameWithoutSuffix + suffix;
-	}
+//	private String getNewFileName(String itemCode, String fileName, StaffEntity staffEntity, Integer i) {
+//		// 文件后缀
+//		String suffix = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf("."), fileName.length())
+//				: null;
+//
+//		// 源文件名称
+//		String sourceNameWithoutSuffix = (fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf("."))
+//				: null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge() + "-" + i;
+//		// 源文件名称
+//		return itemCode + "_" + sourceNameWithoutSuffix + suffix;
+//	}
 
 	/**
 	 * dealGoodsPic:(这里用一句话描述这个方法的作用). <br/>
@@ -549,11 +590,12 @@ public class GoodsMngController extends BaseController {
 	 */
 	private List<String> dealCoverPic(String itemCode, String path, List<String> coverList, StaffEntity staffEntity)
 			throws Exception {
-		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
+		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + 
+				itemCode + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
 
 		List<String> coverInviteList = new ArrayList<String>();
 		File file;
-		String newFileName;
+//		String newFileName;
 		Collections.sort(coverList, new Comparator<String>() {
 
 			@Override
@@ -569,14 +611,28 @@ public class GoodsMngController extends BaseController {
 			}
 
 		});
-		int i = 0;
+//		int i = 0;
 		for (String fileName : coverList) {
 			file = new File(path + "/" + fileName);
-			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
-			i++;
-			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
-			coverInviteList.add(
-					URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload" + "/" + newFileName);
+//			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
+//			i++;
+			
+			SocketClient client = null;
+			try {
+				client = new SocketClient();
+				client.sendFile(file.getPath(), remotePath);
+				client.quit();
+				client.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (client != null) {
+					client.close();
+				}
+			}
+			
+			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + 
+					itemCode + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + file.getName());
 		}
 
 		return coverInviteList;
@@ -592,9 +648,10 @@ public class GoodsMngController extends BaseController {
 	 */
 	private String dealDetailPic(String itemCode, String path, List<String> detailList, StaffEntity staffEntity)
 			throws Exception {
-		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.IMAGE + "/";
+		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + 
+				itemCode + "/" + ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/";
 		File file;
-		String newFileName;
+//		String newFileName;
 		StringBuffer sb = new StringBuffer();
 
 		Collections.sort(detailList, new Comparator<String>() {
@@ -616,20 +673,55 @@ public class GoodsMngController extends BaseController {
 			}
 
 		});
-		int i = 0;
+//		int i = 0;
 		for (String fileName : detailList) {
 			file = new File(path + "/" + fileName);
-			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
-			i++;
-			sftpService.uploadFile(remotePath, newFileName, new FileInputStream(file), "batchUpload");
+//			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
+//			i++;
+			
+			SocketClient client = null;
+			try {
+				client = new SocketClient();
+				client.sendFile(file.getPath(), remotePath);
+				client.quit();
+				client.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (client != null) {
+					client.close();
+				}
+			}
+			
 			sb.append("<p style=\"text-align: center;\"><img src=\"");
-			sb.append(URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/" + "batchUpload" + "/" + newFileName);
+			sb.append(URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + itemCode + "/" + 
+						ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/" + file.getName());
 			sb.append("\"></p>");
 		}
+		
+		//新建临时目录和文件 将商详内容写入文件中
+		String tmpHtmlPath = path + "/" + ResourceContants.HTML + "/";
+		File directory = new File(tmpHtmlPath);
+		if (!directory.exists()) {
+			directory.mkdirs();
+		}
+		tmpHtmlPath = tmpHtmlPath + "/" + itemCode + ResourceContants.HTML_SUFFIX;
+		InputStream is = new ByteArrayInputStream(sb.toString().getBytes("utf-8"));
+		BufferedInputStream bin=null;
+	    BufferedOutputStream bout=null;
+	    bin=new BufferedInputStream(is);
+	    bout=new BufferedOutputStream(new FileOutputStream(tmpHtmlPath));
+	    int len=-1;
+	    byte[] b=new byte[1024];
+	    while((len=bin.read(b))!=-1){
+	        bout.write(b,0,len);
+	    }
+	    bin.close();
+	    bout.close();
 
-		return goodsService.saveModelHtml(itemCode, sb.toString(), staffEntity);
+		return goodsService.saveModelHtml(itemCode, tmpHtmlPath, staffEntity);
 	}
-	
+
 	@RequestMapping(value = "/toCreateItemInfo")
 	public ModelAndView toCreateItemInfo(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -641,10 +733,10 @@ public class GoodsMngController extends BaseController {
 			String itemId = req.getParameter("itemId");
 			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
 			context.put("goodsInfo", goodsInfo);
-			
+
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			for (GoodsTagEntity gte: tags) {
-				for(GoodsTagBindEntity gtbe:goodsInfo.getGoods().getGoodsTagBindList()) {
+			for (GoodsTagEntity gte : tags) {
+				for (GoodsTagBindEntity gtbe : goodsInfo.getGoods().getGoodsTagBindList()) {
 					if (gte.getId() == gtbe.getTagId()) {
 						gte.setTagFunId(1);
 						break;
@@ -695,8 +787,8 @@ public class GoodsMngController extends BaseController {
 
 			return forword("goods/goods/create", context);
 		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
+			context.put(MSG, e.getMessage());
+			return forword(MSG, context);
 		}
 	}
 
@@ -743,10 +835,10 @@ public class GoodsMngController extends BaseController {
 				}
 			}
 			context.put("goodsInfo", goodsInfo);
-			
+
 			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			for (GoodsTagEntity gte: tags) {
-				for(GoodsTagBindEntity gtbe:goodsInfo.getGoods().getGoodsTagBindList()) {
+			for (GoodsTagEntity gte : tags) {
+				for (GoodsTagBindEntity gtbe : goodsInfo.getGoods().getGoodsTagBindList()) {
 					if (gte.getId() == gtbe.getTagId()) {
 						gte.setTagFunId(1);
 						break;
@@ -815,12 +907,13 @@ public class GoodsMngController extends BaseController {
 			}
 			GoodsItemEntity entity = new GoodsItemEntity();
 			entity.setItemId(itemId);
-			
-			List<GoodsPriceRatioEntity> goodPriceRatios = goodsService.queryGoodsPriceRatioList(entity, staffEntity.getToken());
+
+			List<GoodsPriceRatioEntity> goodPriceRatios = goodsService.queryGoodsPriceRatioList(entity,
+					staffEntity.getToken());
 			if (goodPriceRatios.size() <= 0) {
 				return forword("goods/goodsRatio/notice", context);
 			}
-			
+
 			context.put("itemId", itemId);
 			context.put("goodsName", goodsName);
 			context.put("itemInfo", itemInfo);
@@ -836,7 +929,7 @@ public class GoodsMngController extends BaseController {
 	public void syncRatioGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
 			@RequestBody List<GoodsPriceRatioEntity> list) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		
+
 		try {
 			goodsService.syncRatioGoodsInfo(list, staffEntity);
 		} catch (Exception e) {

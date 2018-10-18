@@ -10,6 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 </head>
 
@@ -103,7 +104,7 @@
 					   <c:when test="${goodsExtensionInfo.goodsPath != null && goodsExtensionInfo.goodsPath != ''}">
                	  			<div class="item-img choose" id="content" >
 								<img src="${goodsExtensionInfo.goodsPath}">
-								<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 								<input value="${goodsExtensionInfo.goodsPath}" type="hidden" name="goodsPath" id="goodsPath">
 							</div>
 					   </c:when>
@@ -117,14 +118,15 @@
 					</c:choose>
 				</div>
 			</div>
-			
+			<div class="scrollImg-content broadcast"></div>
 	        <div class="submit-btn">
 	           	<button type="button" id="submitBtn">保存信息</button>
 	       	</div>
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
-	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
+<%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	var cpLock = false;
@@ -252,13 +254,14 @@
 				return true;
 			}
 			$.ajaxFileUpload({
-				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+				url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=goodsExtension&key='+"${goodsExtensionInfo.goodsId}", //你处理上传文件的服务端
 				secureuri : false,
 				fileElementId : "pic",
 				dataType : 'json',
 				success : function(data) {
 					if (data.success) {
-						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
 						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="goodsPath" name="goodsPath">'
 						$("#content").html(imgPath);
 						$("#content").addClass('choose');
@@ -269,7 +272,7 @@
 			})
 		});
 		//删除主图
-		$('.item-right').on('click','.bgColor i',function(){
+		$('.item-right').on('click','.bgColor i.fa-trash',function(){
 			var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="goodsPath" id="goodsPath" value=""></div>';
 			$(this).parent().parent().removeClass("choose");
 			$(this).parent().parent().parent().html(ht);
@@ -337,6 +340,30 @@
  			}
 			$('.first-ul').html(tmpBrands);
 		}
+		
+		function setPicImgListData() {
+			var valArr = new Array;
+			var tmpPicPath = $("#goodsPath").val();
+			if (tmpPicPath != null && tmpPicPath != "") {
+				valArr.push(tmpPicPath);
+			}
+			if (valArr != undefined && valArr.length > 0) {
+				var data = {
+			        imgList: valArr,
+			        imgWidth: 500,
+			        imgHeight: 500,
+			        activeIndex: 0,
+			        host: "${wmsUrl}"
+			    };
+			    setImgScroll('broadcast',data);
+			} else {
+				layer.alert("请先上传图片！");
+			}
+		}
+		//图片放大
+		$('.item-right').on('click','.bgColor i.fa-search',function(){
+			setPicImgListData();
+		});
 	</script>
 </body>
 </html>

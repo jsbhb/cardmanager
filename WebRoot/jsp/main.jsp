@@ -126,16 +126,12 @@
 <div class="customer-service">
 	<ul>
 		<li>
+			<a href="http://wpa.qq.com/msgrd?v=3&uin=1917761259&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
+			<span>商城端客服</span>
+		</li>
+		<li>
 			<a href="http://wpa.qq.com/msgrd?v=3&uin=610139553&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
-			<span>在线客服1</span>
-		</li>
-		<li>
-			<a href="http://wpa.qq.com/msgrd?v=3&uin=1990002080&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
-			<span>在线客服2</span>
-		</li>
-		<li>
-			<a href="http://wpa.qq.com/msgrd?v=3&uin=281388429&site=qq&menu=yes"><img src="${wmsUrl}/img/kf_01.png"/></a>
-			<span>在线客服3</span>
+			<span>系统端客服</span>
 		</li>
 	</ul>
 </div>

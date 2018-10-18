@@ -31,6 +31,7 @@ import com.card.manager.factory.mall.pojo.PageTypeEnum;
 import com.card.manager.factory.mall.pojo.PopularizeDictTypeEnum;
 import com.card.manager.factory.mall.service.MallService;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 
@@ -79,6 +80,17 @@ public class MallMngController extends BaseController {
 		try {
 			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 			context.put("firsts", catalogs);
+			
+			// 自动产生业务流水号：tmp+GoodsId+账号+时间+4位随机数
+			Integer num = (int) (Math.random() * 9000) + 1000;
+			String key = "";
+			try {
+				key = "tmpFloorId" + opt.getBadge() + DateUtil.getNowPlusTimeMill() + num;
+			} catch (Exception e) {
+				e.printStackTrace();
+				key = "tmpFloorId" + opt.getBadge() + num;
+			}
+			context.put("key", key);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
@@ -117,7 +129,13 @@ public class MallMngController extends BaseController {
 				context.put(ERROR, "没有编号信息");
 				return forword("error", context);
 			}
+			String pageType = req.getParameter("pageType");
+			if (StringUtil.isEmpty(pageType)) {
+				context.put(ERROR, "没有页面类型信息");
+				return forword("error", context);
+			}
 			context.put("id", id);
+			context.put("pageType", pageType);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
@@ -215,6 +233,24 @@ public class MallMngController extends BaseController {
 			String id = req.getParameter("id");
 			DictData data = mallService.queryDataById(id, opt.getGradeId(), opt.getToken());
 			context.put("data", data);
+			String key = req.getParameter("key");
+			if (StringUtil.isEmpty(key)) {
+				context.put(ERROR, "没有key信息");
+				return forword("error", context);
+			}
+			context.put("key", key);
+			String pageType = req.getParameter("pageType");
+			if (StringUtil.isEmpty(pageType)) {
+				context.put(ERROR, "没有页面类型信息");
+				return forword("error", context);
+			}
+			context.put("pageType", pageType);
+			String bussinessType = req.getParameter("bussinessType");
+			if (StringUtil.isEmpty(bussinessType)) {
+				context.put(ERROR, "没有业务类型信息");
+				return forword("error", context);
+			}
+			context.put("bussinessType", bussinessType);
 			return forword("mall/index/contentEdit", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -298,8 +334,7 @@ public class MallMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-
-		sendSuccessMessage(resp, null);
+		sendSuccessMessage(resp, pojo.getPicPath1());
 	}
 
 	@RequestMapping(value = "/saveData", method = RequestMethod.POST)

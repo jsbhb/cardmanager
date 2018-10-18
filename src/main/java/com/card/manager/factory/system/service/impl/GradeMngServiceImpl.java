@@ -7,6 +7,7 @@
  */
 package com.card.manager.factory.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,14 +111,18 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		RestCommonHelper helper = new RestCommonHelper();
 
 		// 确认当前分级负责人电话是否已经存在
-//		ResponseEntity<String> phonecheck_result = helper.request(URLUtils.get("gateway")
-//				+ ServerCenterContants.USER_CENTER_PHONE_CHECK + "?account=" + gradeInfo.getPhone(), staff.getToken(),
-//				true, null, HttpMethod.GET);
-//		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
-//
-//		if (!pcjson.getBoolean("success")) {
-//			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
-//		}
+		// ResponseEntity<String> phonecheck_result =
+		// helper.request(URLUtils.get("gateway")
+		// + ServerCenterContants.USER_CENTER_PHONE_CHECK + "?account=" +
+		// gradeInfo.getPhone(), staff.getToken(),
+		// true, null, HttpMethod.GET);
+		// JSONObject pcjson =
+		// JSONObject.fromObject(phonecheck_result.getBody());
+		//
+		// if (!pcjson.getBoolean("success")) {
+		// throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() +
+		// "已经被使用，请修改后重试");
+		// }
 
 		// 用户中心注册
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -131,7 +136,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		} else {
 			throw new Exception("用户中心注册失败:" + usercenter_json.getString("errorMsg"));
 		}
-		
+
 		JSONObject obj = usercenter_json.getJSONObject("obj");
 		int userId = obj.getInt("userId");
 		int gradeId = obj.getInt("gradeId");
@@ -155,14 +160,14 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffEntity.setOptName(gradeInfo.getPersonInCharge());
 		staffEntity.setGradeId(gradeId);
 		staffEntity.setUserCenterId(userId);
-		
+
 		// 加到缓存
-//		GradeBO gradeBO = new GradeBO();
-//		gradeBO.setGradeType(gradeInfo.getGradeType());
-//		gradeBO.setId(gradeId);
-//		gradeBO.setName(gradeInfo.getGradeName());
-//		gradeBO.setParentId(gradeInfo.getParentId());
-//		CachePoolComponent.addGrade(gradeBO);
+		// GradeBO gradeBO = new GradeBO();
+		// gradeBO.setGradeType(gradeInfo.getGradeType());
+		// gradeBO.setId(gradeId);
+		// gradeBO.setName(gradeInfo.getGradeName());
+		// gradeBO.setParentId(gradeInfo.getParentId());
+		// CachePoolComponent.addGrade(gradeBO);
 
 		// 平台账号
 		staffEntity.setPhone(gradeInfo.getPhone());
@@ -177,21 +182,23 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		staffMngService.sync2S(staff, Integer.parseInt(staffEntity.getBadge()));
 
 		// 区域中心复制商城时开通资金池
-//		if (gradeInfo.getCopyMall() == 1) {
-//			Map<String, Object> params = new HashMap<String, Object>();
-//			params.put("centerId", gradeId);
-//			ResponseEntity<String> finance_result = helper.requestWithParams(
-//					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
-//					staff.getToken(), true, null, HttpMethod.POST, params);
-//
-//			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-//			String finance_success = finance_json.getString("success");
-//			// 如果失败，提示
-//			if ("true".equals(finance_success)) {
-//			} else {
-//				throw new Exception("开通资金池失败:" + finance_json.getString("errorMsg"));
-//			}
-//		}
+		// if (gradeInfo.getCopyMall() == 1) {
+		// Map<String, Object> params = new HashMap<String, Object>();
+		// params.put("centerId", gradeId);
+		// ResponseEntity<String> finance_result = helper.requestWithParams(
+		// URLUtils.get("gateway") +
+		// ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
+		// staff.getToken(), true, null, HttpMethod.POST, params);
+		//
+		// JSONObject finance_json =
+		// JSONObject.fromObject(finance_result.getBody());
+		// String finance_success = finance_json.getString("success");
+		// // 如果失败，提示
+		// if ("true".equals(finance_success)) {
+		// } else {
+		// throw new Exception("开通资金池失败:" + finance_json.getString("errorMsg"));
+		// }
+		// }
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
 		CachePoolComponent.addGrade(ConvertUtil.converToGradeBO(gradeInfo));
@@ -303,23 +310,25 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		// staffMngService.sync2S(staff, gradeInfo.getPersonInChargeId());
 
 		// 区域中心复制商城时开通资金池
-//		if (gradeInfo.getCopyMall() == 1) {
-//			Map<String, Object> params = new HashMap<String, Object>();
-//			params.put("centerId", gradeInfo.getId());
-//			ResponseEntity<String> finance_result = helper.requestWithParams(
-//					URLUtils.get("gateway") + ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
-//					staffEntity.getToken(), true, null, HttpMethod.POST, params);
-//
-//			JSONObject finance_json = JSONObject.fromObject(finance_result.getBody());
-//
-//			String success = finance_json.getString("success");
-//
-//			// 如果失败，提示
-//			if ("true".equals(success)) {
-//			} else {
-//				throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
-//			}
-//		}
+		// if (gradeInfo.getCopyMall() == 1) {
+		// Map<String, Object> params = new HashMap<String, Object>();
+		// params.put("centerId", gradeInfo.getId());
+		// ResponseEntity<String> finance_result = helper.requestWithParams(
+		// URLUtils.get("gateway") +
+		// ServerCenterContants.FINANCE_CENTER_CAPITALPOOL_REGISTER,
+		// staffEntity.getToken(), true, null, HttpMethod.POST, params);
+		//
+		// JSONObject finance_json =
+		// JSONObject.fromObject(finance_result.getBody());
+		//
+		// String success = finance_json.getString("success");
+		//
+		// // 如果失败，提示
+		// if ("true".equals(success)) {
+		// } else {
+		// throw new Exception("开通资金池失败:" + json.getString("errorMsg"));
+		// }
+		// }
 
 		CachePoolComponent.syncCenter(staffEntity.getToken());
 		CachePoolComponent.syncShop(staffEntity.getToken());
@@ -363,18 +372,40 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 
 	@Override
 	public void gradeInit(Integer id, String token) {
-		Map<String,Object> param = new HashMap<String,Object>();
+		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("id", id);
 		RestCommonHelper helper = new RestCommonHelper();
-		
+
 		ResponseEntity<String> result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_INIT, token,
-				true, null, HttpMethod.POST,param);
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_INIT, token, true, null,
+				HttpMethod.POST, param);
 
 		JSONObject json = JSONObject.fromObject(result.getBody());
 
 		if (!json.getBoolean("success")) {
 			throw new RuntimeException("初始化失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public List<com.card.manager.factory.system.model.UserInfo> queryAllUserInfoByShopIdForDownload(
+			com.card.manager.factory.system.model.UserInfo info, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("needPaging", false);
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_USERINFO_QUERY, token, true,
+				info, HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		List<com.card.manager.factory.system.model.UserInfo> list = new ArrayList<com.card.manager.factory.system.model.UserInfo>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), com.card.manager.factory.system.model.UserInfo.class));
+		}
+		return list;
 	}
 }

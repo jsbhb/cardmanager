@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resourceLink.jsp"%>
+<script src="${wmsUrl}/plugins/laydate/laydate.js"></script>
 </head>
 <body>
 <section class="content-wrapper query">
@@ -90,7 +91,19 @@
 						<input type="hidden" class="form-control" name="gradeId" id="gradeId" >
 					</div>
 				</div>
+				<div class="list-item" style="display:none">
+					<div class="col-sm-3 item-left">分级列表</div>
+					<div class="col-sm-9 item-right">
+			            <ul id="hidGrade">
+			           		<c:forEach var="menu" items="${list}">
+			           			<c:set var="menu" value="${menu}" scope="request" />
+			           			<%@include file="recursive.jsp"%>  
+							</c:forEach>
+			           	</ul>
+					</div>
+				</div>
 			    <div class="select-content">
+					<input type="text" placeholder="请输入分级名称" id="searchGrade"/>
 	           		<ul class="first-ul" style="margin-left:10px;">
 	           			<c:forEach var="menu" items="${list}">
 	           				<c:set var="menu" value="${menu}" scope="request" />
@@ -120,6 +133,11 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 						<input type="text" class="form-control" name="itemCode" placeholder="请输入商家编码">
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="searchItem">
+						<input type="text" class="chooseTime" id="searchTime" name="searchTime" placeholder="请选择查询时间" readonly>
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -155,7 +173,6 @@
 								<th>收货人</th>
 								<th>订单来源</th>
 								<th>所属分级</th>
-<!-- 								<th>交易时间</th> -->
 								<th>创建时间</th>
 								<th>操作</th>
 							</tr>
@@ -176,6 +193,13 @@
 <%@include file="../../resourceScript.jsp"%>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
+var cpLock = false;
+$('#searchGrade').on('compositionstart', function () {
+    cpLock = true;
+});
+$('#searchGrade').on('compositionend', function () {
+    cpLock = false;
+});
 //点击搜索按钮
 $('.searchBtn').on('click',function(){
 	$("#querybtns").click();
@@ -197,6 +221,13 @@ var options = {
 $(function(){
 	 $(".pagination-nav").pagination(options);
 })
+
+laydate.render({
+  elem: '#searchTime', //指定元素
+  type: 'datetime',
+  range: '~',
+  value: null
+});
 
 
 function reloadTable(){
@@ -266,7 +297,6 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
 		str += "</td><td>" + (list[i].orderDetail.receiveName == null ? "" : list[i].orderDetail.receiveName);
-// 		str += "</td><td>" + (list[i].customerName == null ? "" : list[i].customerName);
 		var tmpOrderSource = list[i].orderSource;
 		switch(tmpOrderSource){
 			case 0:str += "</td><td>PC商城";break;
@@ -279,20 +309,15 @@ function rebuildTable(data){
 			case 7:str += "</td><td>福利商城";break;
 			default:str += "</td><td>";
 		}
-// 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
-// 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		if (true) {
 			str += "<td align='left'>";
 			str += "<a href='javascript:void(0);' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
 			str += "</td>";
 		}
-		
 		str += "</td></tr>";
 	}
-		
-
 	$("#baseTable tbody").html(str);
 }
 	
@@ -398,10 +423,37 @@ $('.select-content').on('click','span',function(event){
 		var id = $(this).attr('data-id');
 		$('#gradeName').val(name);
 		$('#gradeId').val(id);
+		$('#searchGrade').val("");
+		reSetDefaultInfo();
 		$('.select-content').stop();
 		$('.select-content').slideUp(300);
 	}
 });
+
+$('#searchGrade').on("input",function(){
+	if (!cpLock) {
+		var tmpSearchKey = $(this).val();
+		if (tmpSearchKey !='') {
+			var searched = "";
+			$('.first-ul li').each(function(li_obj){
+				var tmpLiId = $(this).find("span").attr('data-id');
+				var tmpLiText = $(this).find("span").attr('data-name');
+				var flag = tmpLiText.indexOf(tmpSearchKey);
+				if(flag >=0) {
+					searched = searched + "<li><span data-id=\""+tmpLiId+"\" data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+				}
+			});
+			$('.first-ul').html(searched);
+		} else {
+			reSetDefaultInfo();
+		}
+	}
+});
+
+function reSetDefaultInfo() {
+	var $clone = $('#hidGrade').find('>li').clone();
+	$('.first-ul').empty().append($clone);
+}
 </script>
 </body>
 </html>

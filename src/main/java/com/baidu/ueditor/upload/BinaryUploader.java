@@ -1,9 +1,11 @@
 package com.baidu.ueditor.upload;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItemIterator;
@@ -13,13 +15,13 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.baidu.ueditor.PathFormat;
 import com.baidu.ueditor.define.AppInfo;
 import com.baidu.ueditor.define.BaseState;
 import com.baidu.ueditor.define.FileType;
 import com.baidu.ueditor.define.State;
 import com.card.manager.factory.common.ResourceContants;
-import com.card.manager.factory.ftp.service.SftpService;
+import com.card.manager.factory.socket.task.SocketClient;
+import com.card.manager.factory.util.FileUtil;
 import com.card.manager.factory.util.URLUtils;
 
 public class BinaryUploader {
@@ -53,8 +55,11 @@ public class BinaryUploader {
 				return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
 			}
 
+			String goodsId = request.getParameter("goodsId").toString();
+
 			String savePath = (String) conf.get("savePath");
-			String invitePath = URLUtils.get("static") + "/" + ResourceContants.IMAGE + "/{yyyy}{mm}{dd}/";
+			String invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/{goodsId}/"
+					+ ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/";
 			String originFileName = fileStream.getName();
 			String suffix = FileType.getSuffixByFilename(originFileName);
 			String saveFileName = UUID.randomUUID().toString() + suffix;
@@ -65,20 +70,42 @@ public class BinaryUploader {
 			// return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
 			// }
 
-			savePath = PathFormat.parse(savePath);
-			invitePath = PathFormat.parse(invitePath);
+			// savePath = PathFormat.parse(savePath);
+			// invitePath = PathFormat.parse(invitePath);
+			savePath = savePath.replace("{goodsId}", goodsId);
+			invitePath = invitePath.replace("{goodsId}", goodsId);
 
 			// String physicalPath = (String) conf.get("rootPath") + savePath;
 
 			InputStream is = fileStream.openStream();
+			
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
 
-			WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
-			SftpService service = (SftpService) wac.getBean("sftpService");
-
+			String path = servletContext.getRealPath("/") + "fileUpload/";
+			File tmpFile = null;
+			File fd = new File(path);
+			if (!fd.exists()) {
+				fd.mkdirs();
+			}
+			tmpFile = new File(path + "/" + saveFileName);
+			FileUtil.inputStreamToFile(is, tmpFile);
+			
+			SocketClient client = null;
 			try {
-				service.uploadFile(savePath, saveFileName, is, "");
+				client = new SocketClient();
+				client.sendFile(tmpFile.getPath(), savePath);
+				client.quit();
+				client.close();
 			} catch (Exception e) {
 				return new BaseState(false, AppInfo.PARSE_REQUEST_ERROR);
+			} finally {
+				if (client != null) {
+					client.close();
+				}
+				// 将临时文件删除
+				File del = new File(tmpFile.toURI());
+				del.delete();
 			}
 
 			// State storageState = StorageManager.saveFileByInputStream(is,

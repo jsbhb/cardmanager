@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.card.manager.factory.annotation.Log;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
@@ -41,7 +42,7 @@ import net.sf.json.JSONObject;
 public class MallServiceImpl extends AbstractServcerCenterBaseService implements MallService {
 
 	@Override
-	public PopularizeDict queryById(String id,int centerId, String token) {
+	public PopularizeDict queryById(String id, int centerId, String token) {
 		PopularizeDict entity = new PopularizeDict();
 		entity.setId(Integer.parseInt(id));
 		if (centerId == 0) {
@@ -58,7 +59,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), PopularizeDict.class);
 	}
-	
+
 	@Override
 	public DictData queryDataById(String id, int gradeId, String token) {
 		DictData data = new DictData();
@@ -135,6 +136,19 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 
 		if (!json.getBoolean("success")) {
 			throw new Exception("新增楼层信息操作失败:" + json.getString("errorMsg"));
+		} else {
+			String dictId = json.getString("errorMsg");
+			if (dictId == null || "".equals(dictId)) {
+				throw new Exception("新增楼层时重命名目录操作失败，请联系技术");
+			}
+			String tmpPicPath = pojo.getPicPath1();
+			tmpPicPath = tmpPicPath.substring(tmpPicPath.indexOf("tmp"),
+					tmpPicPath.indexOf("/", tmpPicPath.indexOf("tmp")));
+			String oldPicPath = pojo.getPicPath1()
+					.substring(0, pojo.getPicPath1().indexOf("/", pojo.getPicPath1().indexOf(tmpPicPath)))
+					.replace(URLUtils.get("static"), ResourceContants.RESOURCE_BASE_PATH);
+			tmpPicPath = oldPicPath + "|" + oldPicPath.replace(tmpPicPath, dictId);
+			pojo.setPicPath1(tmpPicPath);
 		}
 	}
 
@@ -248,8 +262,7 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		if (!json.getBoolean("success")) {
 			throw new Exception("更新楼层信息操作失败:" + json.getString("errorMsg"));
 		}
-		
-	}
 
+	}
 
 }

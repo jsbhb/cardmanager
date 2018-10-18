@@ -19,7 +19,7 @@
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">首页</a></li>
 	        <li>商品管理</li>
-	        <li class="active">编辑商品</li>
+	        <li class="active">查看商品</li>
 	      </ol>
     </section>
 	<section class="content-iframe content">
@@ -387,7 +387,7 @@
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
 	<script src="${wmsUrl}/js/component/broadcast.js"></script>
-	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+<%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.all.min.js"></script>
@@ -599,7 +599,8 @@
 			}
 			
 			$.ajaxFileUpload({
-				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+				url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=goods&key='+"${goodsInfo.goods.goodsId}", //你处理上传文件的服务端
 				secureuri : false,
 				fileElementId : "pic"+id,
 				dataType : 'json',
@@ -649,6 +650,12 @@
 		//实例化编辑器
 	    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
 		var ue = UE.getEditor('editor');
+		//自定义请求参数
+	    ue.ready(function() {
+	        ue.execCommand('serverparam', {
+	            'goodsId': '${goodsInfo.goods.goodsId}'
+	        });
+	    });
 	    function sleep(numberMillis) { 
 	    	var now = new Date(); 
 	    	var exitTime = now.getTime() + numberMillis; 

@@ -8,6 +8,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 <style type="text/css">
 	.input-group input[type=radio]{
@@ -42,8 +43,8 @@
 				<div class="col-sm-3 item-left">页面类型</div>
 				<div class="col-sm-9 item-right">
 					<div class="input-group">
-               			<input type="radio" name="pageType" value="0" checked > <span>PC</span>
-               			<input type="radio" name="pageType" value="1" > <span>H5</span>
+               			<input type="radio" name="pageType" onchange="changePageType(this.value)" value="0" checked > <span>PC</span>
+               			<input type="radio" name="pageType" onchange="changePageType(this.value)" value="1" > <span>H5</span>
 	                </div>
 				</div>
 			</div>
@@ -91,6 +92,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="scrollImg-content broadcast"></div>
 	        <div class="submit-btn">
 	           	<button type="button" id="submitBtn">提交</button>
 	       	</div>
@@ -98,7 +100,8 @@
 	</section>
 </section>
 	<%@include file="../../resourceScript.jsp"%>
-	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
+<%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	 function refresh(){
@@ -117,9 +120,12 @@
 				 dataType:'json',
 				 success:function(data){
 					 if(data.success){
-						 refresh();
-						 layer.alert("插入成功");
-						 
+						 if (data.msg != null) {
+							 updateStaticFolderNameById(data.msg);
+						 } else {
+	 						 refresh();
+	 						 layer.alert("插入成功");
+						 }
 					 }else{
 						 layer.alert(data.msg);
 					 }
@@ -172,14 +178,24 @@
 				layer.alert("图片大小请控制在3M以内，当前图片为："+(imagSize/(1024*1024)).toFixed(2)+"M");
 				return true;
 			}
+			var baseUrl = "${wmsUrl}/admin/uploadFileWithType.shtml";
+			var pageTypeValue = $("input[name='pageType']:checked").val();
+			var tmpType = "";
+			if (pageTypeValue == 0) {
+				tmpType = "PC-floor";
+			} else if (pageTypeValue == 1) {
+				tmpType = "H5-floor";
+			}
+			baseUrl = baseUrl + "?type=" + tmpType + "&key=${key}";
 			$.ajaxFileUpload({
-				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 				url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+				url : baseUrl, //你处理上传文件的服务端
 				secureuri : false,
 				fileElementId : "pic",
 				dataType : 'json',
 				success : function(data) {
 					if (data.success) {
-						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
 						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath1" name="picPath1">'
 						$("#content").html(imgPath);
 						$("#content").addClass('choose');
@@ -190,10 +206,68 @@
 			})
 		});
 		//删除主图
-		$('.item-right').on('click','.bgColor i',function(){
+		$('.item-right').on('click','.bgColor i.fa-trash',function(){
 			var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="picPath1" id="picPath1" value=""></div>';
 			$(this).parent().parent().removeClass("choose");
 			$(this).parent().parent().parent().html(ht);
+		});
+		
+		function changePageType(radioValue) {
+			var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="picPath1" id="picPath1" value=""></div>';
+			$("#content").removeClass("choose");
+			$("#content").parent().html(ht);
+		}
+		 
+		function updateStaticFolderNameById(movePath) {
+			var oldPath = movePath.split("|")[0];
+			var newPath = movePath.split("|")[1];
+			
+			$.ajax({
+				 url:"${renameApiUrl}",
+				 method:'post',
+				 contentType: "application/json; charset=utf-8",
+				 dataType:'json',
+				 data:JSON.stringify([{"old":oldPath,"new":newPath}]),
+				 success:function(data){
+					 if(data.success){
+						 refresh();
+						 layer.alert("插入成功");
+					 }else{
+						 layer.alert("楼层图片保存目录重命名失败，请联系客服处理");
+					 }
+				 },
+				 error:function(){
+					 layer.alert("新建楼层时重命名目录异常，请联系客服处理");
+				 }
+			 });
+		}
+		
+		function setPicImgListData() {
+			var valArr = new Array;
+			var tmpPicPath="";
+			for(var i=1;i<5;i++) {
+				tmpPicPath = $("#picPath"+i).val();
+				if (tmpPicPath != null && tmpPicPath != "") {
+					valArr.push(tmpPicPath);
+				}
+			}
+			if (valArr != undefined && valArr.length > 0) {
+				var data = {
+			        imgList: valArr,
+			        imgWidth: 500,
+			        imgHeight: 500,
+			        activeIndex: 0,
+			        host: "${wmsUrl}"
+			    };
+			    setImgScroll('broadcast',data);
+			} else {
+				layer.alert("请先上传图片！");
+			}
+		}
+		
+		//图片放大
+		$('.item-right').on('click','.bgColor i.fa-search',function(){
+			setPicImgListData();
 		});
 	</script>
 </body>
