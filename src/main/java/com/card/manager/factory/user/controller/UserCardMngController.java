@@ -46,14 +46,7 @@ public class UserCardMngController extends BaseController {
 		Map<String, Object> params = new HashMap<String, Object>();
 		try {
 			Integer operId = staffEntity.getGradeId();
-			Integer operType = 0;
-			if (staffEntity.getGradeLevel() == 2) {
-				operType = 0;
-			} else if (staffEntity.getGradeLevel() == 3) {
-				operType = 0;
-			} else if (staffEntity.getGradeLevel() == 4) {
-				operType = 1;
-			}
+			Integer operType = staffEntity.getGradeType();
 			pagination.setTypeId(operId);
 			pagination.setType(operType);
 			pcb = financeMngService.dataList(pagination, params, staffEntity.getToken(),
@@ -107,14 +100,7 @@ public class UserCardMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			Integer operId = staffEntity.getGradeId();
-			Integer operType = 0;
-			if (staffEntity.getGradeLevel() == 2) {
-				operType = 0;
-			} else if (staffEntity.getGradeLevel() == 3) {
-				operType = 0;
-			} else if (staffEntity.getGradeLevel() == 4) {
-				operType = 1;
-			}
+			Integer operType = staffEntity.getGradeType();
 			cardInfo.setTypeId(operId);
 			cardInfo.setType(operType);
 			financeMngService.insertCard(cardInfo, staffEntity);

@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <%@include file="../../resourceLink.jsp"%>
+<link rel="stylesheet" href="${wmsUrl}/css/component/flower.css">
 </head>
 <body>
 <section class="content-wrapper query">
@@ -60,11 +61,12 @@
             </div>
 		</div>
 		<div class="list-content">
-			<div class="row">
-				<div class="col-md-12 list-btns">
-					<button type="button" onclick="toAdd()">新增提现申请</button>
-				</div>
-			</div>
+			<div class="showModal" style="width:80%; margin: auto;"></div>
+<!-- 			<div class="row"> -->
+<!-- 				<div class="col-md-12 list-btns"> -->
+<!-- 					<button type="button" onclick="toAdd()">新增提现申请</button> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="row content-container">
 				<div class="col-md-12 container-right active">
 					<table id="orderTable" class="table table-hover myClass">
@@ -94,6 +96,7 @@
 </section>
 	
 <%@include file="../../resourceScript.jsp"%>
+<script src="${wmsUrl}/js/component/flower.js"></script>
 <script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
 //点击搜索按钮
@@ -173,6 +176,55 @@ function toAdd(){
 	var index = layer.open({
 		  type: 2,
 		  content: '${wmsUrl}/admin/user/userWithdrawalsMng/toAdd.shtml',
+		  area: ['320px', '195px'],
+		  maxmin: true
+		});
+		layer.full(index);
+}
+
+$('.showModal').flower({
+    header: '提现流程',
+    column:  5,
+    content: [
+        {
+            title: '绑定银行卡',
+            defImg: '${wmsUrl}/img/flower/note.png',
+            showImg: '${wmsUrl}/img/flower/active-note.png',
+            downFunc: function(){ toAddCard(); },
+            event: true
+        },
+        {
+            title: '发起提现申请',
+            defImg: '${wmsUrl}/img/flower/upload.png',
+            showImg: '${wmsUrl}/img/flower/active-upload.png',
+            downFunc: function(){ toAdd(); },
+            event: true
+        },
+        {
+            title: '等待财务审核',
+            defImg: '${wmsUrl}/img/flower/examine.png',
+            describe: '约7个工作日',
+            event: false
+        },
+        {
+            title: '审核通过打款',
+            defImg: '${wmsUrl}/img/flower/pass.png',
+            describe: '约1-10个工作日到账',
+            event: false
+        },
+        {
+            title: '提现金额到账',
+            defImg: '${wmsUrl}/img/flower/person.png',
+            event: false
+        }
+	]
+})
+
+function toAddCard(){
+	
+	var index = layer.open({
+		  type: 2,
+		  content: '${wmsUrl}/admin/user/userCardMng/toAdd.shtml',
 		  area: ['320px', '195px'],
 		  maxmin: true
 		});
