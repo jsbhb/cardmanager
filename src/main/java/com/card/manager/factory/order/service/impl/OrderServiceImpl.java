@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.management.RuntimeErrorException;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -341,7 +342,11 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_REGISTER, null, false, ucEntity,
 				HttpMethod.POST);
 		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
-		return (int) json.get("obj");
+		if(json.getBoolean("success")){
+			return (int) json.get("obj");
+		} else {
+			throw new RuntimeException("请确认用户信息填写是否正确");
+		}
 	}
 
 	@Override
