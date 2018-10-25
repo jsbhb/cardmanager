@@ -6,6 +6,7 @@ public class ShopRebate {
 	private Integer shopId;
 	private Double canBePresented;//可提现
 	private Double alreadyPresented;//已提现
+	private Double alreadyCheck;//已提现
 	private Double stayToAccount;//待到账
 	private String remark;
 	private String createTime;
@@ -14,6 +15,12 @@ public class ShopRebate {
 	private String shopName;
 	public Integer getShopId() {
 		return shopId;
+	}
+	public Double getAlreadyCheck() {
+		return alreadyCheck;
+	}
+	public void setAlreadyCheck(Double alreadyCheck) {
+		this.alreadyCheck = alreadyCheck;
 	}
 	public void setShopId(Integer shopId) {
 		this.shopId = shopId;

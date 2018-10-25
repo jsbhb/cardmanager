@@ -127,6 +127,9 @@ public class RebateMngController extends BaseController {
 		if (rebate.getStayToAccount() != null) {
 			rebate.setStayToAccount(CalculationUtils.round(2, Double.valueOf(rebate.getStayToAccount())));
 		}
+		if (rebate.getAlreadyCheck() != null) {
+			rebate.setAlreadyCheck(CalculationUtils.round(2, Double.valueOf(rebate.getAlreadyCheck())));
+		}
 		if (pagination.getGradeId() == null) {
 			pagination.setGradeId(gradeId);
 		}

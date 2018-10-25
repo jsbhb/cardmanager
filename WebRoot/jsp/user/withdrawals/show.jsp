@@ -28,7 +28,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">可提现金额</div>
 				<div class="col-sm-9 item-right">
-           			<input type="text" readonly class="form-control" name="startMoney" id="startMoney" value="${info.canBePresented}">
+           			<input type="text" readonly class="form-control" name="startMoney" id="startMoney" value="${info.alreadyCheck}">
 				</div>
 			</div>
 			<div class="list-item">

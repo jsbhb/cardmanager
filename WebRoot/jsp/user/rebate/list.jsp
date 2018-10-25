@@ -103,8 +103,12 @@
 			<div class="default-content">
 				<div class="today-orders">
 						<div class="today-orders-item">
-							<a href="javascript:void(0);" id="canBePresented" onclick="toAdd()">￥0.00</a>
+							<a href="javascript:void(0);" id="alreadyCheck" onclick="toAdd()">￥0.00</a>
 							<p>可提现</p>
+						</div>
+						<div class="today-orders-item">
+							<a href="javascript:void(0);" id="canBePresented">￥0.00</a>
+							<p>待对账</p>
 						</div>
 						<div class="today-orders-item">
 							<a href="javascript:void(0);" id="alreadyPresented">￥0.00</a>
@@ -194,10 +198,12 @@
 			$("#canBePresented").html(rebate.canBePresented == null ? "￥0.00" : "￥"+rebate.canBePresented);
 			$("#alreadyPresented").html(rebate.alreadyPresented == null ? "￥0.00" : "￥"+rebate.alreadyPresented);
 			$("#stayToAccount").html(rebate.stayToAccount == null ? "￥0.00" : "￥"+rebate.stayToAccount);
+			$("#alreadyCheck").html(rebate.alreadyCheck == null ? "￥0.00" : "￥"+rebate.alreadyCheck);
 		} else {
 			$("#canBePresented").html("￥0.00");
 			$("#alreadyPresented").html("￥0.00");	
 			$("#stayToAccount").html("￥0.00");
+			$("#alreadyCheck").html("￥0.00");
 		}
 		
 		var str = "";
