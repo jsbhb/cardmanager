@@ -47,6 +47,15 @@
 					</div>
 				</div>
 				<div class="col-xs-3">
+					<div class="searchItem">
+			            <select class="form-control" name="goodsStatus" id="goodsStatus">
+		                	<option selected="selected" value="">商品状态</option>
+		                	<option value="1">上架</option>
+		                	<option value="0">下架</option>
+			            </select>
+					</div>
+				</div>
+				<div class="col-xs-3">
 					<div class="searchBtns">
 						 <div class="lessSearchBtn">简易搜索</div>
                          <button type="button" class="query" id="querybtns" name="signup">提交</button>
@@ -66,7 +75,8 @@
 								<th style="width: 15%;">商品名称</th>
 								<th style="width: 10%;">商品品牌</th>
 								<th style="width: 10%;">商品规格</th>
-								<th style="width: 10%;">产地</th>
+								<th style="width: 5%;">商品状态</th>
+								<th style="width: 5%;">产地</th>
 								<th style="width: 10%;">自定义字段</th>
 								<th style="width: 10%;">保质期</th>
 								<th style="width: 10%;">推荐理由</th>
@@ -147,6 +157,11 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].goodsName == null ? "" : list[i].goodsName);
 		str += "</td><td>" + (list[i].brand == null ? "" : list[i].brand);
 		str += "</td><td>" + (list[i].specs == null ? "" : list[i].specs);
+		var status = list[i].status;
+		switch (status) {
+			case '0':str += "</td><td>下架";break;
+			case '1':str += "</td><td>上架";break;
+		}
 		str += "</td><td>" + (list[i].origin == null ? "" : list[i].origin);
 		str += "</td><td>" + (list[i].custom == null ? "" : list[i].custom);
 		str += "</td><td>" + (list[i].shelfLife == null ? "" : list[i].shelfLife);

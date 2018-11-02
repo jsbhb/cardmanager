@@ -48,17 +48,60 @@
 				<div class="col-sm-9 item-right addContent">
 					<c:choose>
 					   <c:when test="${shop.headImg != null && shop.headImg != ''}">
-               	  			<div class="item-img choose" id="content" >
+               	  			<div class="item-img choose" id="content1" data-id="1">
 								<img src="${shop.headImg}">
 								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
 								<input value="${shop.headImg}" type="hidden" name="headImg" id="headImg">
 							</div>
 					   </c:when>
 					   <c:otherwise>
-                	  		<div class="item-img" id="content" >
+                	  		<div class="item-img" id="content1" data-id="1">
 								+
-								<input type="file" id="pic" name="pic" />
+								<input type="file" id="pic1" name="pic" />
 								<input type="hidden" class="form-control" name="headImg" id="headImg"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
+				</div>
+			</div>
+			
+<!-- 			<div class="list-item"> -->
+<!-- 				<div class="col-sm-3 item-left">邀请开店透明底logo</div> -->
+<!-- 				<div class="col-sm-9 item-right addContent"> -->
+<%-- 					<c:choose> --%>
+<%-- 					   <c:when test="${shop.inviteLogo != null && shop.inviteLogo != ''}"> --%>
+<!--                	  			<div class="item-img choose" id="content2" data-id="2"> -->
+<%-- 								<img src="${shop.inviteLogo}"> --%>
+<!-- 								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div> -->
+<%-- 								<input value="${shop.inviteLogo}" type="hidden" name="inviteLogo" id="inviteLogo"> --%>
+<!-- 							</div> -->
+<%-- 					   </c:when> --%>
+<%-- 					   <c:otherwise> --%>
+<!--                 	  		<div class="item-img" id="content2" data-id="2"> -->
+<!-- 								+ -->
+<!-- 								<input type="file" id="pic2" name="pic" /> -->
+<!-- 								<input type="hidden" class="form-control" name="inviteLogo" id="inviteLogo">  -->
+<!-- 							</div> -->
+<%-- 					   </c:otherwise> --%>
+<%-- 					</c:choose>  --%>
+<!-- 				</div> -->
+<!-- 			</div> -->
+			<div class="list-item">
+				<div class="col-sm-3 item-left">二维码中心白底logo</div>
+				<div class="col-sm-9 item-right addContent">
+					<c:choose>
+					   <c:when test="${shop.qrcodeLogo != null && shop.qrcodeLogo != ''}">
+               	  			<div class="item-img choose" id="content3" data-id="3">
+								<img src="${shop.qrcodeLogo}">
+								<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
+								<input value="${shop.qrcodeLogo}" type="hidden" name="qrcodeLogo" id="qrcodeLogo">
+							</div>
+					   </c:when>
+					   <c:otherwise>
+                	  		<div class="item-img" id="content3" data-id="3">
+								+
+								<input type="file" id="pic3" name="pic" />
+								<input type="hidden" class="form-control" name="qrcodeLogo" id="qrcodeLogo"> 
 							</div>
 					   </c:otherwise>
 					</c:choose> 
@@ -102,7 +145,8 @@
 	<script type="text/javascript">	
 	//点击上传图片
 	$('.item-right').on('change','.item-img input[type=file]',function(){
-		var imagSize = document.getElementById("pic").files[0].size;
+		var id = $(this).parent().attr('data-id'); 
+		var imagSize = document.getElementById("pic"+id).files[0].size;
 		if(imagSize>1024*1024*3) {
 			layer.alert("图片大小请控制在3M以内，当前图片为："+(imagSize/(1024*1024)).toFixed(2)+"M");
 			return true;
@@ -111,14 +155,21 @@
 // 			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
 			url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=shop&key='+"${gradeId}", //你处理上传文件的服务端
 			secureuri : false,
-			fileElementId : "pic",
+			fileElementId : "pic"+id,
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
 					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
-					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="headImg" name="headImg">'
-					$("#content").html(imgPath);
-					$("#content").addClass('choose');
+					var imgPath = "";
+					if (id == 1) {
+						imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="headImg" name="headImg">'
+					} else if (id == 2) {
+						imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="inviteLogo" name="inviteLogo">'
+					} else{
+						imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="qrcodeLogo" name="qrcodeLogo">'
+					}
+					$("#content"+id).html(imgPath);
+					$("#content"+id).addClass('choose');
 				} else {
 					layer.alert(data.msg);
 				}
@@ -127,7 +178,15 @@
 	});
 	//删除主图
 	$('.item-right').on('click','.bgColor i.fa-trash',function(){
-		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="headImg" id="headImg" value=""></div>';
+		var id = $(this).parent().parent().attr("data-id");
+		var ht = '<div class="item-img" id="content'+id+'" data-id="'+id+'">+<input type="file" id="pic'+id+'" name="pic"/>';
+		if (id == 1) {
+			ht = ht + '<input type="hidden" name="headImg" id="headImg" value=""></div>';
+		} else if (id == 2) {
+			ht = ht + '<input type="hidden" name="inviteLogo" id="inviteLogo" value=""></div>';
+		} else{
+			ht = ht + '<input type="hidden" name="qrcodeLogo" id="qrcodeLogo" value=""></div>';
+		}
 		$(this).parent().parent().removeClass("choose");
 		$(this).parent().parent().parent().html(ht);
 	});
@@ -154,7 +213,16 @@
 	
 	function setPicImgListData() {
 		var valArr = new Array;
-		var tmpPicPath = $("#headImg").val();
+		var tmpPicPath = "";
+		tmpPicPath = $("#headImg").val();
+		if (tmpPicPath != null && tmpPicPath != "") {
+			valArr.push(tmpPicPath);
+		}
+		tmpPicPath = $("#inviteLogo").val();
+		if (tmpPicPath != null && tmpPicPath != "") {
+			valArr.push(tmpPicPath);
+		}
+		tmpPicPath = $("#qrcodeLogo").val();
 		if (tmpPicPath != null && tmpPicPath != "") {
 			valArr.push(tmpPicPath);
 		}

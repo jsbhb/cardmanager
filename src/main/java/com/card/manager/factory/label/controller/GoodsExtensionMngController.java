@@ -2,9 +2,11 @@ package com.card.manager.factory.label.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -35,10 +37,12 @@ import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 import com.card.manager.factory.goods.service.GoodsBaseService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.FileUtil;
 import com.card.manager.factory.util.ImageUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -47,18 +51,18 @@ import com.card.manager.factory.util.ZXingCodeUtil;
 @Controller
 @RequestMapping("/admin/label/goodsExtensionMng")
 public class GoodsExtensionMngController extends BaseController {
-	
+
 	private static String imgPath = "label/goodsExtension";
-	
+
 	@Resource
 	GoodsItemService goodsItemService;
-	
+
 	@Resource
 	GradeMngService gradeMngService;
-	
+
 	@Resource
 	GoodsService goodsService;
-	
+
 	@Resource
 	GoodsBaseService goodsBaseService;
 
@@ -76,7 +80,7 @@ public class GoodsExtensionMngController extends BaseController {
 		PageCallBack pcb = null;
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		Map<String, Object> params = new HashMap<String, Object>();
-		try {			
+		try {
 			String goodsName = req.getParameter("goodsName");
 			if (!StringUtil.isEmpty(goodsName)) {
 				item.setGoodsName(goodsName);
@@ -95,17 +99,29 @@ public class GoodsExtensionMngController extends BaseController {
 				goodsEntity.setType(Integer.parseInt(goodsType));
 				item.setGoodsEntity(goodsEntity);
 			}
+			String goodsStatus = req.getParameter("goodsStatus");
+			if (!StringUtil.isEmpty(goodsStatus)) {
+				if (item.getGoodsEntity() == null) {
+					GoodsEntity goodsEntity = new GoodsEntity();
+					goodsEntity.setStatus(goodsStatus);
+					item.setGoodsEntity(goodsEntity);
+				} else {
+					GoodsEntity goodsEntity = item.getGoodsEntity();
+					goodsEntity.setStatus(goodsStatus);
+					item.setGoodsEntity(goodsEntity);
+				}
+			}
 
-			//根据账号信息获取对应的最上级分级ID
-			int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(staffEntity.getGradeId()+"");
-			//如果是admin进入则显示海外购的内容
+			// 根据账号信息获取对应的最上级分级ID
+			int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(staffEntity.getGradeId() + "");
+			// 如果是admin进入则显示海外购的内容
 			if (firstGradeId == 0) {
 				firstGradeId = 2;
 			}
-			GradeEntity entity = gradeMngService.queryById(firstGradeId+"", staffEntity.getToken());
-			
-			//总部账号不设置centerId
-			//根据账号信息获取对应的分级地址
+			GradeEntity entity = gradeMngService.queryById(firstGradeId + "", staffEntity.getToken());
+
+			// 总部账号不设置centerId
+			// 根据账号信息获取对应的分级地址
 			params.put("gradeLevel", staffEntity.getGradeLevel());
 			params.put("centerId", entity.getId());
 
@@ -129,14 +145,15 @@ public class GoodsExtensionMngController extends BaseController {
 
 		return pcb;
 	}
-	
+
 	@RequestMapping(value = "/toEditInfo")
 	public ModelAndView toEditInfo(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			String goodsId = req.getParameter("goodsId");
-			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId, staffEntity.getToken());
+			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId,
+					staffEntity.getToken());
 			if (goodsExtensionInfo == null) {
 				goodsExtensionInfo = new GoodsExtensionEntity();
 				goodsExtensionInfo.setGoodsId(goodsId);
@@ -168,21 +185,23 @@ public class GoodsExtensionMngController extends BaseController {
 	@RequestMapping(value = "/downLoadFile")
 	public void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		File tmpFile = null;
 		try {
 			String goodsId = req.getParameter("goodsId");
 			GoodsEntity goodsInfo = goodsService.queryGoodsInfoByGoodsId(goodsId, staffEntity.getToken());
-			GoodsBaseEntity base = goodsBaseService.queryById(goodsInfo.getBaseId()+"", staffEntity.getToken());
-			
-			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId, staffEntity.getToken());
-			
-			//根据账号信息获取对应的最上级分级ID
-			int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(staffEntity.getGradeId()+"");
-			//如果是admin进入则显示海外购的内容
+			GoodsBaseEntity base = goodsBaseService.queryById(goodsInfo.getBaseId() + "", staffEntity.getToken());
+
+			GoodsExtensionEntity goodsExtensionInfo = goodsItemService.queryExtensionByGoodsId(goodsId,
+					staffEntity.getToken());
+
+			// 根据账号信息获取对应的最上级分级ID
+			int firstGradeId = gradeMngService.queryFirstGradeIdByOpt(staffEntity.getGradeId() + "");
+			// 如果是admin进入则显示海外购的内容
 			if (firstGradeId == 0) {
 				firstGradeId = 2;
 			}
-			GradeEntity entity = gradeMngService.queryById(firstGradeId+"", staffEntity.getToken());
-			
+			GradeEntity entity = gradeMngService.queryById(firstGradeId + "", staffEntity.getToken());
+
 			String tmpLink = "";
 			if (entity != null) {
 				tmpLink = entity.getMobileUrl();
@@ -209,11 +228,20 @@ public class GoodsExtensionMngController extends BaseController {
 				}
 				tmpLink = entity.getMobileUrl() + "/" + goodsId + ".html?shopId=" + staffEntity.getGradeId();
 			}
-			
-			
+
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
 			String logoPath = servletContext.getRealPath("/") + "img/goodsExtensionLogo.png";
+			ShopEntity shop = gradeMngService.queryByGradeId(staffEntity.getGradeId() + "", staffEntity.getToken());
+			if (shop != null && shop.getQrcodeLogo() != null) {
+				URL url = new URL(shop.getQrcodeLogo());
+				String suffix = shop.getQrcodeLogo().indexOf(".") != -1 ? shop.getQrcodeLogo()
+						.substring(shop.getQrcodeLogo().lastIndexOf("."), shop.getQrcodeLogo().length()) : null;
+				String tmpFileName = UUID.randomUUID().toString() + suffix;
+				tmpFile = new File(servletContext.getRealPath("/") + "fileUpload/" + tmpFileName);
+				FileUtil.inputStreamToFile(url.openStream(), tmpFile);
+				logoPath = tmpFile.getPath();
+			}
 			String QRPicPath = servletContext.getRealPath("/") + imgPath + "/" + staffEntity.getBadge();
 			File QrCodeFile = null;
 			QrCodeFile = new File(QRPicPath);
@@ -221,28 +249,34 @@ public class GoodsExtensionMngController extends BaseController {
 				QrCodeFile.mkdirs();
 			}
 			QRPicPath = QRPicPath + "/" + goodsId + ".jpg";
-			//生成二维码
-			ZXingCodeUtil zXingCode=new ZXingCodeUtil();
+			// 生成二维码
+			ZXingCodeUtil zXingCode = new ZXingCodeUtil();
 			File logoFile = new File(logoPath);
-	        QrCodeFile = new File(QRPicPath);
-	        String url = tmpLink;
-	        String note = "";
-	        zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
-	        //拼接模板文件
+			QrCodeFile = new File(QRPicPath);
+			String url = tmpLink;
+			String note = "";
+			zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
+			// 拼接模板文件
 			ImageUtil.overlapImage(null, QRPicPath, goodsExtensionInfo, QRPicPath);
-			//设置DPI300 java生成图片默认DPI72 不适用于打印
+			// 设置DPI300 java生成图片默认DPI72 不适用于打印
 			ImageUtil.handleDpi(QrCodeFile, 300, 300);
 			String filePath = QrCodeFile.toString();
 			String fileName = goodsId + ".jpg";
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
 			if (QrCodeFile.exists()) {
-	    		QrCodeFile.delete();
-	    	}
+				QrCodeFile.delete();
+			}
 		} catch (Exception e) {
 			resp.setContentType("text/html;charset=utf-8");
 			resp.getWriter().println("下载失败，请重试!");
 			resp.getWriter().println(e.getMessage());
 			return;
+		} finally {
+			if (tmpFile != null) {
+				// 将临时文件删除
+				File del = new File(tmpFile.toURI());
+				del.delete();
+			}
 		}
 	}
 }

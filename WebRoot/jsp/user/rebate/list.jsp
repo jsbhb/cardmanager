@@ -195,10 +195,10 @@
 // 		var gradeName = $("#gradeName").val();
 // 		$("#gradeName_1").val(gradeName);
 		if(rebate != null){
-			$("#canBePresented").html(rebate.canBePresented == null ? "￥0.00" : "￥"+rebate.canBePresented);
-			$("#alreadyPresented").html(rebate.alreadyPresented == null ? "￥0.00" : "￥"+rebate.alreadyPresented);
-			$("#stayToAccount").html(rebate.stayToAccount == null ? "￥0.00" : "￥"+rebate.stayToAccount);
-			$("#alreadyCheck").html(rebate.alreadyCheck == null ? "￥0.00" : "￥"+rebate.alreadyCheck);
+			$("#canBePresented").html(rebate.canBePresented == null ? "￥0.00" : "￥"+(rebate.canBePresented).toFixed(2));
+			$("#alreadyPresented").html(rebate.alreadyPresented == null ? "￥0.00" : "￥"+(rebate.alreadyPresented).toFixed(2));
+			$("#stayToAccount").html(rebate.stayToAccount == null ? "￥0.00" : "￥"+(rebate.stayToAccount).toFixed(2));
+			$("#alreadyCheck").html(rebate.alreadyCheck == null ? "￥0.00" : "￥"+(rebate.alreadyCheck).toFixed(2));
 		} else {
 			$("#canBePresented").html("￥0.00");
 			$("#alreadyPresented").html("￥0.00");	

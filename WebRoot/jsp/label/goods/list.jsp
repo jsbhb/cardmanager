@@ -29,7 +29,7 @@
 			<div class="row form-horizontal list-content">
 				<div class="col-xs-3">
 					<div class="searchItem">
-	                  	<input type="text" class="form-control" name="goodsId" placeholder="请输入商品编码">
+	                  	<input type="text" class="form-control" name="goodsId" placeholder="请输入商品ID">
 					</div>
 				</div>
 				<div class="col-xs-3">
@@ -52,7 +52,7 @@
 					<table id="itemTable" class="table table-hover myClass">
 						<thead>
 							<tr>
-								<th width="10%">商品编码</th>
+								<th width="10%">商品ID</th>
 								<th width="30%">商品名称</th>
 								<th width="50%">商品链接</th>
 								<th width="10%">操作</th>
@@ -134,9 +134,13 @@ function rebuildTable(data){
 		if (list[i].detailPath == "") {
 			str += "";
 		} else {
-			str += "<button type='button' class='btn btn-primary' onclick='downLoadFile(\"";
-			str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
-			str += "\")'>下载</button>";
+			if (list[i].description == null || list[i].description == "") {
+				str += "";
+			} else {
+				str += "<button type='button' class='btn btn-primary' onclick='downLoadFile(\"";
+				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
+				str += "\")'>下载</button>";
+			}
 		}
 		str += "</td></tr>";
 	}

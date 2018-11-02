@@ -2,7 +2,9 @@ package com.card.manager.factory.label.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -20,10 +22,12 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.goods.service.GoodsItemService;
+import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.FileDownloadUtil;
+import com.card.manager.factory.util.FileUtil;
 import com.card.manager.factory.util.ImageUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.URLUtils;
@@ -98,11 +102,22 @@ public class ShopQRMngController extends BaseController {
 	@RequestMapping(value = "/downLoadFile")
 	public void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		File tmpFile = null;
 		try {
 			
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 			ServletContext servletContext = webApplicationContext.getServletContext();
 			String logoPath = servletContext.getRealPath("/") + "img/goodsExtensionLogo.png";
+			ShopEntity shop = gradeMngService.queryByGradeId(staffEntity.getGradeId() + "", staffEntity.getToken());
+			if (shop != null && shop.getQrcodeLogo() != null) {
+				URL url = new URL(shop.getQrcodeLogo());
+				String suffix = shop.getQrcodeLogo().indexOf(".") != -1 ? shop.getQrcodeLogo()
+						.substring(shop.getQrcodeLogo().lastIndexOf("."), shop.getQrcodeLogo().length()) : null;
+				String tmpFileName = UUID.randomUUID().toString() + suffix;
+				tmpFile = new File(servletContext.getRealPath("/") + "fileUpload/" + tmpFileName);
+				FileUtil.inputStreamToFile(url.openStream(), tmpFile);
+				logoPath = tmpFile.getPath();
+			}
 			String QRPicPath = servletContext.getRealPath("/") + imgPath + "/" + staffEntity.getBadge();
 			File QrCodeFile = null;
 			QrCodeFile = new File(QRPicPath);
@@ -130,6 +145,12 @@ public class ShopQRMngController extends BaseController {
 			resp.getWriter().println("下载失败，请重试!");
 			resp.getWriter().println(e.getMessage());
 			return;
+		} finally {
+			if (tmpFile != null) {
+				// 将临时文件删除
+				File del = new File(tmpFile.toURI());
+				del.delete();
+			}
 		}
 	}
 }

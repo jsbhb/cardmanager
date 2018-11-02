@@ -611,7 +611,12 @@
 					 }
 				 }
 			 }
+			 //多张图片时序列化的值被清空了，重新赋值
+			 if (formData["picPath"] == "") {
+				 formData["picPath"] = getAllPicPath();
+			 }
 // 			 console.log(formData);
+// 			 return;
 			 
 			 $.ajax({
 				 url:url,
@@ -1351,6 +1356,14 @@
 		$('.item-right').on('click','.bgColor i.fa-search',function(){
 			setPicImgListData();
 		});
+		
+		function getAllPicPath() {
+			var tmpPicPath = "";
+			$("input[name='picPath']").each(function(){
+				tmpPicPath += $(this).val() + ",";
+			})
+			return tmpPicPath.substring(0,tmpPicPath.length-1);
+		}
 	</script>
 </body>
 </html>
