@@ -28,6 +28,8 @@ public class ParemeterConverUtil {
 			put("展厅", 5);
 			put("大客户", 6);
 			put("福利商城", 7);
+			put("后台订单", 8);
+			put("太平惠汇", 9);
 		}
 	};
 	
