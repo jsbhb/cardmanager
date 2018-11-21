@@ -244,17 +244,14 @@ public class ImageUtil {
 	 *            是否网络路径
 	 * @param temporaryPath
 	 *            临时存放图片的路径
+	 * @throws IOException 
 	 */
-	public static void replaceCodeLogo(String codePath, String logoPath, boolean netPath, String temporaryPath) {
+	public static void replaceCodeLogo(String codePath, String logoPath, boolean netPath, String temporaryPath) throws IOException {
 		BufferedImage image = null;
-		try {
-			if (netPath) {
-				image = ImageIO.read(HttpClientUtil.getInputStream(logoPath));
-			} else {
-				image = ImageIO.read(new File(logoPath));
-			}
-		} catch (IOException e2) {
-			e2.printStackTrace();
+		if (netPath) {
+			image = ImageIO.read(HttpClientUtil.getInputStream(logoPath));
+		} else {
+			image = ImageIO.read(new File(logoPath));
 		}
 		BufferedImage output = new BufferedImage(195, 195, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = output.createGraphics();
@@ -267,7 +264,7 @@ public class ImageUtil {
 		g2.drawImage(image, 0, 0, 195, 195, null);
 		g2.dispose();
 		// 这是生成的临时替换logo图片的保存路径，已经切成圆形
-		File temporaryFile = new File(temporaryPath + "/" + System.currentTimeMillis() + ".png");//临时logo图片
+		File temporaryFile = new File(temporaryPath + "/" + System.currentTimeMillis() + ".png");// 临时logo图片
 		try {
 			ImageIO.write(output, "png", temporaryFile);
 		} catch (IOException e1) {

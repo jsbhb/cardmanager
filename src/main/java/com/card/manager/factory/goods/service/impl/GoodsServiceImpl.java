@@ -162,24 +162,24 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// return htmlToCode(doc.toString());
 	}
 
-//	private String htmlToCode(String context) {
-//		if (context == null) {
-//			return "";
-//		} else {
-//			context = context.replace("<html>", "");
-//			context = context.replace("</html>", "");
-//			context = context.replace("<body>", "");
-//			context = context.replace("</body>", "");
-//			context = context.replace("<head>", "");
-//			context = context.replace("</head>", "");
-//			context = context.replace("\n", "");
-//			context = context.replace("\t", "");
-//			context = context.replaceAll("\n\r", "<br>&nbsp;&nbsp;");
-//			context = context.replaceAll("\r\n", "<br>&nbsp;&nbsp;");// 这才是正确的！
-//			context = context.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-//			return context;
-//		}
-//	}
+	// private String htmlToCode(String context) {
+	// if (context == null) {
+	// return "";
+	// } else {
+	// context = context.replace("<html>", "");
+	// context = context.replace("</html>", "");
+	// context = context.replace("<body>", "");
+	// context = context.replace("</body>", "");
+	// context = context.replace("<head>", "");
+	// context = context.replace("</head>", "");
+	// context = context.replace("\n", "");
+	// context = context.replace("\t", "");
+	// context = context.replaceAll("\n\r", "<br>&nbsp;&nbsp;");
+	// context = context.replaceAll("\r\n", "<br>&nbsp;&nbsp;");// 这才是正确的！
+	// context = context.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+	// return context;
+	// }
+	// }
 
 	@Override
 	public List<GoodsRebateEntity> queryGoodsRebateById(String id, String token) {
@@ -360,20 +360,20 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
 				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + goods.getGoodsId()
 				+ ResourceContants.HTML_SUFFIX;
-		//通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+		// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 		ServletContext servletContext = webApplicationContext.getServletContext();
-		String path =  servletContext.getRealPath("/") + "fileUpload";
+		String path = servletContext.getRealPath("/") + "fileUpload";
 		File tmpFile = null;
 		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
-	    File fd = new File(path);
-	    if (!fd.exists()) {
-	    	fd.mkdirs();
-	    }
+		File fd = new File(path);
+		if (!fd.exists()) {
+			fd.mkdirs();
+		}
 		String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
-	    tmpFile = new File(path+"/"+tmpFileName);
-	    FileUtil.inputStreamToFile(is, tmpFile);
-	    SocketClient client = null;
+		tmpFile = new File(path + "/" + tmpFileName);
+		FileUtil.inputStreamToFile(is, tmpFile);
+		SocketClient client = null;
 		try {
 			client = new SocketClient();
 			client.sendFile(tmpFile.getPath(), savePath);
@@ -386,9 +386,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			if (client != null) {
 				client.close();
 			}
-			//将临时文件删除
-	   		File del = new File(tmpFile.toURI());
-	   		del.delete();
+			// 将临时文件删除
+			File del = new File(tmpFile.toURI());
+			del.delete();
 		}
 		goods.setDetailPath(invitePath);
 		// -------------------保存商品详情---------------------//
@@ -563,20 +563,20 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
 				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + goods.getGoodsId()
 				+ ResourceContants.HTML_SUFFIX;
-		//通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+		// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 		ServletContext servletContext = webApplicationContext.getServletContext();
-		String path =  servletContext.getRealPath("/") + "fileUpload";
+		String path = servletContext.getRealPath("/") + "fileUpload";
 		File tmpFile = null;
 		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
-	    File fd = new File(path);
-	    if (!fd.exists()) {
-	    	fd.mkdirs();
-	    }
+		File fd = new File(path);
+		if (!fd.exists()) {
+			fd.mkdirs();
+		}
 		String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
-	    tmpFile = new File(path+"/"+tmpFileName);
-	    FileUtil.inputStreamToFile(is, tmpFile);
-	    SocketClient client = null;
+		tmpFile = new File(path + "/" + tmpFileName);
+		FileUtil.inputStreamToFile(is, tmpFile);
+		SocketClient client = null;
 		try {
 			client = new SocketClient();
 			client.sendFile(tmpFile.getPath(), savePath);
@@ -589,9 +589,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			if (client != null) {
 				client.close();
 			}
-			//将临时文件删除
-	   		File del = new File(tmpFile.toURI());
-	   		del.delete();
+			// 将临时文件删除
+			File del = new File(tmpFile.toURI());
+			del.delete();
 		}
 		goods.setDetailPath(invitePath);
 		// -------------------保存商品详情---------------------//
@@ -1428,12 +1428,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		String savePath;
 		String invitePath;
 
-		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + 
-				itemCode + "/" + ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/";
-		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + 
-				itemCode + "/" + ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + 
-				itemCode + ResourceContants.HTML_SUFFIX;
-		
+		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + itemCode + "/"
+				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/";
+		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + itemCode + "/"
+				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + itemCode + ResourceContants.HTML_SUFFIX;
+
 		SocketClient client = null;
 		try {
 			client = new SocketClient();
@@ -1488,20 +1487,20 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
 				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + goods.getGoodsId()
 				+ ResourceContants.HTML_SUFFIX;
-		//通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+		// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 		ServletContext servletContext = webApplicationContext.getServletContext();
-		String path =  servletContext.getRealPath("/") + "fileUpload";
+		String path = servletContext.getRealPath("/") + "fileUpload";
 		File tmpFile = null;
 		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
-	    File fd = new File(path);
-	    if (!fd.exists()) {
-	    	fd.mkdirs();
-	    }
+		File fd = new File(path);
+		if (!fd.exists()) {
+			fd.mkdirs();
+		}
 		String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
-	    tmpFile = new File(path+"/"+tmpFileName);
-	    FileUtil.inputStreamToFile(is, tmpFile);
-	    SocketClient client = null;
+		tmpFile = new File(path + "/" + tmpFileName);
+		FileUtil.inputStreamToFile(is, tmpFile);
+		SocketClient client = null;
 		try {
 			client = new SocketClient();
 			client.sendFile(tmpFile.getPath(), savePath);
@@ -1514,9 +1513,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			if (client != null) {
 				client.close();
 			}
-			//将临时文件删除
-	   		File del = new File(tmpFile.toURI());
-	   		del.delete();
+			// 将临时文件删除
+			File del = new File(tmpFile.toURI());
+			del.delete();
 		}
 		goods.setDetailPath(invitePath);
 		// -------------------保存商品详情---------------------//
@@ -1707,6 +1706,29 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		ResponseEntity<String> query_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE,
 				token, true, itemCode, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		if (index == 0) {
+			return null;
+		}
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < index; i++) {
+			list.add(obj.get(i).toString());
+		}
+		return list;
+	}
+
+	@Override
+	public List<String> queryGoodsPic(String goodsId, String token) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("goodsId", goodsId);
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE,
+				token, true, null, HttpMethod.GET, param);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		JSONArray obj = json.getJSONArray("obj");

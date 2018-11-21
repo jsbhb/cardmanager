@@ -1,10 +1,12 @@
 package com.card.manager.factory.applet.service.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.codec.binary.Base64;
@@ -18,6 +20,11 @@ import com.card.manager.factory.applet.model.AppletCodeParameter;
 import com.card.manager.factory.applet.service.WxAppletCodeService;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.exception.WxCodeException;
+import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.shop.model.ShopEntity;
+import com.card.manager.factory.socket.task.SocketClient;
+import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.util.HttpClientUtil;
 import com.card.manager.factory.util.ImageUtil;
 import com.card.manager.factory.util.URLUtils;
@@ -27,8 +34,14 @@ import net.sf.json.JSONObject;
 @Service
 public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 
+	@Resource
+	GradeMngService gradeMngService;
+
+	@Resource
+	GoodsService GoodsService;
+
 	@Override
-	public String getWxAppletCode(AppletCodeParameter param, boolean needToCoverLogo, String token)
+	public String getWxAppletCode(AppletCodeParameter param, boolean needToCoverLogo, StaffEntity opt)
 			throws WxCodeException {
 		// 拼装url
 		String url = assemblingUrl(param);
@@ -36,29 +49,59 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		if (codeExist(url)) {
 			return url;
 		}
-		//获取绝对路径
+		// 获取绝对路径
 		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 		ServletContext servletContext = webApplicationContext.getServletContext();
 		String absolutelyPath = servletContext.getRealPath("/");
 		// 不存在获取二维码
-		String filePath = getCode(param, token, absolutelyPath);
+		String filePath = getCode(param, opt.getToken(), absolutelyPath);
 		// 如果需要替换logo
 		if (needToCoverLogo) {
-			replaceLogo(filePath, param, absolutelyPath);
+			replaceLogo(filePath, param, absolutelyPath, opt);
 		}
 		// 上传到静态服务器
-		uploadToStaticServer();
+		uploadToStaticServer(filePath, param);
 
 		return null;
+	}
+
+	private void uploadToStaticServer(String filePath, AppletCodeParameter param) {
+		SocketClient client = null;
+		String remotePath;
+		if (param.getPage().contains(GOODS_DETAIL_PATH)) {
+			String goodsId = getGoodsIdFromPage(param.getPage());// 获取goodsId
+			remotePath = "/opt/static/wechat/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
+		} else {
+			remotePath = "/opt/static/wechat/appletcode/" + param.getScene() + "/" + param.getScene() + ".png";
+		}
+		try {
+			client = new SocketClient();
+			client.sendFile(filePath, remotePath);
+			client.quit();
+			client.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (client != null) {
+				try {
+					client.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			// 将临时文件删除
+			File del = new File(filePath);
+			del.delete();
+		}
 	}
 
 	private String assemblingUrl(AppletCodeParameter param) {
 		String page = param.getPage();
 		if (page.contains(GOODS_DETAIL_PATH)) {
 			String goodsId = getGoodsIdFromPage(page);// 获取goodsId
-			return URLUtils.get("static") + "/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
+			return URLUtils.get("static") + "/wechat/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
 		} else {
-			return URLUtils.get("static") + "/appletcode/" + param.getScene() + ".png";
+			return URLUtils.get("static") + "/wechat/appletcode/" + param.getScene() + "/" + param.getScene() + ".png";
 		}
 	}
 
@@ -74,19 +117,33 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 	private final String GOODS_DETAIL_PATH = "/web/orderDetail/orderDetail?goodsId=";// 商详路径
 	private final String TEMPORARY_PATH = "temporary";// 临时路径
 
-	private void replaceLogo(String filePath, AppletCodeParameter param,String absolutelyPath) {
+	private void replaceLogo(String filePath, AppletCodeParameter param, String absolutelyPath, StaffEntity opt)
+			throws WxCodeException {
 		String page = param.getPage();
 		String logoPath;
 		if (page.contains(GOODS_DETAIL_PATH)) {// 路径是商详，默认第一张主图作为logo
 			String goodsId = getGoodsIdFromPage(page);
-			//获取需要替换的logo（商品主图）
-			logoPath = 
-		} else {//不是商详路径
-			//获取微店配置的头像信息
-			logoPath = 
+			// 获取需要替换的logo（商品主图）
+			List<String> picList = GoodsService.queryGoodsPic(goodsId, opt.getToken());
+			if (picList == null) {
+				throw new WxCodeException("1", "没有替换的图片");
+			}
+			logoPath = picList.get(0);
+		} else {// 不是商详路径
+			// 获取微店配置的头像信息
+			ShopEntity shop = gradeMngService.queryByGradeId(opt.getGradeId() + "", opt.getToken());
+			logoPath = shop.getHeadImg();
+			if (logoPath == null) {
+				throw new WxCodeException("1", "没有替换的图片");
+			}
 		}
-		//替换logo默认替换原来的filePath，后缀png
-		ImageUtil.replaceCodeLogo(filePath, logoPath, true, absolutelyPath+TEMPORARY_PATH);
+		// 替换logo默认替换原来的filePath，后缀png
+		try {
+			ImageUtil.replaceCodeLogo(filePath, logoPath, true, absolutelyPath + TEMPORARY_PATH);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new WxCodeException("1", "没有替换的图片");
+		}
 	}
 
 	private String getGoodsIdFromPage(String page) {
@@ -119,12 +176,6 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		ImageUtil.saveToImgByInputStream(new ByteArrayInputStream(base.decode(obj)), imgPath, imgName);
 
 		return imgPath + "/" + imgName;
-	}
-
-	public static void main(String[] args) {
-		InputStream in = HttpClientUtil
-				.getInputStream("https://teststatic.cncoopbuy.com:8080/PC/11-11-PC/NBNF8809505541047.jpg");
-
 	}
 
 }

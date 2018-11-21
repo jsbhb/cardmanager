@@ -69,7 +69,7 @@ public interface GoodsService extends ServerCenterService {
 	 */
 	String getHtmlContext(String html, StaffEntity staffEntity) throws Exception;
 
-	 /**
+	/**
 	 * saveHtml:保存html. <br/>
 	 *
 	 * @author hebin
@@ -78,7 +78,7 @@ public interface GoodsService extends ServerCenterService {
 	 * @param staffEntity
 	 * @since JDK 1.7
 	 */
-	 String saveModelHtml(String itemCode, String html, StaffEntity staffEntity) throws Exception;
+	String saveModelHtml(String itemCode, String html, StaffEntity staffEntity) throws Exception;
 
 	/**
 	 * queryById:根据编号查询商品信息. <br/>
@@ -252,9 +252,11 @@ public interface GoodsService extends ServerCenterService {
 	List<GoodsPriceRatioEntity> queryGoodsPriceRatioList(GoodsItemEntity entity, String token);
 
 	void syncRatioGoodsInfo(List<GoodsPriceRatioEntity> list, StaffEntity staffEntity) throws Exception;
-	
+
 	GoodsEntity queryGoodsInfoByGoodsId(String goodsId, String token);
-	
+
 	List<String> queryGoodsIdByItemCode(String itemCode, String token);
+
+	List<String> queryGoodsPic(String goodsId, String token);
 
 }
