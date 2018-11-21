@@ -249,7 +249,7 @@ public class ImageUtil {
 		BufferedImage image = null;
 		try {
 			if (netPath) {
-				image = ImageIO.read(new URL(logoPath));
+				image = ImageIO.read(HttpClientUtil.getInputStream(logoPath));
 			} else {
 				image = ImageIO.read(new File(logoPath));
 			}
