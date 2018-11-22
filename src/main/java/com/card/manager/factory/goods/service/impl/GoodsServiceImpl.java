@@ -1724,7 +1724,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		param.put("goodsId", goodsId);
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE,
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_GOODSPIC_BY_GOODSID,
 				token, true, null, HttpMethod.GET, param);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());

@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -217,6 +218,10 @@ public class ImageUtil {
 	public static int saveToImgByInputStream(InputStream instreams, String imgPath, String imgName) {
 		int stateInt = 1;
 		if (instreams != null) {
+			File dir = new File(imgPath);
+			if(!dir.exists()){
+				dir.mkdirs();
+			}
 			try {
 				File file = new File(imgPath, imgName);// 可以是任何图片格式.jpg,.png等
 				FileOutputStream fos = new FileOutputStream(file);
@@ -249,7 +254,7 @@ public class ImageUtil {
 	public static void replaceCodeLogo(String codePath, String logoPath, boolean netPath, String temporaryPath) throws IOException {
 		BufferedImage image = null;
 		if (netPath) {
-			image = ImageIO.read(HttpClientUtil.getInputStream(logoPath));
+			image = ImageIO.read(new ByteArrayInputStream(HttpClientUtil.getByteArr(logoPath)));
 		} else {
 			image = ImageIO.read(new File(logoPath));
 		}
@@ -264,6 +269,10 @@ public class ImageUtil {
 		g2.drawImage(image, 0, 0, 195, 195, null);
 		g2.dispose();
 		// 这是生成的临时替换logo图片的保存路径，已经切成圆形
+		File dir = new File(temporaryPath);
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
 		File temporaryFile = new File(temporaryPath + "/" + System.currentTimeMillis() + ".png");// 临时logo图片
 		try {
 			ImageIO.write(output, "png", temporaryFile);

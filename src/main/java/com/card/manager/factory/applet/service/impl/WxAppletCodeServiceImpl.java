@@ -3,7 +3,6 @@ package com.card.manager.factory.applet.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -63,17 +62,17 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		// 上传到静态服务器
 		uploadToStaticServer(filePath, param);
 
-		return null;
+		return url;
 	}
 
 	private void uploadToStaticServer(String filePath, AppletCodeParameter param) {
 		SocketClient client = null;
 		String remotePath;
+		String shopId = getShopIdFromScene(param.getScene());
 		if (param.getPage().contains(GOODS_DETAIL_PATH)) {
-			String goodsId = getGoodsIdFromPage(param.getPage());// 获取goodsId
-			remotePath = ResourceContants.RESOURCE_BASE_PATH + "/wechat/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
+			remotePath = ResourceContants.RESOURCE_BASE_PATH + "/wechat/appletcode/" + shopId + "/goods";
 		} else {
-			remotePath = ResourceContants.RESOURCE_BASE_PATH + "/wechat/appletcode/" + param.getScene() + "/" + param.getScene() + ".png";
+			remotePath = ResourceContants.RESOURCE_BASE_PATH + "/wechat/appletcode/" + shopId;
 		}
 		try {
 			client = new SocketClient();
@@ -98,32 +97,34 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 
 	private String assemblingUrl(AppletCodeParameter param) {
 		String page = param.getPage();
+		String shopId = getShopIdFromScene(param.getScene());
 		if (page.contains(GOODS_DETAIL_PATH)) {
-			String goodsId = getGoodsIdFromPage(page);// 获取goodsId
-			return URLUtils.get("static") + "/wechat/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
+			String goodsId = getGoodsIdFromScene(param.getScene());// 获取goodsId
+			return URLUtils.get("static") + "/wechat/appletcode/" + shopId + "/goods/" + goodsId + ".png";
 		} else {
-			return URLUtils.get("static") + "/wechat/appletcode/" + param.getScene() + "/" + param.getScene() + ".png";
+			return URLUtils.get("static") + "/wechat/appletcode/" + shopId + "/" + shopId + ".png";
 		}
 	}
 
 	private boolean codeExist(String url) {
-		InputStream in = HttpClientUtil.getInputStream(url);
-		if (in == null) {
+		byte[] result = HttpClientUtil.getByteArr(url);
+		if (result == null) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 
-	private final String GOODS_DETAIL_PATH = "web/orderDetail/orderDetail?goodsId=";// 商详路径
+	private final String GOODS_DETAIL_PATH = "web/goodsDetail/goodsDetail";// 商详路径
 	private final String TEMPORARY_PATH = "temporary";// 临时路径
 
 	private void replaceLogo(String filePath, AppletCodeParameter param, String absolutelyPath, StaffEntity opt)
 			throws WxCodeException {
+		String scene = param.getScene();
 		String page = param.getPage();
 		String logoPath;
 		if (page.contains(GOODS_DETAIL_PATH)) {// 路径是商详，默认第一张主图作为logo
-			String goodsId = getGoodsIdFromPage(page);
+			String goodsId = getGoodsIdFromScene(scene);
 			// 获取需要替换的logo（商品主图）
 			List<String> picList = GoodsService.queryGoodsPic(goodsId, opt.getToken());
 			if (picList == null) {
@@ -147,13 +148,13 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		}
 	}
 
-	private String getGoodsIdFromPage(String page) {
-		page = page.substring(page.indexOf("goodsId="));
+	private String getGoodsIdFromScene(String scene) {
+		scene = scene.substring(scene.indexOf("goodsId="));
 		String goodsId;
-		if (page.contains("&")) {// 如果还有其他参数
-			goodsId = page.substring(page.indexOf("goodsId=") + 8, page.indexOf("&"));
+		if (scene.contains("&")) {// 如果还有其他参数
+			goodsId = scene.substring(scene.indexOf("goodsId=") + 8, scene.indexOf("&"));
 		} else {
-			goodsId = page.substring(page.indexOf("goodsId=") + 8);
+			goodsId = scene.substring(scene.indexOf("goodsId=") + 8);
 		}
 		return goodsId;
 	}
@@ -171,12 +172,30 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		String obj = json.getString("obj");
 		// 图片字符串需base64解码
 		Base64 base = new Base64();
-		String imgPath = "APPLET_CODE";
-		String imgName = param.getScene() + ".png";
+		String imgPath = absolutelyPath + "APPLET_CODE";
+		String imgName;
+		if(param.getPage().contains(GOODS_DETAIL_PATH)){
+			String goodsId = getGoodsIdFromScene(param.getScene());
+			imgName = goodsId + ".png";
+		} else {
+			String shopId = getShopIdFromScene(param.getScene());
+			imgName = shopId + ".png";
+		}
 		// 生成二维码
 		ImageUtil.saveToImgByInputStream(new ByteArrayInputStream(base.decode(obj)), imgPath, imgName);
 
 		return imgPath + "/" + imgName;
+	}
+	
+	private String getShopIdFromScene(String scene){
+		scene = scene.substring(scene.indexOf("shopId="));
+		String shopId;
+		if (scene.contains("&")) {// 如果还有其他参数
+			shopId = scene.substring(scene.indexOf("shopId=") + 7, scene.indexOf("&"));
+		} else {
+			shopId = scene.substring(scene.indexOf("shopId=") + 7);
+		}
+		return shopId;
 	}
 
 }

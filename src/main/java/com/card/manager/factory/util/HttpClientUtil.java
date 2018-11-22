@@ -109,8 +109,8 @@ public class HttpClientUtil {
 
 	}
 
-	public static InputStream getInputStream(String url) {
-		InputStream in = null;
+	public static byte[] getByteArr(String url) {
+		byte[] result = null;
 		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(connectTimeout)
 				.setConnectTimeout(connectTimeout).setConnectionRequestTimeout(connectTimeout).build();
 
@@ -136,7 +136,7 @@ public class HttpClientUtil {
 			}
 			entity = response.getEntity();
 			if (entity != null) {
-				in = entity.getContent();
+				result = EntityUtils.toByteArray(entity);
 			}
 
 		} catch (Exception e) {
@@ -162,7 +162,7 @@ public class HttpClientUtil {
 			}
 
 		}
-		return in;
+		return result;
 	}
 
 	/**

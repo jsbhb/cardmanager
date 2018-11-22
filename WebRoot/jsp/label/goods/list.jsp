@@ -171,8 +171,8 @@ function getWxAppletCode(goodsId) {
 	var reqUrl = "${wmsUrl}/admin/applet/code.shtml";
 	
 	var param = {};
-	param["scene"] = gradeId;
-	param["page"] = "web/orderDetail/orderDetail?goodsId="+goodsId;
+	param["scene"] = "shopId=" + gradeId + "&goodsId=" + goodsId;
+	param["page"] = "web/goodsDetail/goodsDetail";
 	param["width"] = 400;
 	var win = window.open();
 	
