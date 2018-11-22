@@ -346,7 +346,12 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ShopEntity.class);
+		
+		if (!json.getBoolean("success")) {
+			return entity = new ShopEntity();
+		} else {
+			return JSONUtilNew.parse(json.getJSONObject("obj").toString(), ShopEntity.class);
+		}
 	}
 
 	@Override
