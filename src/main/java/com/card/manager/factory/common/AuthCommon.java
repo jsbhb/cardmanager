@@ -41,6 +41,7 @@ public class AuthCommon {
 	public static final String ORDER_DIAGRAM = "17";
 	public static final String FINANCIAL_DIAGRAM = "22";
 	public static final String PERSONAL_DIAGRAM = "35";
+	public static final String PURCHASE_DIAGRAM = "51";
 	
 
 	public static List<AuthInfo> treeAuthInfo(List<AuthInfo> authInfos) {

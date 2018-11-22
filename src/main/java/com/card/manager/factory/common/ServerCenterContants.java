@@ -43,7 +43,9 @@ public class ServerCenterContants {
 	public static final String AUTH_CENTER_LOGIN = (TOKEN_NOT_NEED ? "/" : "/authcenter") + "/auth/login";
 	public static final String AUTH_CENTER_REGISTER = (TOKEN_NOT_NEED ? "/" : "/authcenter") + "/auth/register";
 	public static final String AUTH_CENTER_PLATFORM_REGISTER = (TOKEN_NOT_NEED ? "/" : "/authcenter/")
-			+ "auth/platform/register?userId={userId}&platUserType={platUserType}";
+			+ "platform/register?userId={userId}&platUserType={platUserType}&account={account}";
+	public static final String AUTH_CENTER_STAFF_REGISTER = (TOKEN_NOT_NEED ? "/" : "/authcenter/")
+			+ "platform/back/register?userId={userId}&account={account}";
 
 	/**
 	 * 供应商中心url
@@ -128,6 +130,12 @@ public class ServerCenterContants {
 			+ "/grade/rebate/formula/update";
 	public static final String USER_CENTER_GET_USERINFO_BY_USERID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/user/{centerId}/{userId}";
+	public static final String USER_CENTER_GET_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/address/{userId}";
+	public static final String USER_CENTER_SAVE_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/address";
+	public static final String USER_CENTER_DELETE_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/user/address/{userId}/{id}";
 	/**
 	 * 商品中心url
 	 */
@@ -387,6 +395,23 @@ public class ServerCenterContants {
 	/*------------------------预售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_PRESELL_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/presell/queryForPage";
+	/*------------------------用户购物车管理-----------------------*/
+	public static final String ORDER_CENTER_COUNT_USER_SHOPPING_CART = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/shoping-cart/count/{gradeId}/{userId}?platformSource={platformSource}";
+	public static final String ORDER_CENTER_USER_ADD_ITEM_TO_SHOPPING_CART = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/shoping-cart";
+	public static final String ORDER_CENTER_GET_USER_SHOPPING_CART_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/shoping-cart/{gradeId}/{userId}?platformSource={platformSource}";
+	public static final String ORDER_CENTER_USER_DELETE_ITEM_TO_SHOPPING_CART = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/shoping-cart/{gradeId}/{userId}/{ids}?platformSource={platformSource}";
+	public static final String ORDER_CENTER_GET_POST_FEE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/postfee?data={data}";
+	public static final String ORDER_CENTER_CREATE_ORDER_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order";
+	public static final String ORDER_CENTER_REBATE_ORDER_STATUS_UPDATE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/alread-pay/{orderId}";
+	public static final String PAY_CENTER_ORDER_PAY_STATUS_UPDATE = (TOKEN_NOT_NEED ? "/" : "/paycenter/")
+			+ SERVER_CENTER_EDITION + "/pay/{payType}/{type}/{orderId}";
 	
 	
 	/*----------------------运费模板管理--------------------------------*/

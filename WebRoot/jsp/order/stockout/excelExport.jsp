@@ -47,7 +47,7 @@
                   	  </c:forEach>
                 </select>
 			</div>
-		</div>
+		</div>       	
 		<div class="list-item">
 			<div class="col-xs-3 item-left">分级列表</div>
 			<div class="col-xs-9 item-right">
@@ -55,20 +55,39 @@
 				<input type="hidden" class="form-control" name="gradeId" id="gradeId" value="${list[0].id}">
 			</div>
 		</div>
-		<div class="select-content" style="width: 420px;top: 175px;">
-       		<ul class="first-ul" style="margin-left:10px;">
-       			<c:forEach var="menu" items="${list}">
-       				<c:set var="menu" value="${menu}" scope="request" />
-       				<%@include file="recursive.jsp"%>  
+		<div class="list-item" style="display:none">
+			<div class="col-sm-3 item-left">分级列表</div>
+			<div class="col-sm-9 item-right">
+	            <ul id="hidGrade">
+	           		<c:forEach var="menu" items="${list}">
+	           			<c:set var="menu" value="${menu}" scope="request" />
+	           			<%@include file="recursive.jsp"%>  
+					</c:forEach>
+	           	</ul>
+			</div>
+		</div>
+	    <div class="select-content">
+			<input type="text" placeholder="请输入分级名称" id="searchGrade"/>
+          	<ul class="first-ul" style="margin-left:10px;">
+          		<c:forEach var="menu" items="${list}">
+          			<c:set var="menu" value="${menu}" scope="request" />
+          			<%@include file="recursive.jsp"%>  
 				</c:forEach>
-       		</ul>
-       	</div>
+        	</ul>
+        </div>
 		<div class="submit-btn">
            	<button type="button" onclick="downLoadExcel()">确认导出</button>
        	</div>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
 	<script type="text/javascript">
+		var cpLock = false;
+		$('#searchGrade').on('compositionstart', function () {
+		    cpLock = true;
+		});
+		$('#searchGrade').on('compositionend', function () {
+		    cpLock = false;
+		});
 		var nowDate = new Date();
 		var stDate = new Date();
 		stDate = getFormatDate(stDate);
@@ -135,19 +154,6 @@
 	    	}
 	    	window.open("${wmsUrl}/admin/order/stockOutMng/downLoadExcel.shtml?startTime="+startTime+"&endTime="+endTime+"&dateType="+dateType+"&supplierId="+supplierId+"&gradeId="+gradeId);
 	    }
-		//点击展开下拉列表
-		$('#gradeName').click(function(){
-			$('.select-content').stop();
-			$('.select-content').slideDown(300);
-		});
-		//点击空白隐藏下拉列表
-		$('html').click(function(event){
-			var el = event.target || event.srcelement;
-			if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
-				$('.select-content').stop();
-				$('.select-content').slideUp(300);
-			}
-		});
 		//点击展开
 		$('.select-content').on('click','li span i:not(active)',function(){
 			$(this).addClass('active');
@@ -168,10 +174,68 @@
 				var id = $(this).attr('data-id');
 				$('#gradeName').val(name);
 				$('#gradeId').val(id);
+				$('#searchGrade').val("");
+				reSetDefaultInfo();
 				$('.select-content').stop();
 				$('.select-content').slideUp(300);
 			}
 		});
+		
+		//点击展开下拉列表
+		$('#gradeName').click(function(){
+			$('.select-content').css('width',$(this).outerWidth());
+			$('.select-content').css('left',$(this).offset().left);
+			$('.select-content').css('top',$(this).offset().top + 31);
+			$('.select-content').stop();
+			$('.select-content').slideDown(300);
+		});
+
+		//点击空白隐藏下拉列表
+		$('html').click(function(event){
+			var el = event.target || event.srcelement;
+			if(!$(el).parents('.select-content').length > 0 && $(el).attr('id') != "gradeName"){
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
+		//点击选择分类
+		$('.select-content').on('click','span',function(event){
+			var el = event.target || event.srcelement;
+			if(el.nodeName != 'I'){
+				var name = $(this).attr('data-name');
+				var id = $(this).attr('data-id');
+				$('#gradeName').val(name);
+				$('#gradeId').val(id);
+				$('#searchGrade').val("");
+				reSetDefaultInfo();
+				$('.select-content').stop();
+				$('.select-content').slideUp(300);
+			}
+		});
+		$('#searchGrade').on("input",function(){
+			if (!cpLock) {
+				var tmpSearchKey = $(this).val();
+				if (tmpSearchKey !='') {
+					var searched = "";
+					$('.first-ul li').each(function(li_obj){
+						var tmpLiId = $(this).find("span").attr('data-id');
+						var tmpLiText = $(this).find("span").attr('data-name');
+						var flag = tmpLiText.indexOf(tmpSearchKey);
+						if(flag >=0) {
+							searched = searched + "<li><span data-id=\""+tmpLiId+"\" data-name=\""+tmpLiText+"\" class=\"no-child\">"+tmpLiText+"</span></li>";
+						}
+					});
+					$('.first-ul').html(searched);
+				} else {
+					reSetDefaultInfo();
+				}
+			}
+		});
+
+		function reSetDefaultInfo() {
+			var $clone = $('#hidGrade').find('>li').clone();
+			$('.first-ul').empty().append($clone);
+		}
 	</script>
 </body>
 </html>

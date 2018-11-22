@@ -156,6 +156,7 @@ public class GradeMngController extends BaseController {
 		return forword("system/grade/list", context);
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/dataList", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack dataList(HttpServletRequest req, HttpServletResponse resp, GradeEntity entity) {
@@ -274,10 +275,14 @@ public class GradeMngController extends BaseController {
 			context.put("error", e.getMessage());
 			return forword("error", context);
 		}
+		context.put("editFlg", "true");
 		if (opt.getGradeType() == 0 || opt.getGradeType() == 1) {
 			context.put("urlShow", "true");
 		} else {
 			context.put("urlShow", "false");
+			if (gradeId.equals(opt.getGradeId()+"")) {
+				context.put("editFlg", "false");
+			}
 		}
 		return forword("system/grade/edit", context);
 	}

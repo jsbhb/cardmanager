@@ -101,12 +101,28 @@ public class StaffMngServiceImpl implements StaffMngService {
 
 		try {
 			JSONObject json = JSONObject.fromObject(result.getBody());
-			staff.setUserCenterId(json.getInt("obj"));
-			staffMapper.updateUserCenterId(staff);
+			if (json.getBoolean("success")) {
+				staffMapper.updateUserCenterId(staff);
+			} else {
+				throw new SyncUserCenterException("更新用户中心编号失败！" + json.getString("errorMsg"));
+			}
 		} catch (Exception e) {
 			throw new SyncUserCenterException("更新用户中心编号失败！" + e.getMessage());
 		}
 
+//		Map<String, Object> param = new HashMap<String, Object>();
+//		param.put("userId", staff.getUserCenterId());
+//		param.put("account", staff.getBadge());
+//		// 调用权限中心
+//		try {
+//			ResponseEntity<String> auth_result = syncAuthCenter(staff.getToken(),param);
+//			JSONObject json = JSONObject.fromObject(auth_result.getBody());
+//			if (!json.getBoolean("success")) {
+//				throw new Exception("权限中心开通账号失败，请重新同步信息！");
+//			}
+//		} catch (Exception e) {
+//			throw new SyncUserCenterException("同步权限中心信息出错:" + e.getMessage());
+//		}
 	}
 
 	@Override
@@ -123,7 +139,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 	}
 
 	@Override
-	public void sync(int optId, String phone) throws Exception {
+	public void sync(String token, int optId, String phone) throws Exception {
 		StaffEntity staffeEntity = staffMapper.selectByOptId(optId);
 		UserCenterEntity ucEntity = new UserCenterEntity(staffeEntity, phone);
 
@@ -137,11 +153,28 @@ public class StaffMngServiceImpl implements StaffMngService {
 
 		try {
 			JSONObject json = JSONObject.fromObject(result.getBody());
-			staffeEntity.setUserCenterId(json.getInt("obj"));
-			staffMapper.updateUserCenterId(staffeEntity);
+			if (json.getBoolean("success")) {
+				staffMapper.updateUserCenterId(staffeEntity);
+			} else {
+				throw new Exception("更新用户中心编号失败！" + json.getString("errorMsg"));
+			}
 		} catch (Exception e) {
 			throw new Exception("更新用户中心编号失败！" + e.getMessage());
 		}
+		
+//		Map<String, Object> param = new HashMap<String, Object>();
+//		param.put("userId", staffeEntity.getUserCenterId());
+//		param.put("account", staffeEntity.getBadge());
+//		// 调用权限中心
+//		try {
+//			ResponseEntity<String> auth_result = syncAuthCenter(token,param);
+//			JSONObject json = JSONObject.fromObject(auth_result.getBody());
+//			if (!json.getBoolean("success")) {
+//				throw new Exception("权限中心开通账号失败，请重新同步信息！");
+//			}
+//		} catch (Exception e) {
+//			throw new SyncUserCenterException("同步权限中心信息出错:" + e.getMessage());
+//		}
 	}
 
 	/**
@@ -210,9 +243,10 @@ public class StaffMngServiceImpl implements StaffMngService {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("userId", optId);
+		params.put("userId", staffeEntity.getUserCenterId());
 		//设置platform为推手平台（7）
 		params.put("platUserType", 7);
+		params.put("account", staffeEntity.getBadge());
 		Map<String, Object> params2 = new HashMap<String, Object>();
 		params2.put("code", "erp");
 
@@ -242,7 +276,7 @@ public class StaffMngServiceImpl implements StaffMngService {
 			result = null;
 			
 			result = helper.requestWithParams(URLUtils.get("gateway") + ServerCenterContants.AUTH_CENTER_PLATFORM_REGISTER,
-					staff.getToken(), false, null, HttpMethod.POST, params);
+					staff.getToken(), true, null, HttpMethod.POST, params);
 			
 			if (result == null)
 				throw new Exception("开通推手平台账号没有返回信息");
@@ -266,5 +300,19 @@ public class StaffMngServiceImpl implements StaffMngService {
 	@Override
 	public StaffEntity queryStaffInfoByGradeId(String gradeId) {
 		return staffMapper.selectStaffInfoByGradeId(gradeId);
+	}
+	
+	private ResponseEntity<String> syncAuthCenter(String token, Map<String, Object> param) {
+		RestCommonHelper helper = new RestCommonHelper();
+		
+		ResponseEntity<String> register_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.AUTH_CENTER_STAFF_REGISTER, token, true, null,
+				HttpMethod.POST, param);
+		return register_result;
+	}
+	
+	@Override
+	public void reSetOpeartorPwd(int optId) throws Exception {
+		staffMapper.updatePwdByOptId(optId);
 	}
 }

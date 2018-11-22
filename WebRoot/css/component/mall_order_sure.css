@@ -1,0 +1,521 @@
+.orderSure-1-content{
+	color: #333;
+	font-size: 14px;
+	display: block;
+	overflow: hidden;
+	margin: auto;
+}
+.orderSure-1-content .orderSure-address-1-content {
+    color: #333;
+    font-size: 14px;
+    display: block;
+    overflow: hidden;
+    margin: auto;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-title {
+    font-size: 0;
+    padding: 0;
+    margin: 0;
+    height: 50px;
+    line-height: 60px;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-title > span.title {
+    height: 22px;
+    font-size: 16px;
+    line-height: 22px;
+    font-style: normal;
+    font-weight: normal;
+    vertical-align: middle;
+    border: none;
+    margin: 0;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-title > span.volume {
+    font-size: 12px;
+    padding: 0 3px;
+    background-color: #fff8db;
+    color: #555;
+    height: 20px;
+    line-height: 20px;
+    font-weight: 500;
+    border-radius: 3px;
+    display: inline-block;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-title > span.volume em{
+	font-style: normal;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-title > b {
+    font-weight: normal;
+    float: right;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    margin-right: 20px;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item {
+    width: 290px;
+    height: 124px;
+    border: 2px solid #e7e7e7;
+    overflow: hidden;
+    padding: 10px 18px;
+    position: relative;
+    color: #666;
+    float: left;
+    margin: 20px 20px 0 0;
+    cursor: pointer;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-list {
+	overflow: hidden;
+	height: 150px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item h2 {
+    font-size: 14px;
+    margin: 0;
+    font-weight: 600;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item h2 span {
+    font-weight: normal;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item p {
+    margin: 10px 0;
+    height: 42px;
+    line-height: 21px;
+    position: relative;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item p b {
+    font-weight: normal;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 112px;
+    text-align: right;
+    background: #fff;
+    z-index: 300;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item .item-btn span {
+    font-size: 14px;
+    color: #009944;
+    cursor: pointer;
+    display: none;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item.active .item-btn span{
+	display: block;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item h2 i {
+    font-style: normal;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: normal;
+    display: none;
+    width: 60px;
+    height: 24px;
+    line-height: 24px;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    background: rgba(51,51,51,0.24);
+}
+.orderSure-1-content .orderSure-address-1-content .address-item h2 i.active{
+	display: block;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item.active {
+    border: 2px solid #009944;
+    background: url("../../img/customer/icon_sure_active.png") no-repeat right bottom;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item.default.active {
+    background: url("../../img/customer/icon_sure_active.png") no-repeat right bottom;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item.default.active  h2 i{
+	display: block;
+	background: rgba(136,142,31,0.36);
+}
+.orderSure-address-1-content .address-item.active h2 i.active {
+    background: rgba(136,142,31,0.36);
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-btnGroup ul {
+    overflow: hidden;
+    margin-top: 14px;
+    padding-left: 30px;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-btnGroup li {
+    float: left;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #d0d0d0;
+    text-align: center;
+    border-radius: 4px;
+    margin-right: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-btnGroup li:last-child {
+    margin-right: 0;
+}
+.orderSure-1-content .orderSure-address-1-content .component-orderSure-address-alert {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(51,51,51,0.72);
+    z-index: 9999;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add {
+    background: #fff;
+    width: 860px;
+    height: 450px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -430px;
+    margin-top: -225px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add p {
+    padding-left: 60px;
+    color: #666;
+    font-weight: 700;
+    background: #e7e7e7;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #d7d7d7;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add p b {
+    float: right;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    border: 1px solid #999;
+    border-radius: 12px;
+    text-align: center;
+    color: #999;
+    background: #fff;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add p b {
+    float: right;
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    border: 1px solid #999;
+    border-radius: 12px;
+    text-align: center;
+    color: #999;
+    background: #fff;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list {
+    padding: 30px 0 30px 60px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li {
+    margin-bottom: 16px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li span {
+    display: inline-block;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li span::after {
+    content: '*';
+    margin: 0 16px 0 6px;
+    color: #f64949;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li .picker-country {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li:nth-child(2) span {
+    float: left;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li textarea {
+    resize: none;
+    width: 434px;
+    height: 70px;
+    padding: 0 10px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+    color: #333;
+    font-size: 14px;
+    line-height: 30px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li input {
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid #d3d3d3;
+    outline: none;
+    margin-left: -5px;
+    width: 208px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li:last-child {
+    margin-bottom: 0;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li:last-child input {
+    width: 14px;
+    height: 14px;
+    float: left;
+    margin: 3px 10px 0 84px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list ul li:last-child i {
+    font-style: normal;
+    font-size: 12px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list-btn {
+    width: 62px;
+    height: 26px;
+    line-height: 24px;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    text-align: center;
+    margin: 30px 0 0 84px;
+    cursor: pointer;
+}
+.orderSure-1-content .orderSure-address-1-content .address-add-list-btn > span {
+    width: 100%;
+    height: 100%;
+    display: block;
+    line-height: inherit;
+    padding: 0;
+}
+.orderSure-1-content .orderSure-detail-1-content {
+    width: 1240px;
+    color: #333;
+    font-size: 14px;
+    display: block;
+    overflow: hidden;
+    margin: auto;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-title {
+    font-size: 16px;
+    color: #333;
+    margin: 50px 0 20px 0;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-header {
+    height: 34px;
+    line-height: 34px;
+    background: #f4f4f4;
+    color: #666;
+    border-bottom: 2px solid #c4c4c4;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-header > ul,
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul {
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-header > ul > li, 
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul > li {
+    float: left;
+    width: 146px;
+    text-align: center;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-header > ul > li:first-child, 
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul > li:first-child {
+    width: 382px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-header > ul > li:nth-child(2), 
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul > li:nth-child(2) {
+    width: 176px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-header > ul > li:nth-child(3), 
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul > li:nth-child(3) {
+    width: 219px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul {
+    height: 158px;
+    line-height: 158px;
+    border-bottom: 1px solid #e3e3e3;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul > li:first-child {
+    padding: 15px 0;
+    position: relative;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body > ul > li:first-child ul {
+    height: 128px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul ul {
+    line-height: normal;
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul ul li {
+    float: left;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body li:first-child li:first-child {
+    overflow: hidden;
+    padding: 0 10px 0 20px;
+    position: relative;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul ul li:first-child img {
+    float: left;
+    width: 128px;
+    height: 128px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul ul li:not(:first-child) {
+    width: 200px;
+    text-align: left;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul ul li:nth-child(2) {
+    height: 56px;
+    margin-top: 9px;
+    text-align: left;
+    line-height: 20px;
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul ul li:last-child {
+    height: 56px;
+    text-align: left;
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-body ul li:first-child ul li:last-child span {
+    display: inline-block;
+    background: #f64949;
+    color: #fff;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin: 6px 10px 0 0;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-footer {
+    background: #f7f7f7;
+    padding: 8px 0;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-footer p {
+    text-align: right;
+    padding-right: 20px;
+    margin-bottom: 5px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-orderPrice {
+    font-size: 18px;
+    font-weight: normal;
+    text-align: right;
+    margin: 5px 20px 5px 0;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-orderPrice > b {
+    color: #f64949;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-orderPrice > b > i {
+    font-style: normal;
+    font-size: 18px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-orderPrice > b > s{
+	font-size: 14px;
+	color: #999;
+	margin-left: 5px;
+	font-weight: normal;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType {
+    overflow: hidden;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType ul {
+    float: right;
+    overflow: hidden;
+    margin: 5px 20px 5px 0;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType li {
+    width: 75px;
+    height: 32px;
+    text-align: center;
+    float: left;
+    margin: 0 8px;
+    border: 1px solid #e7e7e7;
+    cursor: pointer;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType li > img {
+    width: 72px;
+    height: 30px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType li:last-child {
+    margin-right: 0;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType li.active {
+    border-color: #f64949;
+    position: relative;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType li.active::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    border: 5px solid transparent;
+    border-bottom: 5px solid #f64949;
+    border-right: 5px solid #f64949;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-payType span {
+    float: right;
+    margin-top: 10px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-leavingMessage {
+    text-align: right;
+    margin-right: 20px;
+}
+input::placeholder, select::placeholder {
+    font-family: PingFangSC-Light,helvetica,'Heiti SC';
+    color: #bdbdbd;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-leavingMessage > input {
+    width: 270px;
+    height: 30px;
+    background: #eaeaea;
+    border-radius: 4px;
+    padding-left: 16px;
+    border: none;
+	outline: none;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-btn-submit {
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-detail-list-btn-submit span {
+    float: right;
+    font-size: 20px;
+    color: #fff;
+    background: #f64949;
+    width: 148px;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-discountNumber{
+	overflow: hidden;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-discountNumber input{
+	float: right;
+	margin-right: 20px;
+	border: none;
+	outline: none;
+	width: 100px;
+	height: 30px;
+	background: #eaeaea;
+	border-radius: 4px;
+	padding:0 10px;
+}
+.orderSure-1-content .orderSure-detail-1-content .component-orderSure-discountNumber span{
+	float: right;
+	margin-right: 5px;
+	height: 30px;
+	line-height: 30px;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item:hover h2 i:not(.active) {
+    display: block;
+}
+.orderSure-1-content .orderSure-address-1-content .address-item:hover h2 i:not(.active):hover {
+    background: rgba(136,142,31,0.36);
+}
+
+
+
+
+

@@ -82,6 +82,8 @@
 	                   	  <option value="5">展厅</option>
 	                   	  <option value="6">大客户</option>
 	                   	  <option value="7">福利商城</option>
+	                   	  <option value="8">后台订单</option>
+	                   	  <option value="9">太平惠汇</option>
 		                </select>
 					</div>
 				</div>
@@ -288,6 +290,8 @@ function rebuildTable(data){
 			case 5:str += "</td><td>展厅";break;
 			case 6:str += "</td><td>大客户";break;
 			case 7:str += "</td><td>福利商城";break;
+			case 8:str += "</td><td>后台订单";break;
+			case 9:str += "</td><td>太平惠汇";break;
 			default:str += "</td><td>";
 		}
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);

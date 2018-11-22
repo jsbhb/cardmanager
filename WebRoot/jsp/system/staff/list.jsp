@@ -43,6 +43,7 @@
 									<th>角色</th>
 									<th>创建时间</th>
 									<th>更新时间</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -111,18 +112,9 @@ function rebuildTable(data){
 
 	for (var i = 0; i < list.length; i++) {
 		str += "<tr>";
-		//if ("${privilege>=2}") {
-		//if (true) {
-			//str += "<td align='left'>";
-			//str += "<a href='#' onclick='toEdit("+list[i].optid+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
-			//str += "</td>";
-		//}
-		
 		var status = list[i].status;
-		
 		str += "<td>" + list[i].badge;
 		str += "<td>" + list[i].optName;
-		
 		if(status == 2){
 			str += "</td><td>待同步" ;
 			str += "<a href='#' onclick='sync("+list[i].optid+")'><i class='fa  fa-refresh' style='font-size:20px;margin-left:5px'></i></a>";
@@ -131,7 +123,6 @@ function rebuildTable(data){
 		}else{
 			str += "</td><td>error" ;
 		}
-		
 		str += "</td><td>" + list[i].gradeName;
 		str += "</td><td>" + list[i].userCenterId;
 		str += "</td><td>" + list[i].roleName;
@@ -158,13 +149,13 @@ function rebuildTable(data){
 
 // 		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
-
-		
 		if(list[i].updateTime == null){
 			str += "</td><td>无";
 		}else{
 			str += "</td><td>" + list[i].updateTime;
 		}
+		str += "<td><a href='javascript:void(0);' onclick='reSetPwd("+list[i].optid+")'>重置密码</a>";
+// 		str += "<a href='#' onclick='toEdit("+list[i].optid+")'><i class='fa fa-pencil' style='font-size:20px'></i></a>";
 		str += "</td></tr>";
 	}
 
@@ -252,6 +243,37 @@ function sync2B(id){
 	 });
 }
 
+function reSetPwd(id){
+	if(id == 0 || id == null){
+		layer.alert("信息不全，请联系技术人员！");
+		return;
+	}
+	
+	layer.confirm('确定要重置该员工的密码吗？', {
+	  btn: ['确认重置','取消'] //按钮
+	}, function(){
+		$.ajax({
+			 url:"${wmsUrl}/admin/system/staffMng/reSetOpeartorPwd.shtml?optid="+id,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 success:function(data){
+				 if(data.success){
+					 location.reload();
+				 }else{
+					layer.alert(data.msg);
+					return;
+				 }
+			 },
+			 error:function(){
+				 layer.alert("重置员工密码失败，请重试！");
+				 return;
+			 }
+		});
+	}, function(){
+	  layer.close();
+	});
+}
 
 </script>
 </body>

@@ -10,6 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 </head>
 
@@ -174,6 +175,7 @@
 								<div class="bgColor">
 									<i class="fa fa-arrow-left fa-fw"></i>
 									<i class="fa fa-trash fa-fw"></i>
+									<i class="fa fa-search fa-fw"></i>
 									<i class="fa fa-arrow-right fa-fw"></i>
 								</div>
 								<input value="${file.path}" type="hidden" name="picPath" id="picPath${status.index+1}">
@@ -363,6 +365,7 @@
 				</div>
 			</div>
 			
+			<div class="scrollImg-content broadcast"></div>
 	        <div class="submit-btn">
 	           	<button type="button" id="nextPageBtn">下一页</button>
 	           	<button type="button" id="saveInfoBtn">保存信息</button>
@@ -385,6 +388,7 @@
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
 <%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript" charset="utf-8" src="${wmsUrl}/ueditor/ueditor.config.js"></script>
@@ -451,7 +455,13 @@
 					 }
 				 }
 			 }
+			 //多张图片时序列化的值被清空了，重新赋值
+			 if (formData["picPath"] == "") {
+				 formData["picPath"] = getAllPicPath();
+			 }
+			 
 // 			 console.log(formData);
+// 			 return;
 			 
 			 $.ajax({
 				 url:url,
@@ -685,7 +695,7 @@
 				success : function(data) {
 					if (data.success) {
 						var ht = '<div class="item-img" id="content'+nextId+'" data-id="'+nextId+'">+<input type="file" id="pic'+nextId+'" name="pic"/></div>';
-						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-arrow-left fa-fw"></i><i class="fa fa-trash fa-fw"></i><i class="fa fa-arrow-right fa-fw"></i></div>';
+						var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-arrow-left fa-fw"></i><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i><i class="fa fa-arrow-right fa-fw"></i></div>';
 						var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="picPath'+id+'" name="picPath">'
 						$('.addContent').append(ht);
 						$("#content"+id).html(imgPath);
@@ -1069,6 +1079,39 @@
 				$(this).attr("class", "");
 			}
 		});
+		function setPicImgListData() {
+			var valArr = new Array;
+			var tmpPicPath="";
+			for(var i=1;i<15;i++) {
+				tmpPicPath = $("#picPath"+i).val();
+				if (tmpPicPath != null && tmpPicPath != "") {
+					valArr.push(tmpPicPath);
+				}
+			}
+			if (valArr != undefined && valArr.length > 0) {
+				var data = {
+			        imgList: valArr,
+			        imgWidth: 500,
+			        imgHeight: 500,
+			        activeIndex: 0,
+			        host: "${wmsUrl}"
+			    };
+			    setImgScroll('broadcast',data);
+			} else {
+				layer.alert("请先上传图片！");
+			}
+		}
+		//图片放大
+		$('.item-right').on('click','.bgColor i.fa-search',function(){
+			setPicImgListData();
+		});
+		function getAllPicPath() {
+			var tmpPicPath = "";
+			$("input[name='picPath']").each(function(){
+				tmpPicPath += $(this).val() + ",";
+			})
+			return tmpPicPath.substring(0,tmpPicPath.length-1);
+		}
 	</script>
 </body>
 </html>

@@ -98,6 +98,12 @@
 				<c:when test="${order.orderSource==7}">
 					<input type="text" class="form-control" readonly value="福利商城">
 				</c:when>
+				<c:when test="${order.orderSource==8}">
+					<input type="text" class="form-control" readonly value="后台订单">
+				</c:when>
+				<c:when test="${order.orderSource==9}">
+					<input type="text" class="form-control" readonly value="太平惠汇">
+				</c:when>
 				<c:otherwise>
 					<input type="text" class="form-control" name="area" readonly value="订货平台">
 				</c:otherwise>
@@ -134,7 +140,13 @@
        	<div class="list-item">
 			<div class="col-sm-3 item-left">支付金额</div>
 			<div class="col-sm-9 item-right">
-				<input type="text" class="form-control" readonly  value="${order.orderDetail.payment}">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.payment-order.orderDetail.rebateFee}">
+			</div>
+		</div>
+       	<div class="list-item">
+			<div class="col-sm-3 item-left">返佣抵扣</div>
+			<div class="col-sm-9 item-right">
+				<input type="text" class="form-control" readonly  value="${order.orderDetail.rebateFee}">
 			</div>
 		</div>
        	<div class="list-item">

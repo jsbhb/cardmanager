@@ -299,7 +299,7 @@
 		 if($('#form').data("bootstrapValidator").isValid()){
 			 var tmpPhone = $("#phone").val();
 			 tmpPhone = tmpPhone.replace(/[^0-9]/ig,"");
-			 var reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
+			 var reg = /^1[3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 			 if(!reg.test(tmpPhone)) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");

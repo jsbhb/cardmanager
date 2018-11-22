@@ -1,0 +1,116 @@
+.searchClassify-content-list{
+	overflow: hidden;
+	font-size: 13px;
+}
+.img_shrink{
+    float:left;
+    width:calc(20% - 10px);
+    padding:10px;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor:pointer;
+    margin:12px 11px 15px 0;
+    border:1px solid #e7e7e7;
+    vertical-align: top;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+#left-icon{
+   position: absolute;
+   left:5px;
+   top:5px;
+   width:87px;
+   height:87px;
+   z-index:99;
+   display:none;
+ }
+ .img_shrink:hover{
+  border-color:#e31436;
+}
+.img_shrink:nth-child(5n){
+  margin-right:0;
+}
+.img_shrink > a.imgBox {
+	width: calc(100% - 10px);
+	margin: auto;
+	display: block;
+	position: relative;
+}
+.img_shrink > a.imgBox > img {
+	max-width: calc(100% - 20px);
+	max-height: auto;
+	margin: auto;
+}
+.img_shrink > a.infoBox {
+	display: block;
+}
+.img_shrink_msg {
+	overflow:hidden;
+	color: #333;
+	line-height: 20px;
+	text-decoration: none;
+	word-break: break-all;
+	margin-top:5px;
+	height:40px;
+	text-align:left;
+	padding:0 10px;
+	font-weight:700;
+}
+.img_shrink_group {
+	width: calc(100% - 15px);
+	height: 25px;
+	margin: 0 8px 0 4px;
+	overflow: hidden;
+}
+ .img_shrink_price{
+   width: calc(100% - 25px);
+   height: 25px;
+   float: left;
+   line-height: 25px;
+   text-align:left;
+   overflow: hidden;
+ }
+ .img_shrink_price strong{
+   height: 25px;
+   font-size:14px;
+   display: inline-block;
+}
+.img_shrink_price strong b{
+   padding:0 5px;
+   color:#ce1126;
+   font-size:21px;
+ }
+.img_shrink_price strong b span{
+   font-size:14px;
+ }
+.img_shrink_price strong s{
+   padding:0 7px;
+   color:#666;
+   font-size:12px;
+   font-weight: normal;
+ }
+ .img_shrink_btnBox {
+   width: 21px;
+   height: 21px;
+   float:right;
+ }
+ .img_shrink_btnBox img {
+    margin-top: 1px;
+    width: 21px;
+    height: 21px;
+  }
+
+.empty_search{
+  padding:10px 25px;
+  margin:10px auto;
+  border:1px solid #ddd;
+  font-size:14px;
+  color:#333;
+  background:#fff8db;
+}

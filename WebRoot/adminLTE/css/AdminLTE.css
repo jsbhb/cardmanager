@@ -245,7 +245,7 @@ body.hold-transition .main-header .logo {
 }
 .list-content{
 	padding-bottom: 40px;
-	overflow: hidden;
+/* 	overflow: hidden; */
 	min-height: 500px;
 }
 .choose-content{
@@ -325,6 +325,7 @@ body.hold-transition .main-header .logo {
 }
 .list-content > .row{
 	margin: 0;
+	position: relative;
 }
 .list-content > .row > .goods-classify{
 	height: 44px;
@@ -389,6 +390,33 @@ body.hold-transition .main-header .logo {
 .list-content > .content-container > .container-right{
 	padding: 0 0 0 15px;
 	margin-top: 10px;
+}
+.list-content .shopCart-content{
+	position: absolute;
+	top: -5px;
+	right: 15px;
+	padding: 6px;
+	border: 1px solid transparent;
+	border-radius: 3px;
+}
+.list-content .shopCart-content span{
+	min-width: 18px;
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #fff;
+    background: #c92456;
+    border-radius: 9px;
+    position: absolute;
+    right: 4px;
+    top: 1px;
+    text-align: center;
+    display: inline-block;
+}
+.list-content .shopCart-content:hover{
+	border-color: #c6c6c6;
+	cursor: pointer;
+	background: #fff;
 }
 .container-right .table-btns{
 	float: left;

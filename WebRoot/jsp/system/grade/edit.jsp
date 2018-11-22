@@ -294,7 +294,9 @@
 			</div>
 			<div class="scrollImg-content broadcast"></div>
 			<div class="submit-btn">
-       			<button type="button" class="btn btn-primary" id="submitBtn">保存</button>
+				<c:if test="${editFlg==true}">
+       				<button type="button" class="btn btn-primary" id="submitBtn">保存</button>
+				</c:if>
               	<button type="button" class="btn btn-info" id="closeBtn">关闭</button>
        		</div>
             <div class="title">
@@ -408,7 +410,7 @@
 		 if($('#form').data("bootstrapValidator").isValid()){
 			 var tmpPhone = $("#phone").val();
 			 tmpPhone = tmpPhone.replace(/[^0-9]/ig,"");
-			 var reg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
+			 var reg = /^1[3|4|5|6|7|8|9][0-9]\d{4,8}$/;
 			 if(!reg.test(tmpPhone)) 
 			 { 
 				 layer.alert("请输入有效的负责人手机号码！");

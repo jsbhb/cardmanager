@@ -163,7 +163,7 @@ function GetValueDigit(value){
 	var strValue = value+"";
 	var valueArr = strValue.split(".");
 	var digitLength = 0;
-	if (valueArr.length>0) {
+	if (valueArr.length>1) {
 		if (valueArr[1].length>6) {
 			digitLength = 6;
 		}else{

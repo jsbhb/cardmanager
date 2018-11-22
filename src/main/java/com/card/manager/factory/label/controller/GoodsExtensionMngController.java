@@ -226,7 +226,7 @@ public class GoodsExtensionMngController extends BaseController {
 						break;
 					}
 				}
-				tmpLink = entity.getMobileUrl() + "/" + goodsId + ".html?shopId=" + staffEntity.getGradeId();
+				tmpLink = tmpLink + "/" + goodsId + ".html?shopId=" + staffEntity.getGradeId();
 			}
 
 			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();

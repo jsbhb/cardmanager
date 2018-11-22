@@ -131,6 +131,9 @@ public class StaffMngController extends BaseController {
 		try {
 			staffEntity.setGradeLevel(opt.getGradeLevel());
 			staffEntity.setGradeType(opt.getGradeType());
+			//新建员工时，员工的usercenterid与分级的相同
+			staffEntity.setUserCenterId(opt.getUserCenterId());
+			staffEntity.setToken(opt.getToken());
 			staffMngService.addStaff(staffEntity);
 		} catch (OperatorSaveException e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -145,11 +148,12 @@ public class StaffMngController extends BaseController {
 
 	@RequestMapping(value = "/sync", method = RequestMethod.POST)
 	public void sync(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
 		try {
 			int optId = Integer.parseInt(req.getParameter(OPT_ID));
 			String phone = req.getParameter(PHONE);
 
-			staffMngService.sync(optId, phone);
+			staffMngService.sync(opt.getToken(),optId, phone);
 
 		} catch (Exception e) {
 			sysLogger.error(LoggerConstants.LOGIN_LOGGER, e.getMessage() + "同步失败.");
@@ -168,13 +172,11 @@ public class StaffMngController extends BaseController {
 
 	@RequestMapping(value = "/editStaff", method = RequestMethod.POST)
 	public void editStaff(HttpServletRequest req, HttpServletResponse resp, @RequestBody AuthInfo authInfo) {
-
 		try {
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-
 		sendSuccessMessage(resp, null);
 	}
 
@@ -208,6 +210,18 @@ public class StaffMngController extends BaseController {
 			return;
 		}
 
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/reSetOpeartorPwd", method = RequestMethod.POST)
+	public void reSetOpeartorPwd(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			int optId = Integer.parseInt(req.getParameter(OPT_ID));
+			staffMngService.reSetOpeartorPwd(optId);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
 		sendSuccessMessage(resp, null);
 	}
 

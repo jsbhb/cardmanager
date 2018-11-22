@@ -269,4 +269,17 @@ public class Constants {
 	
 	//Socket客户端线程池内线程的数量
 	public static final int CLIENT_THREAD_NUMBER = 10;
+	
+	/**
+	 * PLATFORMSOURCE 后台系统平台类型
+	 */
+	public static final int PLATFORMSOURCE = 8;
+	
+	/**
+	 * 后台系统支付类型
+	 */
+	public static final int WX_PAY = 1;
+	public static final int ALI_PAY = 2;
+	public static final int REBATE_PAY = 4;
+	public static final int YB_PAY = 5;
 }

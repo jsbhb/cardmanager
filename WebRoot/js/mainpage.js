@@ -51,12 +51,15 @@ $(function() {
     	}
     	
     	var width = "100%";
-    	var height = window.innerHeight-topOffset-10;
+    	var height = window.innerHeight-topOffset;
         newIframeObject.width=width;
         newIframeObject.height=height; 
         newIframeObject.src=this.href;
         newIframeObject.scrolling="yes";
         newIframeObject.frameBorder=0;
+        newIframeObject.border=0;
+        newIframeObject.marginwidth=0;
+        newIframeObject.marginheight=0;
     	$("#page-wrapper").empty();
         $("#page-wrapper").append(newIframeObject);
         return false;
@@ -160,4 +163,23 @@ function GetQueryString(name){
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if(r!=null)return  unescape(r[2]); return null;
+}
+
+function modifyPwd(url){
+    var index = layer.open({
+        title:"修改密码",
+        type: 2,
+        area:['50%','40%'],
+        content: url,
+        maxmin: false
+    });
+}
+
+function toAddUserWithdrawals(url){
+	var index = layer.open({
+	  type: 2,
+	  content: url,
+	  area: ['70%', '80%'],
+	  maxmin: false
+	});
 }

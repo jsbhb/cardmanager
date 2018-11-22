@@ -1,0 +1,99 @@
+.pay-1-content {
+    width: 1240px;
+    display: block;
+    overflow: hidden;
+    margin: auto;
+    color: #333;
+    font-size: 14px;
+}
+.pay-1-content > .pay-header {
+    margin: 30px 0;
+}
+.pay-1-content > .pay-header > .pay-info {
+    font-size: 16px;
+    font-weight: 700;
+    overflow: hidden;
+}
+.pay-1-content > .pay-header > .pay-info > span {
+    font-weight: normal;
+}
+.pay-1-content > .pay-header > .pay-info > b {
+    float: right;
+    padding-right: 15px;
+    line-height: 34px;
+    font-size: 24px;
+    color: #e31436;
+}
+.pay-1-content > .pay-header > .timeLimit > span {
+    color: #e31436;
+}
+.pay-1-content > .pay-header > .timeLimit > b {
+    float: right;
+    font-weight: normal;
+    cursor: pointer;
+}
+.pay-1-content > .pay-header > .timeLimit > b > i {
+    color: #333;
+    font-size: 18px;
+}
+.pay-1-content > .pay-header > .showDetail {
+    color: #999;
+    display: none;
+}
+.pay-1-content > .pay-header > .showDetail > p:first-child {
+    margin-top: 15px;
+}
+.pay-1-content > .pay-body {
+    height: 542px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    margin-bottom: 100px;
+    overflow: hidden;
+    padding-top: 60px;
+    text-align: center;
+}
+.pay-1-content > .pay-body > .pay-body-left {
+    float: left;
+    width: 50%;
+    border-right: 1px solid #eaeaea;
+}
+.pay-1-content > .pay-body > .pay-body-left > p {
+    margin-bottom: 12px;
+    font-size: 24px;
+}
+.pay-1-content > .pay-body > .pay-body-left > .qrcodeImg {
+    width: 300px;
+    height: 300px;
+    border: 1px solid #eaeaea;
+    margin: 0 auto;
+    padding: 10px;
+}
+.pay-1-content > .pay-body > .pay-body-left > ul {
+    position: relative;
+    margin: 10px auto 0;
+    width: 160px;
+    height: 40px;
+    font-size: 14px;
+}
+.pay-1-content > .pay-body > .pay-body-left > ul > li:first-child {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    background: #fff url("../../img/customer/qrIcon.png") no-repeat center left;
+}
+.pay-1-content > .pay-body > .pay-body-left > ul > li {
+    text-indent: 45px;
+    text-align: left;
+}
+.pay-1-content > .pay-body > .pay-body-left > ul > li {
+    text-indent: 45px;
+    text-align: left;
+}
+.pay-1-content > .pay-body > .pay-body-right {
+    float: right;
+    width: 50%;
+    height: 100%;
+    background: #fff url("../../img/customer/example.jpg") no-repeat center 30px;
+}

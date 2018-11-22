@@ -615,6 +615,8 @@
 			 if (formData["picPath"] == "") {
 				 formData["picPath"] = getAllPicPath();
 			 }
+			 formData["createKey"] = "${key}";
+			 
 // 			 console.log(formData);
 // 			 return;
 			 

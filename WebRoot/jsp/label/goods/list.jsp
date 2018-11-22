@@ -53,9 +53,9 @@
 						<thead>
 							<tr>
 								<th width="10%">商品ID</th>
-								<th width="30%">商品名称</th>
-								<th width="50%">商品链接</th>
-								<th width="10%">操作</th>
+								<th width="35%">商品名称</th>
+								<th width="35%">商品链接</th>
+								<th width="20%">操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -135,36 +135,86 @@ function rebuildTable(data){
 			str += "";
 		} else {
 			if (list[i].description == null || list[i].description == "") {
-				str += "";
-			} else {
-				str += "<button type='button' class='btn btn-primary' onclick='downLoadFile(\"";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadQRCodeFile(\"";
 				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
-				str += "\")'>下载</button>";
+				str += "\")'>下载普通二维码</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
+				str += list[i].goodsId
+				str += ")'>预览小程序二维码</a>";
+			} else {
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadQRCodeFile(\"";
+				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
+				str += "\")'>下载普通二维码</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
+				str += list[i].goodsId
+				str += ")'>预览小程序二维码</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadFile(\"";
+				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
+				str += "\")'>下载商品牌</a>";
 			}
 		}
 		str += "</td></tr>";
 	}
 	$("#itemTable tbody").html(str);
 }
-	
-// function downLoadFile(id,path){
-// 	$.ajax({
-// 		 url:"${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path,
-// 		 type:'post',
-// 		 contentType: "application/json; charset=utf-8",
-// 		 dataType:'json',
-// 		 success:function(data){
-// 		 },
-// 		 error:function(){
-// 			 layer.alert("下载失败，请重试");
-// 		 }
-// 	 });
-// }
+
+function downLoadQRCodeFile(id,path){
+	window.open("${wmsUrl}/admin/label/goodsQRMng/downLoadQRCodeFile.shtml?goodsId="+id+"&path="+path);
+}
 
 function downLoadFile(id,path){
 	window.open("${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path);
-// 	location.href="${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId="+id+"&path="+path;
-// 	window.open('${wmsUrl}/admin/label/goodsQRMng/downLoadFile.shtml?goodsId='+id+'&path='+path, "", "width=750,height=700,resizable=yes,location=no,scrollbars=yes,left=" + left1.toString() + ",top=" + top1.toString());
+}
+
+function getWxAppletCode(goodsId) {
+	var gradeId = ${sessionScope.session_Operator.gradeId};
+	var reqUrl = "${wmsUrl}/admin/applet/code.shtml";
+	
+	var param = {};
+	param["scene"] = gradeId;
+	param["page"] = "web/orderDetail/orderDetail?goodsId="+goodsId;
+	param["width"] = 400;
+	var win = window.open();
+	
+	layer.confirm('是否用商品默认主图替换二维码中的LOGO？', {
+	  btn: ['确认替换','无需替换'] //按钮
+	}, function(){
+		reqUrl += "?needToCoverLogo=true";
+		$.ajax({
+			 url:reqUrl,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 data:JSON.stringify(param),
+			 success:function(data){
+				 if(data.success){
+					 win.location.href=data.data;
+				 }
+			 },
+			 error:function(data){
+				 win.close();
+				 layer.alert(data.msg);
+			 }
+		});
+	}, function(){
+		reqUrl += "?needToCoverLogo=false";
+		$.ajax({
+			 url:reqUrl,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 data:JSON.stringify(param),
+			 success:function(data){
+				 if(data.success){
+					 win.location.href=data.data;
+				 }
+			 },
+			 error:function(data){
+				 win.close();
+				 layer.alert(data.msg);
+			 }
+		});
+	});
 }
 
 </script>

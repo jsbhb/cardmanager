@@ -62,6 +62,7 @@ public class CreateGoodsInfoEntity {
 	private String shelfLife;
 	private String carTon;
 	private List<GoodsItemEntity> items;
+	private String createKey;
 	
 	
 	public int getBaseId() {
@@ -303,6 +304,12 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setItems(List<GoodsItemEntity> items) {
 		this.items = items;
+	}
+	public String getCreateKey() {
+		return createKey;
+	}
+	public void setCreateKey(String createKey) {
+		this.createKey = createKey;
 	}
 
 }

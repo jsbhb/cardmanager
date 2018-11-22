@@ -78,7 +78,7 @@
 	</select>
 	
 	<select id="selectByOptId" resultMap="operator">
-		select * from auth_operator where badge = #{optId}
+		select * from auth_operator where optid = #{optId}
 	</select>
 	
 	<insert id="insert"  useGeneratedKeys="true"  keyProperty="optid" parameterType="object">
@@ -193,4 +193,9 @@
 		where gradeid = #{gradeId} and shopid = #{gradeId}
 		order by optid limit 1
 	</select>
+	
+	<update id="updatePwdByOptId" parameterType="object">
+		update auth_operator set updatetime = now(),password = '670B14728AD9902AECBA32E22FA4F6BD'
+		where optid = #{optid}
+    </update>
 </mapper>

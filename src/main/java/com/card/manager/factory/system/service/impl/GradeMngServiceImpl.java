@@ -179,7 +179,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		registerAuthCenter(staffEntity, true);
 
 		// 自动注册微店平台
-		staffMngService.sync2S(staff, Integer.parseInt(staffEntity.getBadge()));
+		staffMngService.sync2S(staff, Integer.parseInt(staffEntity.getOptid()));
 
 		// 区域中心复制商城时开通资金池
 		// if (gradeInfo.getCopyMall() == 1) {

@@ -99,6 +99,10 @@ public class GoodsQRMngController extends BaseController {
 			if (!StringUtil.isEmpty(goodsName)) {
 				item.setGoodsName(goodsName);
 			}
+			String hidGoodsName = req.getParameter("hidGoodsName");
+			if (!StringUtil.isEmpty(hidGoodsName)) {
+				item.setGoodsName(hidGoodsName);
+			}
 			String sku = req.getParameter("sku");
 			if (!StringUtil.isEmpty(sku)) {
 				item.setSku(sku);
@@ -229,6 +233,59 @@ public class GoodsQRMngController extends BaseController {
 			ImageUtil.overlapImage(null, QRPicPath, goodsExtensionInfo, QRPicPath);
 			//设置DPI300 java生成图片默认DPI72 不适用于打印
 			ImageUtil.handleDpi(QrCodeFile, 300, 300);
+			String filePath = QrCodeFile.toString();
+			String fileName = goodsId + ".jpg";
+			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);
+			if (QrCodeFile.exists()) {
+	    		QrCodeFile.delete();
+	    	}
+		} catch (Exception e) {
+			resp.setContentType("text/html;charset=utf-8");
+			resp.getWriter().println("下载失败，请重试!");
+			resp.getWriter().println(e.getMessage());
+			return;
+		} finally {
+			if (tmpFile != null) {
+				// 将临时文件删除
+				File del = new File(tmpFile.toURI());
+				del.delete();
+			}
+		}
+	}
+
+	@RequestMapping(value = "/downLoadQRCodeFile")
+	public void downLoadQRCodeFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		File tmpFile = null;
+		try {
+			String goodsId = req.getParameter("goodsId");
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+			String logoPath = servletContext.getRealPath("/") + "img/goodsExtensionLogo.png";
+			ShopEntity shop = gradeMngService.queryByGradeId(staffEntity.getGradeId() + "", staffEntity.getToken());
+			if (shop != null && shop.getQrcodeLogo() != null) {
+				URL url = new URL(shop.getQrcodeLogo());
+				String suffix = shop.getQrcodeLogo().indexOf(".") != -1 ? shop.getQrcodeLogo()
+						.substring(shop.getQrcodeLogo().lastIndexOf("."), shop.getQrcodeLogo().length()) : null;
+				String tmpFileName = UUID.randomUUID().toString() + suffix;
+				tmpFile = new File(servletContext.getRealPath("/") + "fileUpload/" + tmpFileName);
+				FileUtil.inputStreamToFile(url.openStream(), tmpFile);
+				logoPath = tmpFile.getPath();
+			}
+			String QRPicPath = servletContext.getRealPath("/") + imgPath + "/" + staffEntity.getBadge();
+			File QrCodeFile = null;
+			QrCodeFile = new File(QRPicPath);
+			if (!QrCodeFile.exists()) {
+				QrCodeFile.mkdirs();
+			}
+			QRPicPath = QRPicPath + "/" + goodsId + ".jpg";
+			//生成二维码
+			ZXingCodeUtil zXingCode=new ZXingCodeUtil();
+			File logoFile = new File(logoPath);
+	        QrCodeFile = new File(QRPicPath);
+	        String url = req.getParameter("path");
+	        String note = "";
+	        zXingCode.drawLogoQRCode(logoFile, QrCodeFile, url, note);
 			String filePath = QrCodeFile.toString();
 			String fileName = goodsId + ".jpg";
 			FileDownloadUtil.downloadFileByBrower(req, resp, filePath, fileName);

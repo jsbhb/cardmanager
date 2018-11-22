@@ -41,7 +41,7 @@
               </li>
               <li class="user-footer">
                 <div class="pull-left">
-                  <button type="button" onclick="modifyPwd()" class="btn btn-primary">修改密码</button>
+                  <button type="button" onclick="modifyPwd('${wmsUrl}/admin/modifyPwd.shtml')" class="btn btn-primary">修改密码</button>
                 </div>
                 <div class="pull-right">
                   <a href="${wmsUrl}/admin/logout.shtml" class="btn btn-default btn-flat">退出登录</a>
@@ -91,36 +91,82 @@
    <div id="page-wrapper" class="iframePage">
 	<div class="default-content">
 		<c:choose>
-		<c:when test="${id==51}">
-			<div class="use-center">
-				
-			</div>
-		</c:when>
-		<c:otherwise>
-		<div class="today-orders">
-			<h1>当日统计</h1>
-			<c:if test="${id!=35}">
-				<c:forEach var="item" items="${title_data}">
+			<c:when test="${id==51}">
+				<div class="today-orders">
+					<h1>采购统计</h1>
 					<div class="today-orders-item">
-						<a href="javascript:void(0);">${item.value}</a>
-						<p>${item.name}</p>
+						<a href="javascript:void(0);" onclick="jump(74)">${countShoppingCart}</a>
+						<p>待下单</p>
 					</div>
-				</c:forEach>
-			</c:if>
-		</div>
-		<div class="week-line">
-			<div class="timer-btns">
-				<ul>
-					<li id="week" class="active">周统计</li>
-					<li id="month">月统计</li>
-				</ul>
-			</div>
-			<div class="week-line-content" id="week-line-content"></div>
-		</div>
-		</c:otherwise>
+					<div class="today-orders-item">
+						<a href="javascript:void(0);" onclick="jump(77)">${countWaitPayOrder}</a>
+						<p>待支付</p>
+					</div>
+					<div class="today-orders-item">
+						<a href="javascript:void(0);" onclick="jump(77)">${countAllOrder}</a>
+						<p>总单数</p>
+					</div>
+					<div class="emptyCart">
+						<img src="${wmsUrl}/img/customer/icon_emptyCart.png"> 
+						<p>商品库里有好多优质商品，马上去 <a href="javascript:void(0);" onclick="jump(73)">挑选商品</a> 吧！</p>
+					</div>
+				</div>
+			</c:when>
+			<c:when test="${id==35}">
+				<div class="use-center">
+					<div class="use-center-account">
+						<ul>
+							<li>账号信息</li>
+							<li>登录账号:${opt.badge}</li>
+							<li>分级名称:${opt.gradeName}</li>
+							<li>分级类型:${optGradeType}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="use-center">
+					<div class="use-center-purchase">
+						<ul>
+							<li>采购信息</li>
+							<li><a href="javascript:void(0);" onclick="jump(76)">待支付采购单：${countWaitPayOrder}</a></li>
+							<li><a href="javascript:void(0);" onclick="jump(76)">我的采购单：${countAllOrder}</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="use-center">
+					<div class="use-center-money">
+						<ul>
+							<li>钱包信息</li>
+							<li><a href="javascript:void(0);" onclick="toAddUserWithdrawals('${wmsUrl}/admin/user/userWithdrawalsMng/toAdd.shtml')">可提现金额:￥${gradeRebateInfo.alreadyCheck}</a></li>
+							<li><a href="javascript:void(0);" onclick="jump(37)">银行卡信息:${showCardInfo}</a></li>
+							<li><a href="javascript:void(0);" onclick="jump(78)">收货地址:${defaultAddressInfo}</a></li>
+						</ul>
+					</div>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="today-orders">
+					<c:if test="${id!=35}">
+						<h1>当日统计</h1>
+						<c:forEach var="item" items="${title_data}">
+							<div class="today-orders-item">
+								<a href="javascript:void(0);">${item.value}</a>
+								<p>${item.name}</p>
+							</div>
+						</c:forEach>
+					</c:if>
+				</div>
+				<div class="week-line">
+					<div class="timer-btns">
+						<ul>
+							<li id="week" class="active">周统计</li>
+							<li id="month">月统计</li>
+						</ul>
+					</div>
+					<div class="week-line-content" id="week-line-content"></div>
+				</div>
+			</c:otherwise>
 		</c:choose>
-		
-	</div>
+   	</div>
    </div>
 </div>
 <div class="customer-service">
@@ -437,16 +483,6 @@ $('.timer-btns').on('click','li',function(){
 		setCharts('week-line-content',option_month);
 	}
 });
-
-function modifyPwd(){
-    var index = layer.open({
-        title:"修改密码",
-        type: 2,
-        area:['50%','40%'],
-        content: '${wmsUrl}/admin/modifyPwd.shtml',
-        maxmin: false
-    });
-}
 
 </script>
 </body>

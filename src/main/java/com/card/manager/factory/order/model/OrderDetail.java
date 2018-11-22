@@ -63,6 +63,8 @@ public class OrderDetail {
 	private String receiveZipCode;
 
 	private String remark;
+
+	private Double rebateFee;
 	
 	public OrderDetail(){}
 
@@ -274,6 +276,14 @@ public class OrderDetail {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Double getRebateFee() {
+		return rebateFee;
+	}
+
+	public void setRebateFee(Double rebateFee) {
+		this.rebateFee = rebateFee;
 	}
 
 	@Override

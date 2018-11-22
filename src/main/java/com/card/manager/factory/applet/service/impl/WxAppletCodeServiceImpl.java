@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.card.manager.factory.applet.model.AppletCodeParameter;
 import com.card.manager.factory.applet.service.WxAppletCodeService;
+import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.exception.WxCodeException;
 import com.card.manager.factory.goods.service.GoodsService;
@@ -70,9 +71,9 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		String remotePath;
 		if (param.getPage().contains(GOODS_DETAIL_PATH)) {
 			String goodsId = getGoodsIdFromPage(param.getPage());// 获取goodsId
-			remotePath = "/opt/static/wechat/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
+			remotePath = ResourceContants.RESOURCE_BASE_PATH + "/wechat/appletcode/" + param.getScene() + "/goods/" + goodsId + ".png";
 		} else {
-			remotePath = "/opt/static/wechat/appletcode/" + param.getScene() + "/" + param.getScene() + ".png";
+			remotePath = ResourceContants.RESOURCE_BASE_PATH + "/wechat/appletcode/" + param.getScene() + "/" + param.getScene() + ".png";
 		}
 		try {
 			client = new SocketClient();
@@ -114,7 +115,7 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		}
 	}
 
-	private final String GOODS_DETAIL_PATH = "/web/orderDetail/orderDetail?goodsId=";// 商详路径
+	private final String GOODS_DETAIL_PATH = "web/orderDetail/orderDetail?goodsId=";// 商详路径
 	private final String TEMPORARY_PATH = "temporary";// 临时路径
 
 	private void replaceLogo(String filePath, AppletCodeParameter param, String absolutelyPath, StaffEntity opt)
@@ -159,7 +160,7 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 
 	private String getCode(AppletCodeParameter param, String token, String absolutelyPath) throws WxCodeException {
 		RestCommonHelper helper = new RestCommonHelper();
-		ResponseEntity<String> result = helper.request("https://testapi.cncoopbuy.com/3rdcenter/1.0/getwxacodeunlimit",
+		ResponseEntity<String> result = helper.request(URLUtils.get("gateway") + "/3rdcenter/1.0/getwxacodeunlimit",
 				token, true, param, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(result.getBody());

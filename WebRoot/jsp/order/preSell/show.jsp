@@ -159,7 +159,18 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payment}">
+		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payment-order.orderDetail.rebateFee}">
+				                </div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label no-padding-right">返佣抵扣</label>
+							<div class="col-sm-4">
+								<div class="input-group">
+								 	<div class="input-group-addon">
+				                    	<i class="fa fa-pencil"></i>
+				                  	</div>
+		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.rebateFee}">
 				                </div>
 							</div>
 						</div>

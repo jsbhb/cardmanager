@@ -42,6 +42,7 @@ import com.card.manager.factory.auth.model.UserInfo;
 import com.card.manager.factory.auth.service.FuncMngService;
 import com.card.manager.factory.auth.service.StatisticMngService;
 import com.card.manager.factory.base.BaseController;
+import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.common.ServerCenterContants;
@@ -50,13 +51,20 @@ import com.card.manager.factory.component.impl.GoodsFileUploadComponentImpl;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.constants.Constants;
 import com.card.manager.factory.constants.LoggerConstants;
+import com.card.manager.factory.customer.model.Address;
+import com.card.manager.factory.customer.service.PurchaseService;
 import com.card.manager.factory.ftp.service.SftpService;
 import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.log.SysLogger;
+import com.card.manager.factory.order.model.OrderInfo;
+import com.card.manager.factory.order.service.OrderService;
 import com.card.manager.factory.socket.exception.ConnetionParamErrorException;
 import com.card.manager.factory.socket.task.SocketClient;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.StaffMngService;
+import com.card.manager.factory.user.model.CardEntity;
+import com.card.manager.factory.user.model.Rebate;
+import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.FileUtil;
 import com.card.manager.factory.util.MethodUtil;
@@ -85,12 +93,22 @@ public class LoginController extends BaseController {
 
 	@Resource
 	StatisticMngService statisticMngService;
+	
+	@Resource
+	PurchaseService purchaseService;
+	
+	@Resource
+	OrderService orderService;
+	
+	@Resource
+	FinanceMngService financeMngService;
 
 	private final String TITLE_DATA = "title_data";
 	private final String ORDER_DATA_DIAGRAM_WEEK = "order_diagram_data_week";
 	private final String ORDER_DATA_DIAGRAM_MONTH = "order_diagram_data_month";
 	private final String FINANCE_DATA_DIAGRAM_WEEK = "finance_diagram_data_week";
 	private final String FINANCE_DATA_DIAGRAM_MONTH = "finance_diagram_data_month";
+	private static final Integer DEFAULT = 1;
 	// private final String GOODS_DATA_DIAGRAM = "goods_diagram_data";
 
 	@RequestMapping(value = "/toLogin")
@@ -316,6 +334,12 @@ public class LoginController extends BaseController {
 			case AuthCommon.FINANCIAL_DIAGRAM:
 				financialDiagram(operator, context);
 				break;
+			case AuthCommon.PURCHASE_DIAGRAM:
+				purchaseDiagram(operator, context);
+				break;
+			case AuthCommon.PERSONAL_DIAGRAM:
+				personDiagram(operator, context);
+				break;
 			default:
 				break;
 			}
@@ -454,6 +478,159 @@ public class LoginController extends BaseController {
 							StatisticMngService.TIME_MODE_MONTH, StatisticMngService.MODEL_TYPE_ORDER, operator));
 		} catch (Exception e) {
 			context.put(ORDER_DATA_DIAGRAM_MONTH, new StatisticPojo());
+		}
+	}
+
+	/**
+	 * purchaseDiagram:采购图标. <br/>
+	 * 
+	 * @author hebin
+	 * @param operator
+	 * @param context
+	 * @since JDK 1.7
+	 */
+	@SuppressWarnings("unchecked")
+	private void purchaseDiagram(StaffEntity operator, Map<String, Object> context) {
+		try {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userId", operator.getUserCenterId());
+			params.put("gradeId", operator.getGradeId());
+			params.put("platformSource", Constants.PLATFORMSOURCE);
+			int countShoppingCart = purchaseService.getShoppingCartCount(params, operator.getToken());
+			context.put("countShoppingCart", countShoppingCart);
+		} catch (Exception e) {
+			context.put("countShoppingCart", 0);
+		}
+		try {
+			OrderInfo pagination = new OrderInfo();
+			Map<String, Object> params = new HashMap<String, Object>();
+			pagination.setUserId(operator.getUserCenterId());
+			//一般贸易&后台订单
+			pagination.setOrderFlag(2);
+			pagination.setOrderSource(Constants.PLATFORMSOURCE);
+			pagination.setCurrentPage(1);
+			pagination.setNumPerPage(1000);
+			PageCallBack pcb = orderService.dataList(pagination, params, operator.getToken(),
+					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
+			if (pcb != null) {
+				List<OrderInfo> orderLIst = (List<OrderInfo>)pcb.getObj();
+				int totalRow = 0;
+				for(OrderInfo order :orderLIst) {
+					if (order.getStatus()==0) {
+						totalRow++;
+					}
+				}
+				context.put("countWaitPayOrder", totalRow);
+				context.put("countAllOrder", orderLIst.size());
+			} else {
+				context.put("countWaitPayOrder", 0);
+				context.put("countAllOrder", 0);
+			}
+		} catch (Exception e) {
+			context.put("countWaitPayOrder", 0);
+			context.put("countAllOrder", 0);
+		}
+	}
+
+	/**
+	 * personDiagram:个人中心图标. <br/>
+	 * 
+	 * @author hebin
+	 * @param operator
+	 * @param context
+	 * @since JDK 1.7
+	 */
+	@SuppressWarnings("unchecked")
+	private void personDiagram(StaffEntity operator, Map<String, Object> context) {
+		context.put(OPT, operator);
+		try {
+			Map<Integer, GradeTypeDTO> gradeTypeMap = CachePoolComponent.getGradeType(operator.getToken());
+			GradeTypeDTO tmpGradeType = gradeTypeMap.get(operator.getGradeType());
+			context.put("optGradeType", tmpGradeType.getName());
+		} catch (Exception e) {
+			context.put("optGradeType", "区域中心");
+		}
+		try {
+			OrderInfo pagination = new OrderInfo();
+			Map<String, Object> params = new HashMap<String, Object>();
+			pagination.setUserId(operator.getUserCenterId());
+			//一般贸易&后台订单
+			pagination.setOrderFlag(2);
+			pagination.setOrderSource(Constants.PLATFORMSOURCE);
+			pagination.setCurrentPage(1);
+			pagination.setNumPerPage(1000);
+			PageCallBack pcb = orderService.dataList(pagination, params, operator.getToken(),
+					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
+			if (pcb != null) {
+				List<OrderInfo> orderLIst = (List<OrderInfo>)pcb.getObj();
+				int totalRow = 0;
+				for(OrderInfo order :orderLIst) {
+					if (order.getStatus()==0) {
+						totalRow++;
+					}
+				}
+				context.put("countWaitPayOrder", totalRow);
+				context.put("countAllOrder", orderLIst.size());
+			} else {
+				context.put("countWaitPayOrder", 0);
+				context.put("countAllOrder", 0);
+			}
+		} catch (Exception e) {
+			context.put("countWaitPayOrder", 0);
+			context.put("countAllOrder", 0);
+		}
+		try {
+			Rebate rebate = financeMngService.queryRebate(operator.getGradeId(), operator.getToken());
+			if (rebate.getAlreadyCheck() == null) {
+				rebate.setAlreadyCheck(0.00);
+			}
+			context.put("gradeRebateInfo", rebate);
+		} catch (Exception e) {
+			Rebate rebate = new Rebate();
+			rebate.setAlreadyCheck(0.00);
+			context.put("gradeRebateInfo", rebate);
+		}
+		try {
+			CardEntity pagination = new CardEntity();
+			Map<String, Object> params = new HashMap<String, Object>();
+			pagination.setTypeId(operator.getGradeId());
+			pagination.setType(operator.getGradeType());
+			pagination.setCurrentPage(1);
+			pagination.setNumPerPage(1000);
+			PageCallBack pcb = financeMngService.dataList(pagination, params, operator.getToken(),
+					ServerCenterContants.FINANCE_CENTER_QUERY_CARDINFO, CardEntity.class);
+			String showCardInfo = "";
+			if (pcb != null) {
+				List<CardEntity> cardLIst = (List<CardEntity>)pcb.getObj();
+				for(CardEntity card :cardLIst) {
+					String tmpCardNo = card.getCardNo().toString();
+					showCardInfo = card.getCardBank()+"("+ tmpCardNo.substring(tmpCardNo.length()-5, tmpCardNo.length()) +")";
+				}
+				context.put("showCardInfo", showCardInfo);
+			} else {
+				context.put("showCardInfo", "去绑定");
+			}
+		} catch (Exception e) {
+			context.put("showCardInfo", "去绑定");
+		}
+		try {
+			Map<String, Object> addressParams = new HashMap<String, Object>();
+			addressParams.put("userId", operator.getUserCenterId());
+			List<Address> addressList = purchaseService.getUserAddressInfo(addressParams, operator.getToken());
+			String defaultAddressInfo = "";
+			for (Address add : addressList) {
+				if (DEFAULT.equals(add.getSetDefault())) {
+					defaultAddressInfo = add.getProvince()+add.getCity()+add.getArea();
+					break;
+				}
+			}
+			if ("".equals(defaultAddressInfo)) {
+				context.put("defaultAddressInfo", "去设置");
+			} else {
+				context.put("defaultAddressInfo", defaultAddressInfo);
+			}
+		} catch (Exception e) {
+			context.put("defaultAddressInfo", "去设置");
 		}
 	}
 

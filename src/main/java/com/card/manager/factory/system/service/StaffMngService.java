@@ -70,7 +70,7 @@ public interface StaffMngService {
 	 * @param phone
 	 * @since JDK 1.7
 	 */
-	void sync(int optId, String phone) throws Exception;
+	void sync(String token, int optId, String phone) throws Exception;
 
 	/**
 	 * addStaff:新增员工. <br/>
@@ -127,4 +127,6 @@ public interface StaffMngService {
 	List<StaffEntity> queryByParam(Map<String, String> params);
 	
 	StaffEntity queryStaffInfoByGradeId(String gradeId);
+	
+	void reSetOpeartorPwd(int optId) throws Exception;
 }
