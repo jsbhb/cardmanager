@@ -58,12 +58,13 @@
 				</div>
 			</c:if>
 	        <div class="submit-btn">
-	           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strLink}+')">下载微店地址</button>
+	           	<button type="button" id="submitBtn" onclick="downLoadFile('${strLink}')">下载微店地址</button>
+	           	<button type="button" id="submitBtn" onclick="getWxAppletCode(${opt.gradeId})">下载小程序码</button>
 	           	<c:if test="${strExtensionLinkShow == true}">
-	           		<button type="button" id="submitBtn" onclick="downLoadFile('+${strExtensionLink}+')">下载邀请开店地址</button>
+	           		<button type="button" id="submitBtn" onclick="downLoadFile('${strExtensionLink}')">下载邀请开店地址</button>
 				</c:if>
 				<c:if test="${strWelfareType == 1}">
-		           	<button type="button" id="submitBtn" onclick="downLoadFile('+${strWelfareUrlLink}+')">下载福利网站地址</button>
+		           	<button type="button" id="submitBtn" onclick="downLoadFile('${strWelfareUrlLink}')">下载福利网站地址</button>
 				</c:if>
 	       	</div>
 		</form>
@@ -73,6 +74,53 @@
 	function downLoadFile(path){
 		window.open("${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26"));
 // 		location.href="${wmsUrl}/admin/label/shopQRMng/downLoadFile.shtml?path="+path.replace("&","%26");
+	}
+	
+	function getWxAppletCode(gradeId) {
+		var reqUrl = "${wmsUrl}/admin/applet/code.shtml";
+		
+		var param = {};
+		param["scene"] = "shopId=" + gradeId;
+		param["page"] = "web/index/index";
+		param["width"] = 400;
+		
+		reqUrl += "?needToCoverLogo=true";
+		postAjaxToGetInfo(reqUrl,param);
+		
+//	 	layer.confirm('是否用商品默认主图替换二维码中的LOGO？', {
+//	 	  btn: ['确认替换','无需替换'] //按钮
+//	 	}, function(index){
+//	 		reqUrl += "?needToCoverLogo=true";
+//	 		postAjaxToGetInfo(reqUrl,param);
+//	         layer.close(index);
+//	 	}, function(index){
+//	 		reqUrl += "?needToCoverLogo=false";
+//	 		postAjaxToGetInfo(reqUrl,param);
+//	         layer.close(index);
+//	 	});
+	}
+
+	function postAjaxToGetInfo(reqUrl, param) {
+		var win = window.open();
+		$.ajax({
+			 url:reqUrl,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 data:JSON.stringify(param),
+			 success:function(data){
+				 if(data.success){
+					 win.location.href=data.data;
+				 } else {
+					 win.close();
+					 layer.alert(data.msg);
+				 }
+			 },
+			 error:function(data){
+				 win.close();
+				 layer.alert(data.msg);
+			 }
+		});
 	}
 	</script>
 </body>

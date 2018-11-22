@@ -140,14 +140,14 @@ function rebuildTable(data){
 				str += "\")'>下载普通二维码</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
 				str += list[i].goodsId
-				str += ")'>预览小程序二维码</a>";
+				str += ")'>预览小程序码</a>";
 			} else {
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadQRCodeFile(\"";
 				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
 				str += "\")'>下载普通二维码</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
 				str += list[i].goodsId
-				str += ")'>预览小程序二维码</a>";
+				str += ")'>预览小程序码</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadFile(\"";
 				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
 				str += "\")'>下载商品牌</a>";
@@ -174,49 +174,45 @@ function getWxAppletCode(goodsId) {
 	param["scene"] = "shopId=" + gradeId + "&goodsId=" + goodsId;
 	param["page"] = "web/goodsDetail/goodsDetail";
 	param["width"] = 400;
-	var win = window.open();
 	
-	layer.confirm('是否用商品默认主图替换二维码中的LOGO？', {
-	  btn: ['确认替换','无需替换'] //按钮
-	}, function(){
-		reqUrl += "?needToCoverLogo=true";
-		$.ajax({
-			 url:reqUrl,
-			 type:'post',
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 data:JSON.stringify(param),
-			 success:function(data){
-				 if(data.success){
-					 win.location.href=data.data;
-				 }
-			 },
-			 error:function(data){
-				 win.close();
-				 layer.alert(data.msg);
-			 }
-		});
-	}, function(){
-		reqUrl += "?needToCoverLogo=false";
-		$.ajax({
-			 url:reqUrl,
-			 type:'post',
-			 contentType: "application/json; charset=utf-8",
-			 dataType:'json',
-			 data:JSON.stringify(param),
-			 success:function(data){
-				 if(data.success){
-					 win.location.href=data.data;
-				 }
-			 },
-			 error:function(data){
-				 win.close();
-				 layer.alert(data.msg);
-			 }
-		});
-	});
+	reqUrl += "?needToCoverLogo=true";
+	postAjaxToGetInfo(reqUrl,param);
+	
+// 	layer.confirm('是否用商品默认主图替换二维码中的LOGO？', {
+// 	  btn: ['确认替换','无需替换'] //按钮
+// 	}, function(index){
+// 		reqUrl += "?needToCoverLogo=true";
+// 		postAjaxToGetInfo(reqUrl,param);
+//         layer.close(index);
+// 	}, function(index){
+// 		reqUrl += "?needToCoverLogo=false";
+// 		postAjaxToGetInfo(reqUrl,param);
+//         layer.close(index);
+// 	});
 }
 
+function postAjaxToGetInfo(reqUrl, param) {
+	var win = window.open();
+	$.ajax({
+		 url:reqUrl,
+		 type:'post',
+		 contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 data:JSON.stringify(param),
+		 success:function(data){
+			 if(data.success){
+				 win.location.href=data.data;
+			 } else {
+				 win.close();
+				 layer.alert(data.msg);
+			 }
+		 },
+		 error:function(data){
+			 win.close();
+			 layer.alert(data.msg);
+		 }
+	});
+}
 </script>
 </body>
 </html>

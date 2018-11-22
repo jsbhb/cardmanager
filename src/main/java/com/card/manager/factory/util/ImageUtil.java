@@ -277,7 +277,6 @@ public class ImageUtil {
 		try {
 			ImageIO.write(output, "png", temporaryFile);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

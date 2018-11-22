@@ -67,6 +67,7 @@
 			 	#{id}
 			 </foreach>)
 		</if>
+        order by a.gradeid,a.createTime
 	</select>
 	
 	<select id="nextVal" resultType="java.lang.Integer" useCache="false" flushCache="true">

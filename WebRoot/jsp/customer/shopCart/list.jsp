@@ -408,13 +408,13 @@ function toOrderSure() {
 	if (itemInfoList.length > 1) {
 		itemInfoList = itemInfoList.substring(0,itemInfoList.length-1);
 	}
-	var checkMoney = supplierMap.get("6");
-	if (checkMoney != undefined) {
-		if (checkMoney - 500 < 0) {
-			layer.alert("一般贸易仓商品采购需满足500元!");
-			return;
-		}
-	}
+// 	var checkMoney = supplierMap.get("6");
+// 	if (checkMoney != undefined) {
+// 		if (checkMoney - 500 < 0) {
+// 			layer.alert("一般贸易仓商品采购需满足500元!");
+// 			return;
+// 		}
+// 	}
 	
 	window.location.href = encodeURI(encodeURI("${wmsUrl}/admin/customer/purchaseMng/toCheckOrderInfo.shtml?ids="+ids+"&itemInfoList="+itemInfoList));
 }

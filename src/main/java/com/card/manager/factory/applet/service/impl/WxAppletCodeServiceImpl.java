@@ -122,26 +122,32 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 			throws WxCodeException {
 		String scene = param.getScene();
 		String page = param.getPage();
+		boolean netPath = true;
 		String logoPath;
 		if (page.contains(GOODS_DETAIL_PATH)) {// 路径是商详，默认第一张主图作为logo
 			String goodsId = getGoodsIdFromScene(scene);
 			// 获取需要替换的logo（商品主图）
 			List<String> picList = GoodsService.queryGoodsPic(goodsId, opt.getToken());
 			if (picList == null) {
-				throw new WxCodeException("1", "没有替换的图片");
+				logoPath = absolutelyPath + "img/goodsExtensionLogo.png";
+				netPath = false;
+//				throw new WxCodeException("1", "没有替换的图片");
+			} else {
+				logoPath = picList.get(0);
 			}
-			logoPath = picList.get(0);
 		} else {// 不是商详路径
 			// 获取微店配置的头像信息
 			ShopEntity shop = gradeMngService.queryByGradeId(opt.getGradeId() + "", opt.getToken());
-			logoPath = shop.getHeadImg();
+			logoPath = shop.getQrcodeLogo();
 			if (logoPath == null) {
-				throw new WxCodeException("1", "没有替换的图片");
+				logoPath = absolutelyPath + "img/goodsExtensionLogo.png";
+				netPath = false;
+//				throw new WxCodeException("1", "没有替换的图片");
 			}
 		}
 		// 替换logo默认替换原来的filePath，后缀png
 		try {
-			ImageUtil.replaceCodeLogo(filePath, logoPath, true, absolutelyPath + TEMPORARY_PATH);
+			ImageUtil.replaceCodeLogo(filePath, logoPath, netPath, absolutelyPath + TEMPORARY_PATH);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new WxCodeException("1", "没有替换的图片");
