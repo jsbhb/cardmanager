@@ -515,9 +515,9 @@ function clearNoNum(obj) {
     	rebate = total;
     }
     if (obj.value - rebate > 0.00) {
-    	layer.alert("返佣抵扣金额不能超过" + rebate + "，请重新输入！");
-    	$(obj).val(0.00)
-        $(obj).parent().next().find("i").text(total);
+    	$(obj).val(rebate)
+        var totalPay = eval(total - rebate).toFixed(2);
+        $(obj).parent().next().find("i").text(totalPay);
     } else {
         var totalPay = eval(total - obj.value).toFixed(2);
         $(obj).parent().next().find("i").text(totalPay);

@@ -14,10 +14,18 @@ public class Rebate {
 	private String createTime;
 	private String updateTime;
 	private String opt;
+	private Double orderConsume;//订单消费金额
+	private Double frozenRebate;//订单冻结金额（没支付）
+
 	public Double getAlreadyCheck() {
 		return alreadyCheck;
 	}
 	public void setAlreadyCheck(Double alreadyCheck) {
+		if (alreadyCheck != null && alreadyCheck > 0.01) {
+			alreadyCheck = alreadyCheck - 0.01;
+		} else {
+			alreadyCheck = 0.00;
+		}
 		this.alreadyCheck = alreadyCheck;
 	}
 	public Integer getGradeId() {
@@ -86,5 +94,16 @@ public class Rebate {
 	public void setOpt(String opt) {
 		this.opt = opt;
 	}
-	
+	public Double getOrderConsume() {
+		return orderConsume;
+	}
+	public void setOrderConsume(Double orderConsume) {
+		this.orderConsume = orderConsume;
+	}
+	public Double getFrozenRebate() {
+		return frozenRebate;
+	}
+	public void setFrozenRebate(Double frozenRebate) {
+		this.frozenRebate = frozenRebate;
+	}
 }

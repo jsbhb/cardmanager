@@ -90,7 +90,7 @@
        	<div class="list-item">
 			<div class="col-sm-3 item-left">支付金额</div>
 			<div class="col-sm-9 item-right">
-				<input type="text" class="form-control" readonly  value="${order.orderDetail.payment-order.orderDetail.rebateFee}">
+				<input type="text" class="form-control" readonly  value="<fmt:formatNumber type="number" value="${order.orderDetail.payment-order.orderDetail.rebateFee}" pattern="0.00" maxFractionDigits="2"/>">
 			</div>
 		</div>
        	<div class="list-item">

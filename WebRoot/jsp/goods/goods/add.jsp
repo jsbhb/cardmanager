@@ -890,7 +890,7 @@
 		function toCategory(){
 			var index = layer.open({
 				  title:"新增分类",	
-				  area: ['80%', '40%'],	
+				  area: ['80%', '55%'],	
 				  type: 2,
 				  content: '${wmsUrl}/admin/goods/catalogMng/createCategoryInfo.shtml',
 				  maxmin: false

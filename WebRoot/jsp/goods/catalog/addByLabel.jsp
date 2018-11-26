@@ -47,7 +47,25 @@
 				<div class="col-xs-9 item-right">
 					<input type="text" class="form-control" name="name" id="name">
 	            	<div class="item-content">
-	             		（请输入数字、英文和汉字，限1-40字）
+	             		（商品分类的名称，例：母婴用品）
+	             	</div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-xs-3 item-left">分类别称<font style="color:red">*</font> </div>
+				<div class="col-xs-9 item-right">
+					<input type="text" class="form-control" name="accessPath" id="accessPath">
+	            	<div class="item-content">
+	             		（商品分类的别称，例：myyp）
+	             	</div>
+				</div>
+			</div>
+			<div class="list-item">
+				<div class="col-xs-3 item-left">分类顺序<font style="color:red">*</font> </div>
+				<div class="col-xs-9 item-right">
+					<input type="text" class="form-control" name="sort" id="sort">
+	            	<div class="item-content">
+	             		（商品分类的顺序，例：2）
 	             	</div>
 				</div>
 			</div>
@@ -110,7 +128,26 @@
                       message: '分类名称不能为空！'
                   }
               }
-      	  }
+      	  },
+      	  accessPath: {
+              message: '分类别称不正确',
+              validators: {
+                  notEmpty: {
+                      message: '分类别称不能为空！'
+                  }
+              }
+      	  },
+       	  sort: {
+               message: '分类顺序不正确',
+               validators: {
+                   notEmpty: {
+                       message: '分类顺序不能为空！'
+                   },
+                   digits: {
+                       message: '分类顺序只能使用数字！'
+                   }
+               }
+       	  }
       }
   });
 	

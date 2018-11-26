@@ -45,7 +45,6 @@ import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.RebateDetail;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
-import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
@@ -118,18 +117,18 @@ public class RebateMngController extends BaseController {
 			pagination.setUpdateTime(times[1].trim());
 		}
 		Rebate rebate = financeMngService.queryRebate(gradeId, staffEntity.getToken());
-		if (rebate.getCanBePresented() != null) {
-			rebate.setCanBePresented(CalculationUtils.round(2, Double.valueOf(rebate.getCanBePresented())));
-		}
-		if (rebate.getAlreadyPresented() != null) {
-			rebate.setAlreadyPresented(CalculationUtils.round(2, Double.valueOf(rebate.getAlreadyPresented())));
-		}
-		if (rebate.getStayToAccount() != null) {
-			rebate.setStayToAccount(CalculationUtils.round(2, Double.valueOf(rebate.getStayToAccount())));
-		}
-		if (rebate.getAlreadyCheck() != null) {
-			rebate.setAlreadyCheck(CalculationUtils.round(2, Double.valueOf(rebate.getAlreadyCheck())));
-		}
+//		if (rebate.getCanBePresented() != null) {
+//			rebate.setCanBePresented(CalculationUtils.round(2, Double.valueOf(rebate.getCanBePresented())));
+//		}
+//		if (rebate.getAlreadyPresented() != null) {
+//			rebate.setAlreadyPresented(CalculationUtils.round(2, Double.valueOf(rebate.getAlreadyPresented())));
+//		}
+//		if (rebate.getStayToAccount() != null) {
+//			rebate.setStayToAccount(CalculationUtils.round(2, Double.valueOf(rebate.getStayToAccount())));
+//		}
+//		if (rebate.getAlreadyCheck() != null) {
+//			rebate.setAlreadyCheck(CalculationUtils.round(2, Double.valueOf(rebate.getAlreadyCheck())));
+//		}
 		if (pagination.getGradeId() == null) {
 			pagination.setGradeId(gradeId);
 		}
@@ -556,6 +555,9 @@ public class RebateMngController extends BaseController {
 						break;
 					case 9:
 						oi.setOrderSourceName("太平惠汇");
+						break;
+					case 11:
+						oi.setOrderSourceName("聚民惠");
 						break;
 					}
 

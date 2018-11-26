@@ -118,6 +118,14 @@
 							<a href="javascript:void(0);" id="stayToAccount">￥0.00</a>
 							<p>待到账</p>
 						</div>
+						<div class="today-orders-item">
+							<a href="javascript:void(0);" id="orderConsume">￥0.00</a>
+							<p>订单消费</p>
+						</div>
+						<div class="today-orders-item">
+							<a href="javascript:void(0);" id="frozenRebate">￥0.00</a>
+							<p>订单冻结</p>
+						</div>
 				</div>
 			</div>
 	       	<form class="form-horizontal" role="form" id="gradeForm" >
@@ -199,11 +207,15 @@
 			$("#alreadyPresented").html(rebate.alreadyPresented == null ? "￥0.00" : "￥"+(rebate.alreadyPresented).toFixed(2));
 			$("#stayToAccount").html(rebate.stayToAccount == null ? "￥0.00" : "￥"+(rebate.stayToAccount).toFixed(2));
 			$("#alreadyCheck").html(rebate.alreadyCheck == null ? "￥0.00" : "￥"+(rebate.alreadyCheck).toFixed(2));
+			$("#orderConsume").html(rebate.orderConsume == null ? "￥0.00" : "￥"+(rebate.orderConsume).toFixed(2));
+			$("#frozenRebate").html(rebate.frozenRebate == null ? "￥0.00" : "￥"+(rebate.frozenRebate).toFixed(2));
 		} else {
 			$("#canBePresented").html("￥0.00");
 			$("#alreadyPresented").html("￥0.00");	
 			$("#stayToAccount").html("￥0.00");
 			$("#alreadyCheck").html("￥0.00");
+			$("#orderConsume").html("￥0.00");
+			$("#frozenRebate").html("￥0.00");
 		}
 		
 		var str = "";

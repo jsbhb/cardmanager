@@ -40,6 +40,7 @@ import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
 import com.card.manager.factory.goods.model.GoodsTagBindEntity;
 import com.card.manager.factory.goods.model.GoodsTagEntity;
+import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.log.SysLogger;
@@ -53,6 +54,7 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.CalculationUtils;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 
@@ -200,6 +202,23 @@ public class purchaseMngController extends BaseController {
 					double rebate = Double.valueOf(rebateStr == null ? "0" : rebateStr);
 					entity.setRebate(CalculationUtils.round(2,
 							CalculationUtils.mul(entity.getGoodsPrice().getRetailPrice(), rebate)));
+				}
+				
+				String infoStr = entity.getInfo();
+				if (infoStr != null && !"".equals(infoStr)) {
+					JSONArray jsonArray = JSONArray.fromObject(infoStr.substring(1, infoStr.length()));
+					int index = jsonArray.size();
+					List<ItemSpecsPojo> specslist = new ArrayList<ItemSpecsPojo>();
+					for (int i = 0; i < index; i++) {
+						JSONObject jObj = jsonArray.getJSONObject(i);
+						specslist.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
+					}
+					
+					String tmpStr = "";
+					for (ItemSpecsPojo isp : specslist) {
+						tmpStr = tmpStr + isp.getSkV() + ":" + isp.getSvV() + "|";
+					}
+					entity.setInfo(tmpStr.substring(0, tmpStr.length()-1));
 				}
 			}
 			pcb.setObj(list);
@@ -447,9 +466,6 @@ public class purchaseMngController extends BaseController {
 			List<SupplierPostFeeBO> postFeeList = calcPostFeeByParam(postFeeParams);
 			context.put("postFeeList", postFeeList);
 			Rebate rebate = financeMngService.queryRebate(opt.getGradeId(), opt.getToken());
-			if (rebate.getAlreadyCheck() == null) {
-				rebate.setAlreadyCheck(0.00);
-			}
 			context.put("gradeRebateInfo", rebate);
 		} catch (Exception e) {
 			e.printStackTrace();

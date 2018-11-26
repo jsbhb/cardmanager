@@ -159,7 +159,7 @@
 				                  <div class="input-group-addon">
 				                    <i class="fa fa-pencil"></i>
 				                  </div>
-		                  			<input type="text" class="form-control" readonly  value="${order.orderDetail.payment-order.orderDetail.rebateFee}">
+		                  			<input type="text" class="form-control" readonly  value="<fmt:formatNumber type="number" value="${order.orderDetail.payment-order.orderDetail.rebateFee}" pattern="0.00" maxFractionDigits="2"/>">
 				                </div>
 							</div>
 						</div>

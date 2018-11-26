@@ -110,7 +110,8 @@
 								<th>快递公司</th>
 								<th>物流单号</th>
 								<th>供应商</th>
-								<th>支付总金额</th>
+								<th>总支付金额</th>
+								<th>返佣抵扣</th>
 								<th>收货人</th>
 								<th>创建时间</th>
 								<th>操作</th>
@@ -232,6 +233,7 @@ function rebuildTable(data){
 		str += "</td><td>" + expressId;
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
+		str += "</td><td>" + list[i].orderDetail.rebateFee;
 		str += "</td><td>" + (list[i].orderDetail.receiveName == null ? "" : list[i].orderDetail.receiveName);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		if (status == 0) {

@@ -581,9 +581,6 @@ public class LoginController extends BaseController {
 		}
 		try {
 			Rebate rebate = financeMngService.queryRebate(operator.getGradeId(), operator.getToken());
-			if (rebate.getAlreadyCheck() == null) {
-				rebate.setAlreadyCheck(0.00);
-			}
 			context.put("gradeRebateInfo", rebate);
 		} catch (Exception e) {
 			Rebate rebate = new Rebate();

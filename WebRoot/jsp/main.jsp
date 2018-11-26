@@ -136,7 +136,7 @@
 					<div class="use-center-money">
 						<ul>
 							<li>钱包信息</li>
-							<li><a href="javascript:void(0);" onclick="toAddUserWithdrawals('${wmsUrl}/admin/user/userWithdrawalsMng/toAdd.shtml')">可提现金额:￥${gradeRebateInfo.alreadyCheck}</a></li>
+							<li><a href="javascript:void(0);" onclick="toAddUserWithdrawals('${wmsUrl}/admin/user/userWithdrawalsMng/toAdd.shtml')">可提现金额:￥<fmt:formatNumber type="number" value="${gradeRebateInfo.alreadyCheck}" pattern="0.00" maxFractionDigits="2"/></a></li>
 							<li><a href="javascript:void(0);" onclick="jump(37)">银行卡信息:${showCardInfo}</a></li>
 							<li><a href="javascript:void(0);" onclick="jump(78)">收货地址:${defaultAddressInfo}</a></li>
 						</ul>

@@ -30,7 +30,7 @@ public class ParemeterConverUtil {
 			put("福利商城", 7);
 			put("后台订单", 8);
 			put("太平惠汇", 9);
-			put("聚民惠", 10);
+			put("聚民惠", 11);
 		}
 	};
 	

@@ -28,7 +28,7 @@
 			<div class="list-item">
 				<div class="col-sm-3 item-left">可提现金额</div>
 				<div class="col-sm-9 item-right">
-           			<input type="text" readonly class="form-control" name="startMoney" id="startMoney" value="${info.alreadyCheck}">
+           			<input type="text" readonly class="form-control" name="startMoney" id="startMoney" value="<fmt:formatNumber type="number" value="${info.alreadyCheck}" pattern="0.00" maxFractionDigits="2"/>">
 				</div>
 			</div>
 			<div class="list-item">

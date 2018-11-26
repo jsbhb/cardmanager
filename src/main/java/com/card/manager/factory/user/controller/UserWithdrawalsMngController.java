@@ -25,7 +25,7 @@ import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.user.model.CardEntity;
-import com.card.manager.factory.user.model.ShopRebate;
+import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.service.FinanceMngService;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
@@ -113,8 +113,8 @@ public class UserWithdrawalsMngController extends BaseController {
 			return forword("user/withdrawals/notice", context);
 		} else {
 			typeId = opt.getGradeId()+"";
-			ShopRebate shopRebate = financeMngService.queryShopRebate(typeId, type, opt.getToken());
-			context.put("info", shopRebate);
+			Rebate rebate = financeMngService.queryRebate(opt.getGradeId(), opt.getToken());
+			context.put("info", rebate);
 			context.put("typeId", typeId);
 			context.put("type", type);
 			return forword("user/withdrawals/show", context);

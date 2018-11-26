@@ -134,7 +134,7 @@
               message: '分类顺序不正确',
               validators: {
                   notEmpty: {
-                      message: '分类别称不能为空！'
+                      message: '分类顺序不能为空！'
                   },
                   digits: {
                       message: '分类顺序只能使用数字！'
