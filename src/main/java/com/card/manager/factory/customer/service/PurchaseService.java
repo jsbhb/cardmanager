@@ -29,4 +29,8 @@ public interface PurchaseService extends ServerCenterService {
 	String createOrderByParam(OrderInfo orderInfo, String token) throws Exception;
 	
 	String orderContinuePay(Map<String,Object> params, String token) throws Exception;
+	
+	void confirmOrder(Map<String,Object> params, String token) throws Exception;
+	
+	void closeOrder(Map<String,Object> params, String token) throws Exception;
 }

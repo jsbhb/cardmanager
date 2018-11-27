@@ -84,7 +84,9 @@
 	                   	  <option value="7">福利商城</option>
 	                   	  <option value="8">后台订单</option>
 	                   	  <option value="9">太平惠汇</option>
+	                   	  <option value="10">小程序</option>
 	                   	  <option value="11">聚民惠</option>
+	                   	  <option value="12">拼多多</option>
 		                </select>
 					</div>
 				</div>
@@ -312,7 +314,9 @@ function rebuildTable(data){
 			case 7:str += "</td><td>福利商城";break;
 			case 8:str += "</td><td>后台订单";break;
 			case 9:str += "</td><td>太平惠汇";break;
+			case 10:str += "</td><td>小程序";break;
 			case 11:str += "</td><td>聚民惠";break;
+			case 12:str += "</td><td>拼多多";break;
 			default:str += "</td><td>";
 		}
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);

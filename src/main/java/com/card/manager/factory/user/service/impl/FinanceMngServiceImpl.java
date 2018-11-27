@@ -522,9 +522,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		String fileName = "rebate_" + DateUtil.getNowLongTime() + ".xlsx";
 		String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
-		String[] nameArray = new String[] { "订单号", "状态", "订单类型", "分级名称", "订单返佣", "自有编码", "商品编号", "品名", "零售价", "商品规格",
+		String[] nameArray = new String[] { "订单号", "状态", "订单类型", "订单来源", "分级名称", "订单返佣", "自有编码", "商品编号", "品名", "零售价", "商品规格",
 				"商品数量", "商品返佣" };
-		String[] colArray = new String[] { "OrderId", "StatusName", "OrderType", "GradeName", "TotalRebate", "ItemCode",
+		String[] colArray = new String[] { "OrderId", "StatusName", "OrderType", "OrderSourceName", "GradeName", "TotalRebate", "ItemCode",
 				"ItemId", "GoodsName", "ItemPrice", "Info", "Quantity", "Rebate" };
 		SXSSFWorkbook swb = new SXSSFWorkbook(100);
 		ExcelUtil.createExcel(list, nameArray, colArray, filePath, 0, "rebate_" + DateUtil.getNowLongTime(), swb);
@@ -550,6 +550,7 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 		int index = obj.size();
 		Map<Integer, GradeBO> gradeMap = CachePoolComponent.getGrade(staffEntity.getToken());
 		try {
+			String tmpItemInfo = "";
 			for (int i = 0; i < index; i++) {
 				JSONObject jObj = obj.getJSONObject(i);
 				RebateDownload temp = JSONUtilNew.parse(jObj.toString(), RebateDownload.class);
@@ -578,6 +579,57 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 				default:
 					temp.setStatusName("未知：" + temp.getStatus());
 					break;
+				}
+				switch (temp.getOrderSource()) {
+				case 0:
+					temp.setOrderSourceName("PC商城");
+					break;
+				case 1:
+					temp.setOrderSourceName("手机商城");
+					break;
+				case 2:
+					temp.setOrderSourceName("订货平台");
+					break;
+				case 3:
+					temp.setOrderSourceName("有赞");
+					break;
+				case 4:
+					temp.setOrderSourceName("线下");
+					break;
+				case 5:
+					temp.setOrderSourceName("展厅");
+					break;
+				case 6:
+					temp.setOrderSourceName("大客户");
+					break;
+				case 7:
+					temp.setOrderSourceName("福利商城");
+					break;
+				case 8:
+					temp.setOrderSourceName("后台订单");
+					break;
+				case 9:
+					temp.setOrderSourceName("太平惠汇");
+					break;
+				case 10:
+					temp.setOrderSourceName("小程序");
+					break;
+				case 11:
+					temp.setOrderSourceName("聚民惠");
+					break;
+				case 12:
+					temp.setOrderSourceName("拼多多");
+					break;
+				default:
+					temp.setOrderSourceName("未知：" + temp.getOrderSource());
+					break;
+				}
+				if (temp.getInfo() != null) {
+					tmpItemInfo = temp.getInfo();
+					tmpItemInfo = tmpItemInfo.replace("\"", "");
+					tmpItemInfo = tmpItemInfo.replace("{", "");
+					tmpItemInfo = tmpItemInfo.replace("}", "");
+					temp.setInfo(tmpItemInfo);
 				}
 				list.add(temp);
 			}

@@ -69,7 +69,9 @@
 	                   	  <option value="7">福利商城</option>
 	                   	  <option value="8">后台订单</option>
 	                   	  <option value="9">太平惠汇</option>
+	                   	  <option value="10">小程序</option>
 	                   	  <option value="11">聚民惠</option>
+	                   	  <option value="12">拼多多</option>
 		                </select>
 					</div>
 				</div>

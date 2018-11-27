@@ -66,11 +66,72 @@
                		<input type="text" class="form-control" name="address" value="${supplier.address == 'null' ? '' : supplier.address}">
 				</div>
 			</div>
+			
+			<div class="title">
+	       		<h1>财务信息</h1>
+	       	</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">合同类型</div>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="contractType" id="contractType">
+					  <c:choose>
+						<c:when test="${supplier.contractType==1}">
+		                   	<option selected="selected" value="1">一件代发</option>
+		                   	<option value="2">长期供货</option>
+		                   	<option value="3">框架合同</option>
+		                   	<option value="4">其他</option>
+						</c:when>
+						<c:when test="${supplier.contractType==2}">
+		                   	<option value="1">一件代发</option>
+		                   	<option selected="selected" value="2">长期供货</option>
+		                   	<option value="3">框架合同</option>
+		                   	<option value="4">其他</option>
+						</c:when>
+						<c:when test="${supplier.contractType==3}">
+		                   	<option value="1">一件代发</option>
+		                   	<option value="2">长期供货</option>
+		                   	<option selected="selected" value="3">框架合同</option>
+		                   	<option value="4">其他</option>
+						</c:when>
+						<c:otherwise>
+		                   	<option value="1">一件代发</option>
+		                   	<option value="2">长期供货</option>
+		                   	<option value="3">框架合同</option>
+		                   	<option selected="selected" value="4">其他</option>
+						</c:otherwise>
+					  </c:choose>
+	                </select>
+				</div>
+			</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">付款方式</div>
+				<div class="col-sm-9 item-right">
+		            <select class="form-control" name="payType" id="payType">
+		              <c:choose>
+						<c:when test="${supplier.payType==1}">
+	                   	  <option selected="selected" value="1">预付款</option>
+	                   	  <option value="2">现付</option>
+	                   	  <option value="3">账期</option>
+						</c:when>
+						<c:when test="${supplier.payType==2}">
+	                   	  <option value="1">预付款</option>
+	                   	  <option selected="selected" value="2">现付</option>
+	                   	  <option value="3">账期</option>
+						</c:when>
+						<c:otherwise>
+	                   	  <option value="1">预付款</option>
+	                   	  <option value="2">现付</option>
+	                   	  <option selected="selected" value="3">账期</option>
+						</c:otherwise>
+					  </c:choose>
+	                </select>
+				</div>
+			</div>
 			<div class="title">
 	       		<h1>联系方式</h1>
 	       	</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">负责人</div>
+				<div class="col-sm-3 item-left">采购负责人</div>
 				<div class="col-sm-9 item-right">
 	                <input type="text" class="form-control" name="operator" value="${supplier.operator == 'null' ? '' : supplier.operator}">
 				</div>

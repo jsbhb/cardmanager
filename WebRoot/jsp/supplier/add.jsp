@@ -61,10 +61,34 @@
 				</div>
 			</div>
 			<div class="title">
+	       		<h1>财务信息</h1>
+	       	</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">合同类型</div>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="contractType" id="contractType">
+                   	  <option selected="selected" value="1">一件代发</option>
+                   	  <option value="2">长期供货</option>
+                   	  <option value="3">框架合同</option>
+                   	  <option value="4">其他</option>
+	                </select>
+				</div>
+			</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">付款方式</div>
+				<div class="col-sm-9 item-right">
+		            <select class="form-control" name="payType" id="payType">
+                   	  <option selected="selected" value="1">预付款</option>
+                   	  <option value="2">现付</option>
+                   	  <option value="3">账期</option>
+	                </select>
+				</div>
+			</div>
+			<div class="title">
 	       		<h1>联系方式</h1>
 	       	</div>
 			<div class="list-item">
-				<div class="col-sm-3 item-left">负责人</div>
+				<div class="col-sm-3 item-left">采购负责人</div>
 				<div class="col-sm-9 item-right">
 	                <input type="text" class="form-control" name="operator">
 				</div>

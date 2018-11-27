@@ -238,9 +238,13 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
 		if (status == 0) {
 			str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>采购单详情</a>";
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='closeOrder(\""+list[i].orderId+"\")'>关闭订单</a>";
 			str += "<a href='javascript:void(0);' class='table-btns' style='width: 78px; height: 30px; padding: 0px;' onclick='continuePay(2,\""+list[i].orderId+"\")'><img src='${wmsUrl}/img/customer/zfb.png' alt='中国供销海外购' style='width: 78px; height: 30px'></a>";
 			str += "<a href='javascript:void(0);' class='table-btns' style='width: 78px; height: 30px; padding: 0px;' onclick='continuePay(1,\""+list[i].orderId+"\")'><img src='${wmsUrl}/img/customer/wx.png' alt='中国供销海外购' style='width: 78px; height: 30px'></a>";
 			str += "<a href='javascript:void(0);' class='table-btns' style='width: 78px; height: 30px; padding: 0px;' onclick='continuePay(5,\""+list[i].orderId+"\")'><img src='${wmsUrl}/img/customer/yb.png' alt='中国供销海外购' style='width: 78px; height: 30px'></a>";
+		} else if (status == 6) {
+			str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>采购单详情</a>";
+			str += "<a href='javascript:void(0);' class='table-btns' onclick='confirmOrder(\""+list[i].orderId+"\")'>确认收货</a>";
 		} else {
 			str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>采购单详情</a>";
 		}
@@ -293,6 +297,60 @@ function continuePay(payType,orderId){
 			 layer.alert("订单支付失败，请联系客服处理");
 			 win.close();
 		 }
+	});
+}
+
+function confirmOrder(orderId){
+	layer.confirm('确定要进行收货处理吗？', {
+	  btn: ['确认收货','取消'] //按钮
+	}, function(){
+		$.ajax({
+			 url:"${wmsUrl}/admin/customer/purchaseMng/confirmOrder.shtml?orderId="+orderId,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 success:function(data){
+				 if(data.success){
+					 location.reload();
+				 }else{
+					layer.alert(data.msg);
+					return;
+				 }
+			 },
+			 error:function(){
+				 layer.alert("确认收货操作失败，请重试！");
+				 return;
+			 }
+		});
+	}, function(){
+	  layer.close();
+	});
+}
+
+function closeOrder(orderId){
+	layer.confirm('确定要进行关闭订单处理吗？', {
+	  btn: ['确认关闭','取消'] //按钮
+	}, function(){
+		$.ajax({
+			 url:"${wmsUrl}/admin/customer/purchaseMng/closeOrder.shtml?orderId="+orderId,
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 success:function(data){
+				 if(data.success){
+					 location.reload();
+				 }else{
+					layer.alert(data.msg);
+					return;
+				 }
+			 },
+			 error:function(){
+				 layer.alert("关闭订单操作失败，请重试！");
+				 return;
+			 }
+		});
+	}, function(){
+	  layer.close();
 	});
 }
 </script>

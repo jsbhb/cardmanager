@@ -412,6 +412,10 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/alread-pay/{orderId}";
 	public static final String PAY_CENTER_ORDER_PAY_STATUS_UPDATE = (TOKEN_NOT_NEED ? "/" : "/paycenter/")
 			+ SERVER_CENTER_EDITION + "/pay/{payType}/{type}/{orderId}";
+	public static final String ORDER_CENTER_ORDER_CONFIRM_UPDATE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/confirm/{userId}/{orderId}";
+	public static final String ORDER_CENTER_ORDER_CLOSE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
+			+ SERVER_CENTER_EDITION + "/order/close/{userId}/{orderId}";
 	
 	
 	/*----------------------运费模板管理--------------------------------*/

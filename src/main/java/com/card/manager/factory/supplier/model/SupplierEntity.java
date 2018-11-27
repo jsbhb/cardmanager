@@ -38,6 +38,8 @@ public class SupplierEntity {
 	private String opt;
 	private boolean isDelete;
 	private String supplierCode;//供应商代码
+	private int contractType;
+	private int payType;
 
 	public SupplierEntity() {
 	}
@@ -219,6 +221,22 @@ public class SupplierEntity {
 
 	public void setSupplierCode(String supplierCode) {
 		this.supplierCode = supplierCode;
+	}
+
+	public int getContractType() {
+		return contractType;
+	}
+
+	public void setContractType(int contractType) {
+		this.contractType = contractType;
+	}
+
+	public int getPayType() {
+		return payType;
+	}
+
+	public void setPayType(int payType) {
+		this.payType = payType;
 	}
 
 }

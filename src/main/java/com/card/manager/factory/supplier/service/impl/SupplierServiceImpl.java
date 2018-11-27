@@ -18,13 +18,13 @@ import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseSer
 import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.supplier.service.SupplierService;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONObject;
 
 /**
  * ClassName: SupplierServiceImpl <br/>
- * Function: TODO ADD FUNCTION. <br/>
  * date: Nov 7, 2017 3:22:23 PM <br/>
  * 
  * @author hebin
@@ -62,7 +62,7 @@ public class SupplierServiceImpl extends AbstractServcerCenterBaseService implem
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return new SupplierEntity(json.getJSONObject("obj"));
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), SupplierEntity.class);
 	}
 	
 	@Override

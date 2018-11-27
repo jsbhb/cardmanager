@@ -265,4 +265,32 @@ public class PurchaseServiceImpl extends AbstractServcerCenterBaseService implem
 		}
 		return strReturnInfo;
 	}
+	
+	@Override
+	public void confirmOrder(Map<String, Object> params, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_ORDER_CONFIRM_UPDATE, token,
+				true, null, HttpMethod.PUT, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("订单确认收货操作失败:" + json.getString("errorMsg"));
+		}
+	}
+	
+	@Override
+	public void closeOrder(Map<String, Object> params, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_ORDER_CLOSE_UPDATE, token,
+				true, null, HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("订单关闭操作失败:" + json.getString("errorMsg"));
+		}
+	}
 }

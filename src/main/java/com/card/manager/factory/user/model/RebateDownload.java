@@ -19,6 +19,8 @@ public class RebateDownload {
 	private String gradeName;
 	private String orderType;
 	private String goodsName;
+	private Integer orderSource;
+	private String orderSourceName;
 	public String getGoodsName() {
 		return goodsName;
 	}
@@ -121,5 +123,16 @@ public class RebateDownload {
 	public void setRebate(String rebate) {
 		this.rebate = rebate;
 	}
-	
+	public Integer getOrderSource() {
+		return orderSource;
+	}
+	public void setOrderSource(Integer orderSource) {
+		this.orderSource = orderSource;
+	}
+	public String getOrderSourceName() {
+		return orderSourceName;
+	}
+	public void setOrderSourceName(String orderSourceName) {
+		this.orderSourceName = orderSourceName;
+	}
 }

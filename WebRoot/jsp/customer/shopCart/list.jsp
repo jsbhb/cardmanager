@@ -88,7 +88,7 @@
 						                            <li>￥<span><fmt:formatNumber type="number" value="${infoList.goodsSpecs.minPrice}" pattern="0.00" maxFractionDigits="2"/></span></li>
 						                            <li>
 						                                <span class="minus btn"></span>
-						                                <input type="text" value="${infoList.quantity}" onkeyup="checkInputNumber(this)" onpaste="return false;" data-qty="${infoList.quantity}" data-price="${infoList.goodsSpecs.minPrice}" data-min="${infoList.goodsSpecs.priceList[0].min}" data-max="${infoList.goodsSpecs.priceList[0].max}">
+						                                <input type="text" value="${infoList.quantity}" onkeyup="checkInputNumber(this)" onpaste="return false;" data-qty="${infoList.quantity}" data-price="${infoList.goodsSpecs.minPrice}" data-min="${infoList.goodsSpecs.priceList[0].min}" data-max="${infoList.goodsSpecs.priceList[0].max}" data-stock="${infoList.goodsSpecs.stock}">
 						                                <span class="add btn"></span>
 						                            </li>
 						                            <li>￥<span data-total-money="${infoList.goodsSpecs.maxPrice}"><fmt:formatNumber type="number" value="${infoList.goodsSpecs.maxPrice}" pattern="0.00" maxFractionDigits="2"/></span></li>
@@ -131,7 +131,7 @@
 						                            <li>￥<span><fmt:formatNumber type="number" value="${infoList.goodsSpecs.minPrice}" pattern="0.00" maxFractionDigits="2"/></span></li>
 						                            <li>
 						                                <span class="minus btn"></span>
-						                                <input type="text" disabled value="${infoList.quantity}" onkeyup="checkInputNumber(this)" onpaste="return false;" data-qty="${infoList.quantity}" data-price="${infoList.goodsSpecs.minPrice}" data-min="${infoList.goodsSpecs.priceList[0].min}" data-max="${infoList.goodsSpecs.priceList[0].max}">
+						                                <input type="text" disabled value="${infoList.quantity}" onkeyup="checkInputNumber(this)" onpaste="return false;" data-qty="${infoList.quantity}" data-price="${infoList.goodsSpecs.minPrice}" data-min="${infoList.goodsSpecs.priceList[0].min}" data-max="${infoList.goodsSpecs.priceList[0].max}" data-stock="${infoList.goodsSpecs.stock}">
 						                                <span class="add btn"></span>
 						                            </li>
 						                            <li>￥<span data-total-money="${infoList.goodsSpecs.maxPrice}"><fmt:formatNumber type="number" value="${infoList.goodsSpecs.maxPrice}" pattern="0.00" maxFractionDigits="2"/></span></li>
@@ -232,6 +232,7 @@ $(".list-body > .list-body-item > ul > li > span").on('click', function() {
 
 $(".list-body").on('click', '.list-body-item:not(.item-lose) .minus', function() {
 	var tmpMin = $(this).next().attr("data-min");
+	var tmpStock = $(this).next().attr("data-stock");
 	var tmpPrice = $(this).next().attr("data-price");
 	if (tmpMin == "" || tmpMin == "0") {
 		tmpMin = 1;
@@ -248,11 +249,18 @@ $(".list-body").on('click', '.list-body-item:not(.item-lose) .minus', function()
 		$(this).parent().next().children("span").text((eval(tmpPrice)).toFixed(2));
 		layer.alert("当前数量已是最小购买量！");
 	}
+	if (tmpValue > eval(tmpStock)) {
+		$(this).next().val(tmpStock);
+		$(this).parent().next().children("span").attr("data-total-money",(eval(tmpPrice)).toFixed(2));
+		$(this).parent().next().children("span").text((eval(tmpPrice)).toFixed(2));
+		layer.alert("当前数量已是最大可用库存！");
+	}
 	countSelectedItemInfo();
 })
 
 $(".list-body").on('click', '.list-body-item:not(.item-lose) .add', function() {
 	var tmpMax = $(this).prev().attr("data-max");
+	var tmpStock = $(this).prev().attr("data-stock");
 	var tmpPrice = $(this).prev().attr("data-price");
 	var tmpValue = $(this).prev().val();
 	tmpValue = eval(tmpValue) + 1;
@@ -272,12 +280,19 @@ $(".list-body").on('click', '.list-body-item:not(.item-lose) .add', function() {
 			layer.alert("当前数量已是最大购买量！");
 		}
 	}
+	if (tmpValue > eval(tmpStock)) {
+		$(this).prev().val(tmpStock);
+		$(this).parent().next().children("span").attr("data-total-money",(eval(tmpPrice)*eval(tmpStock)).toFixed(2));
+		$(this).parent().next().children("span").text((eval(tmpPrice)*eval(tmpStock)).toFixed(2));
+		layer.alert("当前数量已是最大可用库存！");
+	}
 	countSelectedItemInfo();
 })
 
 function checkInputNumber(e) {
 	var tmpMin = $(e).attr("data-min");
 	var tmpMax = $(e).attr("data-max");
+	var tmpStock = $(e).attr("data-stock");
 	var tmpPrice = $(e).attr("data-price");
 	var tmpValue = $(e).val().replace(/[^?\d]/g,'');
 	if (tmpValue == "" || tmpValue == "0") {
@@ -300,6 +315,13 @@ function checkInputNumber(e) {
 			layer.alert("当前数量已是最大购买量！");
 		}
 	}
+	if (tmpValue > eval(tmpStock)) {
+		$(e).val(tmpStock);
+		$(e).parent().next().children("span").attr("data-total-money",(eval(tmpPrice)*eval(tmpStock)).toFixed(2));
+		$(e).parent().next().children("span").text((eval(tmpPrice)*eval(tmpStock)).toFixed(2));
+		layer.alert("当前数量已是最大可用库存！");
+	}
+	countSelectedItemInfo();
 }
 
 $(".btn_selectAll_del").on('click', function() {

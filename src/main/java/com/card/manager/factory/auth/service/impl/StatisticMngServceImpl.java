@@ -84,7 +84,16 @@ public class StatisticMngServceImpl implements StatisticMngService {
 		if (tempList != null) {
 			if ("finance".equals(modelType)) {
 				for (DiagramPojo pojo:tempList) {
-					pojo.setValue(CalculationUtils.round(2, Double.valueOf(pojo.getValue().toString())));
+					if ("可提现".equals(pojo.getName())) {
+						Double tmpValue = Double.valueOf(pojo.getValue().toString());
+						if (tmpValue-0.01>=0) {
+							pojo.setValue(CalculationUtils.round(2, CalculationUtils.sub(tmpValue, 0.01)));
+						} else {
+							pojo.setValue(CalculationUtils.round(2, Double.valueOf(pojo.getValue().toString())));
+						}
+					} else {
+						pojo.setValue(CalculationUtils.round(2, Double.valueOf(pojo.getValue().toString())));
+					}
 				}
 			}
 		}

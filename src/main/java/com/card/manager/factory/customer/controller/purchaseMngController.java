@@ -864,4 +864,36 @@ public class purchaseMngController extends BaseController {
 			return forword(ERROR, context);
 		}
 	}
+	
+	@RequestMapping(value = "/confirmOrder", method = RequestMethod.POST)
+	public void confirmOrder(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		try {
+			String orderId = req.getParameter("orderId");
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userId", opt.getUserCenterId());
+			params.put("orderId", orderId);
+			purchaseService.confirmOrder(params, opt.getToken());
+			sendSuccessMessage(resp, "");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(resp, e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/closeOrder", method = RequestMethod.POST)
+	public void closeOrder(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity opt = SessionUtils.getOperator(req);
+		try {
+			String orderId = req.getParameter("orderId");
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userId", opt.getUserCenterId());
+			params.put("orderId", orderId);
+			purchaseService.closeOrder(params, opt.getToken());
+			sendSuccessMessage(resp, "");
+		} catch (Exception e) {
+			e.printStackTrace();
+			sendFailureMessage(resp, e.getMessage());
+		}
+	}
 }
