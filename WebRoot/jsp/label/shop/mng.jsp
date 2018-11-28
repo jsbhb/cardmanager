@@ -59,7 +59,7 @@
 			</c:if>
 	        <div class="submit-btn">
 	           	<button type="button" id="submitBtn" onclick="downLoadFile('${strLink}')">下载微店地址</button>
-	           	<button type="button" id="submitBtn" onclick="getWxAppletCode(${opt.gradeId})">预览小程序码</button>
+<%-- 	           	<button type="button" id="submitBtn" onclick="getWxAppletCode(${opt.gradeId})">预览小程序码</button> --%>
 	           	<c:if test="${strExtensionLinkShow == true}">
 	           		<button type="button" id="submitBtn" onclick="downLoadFile('${strExtensionLink}')">下载邀请开店地址</button>
 				</c:if>

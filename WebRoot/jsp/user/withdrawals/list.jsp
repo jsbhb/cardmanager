@@ -34,8 +34,8 @@
 				<div class="col-xs-3">
 					<div class="searchItem">
 						<select class="form-control" name="status" id="status">
-	                   		<option value="">--请选择申请状态--</option>
-               	  			<option selected="selected" value="1">待处理</option>
+	                   		<option selected="selected" value="">--请选择申请状态--</option>
+               	  			<option value="1">待处理</option>
                	  			<option value="2">已同意</option>
                	  			<option value="3">已拒绝</option>
 		              	</select>

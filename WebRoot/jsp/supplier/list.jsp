@@ -181,7 +181,7 @@ function rebuildTable(data){
 		switch (payType) {
 			case 1:str += "</td><td>预付款";break;
 			case 2:str += "</td><td>现付";break;
-			case 3:str += "</td><td>框架合同";break;
+			case 3:str += "</td><td>账期";break;
 			default:str += "</td><td>状态错误";
 		}
 		str += "</td><td>" + (list[i].operator == null ? "" : list[i].operator);
