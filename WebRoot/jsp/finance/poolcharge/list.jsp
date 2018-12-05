@@ -164,7 +164,7 @@ function rebuildTable(data){
 		str += "<td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		str += "</td><td>" + (list[i].gradeTypeName == null ? "" : list[i].gradeTypeName);
 		str += "</td><td>" + (list[i].company == null ? "" : list[i].company);
-		str += "</td><td>" + list[i].money;
+		str += "</td><td>" + eval(list[i].money).toFixed(2);
 		str += "</td><td>" + list[i].useMoney;
 		str += "</td><td>" + list[i].countMoney;
 		str += "</td><td>" + tmpStatus;

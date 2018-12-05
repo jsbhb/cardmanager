@@ -363,6 +363,16 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForEdit";
 	public static final String GOODS_CENTER_SYNC_GOODS_PRICE_RATIO_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/syncGoodsPriceRatioInfo";
+	/*------------------------活动管理-----------------------*/
+	public static final String GOODS_CENTER_QUERY_ACTIVITY_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/activity/backManager/queryActivityForPage";
+	public static final String GOODS_CENTER_SAVE_BARGAIN_ACTIVITY_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/activity/backManager/saveBargainActivityInfo";
+	public static final String GOODS_CENTER_SHOW_BARGAIN_ACTIVITY_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityByParam";
+	public static final String GOODS_CENTER_MODIFY_BARGAIN_ACTIVITY_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/activity/backManager/modifyBargainActivityInfo";
+	
 
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")

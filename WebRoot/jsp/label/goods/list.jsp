@@ -138,16 +138,16 @@ function rebuildTable(data){
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadQRCodeFile(\"";
 				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
 				str += "\")'>下载普通二维码</a>";
-// 				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
-// 				str += list[i].goodsId
-// 				str += ")'>预览小程序码</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
+				str += list[i].goodsId
+				str += ")'>预览小程序码</a>";
 			} else {
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadQRCodeFile(\"";
 				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
 				str += "\")'>下载普通二维码</a>";
-// 				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
-// 				str += list[i].goodsId
-// 				str += ")'>预览小程序码</a>";
+				str += "<a href='javascript:void(0);' class='table-btns' onclick='getWxAppletCode(";
+				str += list[i].goodsId
+				str += ")'>预览小程序码</a>";
 				str += "<a href='javascript:void(0);' class='table-btns' onclick='downLoadFile(\"";
 				str += list[i].goodsId + "\",\"" + list[i].detailPath.replace("&","%26")
 				str += "\")'>下载商品牌</a>";

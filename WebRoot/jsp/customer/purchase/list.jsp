@@ -219,7 +219,7 @@ function rebuildTable(data){
 			}
 		}
 		str += '</p></div>';
-		str += "<div class='img_shrink_group'><div class='img_shrink_price'><strong><b><span>￥</span>"+(list[i].goodsPrice.retailPrice-list[i].rebate)+"</b><s><span>￥</span>"+list[i].goodsPrice.retailPrice+"</s></strong></div>";
+		str += "<div class='img_shrink_group'><div class='img_shrink_price'><strong><b><span>￥</span>"+eval(list[i].goodsPrice.retailPrice-list[i].rebate).toFixed(2)+"</b><s><span>￥</span>"+list[i].goodsPrice.retailPrice+"</s></strong></div>";
 		str += "<div class='img_shrink_btnBox'><img class='search_addShopCart' src='${wmsUrl}/img/customer/icon_shoppingCart.png' alt='中国供销海外购' data-item="+list[i].itemId+" data-supplierId="+list[i].supplierId+" data-supplierName="+encodeURI(list[i].supplierName)+" data-goodsName="+encodeURI(list[i].goodsName)+"></div>";
 		str += "</div></div>";
 	}

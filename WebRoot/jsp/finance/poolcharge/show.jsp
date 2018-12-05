@@ -56,7 +56,7 @@
 		<div class="default-content">
 			<div class="today-orders">
 				<div class="today-orders-item">
-					<a href="javascript:void(0);" id="canBePresented">￥${pool.money}</a>
+					<a href="javascript:void(0);" id="canBePresented">￥<fmt:formatNumber type="number" value="${pool.money}" pattern="0.00" maxFractionDigits="2"/></a>
 					<p>可用金额</p>
 				</div>
 				<div class="today-orders-item">
