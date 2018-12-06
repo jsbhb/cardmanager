@@ -448,7 +448,7 @@
 		}
 		var compareValue;
 		if (type == "min") {
-			compareValue = $(obj).next().val();
+			compareValue = eval($(obj).next().val());
 			if (compareValue != "" && compareValue != undefined) {
 				if (obj.value > compareValue) {
 					$(obj).next().val(obj.value);
@@ -456,7 +456,7 @@
 				}
 			}
 		} else if (type = "max") {
-			compareValue = $(obj).prev().val();
+			compareValue = eval($(obj).prev().val());
 			if (compareValue != "" && compareValue != undefined) {
 				if (obj.value < compareValue) {
 					$(obj).prev().val(obj.value);
