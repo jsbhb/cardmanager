@@ -84,7 +84,7 @@
 								<tr>
 								<th style='width: 7%;'>商品编号</th>
 								<th style='width: 10%;'>商品名称</th>
-								<th style='width: 6%;'><font style='color:red'>*</font>商品原价</th>
+								<th style='width: 6%;'>商品原价</th>
 								<th style='width: 6%;'><font style='color:red'>*</font>商品底价</th>
 								<th style='width: 7%;'><font style='color:red'>*</font>最多砍价次数</th>
 								<th colspan='2' style='width: 10%;'><font style='color:red'>*</font>发起人砍价区间(%)</th>
@@ -103,11 +103,11 @@
 										<tr>
 											<td><input type="text" class="form-control" name="itemId" value="${item.itemId}" readonly></td>
 											<td>${item.goodsName}</td>
-											<td><input type="text" class="form-control" name="initPrice" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)" value="${item.initPrice}"></td>
+											<td><input type="text" class="form-control" name="initPrice" value="${item.initPrice}" readonly></td>
 											<td><input type="text" class="form-control" name="floorPrice" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)" value="${item.floorPrice}"></td>
 											<td><input type="text" class="form-control" name="maxCount" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')"  value="${item.maxCount}"></td>
-											<td colspan="2"><input type="text" class="form-control" name="firstMinRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')"  value="${item.firstMinRatio}"> ~<input type="text" class="form-control" name="firstMaxRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')"  value="${item.firstMaxRatio}"></td>
-											<td colspan="2"><input type="text" class="form-control" name="minRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')"  value="${item.minRatio}"> ~<input type="text" class="form-control" name="maxRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')"  value="${item.maxRatio}"></td>
+											<td colspan="2"><input type="text" class="form-control" name="firstMinRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')" onBlur="compareNum('min',this)" value="${item.firstMinRatio}"> ~<input type="text" class="form-control" name="firstMaxRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')" onBlur="compareNum('max',this)" value="${item.firstMaxRatio}"></td>
+											<td colspan="2"><input type="text" class="form-control" name="minRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')" onBlur="compareNum('min',this)" value="${item.minRatio}"> ~<input type="text" class="form-control" name="maxRatio" style="display:inline-block;width:45px;" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')" onBlur="compareNum('max',this)" value="${item.maxRatio}"></td>
 											<td><input type="text" class="form-control" name="lessMinPrice" onkeyup="clearNoNum(this)" onafterpaste="clearNoNum(this)" value="${item.lessMinPrice}"></td>
 											<td><select name="type" style="width:60px"><option selected="selected" value="1">普通</option></select></td>
 											<td><input type="text" class="form-control" name="duration" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')" onafterpaste="this.value=this.value.replace(/[^?\d]/g,'')"  value="${item.duration}"></td>
@@ -133,7 +133,7 @@
 										<td colspan="13">
 											<span>批量设置 ： </span>
 											<span>
-												<a href="javascript:void(0)" onclick="batchSetTableItem('initPrice')">商品原价</a>
+<!-- 												<a href="javascript:void(0)" onclick="batchSetTableItem('initPrice')">商品原价</a> -->
 												<a href="javascript:void(0)" onclick="batchSetTableItem('floorPrice')">商品底价</a>
 												<a href="javascript:void(0)" onclick="batchSetTableItem('maxCount')">砍价次数</a>
 												<a href="javascript:void(0)" onclick="batchSetTableItem('firstMinRatio')">发起人砍价(min)</a>
@@ -174,7 +174,7 @@
 			var selectItemInfo={};
 			selectItemInfo["itemId"] = "${item.itemId}";
 		 	selectItemInfo["goodsName"] = "${item.goodsName}";
-		 	selectItemInfo["price"] = 0;
+		 	selectItemInfo["price"] = eval("${item.initPrice}");
 		 	selectItemInfo["stock"] = 0;
 		 	allItem.push(selectItemInfo);
 	 	</c:forEach>
@@ -371,11 +371,11 @@
 		trHtml += "<tr>";
 		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"itemId\" value=\""+selectItemInfo["itemId"]+"\" readonly></td>";
 		trHtml += "<td>"+selectItemInfo["goodsName"]+"</td>";
-		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"initPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>";
+		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"initPrice\" value=\""+selectItemInfo["price"]+"\" readonly></td>";
 		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"floorPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>";
 		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"maxCount\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" ></td>";
-		trHtml += "<td colspan='2'><input type=\"text\" class=\"form-control\" name=\"firstMinRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" > ~<input type=\"text\" class=\"form-control\" name=\"firstMaxRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" ></td>";
-		trHtml += "<td colspan='2'><input type=\"text\" class=\"form-control\" name=\"minRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" > ~<input type=\"text\" class=\"form-control\" name=\"maxRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" ></td>";
+		trHtml += "<td colspan='2'><input type=\"text\" class=\"form-control\" name=\"firstMinRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onBlur=\"compareNum('min',this)\" > ~<input type=\"text\" class=\"form-control\" name=\"firstMaxRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onBlur=\"compareNum('max',this)\" ></td>";
+		trHtml += "<td colspan='2'><input type=\"text\" class=\"form-control\" name=\"minRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onBlur=\"compareNum('min',this)\" > ~<input type=\"text\" class=\"form-control\" name=\"maxRatio\" style=\"display:inline-block;width:45px;\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onBlur=\"compareNum('max',this)\" ></td>";
 		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"lessMinPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>";
 		trHtml += "<td><select name=\"type\" style=\"width:60px\"><option value=\"1\">普通</option></select></td>";
 // 		trHtml += "<td><input type=\"text\" class=\"form-control\" name=\"startTime\"></td>";
@@ -440,6 +440,30 @@
 			if(obj.tagName.toLowerCase() == "table")return null;
 		}
 		return obj;
+	}
+	
+	function compareNum(type,obj){
+		if (obj.value > 100) {
+			obj.value = obj.value % 100;
+		}
+		var compareValue;
+		if (type == "min") {
+			compareValue = $(obj).next().val();
+			if (compareValue != "" && compareValue != undefined) {
+				if (obj.value > compareValue) {
+					$(obj).next().val(obj.value);
+					obj.value = compareValue;
+				}
+			}
+		} else if (type = "max") {
+			compareValue = $(obj).prev().val();
+			if (compareValue != "" && compareValue != undefined) {
+				if (obj.value < compareValue) {
+					$(obj).prev().val(obj.value);
+					obj.value = compareValue;
+				}
+			}
+		}
 	}
 	</script>
 </body>
