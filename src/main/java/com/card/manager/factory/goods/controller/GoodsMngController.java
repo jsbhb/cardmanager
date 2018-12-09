@@ -267,7 +267,7 @@ public class GoodsMngController extends BaseController {
 					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
 							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
 				}
-				detailInfo = detailInfo + "<p><br></p>";
+				detailInfo = detailInfo + "<p><br/></p>";
 			}
 			context.put("detailInfo", detailInfo);
 

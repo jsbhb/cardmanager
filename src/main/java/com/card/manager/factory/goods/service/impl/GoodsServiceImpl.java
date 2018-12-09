@@ -152,8 +152,11 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		// 读取服务器的响应内容并显示
 		int respInt = insr.read();
 		while (respInt != -1) {
-			htmlContext = htmlContext + (char) respInt;
-			// System.out.print((char) respInt);
+			if (respInt != 10) {
+				htmlContext = htmlContext + (char) respInt;
+			}
+//			System.out.println("respInt:"+(char) respInt);
+//			System.out.println("respInt:"+ respInt);
 			respInt = insr.read();
 		}
 		insr.close();
