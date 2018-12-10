@@ -106,6 +106,9 @@
 					<c:when test="${order.orderSource==12}">
 						<input type="text" class="form-control" readonly value="拼多多">
 					</c:when>
+					<c:when test="${order.orderSource==13}">
+						<input type="text" class="form-control" readonly value="易捷北京">
+					</c:when>
 					<c:otherwise>
 						<input type="text" class="form-control" readonly value="订货平台">
 					</c:otherwise>

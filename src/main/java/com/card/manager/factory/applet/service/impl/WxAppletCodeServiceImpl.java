@@ -123,7 +123,7 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		String scene = param.getScene();
 		String page = param.getPage();
 		boolean netPath = true;
-		String logoPath;
+		String logoPath = null;
 		if (page.contains(GOODS_DETAIL_PATH)) {// 路径是商详，默认第一张主图作为logo
 			String goodsId = getGoodsIdFromScene(scene);
 			// 获取需要替换的logo（商品主图）
@@ -138,7 +138,9 @@ public class WxAppletCodeServiceImpl implements WxAppletCodeService {
 		} else {// 不是商详路径
 			// 获取微店配置的头像信息
 			ShopEntity shop = gradeMngService.queryByGradeId(opt.getGradeId() + "", opt.getToken());
-			logoPath = shop.getQrcodeLogo();
+			if (shop != null) {
+				logoPath = shop.getQrcodeLogo();
+			}
 			if (logoPath == null) {
 				logoPath = absolutelyPath + "img/goodsExtensionLogo.png";
 				netPath = false;

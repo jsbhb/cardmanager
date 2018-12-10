@@ -33,6 +33,7 @@ public class ParemeterConverUtil {
 			put("小程序", 10);
 			put("聚民惠", 11);
 			put("拼多多", 12);
+			put("易捷北京", 13);
 		}
 	};
 	
