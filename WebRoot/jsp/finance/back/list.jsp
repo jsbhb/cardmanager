@@ -251,12 +251,29 @@ function rebuildTable(data){
 		str += "</td><td>" + (list[i].supplierName == null ? "" : list[i].supplierName);
 		str += "</td><td>" + list[i].orderDetail.payment;
 		str += "</td><td>" + (list[i].orderDetail.receiveName == null ? "" : list[i].orderDetail.receiveName);
-		var tmpCenterId = list[i].centerId;
-		var tmpCenterName = "";
-		if (tmpCenterId == -1) {
-			tmpCenterName = "订货平台";
+// 		var tmpCenterId = list[i].centerId;
+// 		var tmpCenterName = "";
+// 		if (tmpCenterId == -1) {
+// 			tmpCenterName = "订货平台";
+// 		}
+// 		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
+		var tmpOrderSource = list[i].orderSource;
+		switch(tmpOrderSource){
+			case 0:str += "</td><td>PC商城";break;
+			case 1:str += "</td><td>手机商城";break;
+			case 2:str += "</td><td>订货平台";break;
+			case 3:str += "</td><td>有赞";break;
+			case 4:str += "</td><td>线下";break;
+			case 5:str += "</td><td>展厅";break;
+			case 6:str += "</td><td>大客户";break;
+			case 7:str += "</td><td>福利商城";break;
+			case 8:str += "</td><td>后台订单";break;
+			case 9:str += "</td><td>太平惠汇";break;
+			case 10:str += "</td><td>小程序";break;
+			case 11:str += "</td><td>聚民惠";break;
+			case 12:str += "</td><td>拼多多";break;
+			default:str += "</td><td>";
 		}
-		str += "</td><td>" + (list[i].centerName == "" ? "" : list[i].centerName);
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
 		str += "</td><td>" + (list[i].orderDetail.payTime == null ? "" : list[i].orderDetail.payTime);
 		var arr = [21];

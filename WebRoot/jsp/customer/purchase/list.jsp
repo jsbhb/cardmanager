@@ -211,6 +211,7 @@ function rebuildTable(data){
 			str += "<img class='goodsImg' style='width:206px;height:206px;' src="+list[i].goodsEntity.files[0].path+" alt='中国供销海外购'>";
 		}
 		str += "</a><a href='javascript:void(0)' class='infoBox'><div class='img_shrink_msg'>" + list[i].goodsName + "</div>";
+		str += "<div class='img_shrink_specs'>" + (list[i].supplierName==null?"":list[i].supplierName) + "</div></a>";
 		str += "<div class='img_shrink_specs'>" + (list[i].info==null?"":list[i].info) + "</div></a>";
 		str += '<div class="img_shrink_msg"><p style="margin: 5px 0 0 0;">';
 		if(list[i].tagList.length > 0){
