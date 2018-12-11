@@ -84,14 +84,18 @@ $(function(){
                     		layer.alert('请先设置上级比例');
                     	}else{
                     		if(parseFloat(parentVal) <= parseFloat(val)){
-                        		layer.alert('下级比例不能高于或等于上级');
-                        		$(that).val('');
+                    			if (parseFloat(val) != 0.0) {
+                            		layer.alert('下级比例不能高于或等于上级');
+                            		$(that).val('');
+                    			}
                         	}
                     	}
                     	$.each(childArr,function(k,v){
                     		if($(v).val() >= val){
-                    			layer.alert('上级比例不能低于下级');
-                    			$(that).val('');
+                    			if (parseFloat($(v).val()) != 0.0) {
+                        			layer.alert('上级比例不能低于下级');
+                        			$(that).val('');
+                    			}
                     		}
                     	});
                 	}

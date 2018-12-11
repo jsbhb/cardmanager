@@ -117,7 +117,7 @@ public class ActivityMngController extends BaseController {
 		context.put("suppliers", CachePoolComponent.getSupplier(opt.getToken()));
 		List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
 		context.put("tags", tags);
-		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get(opt.getGradeId());
+		GradeBO grade = CachePoolComponent.getGrade(opt.getToken()).get((opt.getGradeId()==0?2:opt.getGradeId()));
 		context.put("gradeType", grade.getGradeType());
 		return forword("activity/activityMng/listForAdd", context);
 	}
