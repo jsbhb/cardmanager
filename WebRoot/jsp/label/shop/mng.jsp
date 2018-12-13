@@ -66,6 +66,9 @@
 				<c:if test="${strWelfareType == 1}">
 		           	<button type="button" id="submitBtn" onclick="downLoadFile('${strWelfareUrlLink}')">下载福利网站地址</button>
 				</c:if>
+				<c:if test="${prilvl == 1}">
+		           	<button type="button" id="submitBtn" onclick="initAllWechatCode()">初始小程序码</button>
+				</c:if>
 	       	</div>
 		</form>
 	</section>
@@ -118,6 +121,22 @@
 			 },
 			 error:function(data){
 				 win.close();
+				 layer.alert(data.msg);
+			 }
+		});
+	}
+	function initAllWechatCode() {
+		$.ajax({
+			 url:"${wmsUrl}/admin/applet/createAllCode.shtml",
+			 type:'post',
+			 contentType: "application/json; charset=utf-8",
+			 dataType:'json',
+			 success:function(data){
+				 if(data.success){
+					 layer.alert("初始化完成");
+				 }
+			 },
+			 error:function(data){
 				 layer.alert(data.msg);
 			 }
 		});

@@ -56,6 +56,7 @@
 								<div class="input-group">
 				                  <select class="form-control" name="status" id="status" style="width: 100%;">
 				                   	  <option selected="selected" value="">全部</option>
+	                   	  			  <option value="-1">非取消</option>
 				                   	  <option value="0">待处理</option>
 				                   	  <option value="1">已付款</option>
 				                   	  <option value="2">支付单报关</option>

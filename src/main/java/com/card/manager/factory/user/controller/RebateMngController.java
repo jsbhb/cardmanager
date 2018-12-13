@@ -460,114 +460,52 @@ public class RebateMngController extends BaseController {
 				String tmpReceiveProvince = "";
 				for (OrderInfoListForDownload oi : ReportList) {
 					switch (oi.getStatus()) {
-					case 0:
-						oi.setStatusName("待支付");
-						break;
-					case 1:
-						oi.setStatusName("已付款");
-						break;
-					case 2:
-						oi.setStatusName("支付单报关");
-						break;
-					case 3:
-						oi.setStatusName("已发仓库");
-						break;
-					case 4:
-						oi.setStatusName("已报海关");
-						break;
-					case 5:
-						oi.setStatusName("单证放行");
-						break;
-					case 6:
-						oi.setStatusName("已发货");
-						break;
-					case 7:
-						oi.setStatusName("已收货");
-						break;
-					case 8:
-						oi.setStatusName("退单");
-						break;
-					case 9:
-						oi.setStatusName("超时取消");
-						break;
-					case 11:
-						oi.setStatusName("资金池不足");
-						break;
-					case 12:
-						oi.setStatusName("待发货");
-						break;
-					case 21:
-						oi.setStatusName("退款中");
-						break;
-					case 99:
-						oi.setStatusName("异常状态");
-						break;
+					case 0:oi.setStatusName("待支付");break;
+					case 1:oi.setStatusName("已付款");break;
+					case 2:oi.setStatusName("支付单报关");break;
+					case 3:oi.setStatusName("已发仓库");break;
+					case 4:oi.setStatusName("已报海关");break;
+					case 5:oi.setStatusName("单证放行");break;
+					case 6:oi.setStatusName("已发货");break;
+					case 7:oi.setStatusName("已收货");break;
+					case 8:oi.setStatusName("退单");break;
+					case 9:oi.setStatusName("超时取消");break;
+					case 11:oi.setStatusName("资金池不足");break;
+					case 12:oi.setStatusName("待发货");break;
+					case 21:oi.setStatusName("退款中");break;
+					case 99:oi.setStatusName("异常状态");break;
 					}
 
 					switch (oi.getPayType()) {
-					case 1:
-						oi.setPayTypeName("微信");
-						break;
-					case 2:
-						oi.setPayTypeName("支付宝");
-						break;
-					case 3:
-						oi.setPayTypeName("银联");
-						break;
-					case 4:
-						oi.setPayTypeName("转账");
-						break;
-					case 5:
-						oi.setPayTypeName("其他");
-						break;
-					case 6:
-						oi.setPayTypeName("月结");
-						break;
+					case 1:oi.setPayTypeName("微信");break;
+					case 2:oi.setPayTypeName("支付宝");break;
+					case 3:oi.setPayTypeName("银联");break;
+					case 4:oi.setPayTypeName("转账");break;
+					case 5:oi.setPayTypeName("其他");break;
+					case 6:oi.setPayTypeName("月结");break;
 					}
 
 					switch (oi.getOrderSource()) {
-					case 0:
-						oi.setOrderSourceName("PC商城");
-						break;
-					case 1:
-						oi.setOrderSourceName("手机商城");
-						break;
-					case 2:
-						oi.setOrderSourceName("订货平台");
-						break;
-					case 3:
-						oi.setOrderSourceName("有赞");
-						break;
-					case 4:
-						oi.setOrderSourceName("线下");
-						break;
-					case 5:
-						oi.setOrderSourceName("展厅");
-						break;
-					case 6:
-						oi.setOrderSourceName("大客户");
-						break;
-					case 7:
-						oi.setOrderSourceName("福利商城");
-						break;
-					case 8:
-						oi.setOrderSourceName("后台订单");
-						break;
-					case 9:
-						oi.setOrderSourceName("太平惠汇");
-						break;
-					case 10:
-						oi.setOrderSourceName("小程序");
-						break;
-					case 11:
-						oi.setOrderSourceName("聚民惠");
-						break;
-					case 12:
-						oi.setOrderSourceName("拼多多");
-						break;
-					case 13:
-						oi.setOrderSourceName("易捷北京");
-						break;
+					case 0:oi.setOrderSourceName("PC商城");break;
+					case 1:oi.setOrderSourceName("手机商城");break;
+					case 2:oi.setOrderSourceName("订货平台");break;
+					case 3:oi.setOrderSourceName("有赞");break;
+					case 4:oi.setOrderSourceName("线下");break;
+					case 5:oi.setOrderSourceName("展厅");break;
+					case 6:oi.setOrderSourceName("大客户");break;
+					case 7:oi.setOrderSourceName("福利商城");break;
+					case 8:oi.setOrderSourceName("后台订单");break;
+					case 9:oi.setOrderSourceName("太平惠汇");break;
+					case 10:oi.setOrderSourceName("小程序");break;
+					case 11:oi.setOrderSourceName("聚民惠");break;
+					case 12:oi.setOrderSourceName("拼多多");break;
+					case 13:oi.setOrderSourceName("易捷北京");break;
+					}
+					
+					switch (oi.getOrderFlg()) {
+					case 0:	oi.setOrderFlgName("跨境");break;
+					case 1:	oi.setOrderFlgName("大贸");break;
+					case 2:	oi.setOrderFlgName("一般贸易");break;
 					}
 
 					if (!tmpOrderId.equals(oi.getOrderId())) {
@@ -616,12 +554,12 @@ public class RebateMngController extends BaseController {
 				String filePath = servletContext.getRealPath("/") + "EXCEL/" + staffEntity.getBadge() + "/" + fileName;
 
 				String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名", "成本价", "零售价", "商品规格",
-						"订单数量", "商品数量", "一级类目", "二级类目", "三级类目", "订单来源", "支付金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话",
-						"省市区", "收件信息", "下单时间", "物流信息" };
+						"订单数量", "商品数量", "一级类目", "二级类目", "三级类目", "订单来源", "订单类型", "支付金额", "邮费金额", "税费金额",
+						"支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
 				String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku",
 						"ItemName", "ProxyPrice", "ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName",
-						"SecondName", "ThirdName", "OrderSourceName", "Payment", "PayTypeName", "PayNo", "PayTime",
-						"ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime",
+						"SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment", "PostFee", "TaxFee", 
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime",
 						"ExpressInfo" };
 				SXSSFWorkbook swb = new SXSSFWorkbook(100);
 				ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime + "~" + endTime, swb);

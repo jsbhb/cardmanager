@@ -372,6 +372,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityByParam";
 	public static final String GOODS_CENTER_MODIFY_BARGAIN_ACTIVITY_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/activity/backManager/modifyBargainActivityInfo";
+	public static final String GOODS_CENTER_SHOW_BARGAIN_ACTIVITY_SHOW_PAGE_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityShowPageInfo";
 	
 
 	/*------------------------销售订单管理-----------------------*/

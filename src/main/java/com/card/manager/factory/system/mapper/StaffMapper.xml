@@ -191,7 +191,7 @@
 	
 	<select id="selectStaffInfoByGradeId" resultMap="operator">
 		select * from auth_operator 
-		where gradeid = #{gradeId} and shopid = #{gradeId}
+		where gradeid = #{gradeId}
 		order by optid limit 1
 	</select>
 	

@@ -95,6 +95,12 @@ public class ShopQRMngController extends BaseController {
 		}
 		context.put("strWelfareType", strWelfareType);
 		context.put("strWelfareUrlLink", strWelfareUrlLink);
+		// set page privilege
+		if (opt.getRoleId() == 1) {
+			context.put("prilvl", "1");
+		} else {
+			context.put("prilvl", req.getParameter("privilege"));
+		}
 		
 		return forword("label/shop/mng", context);
 	}

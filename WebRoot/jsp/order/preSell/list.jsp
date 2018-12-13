@@ -45,6 +45,7 @@
 					<div class="searchItem">
 			            <select class="form-control" name="status" id="status">
 	                   	  <option selected="selected" value="">订单状态</option>
+	                   	  <option value="-1">非取消</option>
 	                   	  <option value="0">待支付</option>
 	                   	  <option value="1">已付款</option>
 	                   	  <option value="2">支付单报关</option>
