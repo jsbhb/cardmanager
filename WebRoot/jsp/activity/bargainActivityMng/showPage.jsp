@@ -45,14 +45,10 @@
 							<thead>
 								<tr>
 									<th width="30%">商品名称</th>
-									<th width="5%">商品原价</th>
-									<th width="5%">商品底价</th>
-									<th width="10%">总发起数</th>
-									<th width="10%">发起人</th>
-									<th width="10%">创建时间</th>
-									<th width="10%">参与人数</th>
-									<th width="10%">优惠金额</th>
-									<th width="10%">是否购买</th>
+									<th width="20%">商品原价</th>
+									<th width="20%">商品底价</th>
+									<th width="15%">总发起数</th>
+									<th width="15%">总购买数</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -62,18 +58,17 @@
 				                		<td>${list.initPrice}</td>
 				                		<td>${list.floorPrice}</td>
 				                		<td>${list.recordList.size()}</td>
-				                		<td></td>
-				                		<td></td>
-				                		<td></td>
-				                		<td></td>
-				                		<td></td>
+				                		<td>${list.buyCount}</td>
+									</tr>
+									<tr class="second-rows" data-id="0" parentId="${list.goodsRoleId}">
+			                			<td>发起人</td>
+			                			<td>发起时间</td>
+			                			<td>参与人数</td>
+			                			<td>优惠金额</td>
+			                			<td>是否购买</td>
 									</tr>
 									<c:forEach var="record" items="${list.recordList}">
 										<tr class="second-rows" data-id="${record.id}" parentId="${list.goodsRoleId}">
-				                			<td></td>
-				                			<td></td>
-				                			<td></td>
-				                			<td></td>
 											<td>${record.name}</td>
 				                			<td>${record.createTime}</td>
 				                			<td>${record.person}</td>

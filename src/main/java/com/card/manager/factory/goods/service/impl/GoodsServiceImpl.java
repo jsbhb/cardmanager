@@ -67,6 +67,7 @@ import com.card.manager.factory.goods.pojo.GoodsSpecsBO;
 import com.card.manager.factory.goods.pojo.GoodsStatusEnum;
 import com.card.manager.factory.goods.pojo.ImportGoodsBO;
 import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
+import com.card.manager.factory.goods.pojo.Tax;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.log.LogUtil;
 import com.card.manager.factory.socket.task.SocketClient;
@@ -1740,6 +1741,27 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < index; i++) {
 			list.add(obj.get(i).toString());
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Tax> getTaxInfoByItemIds(List<String> itemIds, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_QUERY_TAX_INFO_BY_ITEMID_LIST,
+				token, true, itemIds, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+
+		if (index == 0) {
+			return null;
+		}
+		List<Tax> list = new ArrayList<Tax>();
+		for (int i = 0; i < index; i++) {
+			list.add(JSONUtilNew.parse(obj.get(i).toString(), Tax.class));
 		}
 		return list;
 	}

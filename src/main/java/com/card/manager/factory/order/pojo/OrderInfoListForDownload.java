@@ -14,6 +14,7 @@ public class OrderInfoListForDownload {
 	private String gradeName;
 	private Integer supplierId;
 	private String supplierName;
+	private String itemId;
 	private String sku;
 	private String itemName;
 	private Double proxyPrice;
@@ -53,6 +54,8 @@ public class OrderInfoListForDownload {
 	private Double postFee;
 	private Double taxFee;
 	private String deliveryTime;
+	private Double singlePostFee;
+	private Double singleTaxFee;
 	
 	public String getOrderId() {
 		return orderId;
@@ -329,5 +332,23 @@ public class OrderInfoListForDownload {
 	}
 	public void setDeliveryTime(String deliveryTime) {
 		this.deliveryTime = deliveryTime;
+	}
+	public String getItemId() {
+		return itemId;
+	}
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+	public Double getSinglePostFee() {
+		return singlePostFee;
+	}
+	public void setSinglePostFee(Double singlePostFee) {
+		this.singlePostFee = singlePostFee;
+	}
+	public Double getSingleTaxFee() {
+		return singleTaxFee;
+	}
+	public void setSingleTaxFee(Double singleTaxFee) {
+		this.singleTaxFee = singleTaxFee;
 	}
 }

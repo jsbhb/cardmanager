@@ -30,7 +30,9 @@ import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.component.model.GradeBO;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.finance.model.RebateSearchModel;
+import com.card.manager.factory.goods.pojo.Tax;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.order.model.OrderDetail;
 import com.card.manager.factory.order.model.OrderGoods;
 import com.card.manager.factory.order.model.OrderInfo;
 import com.card.manager.factory.order.model.ThirdOrderInfo;
@@ -45,6 +47,7 @@ import com.card.manager.factory.user.model.Rebate;
 import com.card.manager.factory.user.model.RebateDetail;
 import com.card.manager.factory.user.model.ShopRebate;
 import com.card.manager.factory.user.service.FinanceMngService;
+import com.card.manager.factory.util.CalculationUtils;
 import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
@@ -458,7 +461,36 @@ public class RebateMngController extends BaseController {
 				String tmpExpressInfo = "";
 				String tmpItemInfo = "";
 				String tmpReceiveProvince = "";
+				
+				List<String> itemIds = new ArrayList<String>();
+				List<OrderInfo> orderInfos = new ArrayList<OrderInfo>();
+				List<OrderGoods> orderGoodsList = new ArrayList<OrderGoods>();
+				OrderInfo orderInfo = new OrderInfo();
+				OrderGoods orderGoods = new OrderGoods();
+				
 				for (OrderInfoListForDownload oi : ReportList) {
+					itemIds.add(oi.getItemId());
+					if (!oi.getOrderId().equals(orderInfo.getOrderId())) {
+						orderInfo.setOrderGoodsList(orderGoodsList);
+						orderInfos.add(orderInfo);
+						
+						orderInfo = new OrderInfo();
+						OrderDetail orderDetail = new OrderDetail();
+						orderInfo.setOrderDetail(orderDetail);
+						orderInfo.setOrderId(oi.getOrderId());
+						orderInfo.getOrderDetail().setPostFee(oi.getPostFee());
+						orderInfo.getOrderDetail().setTaxFee(oi.getTaxFee());
+						orderInfo.getOrderDetail().setPayment(oi.getPayment());
+						orderInfo.getOrderDetail().setDisAmount(CalculationUtils.sub(CalculationUtils.sub(oi.getPayment(), oi.getTaxFee()),oi.getPostFee()));
+						orderGoodsList = new ArrayList<OrderGoods>();
+					}
+					
+					orderGoods = new OrderGoods();
+					orderGoods.setItemId(oi.getItemId());
+					orderGoods.setActualPrice(oi.getActualPrice());
+					orderGoods.setItemQuantity(oi.getItemQuantity());
+					orderGoodsList.add(orderGoods);
+					
 					switch (oi.getStatus()) {
 					case 0:oi.setStatusName("待支付");break;
 					case 1:oi.setStatusName("已付款");break;
@@ -546,6 +578,46 @@ public class RebateMngController extends BaseController {
 							+ oi.getReceiveArea();
 					oi.setReceiveProvince(tmpReceiveProvince);
 				}
+				orderInfo.setOrderGoodsList(orderGoodsList);
+				orderInfos.add(orderInfo);
+				orderInfos.remove(0);
+				
+				List<Tax> taxList = new ArrayList<Tax>();
+				if (itemIds.size() > 0) {
+					taxList = goodsService.getTaxInfoByItemIds(itemIds, staffEntity.getToken());
+				}
+				
+				for(OrderInfo info : orderInfos) {
+					if (info.getOrderGoodsList().size() > 1) {
+						for(OrderGoods goods: info.getOrderGoodsList()) {
+							for (Tax tax:taxList) {
+								if (tax.getItemId().equals(goods.getItemId())) {
+									Double tmpIncrementTax = CalculationUtils.mul(tax.getIncrementTax(), 0.7);
+									Double tmpExciseTax = CalculationUtils.mul(tax.getExciseTax(), 0.7);
+									goods.setItemPrice(CalculationUtils.mul(goods.getItemQuantity(),CalculationUtils.mul(info.getOrderDetail().getPostFee(), CalculationUtils.div(goods.getActualPrice(), info.getOrderDetail().getDisAmount(), 10))));
+									goods.setActualPrice(CalculationUtils.mul(goods.getItemQuantity(),CalculationUtils.add(CalculationUtils.mul(tmpIncrementTax,CalculationUtils.add(CalculationUtils.mul(info.getOrderDetail().getPostFee(), CalculationUtils.div(goods.getActualPrice(), info.getOrderDetail().getDisAmount(), 3)),goods.getActualPrice())),
+									CalculationUtils.mul(tmpExciseTax,CalculationUtils.add(CalculationUtils.mul(info.getOrderDetail().getPostFee(), CalculationUtils.div(goods.getActualPrice(), info.getOrderDetail().getDisAmount(), 10)),goods.getActualPrice())))));
+								}
+							}
+						}
+					} else {
+						OrderGoods goods = info.getOrderGoodsList().get(0);
+						goods.setItemPrice(info.getOrderDetail().getPostFee());
+						goods.setActualPrice(info.getOrderDetail().getTaxFee());
+					}
+				}
+				for (OrderInfoListForDownload oi : ReportList) {
+					for(OrderInfo info : orderInfos) {
+						if (oi.getOrderId().equals(info.getOrderId())) {
+							for(OrderGoods goods: info.getOrderGoodsList()) {
+								if (oi.getItemId().equals(goods.getItemId())) {
+									oi.setSinglePostFee(CalculationUtils.round(2, goods.getItemPrice()));
+									oi.setSingleTaxFee(CalculationUtils.round(2, goods.getActualPrice()));
+								}
+							}
+						}
+					}
+				}
 
 				WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
 				ServletContext servletContext = webApplicationContext.getServletContext();
@@ -555,10 +627,10 @@ public class RebateMngController extends BaseController {
 
 				String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名", "成本价", "零售价", "商品规格",
 						"订单数量", "商品数量", "一级类目", "二级类目", "三级类目", "订单来源", "订单类型", "支付金额", "邮费金额", "税费金额",
-						"支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
+						"商品邮费", "商品税费", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
 				String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku",
 						"ItemName", "ProxyPrice", "ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName",
-						"SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment", "PostFee", "TaxFee", 
+						"SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment", "PostFee", "TaxFee", "SinglePostFee", "SingleTaxFee", 
 						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime",
 						"ExpressInfo" };
 				SXSSFWorkbook swb = new SXSSFWorkbook(100);

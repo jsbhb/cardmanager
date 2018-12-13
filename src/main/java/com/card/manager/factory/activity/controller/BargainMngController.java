@@ -96,6 +96,7 @@ public class BargainMngController extends BaseController {
 					for(BargainActivityShowPageRecordModel record : model.getRecordList()) {
 						if (record.isBuy()) {
 							totalBuyCount += 1;
+							model.setBuyCount(model.getBuyCount() + 1);
 						} else {
 							totalBargainCount += 1;
 						}

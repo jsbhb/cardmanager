@@ -8,6 +8,7 @@ public class BargainActivityShowPageModel {
 	private String goodsName;
 	private double initPrice;
 	private double floorPrice;
+	private int buyCount;
 	private List<BargainActivityShowPageRecordModel> recordList;
 	public Integer getGoodsRoleId() {
 		return goodsRoleId;
@@ -38,5 +39,11 @@ public class BargainActivityShowPageModel {
 	}
 	public void setRecordList(List<BargainActivityShowPageRecordModel> recordList) {
 		this.recordList = recordList;
+	}
+	public int getBuyCount() {
+		return buyCount;
+	}
+	public void setBuyCount(int buyCount) {
+		this.buyCount = buyCount;
 	}
 }

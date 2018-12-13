@@ -25,6 +25,7 @@ import com.card.manager.factory.goods.model.ThirdWarehouseGoods;
 import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
 import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
 import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
+import com.card.manager.factory.goods.pojo.Tax;
 import com.card.manager.factory.system.model.StaffEntity;
 
 /**
@@ -258,5 +259,6 @@ public interface GoodsService extends ServerCenterService {
 	List<String> queryGoodsIdByItemCode(String itemCode, String token);
 
 	List<String> queryGoodsPic(String goodsId, String token);
-
+	
+	List<Tax> getTaxInfoByItemIds(List<String> itemIds, String token);
 }
