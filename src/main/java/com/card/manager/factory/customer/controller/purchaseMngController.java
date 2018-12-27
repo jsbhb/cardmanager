@@ -611,6 +611,7 @@ public class purchaseMngController extends BaseController {
 			if (Double.doubleToLongBits(surplusRebateMoney) >= Double.doubleToLongBits(0.00)) {
 				for (OrderGoods orderGoods: orderInfo.getOrderGoodsList()) {
 					orderGoods.setItemInfo(orderGoods.getItemInfo().replace("~", "\""));
+					orderGoods.setGoodsId(orderGoods.getId()+"");
 					orderTotalMoney+= CalculationUtils.round(2,orderGoods.getActualPrice() * orderGoods.getItemQuantity());
 				}
 				orderTotalMoney+= CalculationUtils.round(2,orderInfo.getOrderDetail().getPostFee());

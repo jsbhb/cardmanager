@@ -13,6 +13,8 @@ import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.DictData;
 import com.card.manager.factory.goods.model.Layout;
 import com.card.manager.factory.goods.model.PopularizeDict;
+import com.card.manager.factory.mall.pojo.BigSalesGoodsRecord;
+import com.card.manager.factory.mall.pojo.ComponentData;
 import com.card.manager.factory.mall.pojo.FloorDictPojo;
 
 /**
@@ -131,5 +133,13 @@ public interface MallService extends ServerCenterService {
 	 * @since JDK 1.7  
 	 */
 	void updateDict(PopularizeDict dict, String token) throws Exception;
+	
+	List<ComponentData> queryComponentDataByPageId(String pageId, String token);
+	
+	void updateComponentData(ComponentData data, String token) throws Exception;
+	
+	void mergeInfoToBigSale(List<BigSalesGoodsRecord> list, String token) throws Exception;
+	
+	List<BigSalesGoodsRecord> queryBigSaleData(String token);
 
 }

@@ -221,6 +221,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/updateSecondByParam";
 	public static final String GOODS_CENTER_CATALOG_UPDATE_THIRD_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/catalog/updateThirdByParam";
+	public static final String GOODS_CENTER_CATALOG_QUERY_FIRST_BY_SECONDID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/queryFirstBySecondId";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_BASE_ID_SEQUENCE = "base";
@@ -453,6 +455,16 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/express/template/rule/param/{id}";
 	public static final String ORDER_CENTER_POST_EXPRESS_RULE_PARAM_SAVE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/express/template/rule/param";
+	public static final String GOODS_CENTER_MALL_QUERY_COMPONENT_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/model/queryComponentForPage";
+	public static final String GOODS_CENTER_MALL_QUERY_COMPONENTDATA_BY_PAGEID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/model/queryComponentDataByPageId";
+	public static final String GOODS_CENTER_MALL_UPDATE_COMPONENTDATA = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/model/updateComponentData";
+	public static final String GOODS_CENTER_MALL_MERGE_BIGSALEDATA = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/model/mergeBigSaleData";
+	public static final String GOODS_CENTER_MALL_QUERY_BIGSALEDATA = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/mall/index/model/queryBigSaleData";
 
 	/*------------------------商城管理-----------------------*/
 	public static final int PC = 0;

@@ -119,7 +119,7 @@ $(function(){
     		});
     	});
     	if (errFlg) {
-    		layer.alert("计算后结果存在负数，请修改后重试！");
+    		layer.alert("返佣比例存在负数，请修改后重试！");
     		return;
     	}
     	$.ajax({
@@ -158,7 +158,11 @@ $('.treeList').on('input','input',function(){
 			var tmpInputMula = gtoptions[j].value.replace("rebate",inputValue).trim();
 			var tmpValue = eval(tmpInputMula);
 // 	 		$('#'+ tmpInputId).val(tmpValue.toFixed(2));
-	 		$('#'+ tmpInputId).val(GetValueDigit(tmpValue));
+			if (tmpValue < 0.0) {
+		 		$('#'+ tmpInputId).val(0);
+			} else {
+		 		$('#'+ tmpInputId).val(GetValueDigit(tmpValue));
+			}
 		}
 	}
 });

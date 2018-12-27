@@ -1,6 +1,6 @@
 package com.card.manager.factory.activity.controller;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.card.manager.factory.activity.model.BargainActivityModel;
-import com.card.manager.factory.activity.model.BargainActivityShowPageModel;
-import com.card.manager.factory.activity.model.BargainActivityShowPageRecordModel;
 import com.card.manager.factory.activity.service.BargainService;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -82,42 +80,58 @@ public class BargainMngController extends BaseController {
 	public ModelAndView showPage(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put(OPT, opt);
 		try {
 			BargainActivityModel bargainModel = new BargainActivityModel();
 			bargainModel.setId(1);
-			List<BargainActivityShowPageModel> showPageInfoList = bargainService.queryBargainActivityShowPageInfo(bargainModel,opt.getToken());
 			Integer totalAllCount = 0;
 			Integer totalBargainCount = 0;
 			Integer totalBuyCount = 0;
-			for (BargainActivityShowPageModel model : showPageInfoList) {
-				if (model.getRecordList() != null) {
-					totalAllCount += model.getRecordList().size();
-					for(BargainActivityShowPageRecordModel record : model.getRecordList()) {
-						if (record.isBuy()) {
-							totalBuyCount += 1;
-							model.setBuyCount(model.getBuyCount() + 1);
-						} else {
-							totalBargainCount += 1;
-						}
-						if (record.getName() == null || "".equals(record.getName())) {
-							if (record.getNickName() != null && !"".equals(record.getNickName())) {
-								record.setName(record.getNickName());
-							} else {
-								record.setName(record.getUserId());
-							}
-						}
-					}
-				}
-			}
-			context.put("totalAllCount", totalAllCount);
-			context.put("totalBargainCount", totalBargainCount);
-			context.put("totalBuyCount", totalBuyCount);
-			context.put("showPageInfoList", showPageInfoList);
+			Map<String, Object> info = new HashMap<String, Object>();
+			info = bargainService.pickBargainActivityShowPageInfo(bargainModel,opt.getToken(),totalAllCount,totalBargainCount,totalBuyCount);
+			context.put(OPT, opt);
+			context.putAll(info);
 		} catch (Exception e) {
 			context.put(MSG, e.getMessage());
 			return forword("error", context);
 		}
 		return forword("activity/bargainActivityMng/showPage", context);
+	}
+	
+	@RequestMapping(value = "/showPageQueryByParam", method = RequestMethod.POST)
+	public void showPageQueryByParam(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> context = new HashMap<String, Object>();
+		try {
+			BargainActivityModel bargainModel = new BargainActivityModel();
+			bargainModel.setId(1);
+			String searchTime = req.getParameter("searchTime");
+			if (!StringUtil.isEmpty(searchTime)) {
+				String[] times = searchTime.split("~");
+				bargainModel.setActivityStartTime(times[0].trim());
+				bargainModel.setActivityEndTime(times[1].trim());
+			}
+			String hidSearchTime = req.getParameter("hidSearchTime");
+			if (!StringUtil.isEmpty(hidSearchTime)) {
+				String[] times = hidSearchTime.split("~");
+				bargainModel.setActivityStartTime(times[0].trim());
+				bargainModel.setActivityEndTime(times[1].trim());
+			}
+			String buyFlg = req.getParameter("buyFlg");
+			if (!StringUtil.isEmpty(buyFlg)) {
+				bargainModel.setBuyFlg(buyFlg);
+			}
+			String joinPerson = req.getParameter("joinPerson");
+			if (!StringUtil.isEmpty(joinPerson)) {
+				bargainModel.setJoinPerson(Integer.parseInt(joinPerson));
+			}
+			Integer totalAllCount = 0;
+			Integer totalBargainCount = 0;
+			Integer totalBuyCount = 0;
+			context = bargainService.pickBargainActivityShowPageInfo(bargainModel,staffEntity.getToken(),totalAllCount,totalBargainCount,totalBuyCount);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessObject(resp, context);
 	}
 }

@@ -28,6 +28,7 @@ public class OrderGoods {
 	private String remark;
 	private Integer conversion;
 	private String rebate;
+	private String goodsId;
 
 	public OrderGoods() {
 	}
@@ -156,6 +157,14 @@ public class OrderGoods {
 
 	public void setItemInfo(String itemInfo) {
 		this.itemInfo = itemInfo;
+	}
+
+	public String getGoodsId() {
+		return goodsId;
+	}
+
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
 	}
 
 	@Override

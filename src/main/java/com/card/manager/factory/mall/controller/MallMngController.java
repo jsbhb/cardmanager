@@ -26,6 +26,9 @@ import com.card.manager.factory.goods.model.PopularizeDict;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.goods.service.GoodsService;
+import com.card.manager.factory.mall.pojo.BigSalesGoodsRecord;
+import com.card.manager.factory.mall.pojo.ComponentData;
+import com.card.manager.factory.mall.pojo.ComponentPage;
 import com.card.manager.factory.mall.pojo.FloorDictPojo;
 import com.card.manager.factory.mall.pojo.PageTypeEnum;
 import com.card.manager.factory.mall.pojo.PopularizeDictTypeEnum;
@@ -60,7 +63,7 @@ public class MallMngController extends BaseController {
 		if (opt.getGradeType() != 1 && opt.getRoleId() != 1) {
 			return forword("mall/goods/notice", context);
 		}
-		return forword("mall/index/mng", context);
+		return forword("mall/index/mngNew", context);
 	}
 
 	@RequestMapping(value = "/list")
@@ -477,4 +480,107 @@ public class MallMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
+	@RequestMapping(value = "/modelInfo")
+	public ModelAndView modelInfo(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		context.put(OPT, staffEntity);
+		try {
+			String pageId = req.getParameter("pageId");
+			context.put("pageId", pageId);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword("error", context);
+		}
+		return forword("mall/index/modelList", context);
+	}
+
+	@RequestMapping(value = "/componentDataList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack componentDataList(HttpServletRequest req, HttpServletResponse resp, ComponentPage page) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String pageId = req.getParameter("pageId");
+			if (!StringUtil.isEmpty(pageId)) {
+				page.setPageId(Integer.parseInt(pageId));
+			}
+			pcb = mallService.dataList(page, params, staffEntity.getToken(),
+					ServerCenterContants.GOODS_CENTER_MALL_QUERY_COMPONENT_FOR_PAGE, ComponentPage.class);
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			return pcb;
+		}
+		return pcb;
+	}
+
+	@RequestMapping(value = "/toEditModel")
+	public ModelAndView toEditModel(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put(OPT, opt);
+		try {
+			String pageId = req.getParameter("pageId");
+			context.put("pageId", pageId);
+			String modelKey = req.getParameter("modelKey");
+			context.put("modelKey", modelKey);
+			ComponentData mainData = new ComponentData();
+			if ("activity-1".equals(modelKey)) {
+				List<ComponentData> dataList = mallService.queryComponentDataByPageId(pageId, opt.getToken());
+				if (dataList != null && dataList.size() > 0) {
+					for(ComponentData cpd:dataList) {
+						if (cpd.getType() == 0) {
+							mainData = cpd;
+							dataList.remove(cpd);
+							break;
+						}
+					}
+				}
+				context.put("mainData", mainData);
+			} else {
+				List<BigSalesGoodsRecord> dataList = mallService.queryBigSaleData(opt.getToken());
+				context.put("dataList", dataList);
+			}
+			if ("1".equals(pageId)) {
+				context.put("pageType", 0);
+			} else {
+				context.put("pageType", 1);
+			}
+			context.put("bussinessType", "popularity");
+			context.put("key", DateUtil.getNowPlusTimeMill());
+			return forword("mall/index/modelEdit", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/updateModelInfo", method = RequestMethod.POST)
+	public void updateModelInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody ComponentData data) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			mallService.updateComponentData(data, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/mergeInfoToBigSale", method = RequestMethod.POST)
+	public void mergeInfoToBigSale(HttpServletRequest req, HttpServletResponse resp, @RequestBody List<BigSalesGoodsRecord> list) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			mallService.mergeInfoToBigSale(list, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
 }

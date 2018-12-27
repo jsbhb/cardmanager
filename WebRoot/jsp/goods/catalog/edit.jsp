@@ -8,44 +8,44 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="${wmsUrl}/css/component/broadcast.css">
 <%@include file="../../resourceLink.jsp"%>
 </head>
 
 <body>
 	<section class="content-iframe">
 		<form class="form-horizontal" role="form" id="catalogForm" style="margin-top:20px">
-			<c:if test="${type==1}">
-				<div class="list-item">
-					<div class="col-sm-3 item-left">分类图标</div>
-					<div class="col-sm-9 item-right addContent">
-						<c:choose>
-						   <c:when test="${tagPath != null && tagPath != ''}">
-		           	  			<div class="item-img choose" id="content" >
-									<c:choose>
-										<c:when test="${tagPath.indexOf('http') != -1}">
-											<img src="${tagPath}">
-											<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
-											<input value="${tagPath}" type="hidden" name="tagPath" id="tagPath">
-										</c:when>
-										<c:otherwise>
-											<img src="${webUrl}/${tagPath}">
-											<div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>
-											<input value="${webUrl}/${tagPath}" type="hidden" name="tagPath" id="tagPath">
-										</c:otherwise>
-									</c:choose>
-								</div>
-						   </c:when>
-						   <c:otherwise>
-		               	  		<div class="item-img" id="content" >
-									+
-									<input type="file" id="pic" name="pic" />
-									<input type="hidden" class="form-control" name="tagPath" id="tagPath"> 
-								</div>
-						   </c:otherwise>
-						</c:choose> 
-					</div>
+			<div class="list-item">
+				<div class="col-sm-3 item-left">分类图标</div>
+				<div class="col-sm-9 item-right addContent">
+					<c:choose>
+					   <c:when test="${tagPath != null && tagPath != ''}">
+	           	  			<div class="item-img choose" id="content" >
+								<c:choose>
+									<c:when test="${tagPath.indexOf('http') != -1}">
+										<img src="${tagPath}">
+										<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
+										<input value="${tagPath}" type="hidden" name="tagPath" id="tagPath">
+									</c:when>
+									<c:otherwise>
+										<img src="${wmsUrl}/img/default_img.jpg">
+										<div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>
+										<input value="${wmsUrl}/img/default_img.jpg" type="hidden" name="tagPath" id="tagPath">
+									</c:otherwise>
+								</c:choose>
+							</div>
+					   </c:when>
+					   <c:otherwise>
+	               	  		<div class="item-img" id="content" >
+								+
+								<input type="file" id="pic" name="pic" />
+								<input type="hidden" class="form-control" name="tagPath" id="tagPath"> 
+							</div>
+					   </c:otherwise>
+					</c:choose> 
 				</div>
-			</c:if>
+			</div>
+			<div class="scrollImg-content broadcast"></div>
         	<div class="list-item">
 				<div class="col-xs-3 item-left">分类编号</div>
 				<div class="col-xs-9 item-right">
@@ -83,13 +83,18 @@
 		</form>
 	</section>
 	<%@include file="../../resourceScript.jsp"%>
-<%-- 	<script src="${wmsUrl}/plugins/ckeditor/ckeditor.js"></script> --%>
+	<script src="${wmsUrl}/js/component/broadcast.js"></script>
 	<script type="text/javascript" src="${wmsUrl}/js/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 	
 	 $("#submitBtn").click(function(){
 		 $('#catalogForm').data("bootstrapValidator").validate();
 		 if($('#catalogForm').data("bootstrapValidator").isValid()){
+			 var tmpGoodsPath = $("#tagPath").val();
+			 if (tmpGoodsPath == "" || tmpGoodsPath == null) {
+				 layer.alert("请上传分类图片！");
+				 return;
+			 }
 			 $.ajax({
 				 url:"${wmsUrl}/admin/goods/catalogMng/modify.shtml",
 				 type:'post',
@@ -161,13 +166,14 @@
 			return true;
 		}
 		$.ajaxFileUpload({
-			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+// 			url : '${wmsUrl}/admin/uploadFileForGrade.shtml', //你处理上传文件的服务端
+			url : '${wmsUrl}/admin/uploadFileWithType.shtml?type=category&key='+"${key}", //你处理上传文件的服务端
 			secureuri : false,
 			fileElementId : "pic",
 			dataType : 'json',
 			success : function(data) {
 				if (data.success) {
-					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i></div>';
+					var imgHt = '<img src="'+data.msg+'"><div class="bgColor"><i class="fa fa-trash fa-fw"></i><i class="fa fa-search fa-fw"></i></div>';
 					var imgPath = imgHt+ '<input type="hidden" value='+data.msg+' id="tagPath" name="tagPath">'
 					$("#content").html(imgPath);
 					$("#content").addClass('choose');
@@ -178,12 +184,35 @@
 		})
 	});
 	//删除主图
-	$('.item-right').on('click','.bgColor i',function(){
-		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="headImg" id="headImg" value=""></div>';
+	$('.item-right').on('click','.bgColor i.fa-trash',function(){
+		var ht = '<div class="item-img" id="content" >+<input type="file" id="pic" name="pic"/><input type="hidden" name="tagPath" id="tagPath" value=""></div>';
 		$(this).parent().parent().removeClass("choose");
 		$(this).parent().parent().parent().html(ht);
 	});
-	
+	function setPicImgListData() {
+		var valArr = new Array;
+		var tmpPicPath = "";
+		tmpPicPath = $("#tagPath").val();
+		if (tmpPicPath != null && tmpPicPath != "") {
+			valArr.push(tmpPicPath);
+		}
+		if (valArr != undefined && valArr.length > 0) {
+			var data = {
+		        imgList: valArr,
+		        imgWidth: 500,
+		        imgHeight: 500,
+		        activeIndex: 0,
+		        host: "${wmsUrl}"
+		    };
+		    setImgScroll('broadcast',data);
+		} else {
+			layer.alert("请先上传图片！");
+		}
+	}
+	//图片放大
+	$('.item-right').on('click','.bgColor i.fa-search',function(){
+		setPicImgListData();
+	});
 	</script>
 </body>
 </html>

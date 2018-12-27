@@ -48,6 +48,7 @@ import net.sf.json.JSONObject;
 @Service
 public class CatalogServiceImpl implements CatalogService {
 
+	@SuppressWarnings("rawtypes")
 	@Resource
 	StaffMapper staffMapper;
 
@@ -89,10 +90,14 @@ public class CatalogServiceImpl implements CatalogService {
 		ResponseEntity<String> result = null;
 		if (CategoryTypeEnum.FIRST.getType().equals(model.getType())) {
 			FirstCatalogEntity entity = new FirstCatalogEntity();
-			int sequence = staffMapper.nextVal(ServerCenterContants.FIRST_CATALOG);
-			entity.setFirstId(ServerCenterContants.FIRST_CATALOG + sequence);
+			if (StringUtil.isEmpty(model.getId())) {
+				int sequence = staffMapper.nextVal(ServerCenterContants.FIRST_CATALOG);
+				entity.setFirstId(ServerCenterContants.FIRST_CATALOG + sequence);
+			} else {
+				entity.setFirstId(model.getId());
+			}
 			entity.setName(model.getName());
-			entity.setOpt(staffEntity.getOpt());
+			entity.setOpt(staffEntity.getOptName());
 			entity.setAccessPath(model.getAccessPath());
 			entity.setSort(model.getSort());
 			entity.setTagPath(model.getTagPath());
@@ -101,20 +106,23 @@ public class CatalogServiceImpl implements CatalogService {
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_FIRST_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
-
 		} else if (CategoryTypeEnum.SECOND.getType().equals(model.getType())) {
-
 			if (StringUtil.isEmpty(model.getParentId())) {
 				throw new Exception("新增二级分类没有上级分类信息！");
 			}
 			SecondCatalogEntity entity = new SecondCatalogEntity();
-			int sequence = staffMapper.nextVal(ServerCenterContants.SECOND_CATALOG);
-			entity.setSecondId(ServerCenterContants.SECOND_CATALOG + sequence);
+			if (StringUtil.isEmpty(model.getId())) {
+				int sequence = staffMapper.nextVal(ServerCenterContants.SECOND_CATALOG);
+				entity.setSecondId(ServerCenterContants.SECOND_CATALOG + sequence);
+			} else {
+				entity.setSecondId(model.getId());
+			}
 			entity.setFirstId(model.getParentId());
 			entity.setName(model.getName());
-			entity.setOpt(staffEntity.getOpt());
+			entity.setOpt(staffEntity.getOptName());
 			entity.setAccessPath(model.getAccessPath());
 			entity.setSort(model.getSort());
+			entity.setTagPath(model.getTagPath());
 			entity.setStatus(1);
 
 			result = helper.request(
@@ -125,29 +133,31 @@ public class CatalogServiceImpl implements CatalogService {
 				throw new Exception("新增三级分类没有上级分类信息！");
 			}
 			ThirdCatalogEntity entity = new ThirdCatalogEntity();
-			int sequence = staffMapper.nextVal(ServerCenterContants.THIRD_CATALOG);
 			entity.setSecondId(model.getParentId());
-			entity.setThirdId(ServerCenterContants.THIRD_CATALOG + sequence);
+			if (StringUtil.isEmpty(model.getId())) {
+				int sequence = staffMapper.nextVal(ServerCenterContants.THIRD_CATALOG);
+				entity.setThirdId(ServerCenterContants.THIRD_CATALOG + sequence);
+			} else {
+				entity.setThirdId(model.getId());
+			}
 			entity.setName(model.getName());
-			entity.setOpt(staffEntity.getOpt());
+			entity.setOpt(staffEntity.getOptName());
 			entity.setAccessPath(model.getAccessPath());
 			entity.setSort(model.getSort());
+			entity.setTagPath(model.getTagPath());
 			entity.setStatus(1);
 
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_SAVE_THIRD_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
 		}
-
-		if (result == null)
+		if (result == null) {
 			throw new Exception("没有返回信息");
-
+		}
 		JSONObject json = JSONObject.fromObject(result.getBody());
-
 		if (!json.getBoolean("success")) {
 			throw new Exception("新增商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
-
 	}
 	
 	@Override
@@ -159,23 +169,22 @@ public class CatalogServiceImpl implements CatalogService {
 			FirstCatalogEntity entity = new FirstCatalogEntity();
 			entity.setFirstId(model.getId());
 			entity.setName(model.getName());
-			entity.setOpt(staffEntity.getOpt());
+			entity.setOpt(staffEntity.getOptName());
 			entity.setAccessPath(model.getAccessPath());
 			entity.setSort(model.getSort());
 			entity.setTagPath(model.getTagPath());
-
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_FIRST_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
 
 		} else if (CategoryTypeEnum.SECOND.getType().equals(model.getType())) {
-
 			SecondCatalogEntity entity = new SecondCatalogEntity();
 			entity.setSecondId(model.getId());
 			entity.setName(model.getName());
+			entity.setOpt(staffEntity.getOptName());
 			entity.setAccessPath(model.getAccessPath());
 			entity.setSort(model.getSort());
-
+			entity.setTagPath(model.getTagPath());
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_SECOND_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
@@ -183,19 +192,17 @@ public class CatalogServiceImpl implements CatalogService {
 			ThirdCatalogEntity entity = new ThirdCatalogEntity();
 			entity.setThirdId(model.getId());
 			entity.setName(model.getName());
+			entity.setOpt(staffEntity.getOptName());
 			entity.setAccessPath(model.getAccessPath());
 			entity.setSort(model.getSort());
-
+			entity.setTagPath(model.getTagPath());
 			result = helper.request(
 					URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_THIRD_CATALOG,
 					staffEntity.getToken(), true, entity, HttpMethod.POST);
 		}
-
 		if (result == null)
 			throw new Exception("没有返回信息");
-
 		JSONObject json = JSONObject.fromObject(result.getBody());
-
 		if (!json.getBoolean("success")) {
 			throw new Exception("更新商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
@@ -403,5 +410,33 @@ public class CatalogServiceImpl implements CatalogService {
 		if (!json.getBoolean("success")) {
 			throw new Exception("执行商品分类操作失败:" + json.getString("errorMsg"));
 		}
+	}
+
+	@Override
+	public SecondCatalogEntity queryFirstBySecondId(SecondCatalogEntity entity,String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_FIRST_BY_SECONDID, token, true, entity,
+				HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), SecondCatalogEntity.class);
+	}
+
+	@Override
+	public String getGoodsCategoryId(String categoryType) {
+		String retCategoryId = "";
+		int sequence = 0;
+		if (CategoryTypeEnum.FIRST.getType().equals(categoryType)) {
+			sequence = staffMapper.nextVal(ServerCenterContants.FIRST_CATALOG);
+			retCategoryId = ServerCenterContants.FIRST_CATALOG + sequence;
+		} else if (CategoryTypeEnum.SECOND.getType().equals(categoryType)) {
+			sequence = staffMapper.nextVal(ServerCenterContants.SECOND_CATALOG);
+			retCategoryId = ServerCenterContants.SECOND_CATALOG + sequence;
+		} else if (CategoryTypeEnum.THIRD.getType().equals(categoryType)) {
+			sequence = staffMapper.nextVal(ServerCenterContants.THIRD_CATALOG);
+			retCategoryId = ServerCenterContants.THIRD_CATALOG + sequence;
+		}
+		return retCategoryId;
 	}
 }

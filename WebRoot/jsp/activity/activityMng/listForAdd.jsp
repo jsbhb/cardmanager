@@ -91,6 +91,7 @@
 							<th width="5%">商品价格</th>
 							<th width="5%">商品库存</th>
 							<th width="5%">商品规格</th>
+							<th width="5%">商品ID</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -175,6 +176,8 @@ function rebuildTable(data){
 			str += "</td><td>无";
 		}
 		str += "</td><td>" + (list[i].info == null ? "" : list[i].info);
+		str += "</td><td>" + list[i].goodsId;
+		str += "</td></tr>";
 	}
 	$("#baseTable tbody").html(str);
 	trBind();
@@ -197,7 +200,7 @@ function sureGoods(){
 // 	selectItemInfo["goodsName"] = selectTr.children("td").eq(1).text().trim();
 // 	selectItemInfo["price"] = selectTr.children("td").eq(7).text().trim();
 // 	selectItemInfo["stock"] = selectTr.children("td").eq(8).text().trim();
-	var selectItenInfo=selectTr.children("td").eq(2).text().trim()+"|"+selectTr.children("td").eq(1).text().trim()+"|"+selectTr.children("td").eq(7).text().trim()+"|"+selectTr.children("td").eq(8).text().trim();
+	var selectItenInfo=selectTr.children("td").eq(2).text().trim()+"|"+selectTr.children("td").eq(1).text().trim()+"|"+selectTr.children("td").eq(7).text().trim()+"|"+selectTr.children("td").eq(8).text().trim()+"|"+selectTr.children("td").eq(0).children("img").eq(0).attr('src')+"|"+selectTr.children("td").eq(10).text().trim();
 	$('#selectItem', window.parent.document).val(selectItenInfo);
 	parent.getSelectItemInfo();
 }

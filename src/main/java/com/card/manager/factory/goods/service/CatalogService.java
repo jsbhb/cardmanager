@@ -115,4 +115,8 @@ public interface CatalogService {
 
 	void updCategoryByParam(CatalogModel model, StaffEntity staffEntity) throws Exception;
 
+	SecondCatalogEntity queryFirstBySecondId(SecondCatalogEntity entity,String token);
+	
+	String getGoodsCategoryId(String categoryType);
+
 }

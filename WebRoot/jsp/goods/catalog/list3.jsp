@@ -58,7 +58,7 @@
 											<img style="width:50px;height:50px;" src="${first.tagPath}"/>
 										</c:when>
 										<c:otherwise>
-											<img style="width:50px;height:50px;" src="${webUrl}/${first.tagPath}"/>
+											<img style="width:50px;height:50px;" src="${wmsUrl}/img/default_img.jpg"/>
 										</c:otherwise>
 									</c:choose>
 									</td>
@@ -76,7 +76,7 @@
 									</td>
 									<td>
 										<a href="javascript:void(0);" class='table-btns' onclick="toAdd('${first.firstId}',2,'${first.name}')">新增子分类</a>
-				                		<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${first.firstId}',1,'${first.name}','${first.accessPath}','${first.sort}','${first.tagPath}')">修改分类</a>
+				                		<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${first.firstId}',1,'${first.name}','${first.accessPath}','${first.sort}','${first.tagPath}','${first.firstId}')">修改分类</a>
 <%-- 				                		<a href="javascript:void(0);" class='table-btns' onclick="del('${first.firstId}',1)">删除分类</a> --%>
 			                		</td>
 									<td>
@@ -96,7 +96,16 @@
 									<tr class="second-rows" data-id="${second.secondId}" parentId="${first.firstId}">
 										<td></td>
 										<td><i class="fa fa-fw fa-plus"></i>${second.name}</td>
-										<td></td>
+										<td>
+										<c:choose>
+											<c:when test="${second.tagPath.indexOf('http') != -1}">
+												<img style="width:50px;height:50px;" src="${second.tagPath}"/>
+											</c:when>
+											<c:otherwise>
+												<img style="width:50px;height:50px;" src="${wmsUrl}/img/default_img.jpg"/>
+											</c:otherwise>
+										</c:choose>
+										</td>
 			                			<td>${second.accessPath}</td>
 			                			<td>${second.sort}</td>
 										<td>
@@ -111,7 +120,7 @@
 										</td>
 										<td>
 											<a href="javascript:void(0);" class='table-btns' onclick="toAdd('${second.secondId}',3,'${second.name}')">新增子分类</a>
-					                		<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${second.secondId}',2,'${second.name}','${second.accessPath}','${second.sort}','')">修改分类</a>
+					                		<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${second.secondId}',2,'${second.name}','${second.accessPath}','${second.sort}','${second.tagPath}','${first.firstId}/${second.secondId}')">修改分类</a>
 <%-- 					                		<a href="javascript:void(0);" class='table-btns' onclick="del('${second.secondId}',2)">删除分类</a> --%>
 										</td>
 										<td>
@@ -131,7 +140,16 @@
 										<tr class="thrid-rows" data-id="${third.thirdId}" parentId="${second.secondId}">
 											<td></td>
 											<td>${third.name}</td>
-											<td></td>
+											<td>
+											<c:choose>
+												<c:when test="${third.tagPath.indexOf('http') != -1}">
+													<img style="width:50px;height:50px;" src="${third.tagPath}"/>
+												</c:when>
+												<c:otherwise>
+													<img style="width:50px;height:50px;" src="${wmsUrl}/img/default_img.jpg"/>
+												</c:otherwise>
+											</c:choose>
+											</td>
 			                				<td>${third.accessPath}</td>
 			                				<td>${third.sort}</td>
 											<td>
@@ -145,7 +163,7 @@
 											</c:choose>
 											</td>
 											<td>
-												<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${third.thirdId}',3,'${third.name}','${third.accessPath}','${third.sort}','')">修改分类</a>
+												<a href="javascript:void(0);" class='table-btns' onclick="toEdit('${third.thirdId}',3,'${third.name}','${third.accessPath}','${third.sort}','${third.tagPath}','${first.firstId}/${second.secondId}/${third.thirdId}')">修改分类</a>
 <%-- 							                	<a href="javascript:void(0);" class='table-btns' onclick="del('${third.thirdId}',3)">删除分类</a> --%>
 											</td>
 											<td>
@@ -246,18 +264,18 @@ function toAdd(id,catalog,name){
 	  title:title,
 	  type: 2,
 	  content: url,
-	  area: ['70%', '60%'],
+	  area: ['70%', '70%'],
 	  maxmin: false
 	});
 }
 
-function toEdit(id,catalog,name,accessPath,sort,tagPath){
+function toEdit(id,catalog,name,accessPath,sort,tagPath,categoryPath){
 	if(id == 0 || id == null){
 		layer.alert("信息不全，请联系技术人员！");
 		return;
 	}
 	
-	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/catalogMng/toEdit.shtml?id='+id+"&type="+catalog+"&name="+name+"&accessPath="+accessPath+"&sort="+sort+"&tagPath="+tagPath));
+	var url = encodeURI(encodeURI('${wmsUrl}/admin/goods/catalogMng/toEdit.shtml?id='+id+"&type="+catalog+"&name="+name+"&accessPath="+accessPath+"&sort="+sort+"&tagPath="+tagPath+"&categoryPath="+categoryPath));
 
 	var tilte;
 	
@@ -273,7 +291,7 @@ function toEdit(id,catalog,name,accessPath,sort,tagPath){
 	  title : title,
 	  type: 2,
 	  content: url,
-	  area: ['70%', '60%'],
+	  area: ['70%', '70%'],
 	  maxmin: false
 	});
 }

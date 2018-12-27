@@ -7,8 +7,11 @@
  */
 package com.card.manager.factory.mall.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,8 @@ import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseSer
 import com.card.manager.factory.goods.model.DictData;
 import com.card.manager.factory.goods.model.Layout;
 import com.card.manager.factory.goods.model.PopularizeDict;
+import com.card.manager.factory.mall.pojo.BigSalesGoodsRecord;
+import com.card.manager.factory.mall.pojo.ComponentData;
 import com.card.manager.factory.mall.pojo.FloorDictPojo;
 import com.card.manager.factory.mall.service.MallService;
 import com.card.manager.factory.util.JSONUtilNew;
@@ -263,6 +268,91 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 			throw new Exception("更新楼层信息操作失败:" + json.getString("errorMsg"));
 		}
 
+	}
+
+	@Override
+	public List<ComponentData> queryComponentDataByPageId(String pageId, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_QUERY_COMPONENTDATA_BY_PAGEID+"?pageId="+pageId, token, true, null,
+				HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		if (index == 0) {
+			return null;
+		}
+		List<ComponentData> list = new ArrayList<ComponentData>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), ComponentData.class));
+		}
+		return list;
+	}
+
+	@Override
+	@Log(content = "更新活动楼层商品信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void updateComponentData(ComponentData data, String token) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_UPDATE_COMPONENTDATA, token, true, data,
+				HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新活动楼层商品信息操作失败:" + json.getString("errorMsg"));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Log(content = "更新活动楼层商品信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
+	public void mergeInfoToBigSale(List<BigSalesGoodsRecord> list, String token) throws Exception {
+		Map<String, String>  rebateMap = null;
+		for(BigSalesGoodsRecord bsgr:list) {
+			RestCommonHelper helper = new RestCommonHelper();
+			String url = URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_GET_REBATE + "?itemId=" + bsgr.getItemId();
+			ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
+
+			JSONObject json = JSONObject.fromObject(query_result.getBody());
+			rebateMap = JSONUtilNew.parse(json.getJSONObject("obj").toString(), Map.class);
+			String rebateStr = rebateMap.get("2");
+			bsgr.setOldRebate(Double.valueOf(rebateStr == null ? "0" : rebateStr));
+			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = dateFormatter.parse(bsgr.getStartTime());
+			dateFormatter.applyPattern("w");
+			bsgr.setWeek(Integer.parseInt(dateFormatter.format(date)));
+			dateFormatter.applyPattern("y");
+			bsgr.setYear(Integer.parseInt(dateFormatter.format(date)));
+		}
+		
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_MERGE_BIGSALEDATA, token, true, list,
+				HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(result.getBody());
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新活动楼层商品信息操作失败:" + json.getString("errorMsg"));
+		}
+	}
+
+	@Override
+	public List<BigSalesGoodsRecord> queryBigSaleData(String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_MALL_QUERY_BIGSALEDATA, token, true, null,
+				HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		JSONArray obj = json.getJSONArray("obj");
+		int index = obj.size();
+		if (index == 0) {
+			return null;
+		}
+		List<BigSalesGoodsRecord> list = new ArrayList<BigSalesGoodsRecord>();
+		for (int i = 0; i < index; i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), BigSalesGoodsRecord.class));
+		}
+		return list;
 	}
 
 }

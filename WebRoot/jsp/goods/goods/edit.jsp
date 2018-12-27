@@ -370,7 +370,7 @@
 					<div class="col-sm-3 item-left">限购数量</div>
 					<div class="col-sm-9 item-right">
 						<div class="right-item">
-		              		<input type="text" class="form-control" name="min" id="min" value="1" placeholder="请输入最小购买量" value="${goodsInfo.goods.items[0].goodsPrice.min}">
+		              		<input type="text" class="form-control" name="min" id="min" placeholder="请输入最小购买量" value="${goodsInfo.goods.items[0].goodsPrice.min}">
 						</div>
 		            	<div class="right-item last-item">
 	                 		<input type="text" class="form-control" name="max" id="max" placeholder="请输入最大购买量" value="${goodsInfo.goods.items[0].goodsPrice.max}">

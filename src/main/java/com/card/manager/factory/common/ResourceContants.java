@@ -43,4 +43,7 @@ public class ResourceContants {
 	public static final String FLOORGOODS = "floorGoods";
 	public static final String BANNER = "banner";
 	public static final String AD = "ad";
+	public static final String CATEGORY = "category";
+	public static final String H5_POPULARITY = "H5-popularity";
+	public static final String POPULARITY = "popularity";
 }

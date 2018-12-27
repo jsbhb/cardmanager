@@ -30,6 +30,7 @@ public class ThirdCatalogEntity {
 	private Integer status;
 	private String accessPath;
 	private Integer isPopular;
+	private String tagPath;
 
 	public ThirdCatalogEntity() {
 
@@ -47,6 +48,7 @@ public class ThirdCatalogEntity {
 		this.status = obj.getInt("status");
 		this.accessPath = obj.getString("accessPath");
 		this.isPopular = obj.getInt("isPopular");
+		this.tagPath = obj.getString("tagPath");
 	}
 
 	public int getId() {
@@ -135,6 +137,14 @@ public class ThirdCatalogEntity {
 
 	public void setIsPopular(Integer isPopular) {
 		this.isPopular = isPopular;
+	}
+
+	public String getTagPath() {
+		return tagPath;
+	}
+
+	public void setTagPath(String tagPath) {
+		this.tagPath = tagPath;
 	}
 
 }

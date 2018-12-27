@@ -34,6 +34,7 @@ public class SecondCatalogEntity {
 	private Integer status;
 	private List<ThirdCatalogEntity> thirds;
 	private String accessPath;
+	private String tagPath;
 
 	public SecondCatalogEntity() {
 
@@ -50,6 +51,7 @@ public class SecondCatalogEntity {
 		this.sort = obj.getInt("sort");
 		this.status = obj.getInt("status");
 		this.accessPath = obj.getString("accessPath");
+		this.tagPath = obj.getString("tagPath");
 
 		List<ThirdCatalogEntity> thirds = new ArrayList<ThirdCatalogEntity>();
 
@@ -159,5 +161,13 @@ public class SecondCatalogEntity {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getTagPath() {
+		return tagPath;
+	}
+
+	public void setTagPath(String tagPath) {
+		this.tagPath = tagPath;
 	}
 }
