@@ -200,6 +200,7 @@ function rebuildTable(){
 			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>成本价</th>";
 			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>分销价</th>";
 			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>零售价</th>";
+			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>划线价</th>";
 			  thead += "<th style='width: 10%;' colspan='2'>限购数量</th>";
 			  thead += "</tr>";
 			  
@@ -255,6 +256,7 @@ function rebuildTd(text,valueTextArray,valueIdArray,index,htmlArray){
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"proxyPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"fxPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"retailPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"linePrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"min\" value=\"1\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"max\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
 	}
@@ -300,7 +302,7 @@ function getTableInfo(){
 
 			if (obj_name == "proxyPrice" || obj_name == "fxPrice" ||
 				obj_name == "retailPrice" || obj_name == "min" ||
-				obj_name == "max") {
+				obj_name == "max" || obj_name == "linePrice") {
 				itemPriceData[obj_name] = obj_value;
 			} else {
 				itemData[obj_name] = obj_value;

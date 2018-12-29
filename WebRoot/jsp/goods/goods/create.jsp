@@ -306,6 +306,15 @@
 					</div>
 				</div>
 				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>划线价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="linePrice" id="linePrice">
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
 					<div class="col-sm-3 item-left">限购数量</div>
 					<div class="col-sm-9 item-right">
 						<div class="right-item">
@@ -349,6 +358,7 @@
 											<a href="javascript:void(0)" onclick="batchSetTableItem('proxyPrice')">成本价</a>
 											<a href="javascript:void(0)" onclick="batchSetTableItem('fxPrice')">分销价</a>
 											<a href="javascript:void(0)" onclick="batchSetTableItem('retailPrice')">零售价</a>
+											<a href="javascript:void(0)" onclick="batchSetTableItem('linePrice')">划线价</a>
 											<a href="javascript:void(0)" onclick="batchSetTableItem('min')">限购数量(min)</a>
 											<a href="javascript:void(0)" onclick="batchSetTableItem('max')">限购数量(max)</a>
 										</span>
@@ -606,6 +616,17 @@
 						   },
 						   numeric: {
 							   message: '零售价只能输入数字'
+						   }
+					   }
+				   },
+				   linePrice:{
+					   message: '划线价有误',
+					   validators: {
+						   notEmpty: {
+							   message: '划线价不能为空'
+						   },
+						   numeric: {
+							   message: '划线价只能输入数字'
 						   }
 					   }
 				   },
@@ -1033,7 +1054,7 @@
 	  				if (obj_name == "itemCode" || obj_name == "sku" ||
   		  				obj_name == "weight" || obj_name == "conversion" ||
   		  				obj_name == "proxyPrice" || obj_name == "fxPrice" ||
-  		  				obj_name == "retailPrice") {
+  		  				obj_name == "retailPrice" || obj_name == "linePrice") {
 	  					if (obj_value == "") {
 	  						e_index = e_index + (r_index+1) + ",";
 	  						retFlg = false;

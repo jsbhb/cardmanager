@@ -9,6 +9,7 @@ package com.card.manager.factory.mall.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -317,12 +318,24 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 			rebateMap = JSONUtilNew.parse(json.getJSONObject("obj").toString(), Map.class);
 			String rebateStr = rebateMap.get("2");
 			bsgr.setOldRebate(Double.valueOf(rebateStr == null ? "0" : rebateStr));
+			
 			SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = dateFormatter.parse(bsgr.getStartTime());
-			dateFormatter.applyPattern("w");
-			bsgr.setWeek(Integer.parseInt(dateFormatter.format(date)));
-			dateFormatter.applyPattern("y");
-			bsgr.setYear(Integer.parseInt(dateFormatter.format(date)));
+			Calendar cDate = Calendar.getInstance();
+			cDate.setFirstDayOfWeek(Calendar.MONDAY);
+			cDate.setTime(date);
+			int typeWeek  = cDate.get(Calendar.WEEK_OF_YEAR);
+			int typeDay  = cDate.get(Calendar.DAY_OF_YEAR);
+			int typeYear  = cDate.get(Calendar.YEAR);
+			if (typeWeek == 1 && typeDay > 7) {
+				typeYear += 1;
+			}
+//			dateFormatter.applyPattern("w");
+//			bsgr.setWeek(Integer.parseInt(dateFormatter.format(date)));
+//			dateFormatter.applyPattern("y");
+//			bsgr.setYear(Integer.parseInt(dateFormatter.format(date)));
+			bsgr.setWeek(typeWeek);
+			bsgr.setYear(typeYear);
 		}
 		
 		RestCommonHelper helper = new RestCommonHelper();
@@ -354,5 +367,4 @@ public class MallServiceImpl extends AbstractServcerCenterBaseService implements
 		}
 		return list;
 	}
-
 }

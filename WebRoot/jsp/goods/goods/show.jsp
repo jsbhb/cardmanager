@@ -350,6 +350,15 @@
 					</div>
 				</div>
 				<div class="list-item">
+					<div class="col-sm-3 item-left"><font style="color:red">*</font>划线价</div>
+					<div class="col-sm-9 item-right">
+						<input type="text" class="form-control" name="linePrice" id="linePrice" value="${goodsInfo.goods.items[0].goodsPrice.linePrice}" readonly>
+						<div class="item-content">
+			             	（请按价格格式输入，例：113.35）
+			            </div>
+					</div>
+				</div>
+				<div class="list-item">
 					<div class="col-sm-3 item-left">限购数量</div>
 					<div class="col-sm-9 item-right">
 						<div class="right-item">

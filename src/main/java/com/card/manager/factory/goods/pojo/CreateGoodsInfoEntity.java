@@ -49,6 +49,7 @@ public class CreateGoodsInfoEntity {
 	private double proxyPrice;
 	private double fxPrice;
 	private double retailPrice;
+	private double linePrice;
 	private int min;
 	private int max;
 	private String tagId;
@@ -310,6 +311,12 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setCreateKey(String createKey) {
 		this.createKey = createKey;
+	}
+	public double getLinePrice() {
+		return linePrice;
+	}
+	public void setLinePrice(double linePrice) {
+		this.linePrice = linePrice;
 	}
 
 }

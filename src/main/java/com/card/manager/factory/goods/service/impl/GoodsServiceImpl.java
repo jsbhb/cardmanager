@@ -436,6 +436,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsPrice.setProxyPrice(gie.getGoodsPrice().getProxyPrice());
 				goodsPrice.setFxPrice(gie.getGoodsPrice().getFxPrice());
 				goodsPrice.setRetailPrice(gie.getGoodsPrice().getRetailPrice());
+				goodsPrice.setLinePrice(gie.getGoodsPrice().getLinePrice());
 				goodsPrice.setOpt(entity.getOpt());
 
 				goodsItem.setGoodsPrice(goodsPrice);
@@ -485,6 +486,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsPrice.setProxyPrice(entity.getProxyPrice());
 			goodsPrice.setFxPrice(entity.getFxPrice());
 			goodsPrice.setRetailPrice(entity.getRetailPrice());
+			goodsPrice.setLinePrice(entity.getLinePrice());
 			goodsPrice.setOpt(entity.getOpt());
 
 			goodsItem.setGoodsPrice(goodsPrice);
@@ -629,6 +631,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goodsPrice.setProxyPrice(entity.getProxyPrice());
 		goodsPrice.setFxPrice(entity.getFxPrice());
 		goodsPrice.setRetailPrice(entity.getRetailPrice());
+		goodsPrice.setLinePrice(entity.getLinePrice());
 		goodsPrice.setOpt(entity.getOpt());
 
 		goodsItem.setGoodsPrice(goodsPrice);
@@ -1557,6 +1560,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 				goodsPrice.setProxyPrice(gie.getGoodsPrice().getProxyPrice());
 				goodsPrice.setFxPrice(gie.getGoodsPrice().getFxPrice());
 				goodsPrice.setRetailPrice(gie.getGoodsPrice().getRetailPrice());
+				goodsPrice.setLinePrice(gie.getGoodsPrice().getLinePrice());
 				goodsPrice.setOpt(entity.getOpt());
 
 				goodsItem.setGoodsPrice(goodsPrice);
@@ -1606,6 +1610,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			goodsPrice.setProxyPrice(entity.getProxyPrice());
 			goodsPrice.setFxPrice(entity.getFxPrice());
 			goodsPrice.setRetailPrice(entity.getRetailPrice());
+			goodsPrice.setLinePrice(entity.getLinePrice());
 			goodsPrice.setOpt(entity.getOpt());
 
 			goodsItem.setGoodsPrice(goodsPrice);

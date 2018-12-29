@@ -34,6 +34,8 @@ public class GoodsPrice {
 	@JsonIgnore
 	private String opt;
 
+	private Double linePrice;
+
 	public String getDeliveryPlace() {
 		return deliveryPlace;
 	}
@@ -136,6 +138,14 @@ public class GoodsPrice {
 
 	public void setRetailPrice(Double retailPrice) {
 		this.retailPrice = retailPrice;
+	}
+
+	public Double getLinePrice() {
+		return linePrice;
+	}
+
+	public void setLinePrice(Double linePrice) {
+		this.linePrice = linePrice;
 	}
 
 	@Override
