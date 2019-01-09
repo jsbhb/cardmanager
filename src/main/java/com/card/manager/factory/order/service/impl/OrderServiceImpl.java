@@ -279,6 +279,8 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 			// 放入订单信息
 			if (!infoMap.containsKey(model.getOrderId())) {
 				info = new OrderInfo(model);
+				//添加导入者信息
+				info.setOpt(staffEntity.getOptName());
 				infoMap.put(info.getOrderId(), info);
 			}
 			// 封装商品和订单详细信息信息

@@ -56,6 +56,7 @@ public class OrderInfoListForDownload {
 	private String deliveryTime;
 	private Double singlePostFee;
 	private Double singleTaxFee;
+	private String opt;
 	
 	public String getOrderId() {
 		return orderId;
@@ -350,5 +351,11 @@ public class OrderInfoListForDownload {
 	}
 	public void setSingleTaxFee(Double singleTaxFee) {
 		this.singleTaxFee = singleTaxFee;
+	}
+	public String getOpt() {
+		return opt;
+	}
+	public void setOpt(String opt) {
+		this.opt = opt;
 	}
 }

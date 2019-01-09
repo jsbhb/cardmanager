@@ -12,18 +12,48 @@
 
 </head>
 <body>
-<section class="content-wrapper">
+<section class="content-wrapper query">
 	<section class="content-header">
 	      <ol class="breadcrumb">
 	        <li><a href="javascript:void(0);">系统管理</a></li>
 	        <li class="active">员工管理</li>
 	      </ol>
+	      <div class="search">
+	      	<input type="text" name="badgeId" placeholder="请输入badge编号" >
+	      	<div class="searchBtn"><i class="fa fa-search fa-fw"></i></div>
+	      	<div class="moreSearchBtn">高级搜索</div>
+		  </div>
     </section>
     <section class="content">
 			 <div id="image" style="width:100%;height:100%;display: none;background:rgba(0,0,0,0.5);margin-left:-25px;margin-top:-62px;">
 				<img alt="loading..." src="${wmsUrl}/img/loader.gif" style="position:fixed;top:50%;left:50%;margin-left:-16px;margin-top:-16px;" />
 			</div>
-			
+			<div class="moreSearchContent">
+				<div class="row form-horizontal list-content">
+					<div class="col-xs-3">
+						<div class="searchItem">
+							<input type="text" class="form-control" name="badge" placeholder="请输入badge编号">
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+							<input type="text" class="form-control" name="optName" placeholder="请输入员工名称">
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchItem">
+							<input type="text" class="form-control" name="phone" placeholder="请输入手机号码">
+						</div>
+					</div>
+					<div class="col-xs-3">
+						<div class="searchBtns">
+							 <div class="lessSearchBtn">简易搜索</div>
+	                         <button type="button" class="query" id="querybtns" name="signup">提交</button>
+	                         <button type="button" class="clear">清除选项</button>
+	                    </div>
+	                </div>
+	            </div>
+			</div>
 			<div class="list-content">
 				<div class="row">
 					<div class="col-md-10 list-btns">
@@ -60,29 +90,30 @@
 	</section>
 	
 <%@include file="../../resourceScript.jsp"%>
-<script src="${wmsUrl}/js/pagination.js"></script>
-<script src="${wmsUrl}/plugins/fastclick/fastclick.js"></script>
 <script type="text/javascript">
-
+//点击搜索按钮
+$('.searchBtn').on('click',function(){
+	$("#querybtns").click();
+});
 /**
  * 初始化分页信息
  */
 var options = {
-			queryForm : ".query",
-			url :  "${wmsUrl}/admin/system/staffMng/dataList.shtml",
-			numPerPage:"10",
-			currentPage:"",
-			index:"1",
-			callback:rebuildTable
+	queryForm : ".query",
+	url :  "${wmsUrl}/admin/system/staffMng/dataList.shtml",
+	numPerPage:"10",
+	currentPage:"",
+	index:"1",
+	callback:rebuildTable
 }
 
 
 $(function(){
-	 $(".pagination-nav").pagination(options);
-	 var top = getTopWindow();
-		$('.breadcrumb').on('click','a',function(){
-			top.location.reload();
-		});
+	$(".pagination-nav").pagination(options);
+	var top = getTopWindow();
+	$('.breadcrumb').on('click','a',function(){
+		top.location.reload();
+	});
 })
 
 
@@ -163,14 +194,13 @@ function rebuildTable(data){
 }
 	
 function toAdd(){
-	
 	var index = layer.open({
-		  type: 2,
-		  content: '${wmsUrl}/admin/system/staffMng/toAdd.shtml',
-		  area: ['320px', '195px'],
-		  maxmin: true
-		});
-		layer.full(index);
+	  type: 2,
+	  content: '${wmsUrl}/admin/system/staffMng/toAdd.shtml',
+	  area: ['320px', '195px'],
+	  maxmin: true
+	});
+	layer.full(index);
 }
 	
 function toEdit(id){
@@ -180,12 +210,12 @@ function toEdit(id){
 	}
 	
 	var index = layer.open({
-		  type: 2,
-		  content: '${wmsUrl}/admin/system/staffMng/toEdit.shtml?optId='+id,
-		  area: ['320px', '195px'],
-		  maxmin: true
-		});
-		layer.full(index);
+	  type: 2,
+	  content: '${wmsUrl}/admin/system/staffMng/toEdit.shtml?optId='+id,
+	  area: ['320px', '195px'],
+	  maxmin: true
+	});
+	layer.full(index);
 }
 
 function sync(id){
@@ -196,26 +226,25 @@ function sync(id){
 	
 	layer.prompt({title: '输入该员工手机号', formType: 2}, function(phone, index){
 		
-		  $.ajax({
-				 url:"${wmsUrl}/admin/system/staffMng/sync.shtml?phone="+phone+"&optid="+id,
-				 type:'post',
-			     contentType: "application/json; charset=utf-8",
-				 dataType:'json',
-				 success:function(data){
-					 layer.closeAll();
-					 if(data.success){	
-						 reloadTable();
-					 }else{
-						  layer.alert(data.msg);
-					 }
-				 },
-				 error:function(){
-					 layer.closeAll();
-					 layer.alert("系统出现问题啦，快叫技术人员处理");
-				 }
-			 });
-		  
-		});
+	$.ajax({
+		 url:"${wmsUrl}/admin/system/staffMng/sync.shtml?phone="+phone+"&optid="+id,
+		 type:'post',
+	     contentType: "application/json; charset=utf-8",
+		 dataType:'json',
+		 success:function(data){
+			 layer.closeAll();
+			 if(data.success){	
+				 reloadTable();
+			 }else{
+				  layer.alert(data.msg);
+			 }
+		 },
+		 error:function(){
+			 layer.closeAll();
+			 layer.alert("系统出现问题啦，快叫技术人员处理");
+		 }
+	  });
+	});
 }
 
 function sync2B(id){

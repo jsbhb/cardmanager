@@ -67,6 +67,15 @@
 			 	#{id}
 			 </foreach>)
 		</if>
+		<if test="badge !='' and badge != null">
+			 and badge = #{badge}
+		</if> 
+		<if test="optName !='' and optName != null">
+			 and optName like CONCAT('%',#{optName},'%')
+		</if> 
+		<if test="phone !='' and phone != null">
+			 and phone like CONCAT('%',#{phone},'%')
+		</if> 
         order by a.gradeid,a.createTime
 	</select>
 	

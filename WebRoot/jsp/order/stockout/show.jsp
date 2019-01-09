@@ -74,6 +74,19 @@
 			</div>
 		</div>
        	<div class="list-item">
+			<div class="col-sm-3 item-left">操作人</div>
+			<div class="col-sm-9 item-right">
+				<c:choose>
+					<c:when test="${order.opt!=null}">
+						<input type="text" class="form-control" name="opt" readonly value="${order.opt}">
+					</c:when>
+					<c:otherwise>
+						<input type="text" class="form-control" name="opt" readonly value="消费者">
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</div>
+       	<div class="list-item">
 			<div class="col-sm-3 item-left">订单来源</div>
 			<div class="col-sm-9 item-right">
 				<c:choose>
@@ -115,6 +128,12 @@
 				</c:when>
 				<c:when test="${order.orderSource==13}">
 					<input type="text" class="form-control" readonly value="易捷北京">
+				</c:when>
+				<c:when test="${order.orderSource==14}">
+					<input type="text" class="form-control" readonly value="自营">
+				</c:when>
+				<c:when test="${order.orderSource==15}">
+					<input type="text" class="form-control" readonly value="金融工厂">
 				</c:when>
 				<c:otherwise>
 					<input type="text" class="form-control" name="area" readonly value="订货平台">

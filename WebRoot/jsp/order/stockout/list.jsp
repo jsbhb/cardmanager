@@ -89,6 +89,8 @@
 	                   	  <option value="11">聚民惠</option>
 	                   	  <option value="12">拼多多</option>
 	                   	  <option value="13">易捷北京</option>
+	                   	  <option value="14">自营</option>
+	                   	  <option value="15">金融工厂</option>
 		                </select>
 					</div>
 				</div>
@@ -185,6 +187,7 @@
 								<th>订单来源</th>
 								<th>所属分级</th>
 								<th>创建时间</th>
+								<th>操作人</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -336,10 +339,13 @@ function rebuildTable(data){
 			case 11:str += "</td><td>聚民惠";break;
 			case 12:str += "</td><td>拼多多";break;
 			case 13:str += "</td><td>易捷北京";break;
+			case 14:str += "</td><td>自营";break;
+			case 15:str += "</td><td>金融工厂";break;
 			default:str += "</td><td>";
 		}
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);
+		str += "</td><td>" + (list[i].opt == null ? "消费者" : list[i].opt);
 		str += "</td><td><a href='javascript:void(0);' class='table-btns' onclick='toShow(\""+list[i].orderId+"\")'>详情</a>";
 		var prilvl = "${prilvl}";
 		if(prilvl == 1 

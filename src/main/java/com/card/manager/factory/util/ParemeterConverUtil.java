@@ -34,6 +34,8 @@ public class ParemeterConverUtil {
 			put("聚民惠", 11);
 			put("拼多多", 12);
 			put("易捷北京", 13);
+			put("自营", 14);
+			put("金融工厂", 15);
 		}
 	};
 	

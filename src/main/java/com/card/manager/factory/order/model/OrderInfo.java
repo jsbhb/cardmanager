@@ -91,6 +91,8 @@ public class OrderInfo extends Pagination{
 	
 	private String deliveryTime;
 	
+	private String opt;
+	
 	public OrderInfo(){}
 
 	public OrderInfo(OrderImportBO model) {
@@ -440,6 +442,14 @@ public class OrderInfo extends Pagination{
 
 	public void setDeliveryTime(String deliveryTime) {
 		this.deliveryTime = deliveryTime;
+	}
+
+	public String getOpt() {
+		return opt;
+	}
+
+	public void setOpt(String opt) {
+		this.opt = opt;
 	}
 
 	@Override

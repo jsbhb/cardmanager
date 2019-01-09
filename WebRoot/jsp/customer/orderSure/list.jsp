@@ -532,7 +532,12 @@ $('.component-orderSure-detail-list-btn-submit').on('click','.order_submit',func
 	var formData = {};
 	var orderDetail={};
 	//orderDetail
-	var addressInfo = $(".component-orderSure-address-list > .address-item.active").attr("data-info").split("|");
+	var addressInfoStr = $(".component-orderSure-address-list > .address-item.active").attr("data-info");
+	if (addressInfoStr == null || addressInfoStr == undefined) {
+		layer.alert("收货地址信息有误，请重新选择");
+		return;
+	}
+	var addressInfo = addressInfoStr.split("|");
 	orderDetail["receiveProvince"] = addressInfo[0];
 	orderDetail["receiveCity"] = addressInfo[1];
 	orderDetail["receiveArea"] = addressInfo[2];

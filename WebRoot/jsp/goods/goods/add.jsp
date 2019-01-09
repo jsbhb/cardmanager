@@ -227,7 +227,7 @@
 					<div class="col-sm-9 item-right">
 		                <input type="text" class="form-control" name="weight" id="weight">
 						<div class="item-content">
-							（请按整数格式输入，例：2500）
+							（单位：克，请按整数格式输入，例：2500）
 			            </div>
 					</div>
 				</div>

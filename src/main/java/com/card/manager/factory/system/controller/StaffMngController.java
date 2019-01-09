@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,8 +76,6 @@ public class StaffMngController extends BaseController {
 		PageCallBack pcb = new PageCallBack();
 
 		try {
-			String id = req.getParameter("gradeId");
-			StaffEntity entity = SessionUtils.getOperator(req);
 			Page<StaffEntity> page = null;
 			Map<String, Object> params = new HashMap<String, Object>();
 
@@ -86,16 +85,31 @@ public class StaffMngController extends BaseController {
 			// } else if (entity.getRoleId() != AuthCommon.SUPER_ADMIN) {
 			// params.put("gradeId", entity.getGradeId());
 			// }
+			
+			String badgeId = req.getParameter("badgeId");
+			if (!StringUtils.isEmpty(badgeId)) {
+				params.put("badge", badgeId);
+			}
+			String badge = req.getParameter("badge");
+			if (!StringUtils.isEmpty(badge)) {
+				params.put("badge", badge);
+			}
+			String optName = req.getParameter("optName");
+			if (!StringUtils.isEmpty(optName)) {
+				params.put("optName", optName);
+			}
+			String phone = req.getParameter("phone");
+			if (!StringUtils.isEmpty(phone)) {
+				params.put("phone", phone);
+			}
 
 			StaffEntity staff = SessionUtils.getOperator(req);
 
 			if (staff.getRoleId() != AuthCommon.SUPER_ADMIN) {
 				List<Integer> gradeIds = gradeService.queryChildrenById(staff.getGradeId(),
-						SessionUtils.getOperator(req).getToken());
-
+						staff.getToken());
 				params.put("gradeIds", gradeIds);
 			}
-
 			page = staffMngService.dataList(pagination, params);
 
 			pcb.setObj(page);
