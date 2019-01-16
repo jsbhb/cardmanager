@@ -302,7 +302,9 @@
 				return;
 			}
 			var orderType = "unSendOrder";
-			if ($("#supplierId").val() == "15") {
+			
+			//测试编号15，正式编号31
+			if ($("#supplierId").val() == "31") {
 				orderType = "sendOrder";
 			}
 			$.ajax({
