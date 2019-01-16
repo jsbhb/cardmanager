@@ -93,12 +93,17 @@ public class OrderServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Override
 	@Log(content = "发起订单退款操作", source = Log.BACK_PLAT, type = Log.ADD)
-	public void applyOrderBack(String orderId, StaffEntity staff) throws Exception {
+	public void applyOrderBack(String orderId, String orderType, StaffEntity staff) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("orderId", orderId);
-		ResponseEntity<String> result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_APPLY_ORDER_BACK, staff.getToken(), true,
+		String requestUrl = "";
+		if ("sendOrder".equals(orderType)) {
+			requestUrl = URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_APPLY_ORDER_BACK_SEND_ORDER;
+		} else {
+			requestUrl = URLUtils.get("gateway") + ServerCenterContants.ORDER_CENTER_APPLY_ORDER_BACK;
+		}
+		ResponseEntity<String> result = helper.requestWithParams(requestUrl, staff.getToken(), true,
 				null, HttpMethod.POST, params);
 
 		JSONObject json = JSONObject.fromObject(result.getBody());

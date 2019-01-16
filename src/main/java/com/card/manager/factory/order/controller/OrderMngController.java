@@ -413,6 +413,8 @@ public class OrderMngController extends BaseController {
 				case 11:oi.setOrderSourceName("聚民惠");break;
 				case 12:oi.setOrderSourceName("拼多多");break;
 				case 13:oi.setOrderSourceName("易捷北京");break;
+				case 14:oi.setOrderSourceName("自营");break;
+				case 15:oi.setOrderSourceName("金融工厂");break;
 				}
 				
 				switch (oi.getOrderFlg()) {

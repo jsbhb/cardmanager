@@ -29,6 +29,8 @@ public class OrderGoods {
 	private Integer conversion;
 	private String rebate;
 	private String goodsId;
+	private String unit;
+	private String carton;
 
 	public OrderGoods() {
 	}
@@ -165,6 +167,22 @@ public class OrderGoods {
 
 	public void setGoodsId(String goodsId) {
 		this.goodsId = goodsId;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getCarton() {
+		return carton;
+	}
+
+	public void setCarton(String carton) {
+		this.carton = carton;
 	}
 
 	@Override

@@ -269,7 +269,8 @@ public class OrderBackMngController extends BaseController {
 				sendFailureMessage(resp, "订单号获取失败！");
 				return;
 			}
-			orderService.applyOrderBack(orderId,staffEntity);
+			String orderType = req.getParameter("orderType");
+			orderService.applyOrderBack(orderId,orderType,staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

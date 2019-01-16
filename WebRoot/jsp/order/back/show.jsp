@@ -33,6 +33,7 @@
 				<div class="col-sm-3 item-left">供应商</div>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" readonly  value="${order.supplierName}">
+					<input type="hidden" class="form-control" readonly id="supplierId" value="${order.supplierId}">
 				</div>
 			</div>
 	       	<div class="list-item">
@@ -300,8 +301,12 @@
 				layer.alert("信息不全，请联系客服！");
 				return;
 			}
+			var orderType = "unSendOrder";
+			if ($("#supplierId").val() == "15") {
+				orderType = "sendOrder";
+			}
 			$.ajax({
-				 url:"${wmsUrl}/admin/order/orderBackMng/orderBack.shtml?orderId="+orderId,
+				 url:"${wmsUrl}/admin/order/orderBackMng/orderBack.shtml?orderId="+orderId+"&orderType="+orderType,
 				 type:'post',
 // 				 data:JSON.stringify(sy.serializeObject($('#goodsForm'))),
 				 contentType: "application/json; charset=utf-8",
