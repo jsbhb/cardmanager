@@ -476,11 +476,11 @@ public class OrderMngController extends BaseController {
 			//广州仓
 //			if ("5".equals(supplierId)) {
 				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
-						"订单来源", "订单类型", "支付金额", "邮费金额", "税费金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "操作人", "物流信息", 
+						"订单来源", "订单类型", "支付金额", "返佣抵扣", "邮费金额", "税费金额", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "操作人", "物流信息", 
 						"收货时间", "订购人", "订购人身份证", "包装数", "商品购买价格"};
 				colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku", "ItemName",
 						"ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName", "SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment",
-						"PostFee", "TaxFee", "PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince",
+						"RebateFee", "PostFee", "TaxFee", "PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince",
 						"ReceiveAddress", "CreateTime", "Opt", "ExpressInfo", "DeliveryTime", "OrderName", "Idnum", "Packing", "ActualPrice" };
 //			} else {
 //				nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名","零售价", "商品规格", "订单数量", "商品数量", "一级类目", "二级类目", "三级类目",
