@@ -278,11 +278,17 @@ var options = {
 }
 
 $(function(){
-	 $(".pagination-nav").pagination(options);
-	 var top = getTopWindow();
+	$(".pagination-nav").pagination(options);
+	var top = getTopWindow();
 	$('.breadcrumb').on('click','a',function(){
 		top.location.reload();
 	});
+	
+	$('.list-tabBar').find('li').each(function() {
+		if ($(this).attr('data-id') == $("#hidTabId").val()) {
+			$(this).addClass('active').siblings('.active').removeClass('active');
+		}
+    })
 })
 
 function reloadTable(){

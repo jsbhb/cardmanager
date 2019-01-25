@@ -47,6 +47,26 @@
 				</div>
 			</div>
 			<div class="list-item">
+				<label class="col-sm-3 item-left" >线下计算返佣<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+	                  <select class="form-control" name="calcRebateFlg" id="calcRebateFlg">
+	                  	  <c:choose>
+							   <c:when test="${grade.calcRebateFlg == 0}">
+							   		<option value="0" selected="selected">不计算</option>
+	                   	  			<option value="1">计算</option>
+							   </c:when>
+							   <c:otherwise>
+	                   	  			<option value="0">不计算</option>
+							   		<option value="1" selected="selected">计算</option>
+							   </c:otherwise>
+						  </c:choose> 
+		              </select>
+	                  <div class="item-content">
+						（线下订单导入时是否需要计算返佣）
+		              </div>
+				</div>
+			</div>
+			<div class="list-item">
 				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 					<input type="text" class="form-control" id="gradeTypeId" readonly style="background:#fff;" value="${gradeType.name}">
@@ -54,7 +74,7 @@
 	                <input type="hidden" readonly class="form-control" id="parentGradeId" value="${gradeType.parentId}">
 				</div>
 			</div>
-			<div class="select-content" style="width: 420px;top: 219px;">
+			<div class="select-content" style="width: 420px;top: 265px;">
            		<ul class="first-ul" style="margin-left:10px;">
            			<c:forEach var="menu" items="${gradeList}">
            				<c:set var="menu" value="${menu}" scope="request" />
@@ -62,6 +82,24 @@
 					</c:forEach>
            		</ul>
            	</div>
+			<div class="list-item" id="gradeInviter" style="display: none">
+				<label class="col-sm-3 item-left" >分级邀请人</label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="gradeInviter" id="gradeInviterInput" value="${grade.gradeInviter}">
+                    <div class="item-content">
+						（开通分级时对应的介绍人）
+	                </div>
+				</div>
+			</div>
+			<div class="list-item" id="profitRatio" style="display: none">
+				<label class="col-sm-3 item-left" >利润比例</label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="profitRatio" id="profitRatioInput" value="${grade.profitRatio}" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')">
+                    <div class="item-content">
+						（给介绍人的利润比例，例：5）
+	                </div>
+				</div>
+			</div>
 			<div class="list-item" id="customType" style="display: none">
 				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
@@ -394,6 +432,10 @@
 		if ($("#parentGradeId").val() == 1) {
 			$('#customType').stop();
 			$('#customType').slideDown(300);
+			$('#gradeInviter').stop();
+			$('#gradeInviter').slideDown(300);
+			$('#profitRatio').stop();
+			$('#profitRatio').slideDown(300);
 		}
 		if ($("#type").val() == 2) {
 			$('#key').stop();
@@ -705,9 +747,20 @@
 			if (parId != 1) {
 				$('#customType').stop();
 				$('#customType').slideUp(300);
+				$('#gradeInviter').stop();
+				$('#gradeInviter').slideUp(300);
+				$('#profitRatio').stop();
+				$('#profitRatio').slideUp(300);
+				
+				$('#gradeInviterInput').val("");
+				$('#profitRatioInput').val("");
 			} else {
 				$('#customType').stop();
 				$('#customType').slideDown(300);
+				$('#gradeInviter').stop();
+				$('#gradeInviter').slideDown(300);
+				$('#profitRatio').stop();
+				$('#profitRatio').slideDown(300);
 			}
 		}
 	});

@@ -48,13 +48,25 @@
 				</div>
 			</div>
 			<div class="list-item">
+				<label class="col-sm-3 item-left" >线下计算返佣<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+	                  <select class="form-control" name="calcRebateFlg" id="calcRebateFlg">
+	                   	  <option value="0" selected>不计算</option>
+	                   	  <option value="1">计算</option>
+		              </select>
+	                  <div class="item-content">
+						（线下订单导入时是否需要计算返佣）
+		              </div>
+				</div>
+			</div>
+			<div class="list-item">
 				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 					<input type="text" readonly class="form-control" id="gradeTypeId" style="background:#fff;">
 	                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType">
 				</div>
 			</div>
-			<div class="select-content" style="width: 420px;top: 219px;">
+			<div class="select-content" style="width: 420px;top: 265px;">
            		<ul class="first-ul" style="margin-left:10px;">
            			<c:forEach var="menu" items="${gradeList}">
            				<c:set var="menu" value="${menu}" scope="request" />
@@ -62,6 +74,24 @@
 					</c:forEach>
            		</ul>
            	</div>
+			<div class="list-item" id="gradeInviter" style="display: none">
+				<label class="col-sm-3 item-left" >分级邀请人</label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="gradeInviter">
+                    <div class="item-content">
+						（开通分级时对应的介绍人）
+	                </div>
+				</div>
+			</div>
+			<div class="list-item" id="profitRatio" style="display: none">
+				<label class="col-sm-3 item-left" >利润比例</label>
+				<div class="col-sm-9 item-right">
+					<input type="text" class="form-control" name="profitRatio" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')">
+                    <div class="item-content">
+						（给介绍人的利润比例，例：5）
+	                </div>
+				</div>
+			</div>
 			<div class="list-item" id="customType" style="display: none">
 				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
@@ -591,9 +621,17 @@
 			if (parId != 1) {
 				$('#customType').stop();
 				$('#customType').slideUp(300);
+				$('#gradeInviter').stop();
+				$('#gradeInviter').slideUp(300);
+				$('#profitRatio').stop();
+				$('#profitRatio').slideUp(300);
 			} else {
 				$('#customType').stop();
 				$('#customType').slideDown(300);
+				$('#gradeInviter').stop();
+				$('#gradeInviter').slideDown(300);
+				$('#profitRatio').stop();
+				$('#profitRatio').slideDown(300);
 			}
 		}
 	});

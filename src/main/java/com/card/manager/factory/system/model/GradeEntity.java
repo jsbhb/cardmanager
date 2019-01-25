@@ -104,6 +104,12 @@ public class GradeEntity extends Pagination{
 	
 	private String badge;
 	
+	private Integer calcRebateFlg;
+	
+	private int profitRatio;
+	
+	private String gradeInviter;
+	
 	public String getAppKey() {
 		return appKey;
 	}
@@ -459,4 +465,27 @@ public class GradeEntity extends Pagination{
 		this.badge = badge;
 	}
 
+	public Integer getCalcRebateFlg() {
+		return calcRebateFlg;
+	}
+
+	public void setCalcRebateFlg(Integer calcRebateFlg) {
+		this.calcRebateFlg = calcRebateFlg;
+	}
+
+	public int getProfitRatio() {
+		return profitRatio;
+	}
+
+	public void setProfitRatio(int profitRatio) {
+		this.profitRatio = profitRatio;
+	}
+
+	public String getGradeInviter() {
+		return gradeInviter;
+	}
+
+	public void setGradeInviter(String gradeInviter) {
+		this.gradeInviter = gradeInviter;
+	}
 }
