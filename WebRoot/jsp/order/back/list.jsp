@@ -91,6 +91,7 @@
 	                   	  <option value="13">易捷北京</option>
 	                   	  <option value="14">自营</option>
 	                   	  <option value="15">金融工厂</option>
+	                   	  <option value="16">中信乐益通</option>
 		                </select>
 					</div>
 				</div>
@@ -305,6 +306,7 @@ function rebuildTable(data){
 			case 13:str += "</td><td>易捷北京";break;
 			case 14:str += "</td><td>自营";break;
 			case 15:str += "</td><td>金融工厂";break;
+			case 16:str += "</td><td>中信乐益通";break;
 			default:str += "</td><td>";
 		}
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);
