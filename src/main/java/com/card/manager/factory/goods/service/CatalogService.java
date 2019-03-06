@@ -8,8 +8,11 @@
 package com.card.manager.factory.goods.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.card.manager.factory.common.serivce.ServerCenterService;
 import com.card.manager.factory.goods.model.CatalogModel;
+import com.card.manager.factory.goods.model.CategoryPropertyBindModel;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
@@ -24,7 +27,7 @@ import com.card.manager.factory.system.model.StaffEntity;
  * @version
  * @since JDK 1.7
  */
-public interface CatalogService {
+public interface CatalogService extends ServerCenterService {
 
 	/**
 	 * queryById:根据编号查询供应商信息. <br/>
@@ -118,5 +121,13 @@ public interface CatalogService {
 	SecondCatalogEntity queryFirstBySecondId(SecondCatalogEntity entity,String token);
 	
 	String getGoodsCategoryId(String categoryType);
+	
+	FirstCatalogEntity getCatelogInfoByParams(Map<String, Object> params, String token);
+
+	void categoryJoinProperty(CategoryPropertyBindModel model, String propertyType, StaffEntity staffEntity) throws Exception;
+
+	void categoryUnJoinProperty(Map<String,Object> params, StaffEntity staffEntity) throws Exception;
+
+	void updCategoryJoinPropertyByParam(Map<String,Object> params, StaffEntity staffEntity) throws Exception;
 
 }

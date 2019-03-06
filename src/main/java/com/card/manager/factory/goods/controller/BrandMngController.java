@@ -31,38 +31,6 @@ public class BrandMngController extends BaseController {
 	@Resource
 	BrandService brandService;
 
-	@RequestMapping(value = "/mng")
-	public ModelAndView mng(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("goods/brand/mng", context);
-	}
-
-	@RequestMapping(value = "/toAdd")
-	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put("opt", opt);
-		return forword("goods/brand/add", context);
-	}
-
-	@RequestMapping(value = "/addBrand", method = RequestMethod.POST)
-	public void addBrand(HttpServletRequest req, HttpServletResponse resp, @RequestBody BrandEntity entity) {
-
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		entity.setOpt(staffEntity.getOptid());
-		try {
-			entity.setBrand(entity.getBrand().trim());
-			brandService.addBrand(entity, staffEntity.getToken());
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-
-		sendSuccessMessage(resp, null);
-	}
-
 	@RequestMapping(value = "/list")
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -104,8 +72,34 @@ public class BrandMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return pcb;
 		}
-
 		return pcb;
+	}
+
+	@RequestMapping(value = "/toAdd")
+	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put("opt", opt);
+		try {
+			context.put("brandId", brandService.getBrandId());
+		} catch (Exception e) {
+			return forword("goods/brand/list", context);
+		}
+		return forword("goods/brand/add", context);
+	}
+
+	@RequestMapping(value = "/addBrand", method = RequestMethod.POST)
+	public void addBrand(HttpServletRequest req, HttpServletResponse resp, @RequestBody BrandEntity entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptid());
+		try {
+			entity.setBrand(entity.getBrand().trim());
+			brandService.addBrand(entity, staffEntity.getToken());
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
 	}
 
 	@RequestMapping(value = "/toEdit")
@@ -114,7 +108,6 @@ public class BrandMngController extends BaseController {
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put("opt", opt);
 		String id = req.getParameter("brandId");
-
 		try {
 			BrandEntity brand = brandService.queryById(id, opt.getToken());
 			context.put("brand", brand);
@@ -122,13 +115,11 @@ public class BrandMngController extends BaseController {
 			context.put(ERROR, e.getMessage());
 			return forword("error", context);
 		}
-
 		return forword("goods/brand/edit", context);
 	}
 
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public void editBrand(HttpServletRequest req, HttpServletResponse resp, @RequestBody BrandEntity entity) {
-
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			entity.setBrand(entity.getBrand().trim());
@@ -137,7 +128,6 @@ public class BrandMngController extends BaseController {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-
 		sendSuccessMessage(resp, null);
 	}
 
@@ -151,14 +141,11 @@ public class BrandMngController extends BaseController {
 				sendFailureMessage(resp, "信息不全");
 				return;
 			}
-
 			brandService.delete(brandId, staffEntity);
-
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
-
 		sendSuccessMessage(resp, null);
 	}
 }

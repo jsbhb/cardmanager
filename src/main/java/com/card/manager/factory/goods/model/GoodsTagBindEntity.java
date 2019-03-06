@@ -19,7 +19,7 @@ package com.card.manager.factory.goods.model;
 public class GoodsTagBindEntity {
 
 	private int id;
-	private String itemId;// itemId
+	private String specsTpId;// itemId
 	private int tagId;//标签ID
 	private String createTime;// 注册时间
 	private String updateTime;// 更新时间
@@ -54,11 +54,10 @@ public class GoodsTagBindEntity {
 	public void setOpt(String opt) {
 		this.opt = opt;
 	}
-	public String getItemId() {
-		return itemId;
+	public String getSpecsTpId() {
+		return specsTpId;
 	}
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
+	public void setSpecsTpId(String specsTpId) {
+		this.specsTpId = specsTpId;
 	}
-
 }

@@ -90,6 +90,8 @@
 												<a href="javascript:void(0);" onclick="toChangeStatus('${first.firstId}',1,1)">显示分类</a>
 											</c:otherwise>
 										</c:choose>
+										<a href="javascript:void(0);" onclick="toJoinProperty('${first.firstId}',1,1)">关联系列属性</a>
+										<a href="javascript:void(0);" onclick="toJoinProperty('${first.firstId}',1,2)">关联导购属性</a>
 									</td>
 								</tr>
 								<c:forEach var="second" items="${first.seconds}">
@@ -394,6 +396,26 @@ function publish(){
 		 complete : function(data) {
 				$("#image").hide();
 		 }
+	});
+}
+
+function toJoinProperty(id,catalog,propertyType){
+	var strTitle = "";
+	if (propertyType == 1) {
+		strTitle = "关联系列属性";
+	} else {
+		strTitle = "关联导购属性";
+	}
+	if(id == 0 || id == null){
+		layer.alert("信息不全，请联系技术人员！");
+		return;
+	}
+	
+	var index = layer.open({
+	  title: strTitle,	
+	  type: 2,
+	  content: '${wmsUrl}/admin/goods/catalogMng/toJoinProperty.shtml?catalog='+catalog+'&id='+id+'&propertyType='+propertyType,
+	  maxmin: true
 	});
 }
 </script>

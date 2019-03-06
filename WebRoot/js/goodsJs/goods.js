@@ -2,26 +2,7 @@ var keyId = new Array();
 var keyText = new Array();
 var valueIdArray = new Array();
 var valueTextArray = new Array();
-	  
-// disabled单品样式
-function disabledItemSingle() {
-	$("#itemCode").attr("disabled", true);
-}
 
-// 恢复单品样式
-function abledItemSingle() {
-	$("#itemCode").removeAttr("disabled");
-}
-
-// 动态新增规格输入框
-function addSpecsModule() {
-	var module = "";
-}
-
-// 删除新增规格输入框
-function removeSpecsModule() {
-
-}
 $('#specsSwitch').on('click','li',function(){
 	var typeId = $(this).attr('data-type');
 	if(typeId == 0){
@@ -29,21 +10,19 @@ $('#specsSwitch').on('click','li',function(){
 		$('#specs').hide();
 		
 		$("#itemCode").removeAttr("disabled");
-		$("#sku").removeAttr("disabled");
 		$("#encode").removeAttr("disabled");
+		$("#encodeDiv").show();
+		$("#unit").removeAttr("disabled");
 		$("#weight").removeAttr("disabled");
+		$("#specsDescription").removeAttr("disabled");
 		$("#conversion").removeAttr("disabled");
 		$("#conversion").val("1");
-		$("#exciseTax").removeAttr("disabled");
-		$("#exciseTax").val("0");
-		$("#shelfLife").removeAttr("disabled");
 		$("#carTon").removeAttr("disabled");
-		$("#proxyPrice").removeAttr("disabled");
-		$("#fxPrice").removeAttr("disabled");
-		$("#retailPrice").removeAttr("disabled");
-		$("#min").removeAttr("disabled");
-		$("#min").val("1");
-		$("#max").removeAttr("disabled");
+		$("#shelfLife").removeAttr("disabled");
+		$("#sku").removeAttr("disabled");
+		$("#hsunit").removeAttr("disabled");
+		$("#costPrice").removeAttr("disabled");
+		$("#internalPrice").removeAttr("disabled");
 
 		$('.list-all-parent').remove();
 		$("#dynamic-table").empty();
@@ -58,30 +37,29 @@ $('#specsSwitch').on('click','li',function(){
 		
 		$("#itemCode").attr("disabled", true);
 		$("#itemCode").val("");
-		$("#sku").attr("disabled", true);
-		$("#sku").val("");
 		$("#encode").attr("disabled", true);
 		$("#encode").val("");
+		$("#encodeDiv").hide();
+		$("#unit").attr("disabled", true);
+		$("#unit").val("");
 		$("#weight").attr("disabled", true);
 		$("#weight").val("");
+		$("#specsDescription").attr("disabled", true);
+		$("#specsDescription").val("");
 		$("#conversion").attr("disabled", true);
 		$("#conversion").val("1");
-		$("#exciseTax").attr("disabled", true);
-		$("#exciseTax").val("");
-		$("#shelfLife").attr("disabled", true);
-		$("#shelfLife").val("");
 		$("#carTon").attr("disabled", true);
 		$("#carTon").val("");
-		$("#proxyPrice").attr("disabled", true);
-		$("#proxyPrice").val("");
-		$("#fxPrice").attr("disabled", true);
-		$("#fxPrice").val("");
-		$("#retailPrice").attr("disabled", true);
-		$("#retailPrice").val("");
-		$("#min").attr("disabled", true);
-		$("#min").val("");
-		$("#max").attr("disabled", true);
-		$("#max").val("");
+		$("#shelfLife").attr("disabled", true);
+		$("#shelfLife").val("");
+		$("#sku").attr("disabled", true);
+		$("#sku").val("");
+		$("#hsunit").attr("disabled", true);
+		$("#hsunit").val("");
+		$("#costPrice").attr("disabled", true);
+		$("#costPrice").val("");
+		$("#internalPrice").attr("disabled", true);
+		$("#internalPrice").val("");
 
 		$('.list-all-parent').remove();
 		$("#dynamic-table").empty();
@@ -189,19 +167,13 @@ function rebuildTable(){
 					  thead += "<th style='width: 5%;'>"+keyText[i]+"</th>"
 				  }
 			  }
-			  thead += "<th style='width: 12%;'><font style='color:red'>*</font>商家编码</th>";
-			  thead += "<th style='width: 12%;'><font style='color:red'>*</font>自有编码</th>";
-			  thead += "<th style='width: 10%;'>条形码</th>";
-			  thead += "<th style='width: 7%;'><font style='color:red'>*</font>商品重量</th>";
-			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>换算比例</th>";
-			  thead += "<th style='width: 5%;'>消费税率</th>";
-			  thead += "<th style='width: 5%;'>保质期</th>";
-			  thead += "<th style='width: 5%;'>箱规</th>";
-			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>成本价</th>";
-			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>分销价</th>";
-			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>零售价</th>";
-			  thead += "<th style='width: 5%;'><font style='color:red'>*</font>划线价</th>";
-			  thead += "<th style='width: 10%;' colspan='2'>限购数量</th>";
+			  thead += "<th><font style='color:red'>*</font>条形码</th>";
+			  thead += "<th><font style='color:red'>*</font>商品重量</th>";
+			  thead += "<th><font style='color:red'>*</font>换算比例</th>";
+			  thead += "<th><font style='color:red'>*</font>商品单位</th>";
+			  thead += "<th>规格名称</th>";
+			  thead += "<th>规格描述</th>";
+			  thead += "<th>商品箱规</th>";
 			  thead += "</tr>";
 			  
 			  $("#dynamic-thead").html(thead);
@@ -216,6 +188,8 @@ function rebuildTable(){
 //	  console.log(keyText);
 //	  console.log("===keyId===");
 //	  console.log(keyId);
+	  
+	  rebuildSupplierTable();
 }
 
 function rebuildTd(text,valueTextArray,valueIdArray,index,htmlArray){
@@ -245,20 +219,13 @@ function rebuildTd(text,valueTextArray,valueIdArray,index,htmlArray){
     }
    
     if(num + 1 == valueIdArray.length){
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"itemCode\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"sku\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"encode\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"weight\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
 	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"conversion\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" value=\"1\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"exciseTax\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\" value=\"0\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"shelfLife\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"carTon\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"proxyPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"fxPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"retailPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"linePrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"min\" value=\"1\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
-	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"max\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"unit\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"specsGoodsName\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"description\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"carton\"></td>");
 	}
 } 
 
@@ -275,7 +242,7 @@ function getTableInfo(){
 	 var itemDataList=[];
 	 $.each($('#dynamicTable tbody tr'),function(r_index,r_obj){
 		var itemData={};
-		var itemPriceData={};
+//		var itemPriceData={};
 		var obj_name="";
 		var obj_value="";
 		$.each($(r_obj).find('td'),function(c_index,c_obj){
@@ -299,21 +266,52 @@ function getTableInfo(){
 				obj_value = tmpInfo;
 //				console.log(obj_value);
 			}
-
-			if (obj_name == "proxyPrice" || obj_name == "fxPrice" ||
-				obj_name == "retailPrice" || obj_name == "min" ||
-				obj_name == "max" || obj_name == "linePrice") {
-				itemPriceData[obj_name] = obj_value;
-			} else {
-				itemData[obj_name] = obj_value;
-			}
+			itemData[obj_name] = obj_value;
 		});
-		itemData["goodsPrice"] = itemPriceData;
 		itemDataList.push(itemData);
 	 });
 //	 console.log(itemDataList);
 	 return itemDataList;
  }
+
+function getSupplierTableInfo(){
+	 reGetSelectInfo();
+	 var tmpDataTextList=doExchange(valueTextArray);
+	 var tmpDataIdList=doExchange(valueIdArray);
+	 
+	 var itemDataList=[];
+	 $.each($('#dynamicSupplierTable tbody tr'),function(r_index,r_obj){
+		var itemData={};
+		var obj_name="";
+		var obj_value="";
+		$.each($(r_obj).find('td'),function(c_index,c_obj){
+			obj_name = $(c_obj.firstChild).attr('name');
+			var type = c_obj.firstChild.nodeName;
+			if(type == 'INPUT'){
+				obj_value = $(c_obj.firstChild).val();
+			}else if(type == 'SPAN'){
+				var tmpSVKArr = tmpDataIdList[r_index].split(",");
+				var tmpSVVArr = tmpDataTextList[r_index].split(",");
+				var tmpSK="";
+				var tmpSV="";
+				var tmpInfo="";
+				for(var i=0; i<keyText.length; i++){
+					tmpSK = keyId[i];
+					tmpSK = tmpSK + "|" + keyText[i];
+					tmpSV = tmpSVKArr[i];
+					tmpSV = tmpSV + "|" + tmpSVVArr[i];
+					tmpInfo = tmpInfo + tmpSK + "&" + tmpSV + ";";
+				}
+				obj_value = tmpInfo;
+//				console.log(obj_value);
+			}
+			itemData[obj_name] = obj_value;
+		});
+		itemDataList.push(itemData);
+	 });
+//	 console.log(itemDataList);
+	 return itemDataList;
+}
 
 //数组排列组合
 function doExchange(arr){
@@ -353,5 +351,92 @@ function clearNoNum(obj)
     obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");    
     //只能输入两个小数  
     obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');   
-} 
+}
 
+//重构table
+function rebuildSupplierTable(){
+	  $("#dynamicSupplier-table").empty();
+	  $("#dynamicSupplier-head").empty();
+	  
+	  reGetSelectInfo();
+	  
+	  var htmlArray = new Array();
+	  if(valueIdArray.length>0){
+		  if(valueTextArray[0].length>0){
+			  var trHtml = "";
+			  for(var k=0;k<valueTextArray[0].length;k++){
+				  rebuildSupplierTd(valueTextArray[0][k],valueTextArray,valueIdArray,0,htmlArray);
+				  
+				  trHtml += "<tr>";
+				  for(var i=0;i<htmlArray.length;i++){
+					  trHtml += htmlArray[i];
+				  }
+				  trHtml += "</tr>"
+				  htmlArray = new Array();
+			  }
+			  $("#dynamicSupplier-table").html(trHtml);
+			  
+			  var thead = "<tr>";
+			  if(keyText.length>0){
+				  for(var i = 0;i<keyText.length;i++){
+					  thead += "<th style='width: 5%;'>"+keyText[i]+"</th>"
+				  }
+			  }
+			  thead += "<th><font style='color:red'>*</font>商家编码</th>";
+			  thead += "<th>海关备案号</th>";
+			  thead += "<th>海关备案单位</th>";
+			  thead += "<th>保质期</th>";
+			  thead += "<th><font style='color:red'>*</font>成本价</th>";
+			  thead += "<th><font style='color:red'>*</font>供货价</th>";
+			  thead += "<th><font style='color:red'>*</font>库存</th>";
+			  thead += "</tr>";
+			  
+			  $("#dynamicSupplier-head").html(thead);
+		  }
+	  }
+	  
+//	  console.log("===valueIdArray===");
+//	  console.log(valueIdArray);
+//	  console.log("===valueTextArray===");
+//	  console.log(valueTextArray);
+//	  console.log("===keyText===");
+//	  console.log(keyText);
+//	  console.log("===keyId===");
+//	  console.log(keyId);
+}
+
+function rebuildSupplierTd(text,valueTextArray,valueIdArray,index,htmlArray){
+	var num = index;
+	var rowSpanNum = 1;
+	for(var j = num + 1;j < valueIdArray.length;j++){
+		if(valueTextArray[j].length>0){
+		 	rowSpanNum = rowSpanNum * valueIdArray[j].length;
+		}
+	}
+	
+	htmlArray.push("<td rowspan=\""+rowSpanNum+"\"><span name=\"info\">"+text+"</span></td>");
+	
+    if(num + 1 < valueIdArray.length && valueIdArray[num + 1].length>0){
+		if(valueTextArray[num+1].length>0){
+			for(var k=0;k<valueTextArray[num+1].length;k++){
+				if(k!=0){
+					htmlArray.push("<tr>");  
+				}
+				rebuildSupplierTd(valueTextArray[num+1][k],valueTextArray,valueIdArray,num+1,htmlArray);
+				if(k!=0){
+					htmlArray.push("</tr>");  
+				}
+			}
+		}
+	}
+   
+    if(num + 1 == valueIdArray.length){
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"itemCode\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"sku\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"unit\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"shelfLife\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"costPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"internalPrice\" onkeyup=\"clearNoNum(this)\" onafterpaste=\"clearNoNum(this)\"></td>");
+	  	htmlArray.push("<td><input type=\"text\" class=\"form-control\" name=\"stockQty\" onkeyup=\"this.value=this.value.replace(/[^?\\d]/g,'')\" onafterpaste=\"this.value=this.value.replace(/[^?\\d]/g,'')\" value=\"100\"></td>");
+	}
+} 

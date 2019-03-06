@@ -536,6 +536,7 @@ public class RebateMngController extends BaseController {
 					case 14:oi.setOrderSourceName("自营");break;
 					case 15:oi.setOrderSourceName("金融工厂");break;
 					case 16:oi.setOrderSourceName("中信乐益通");break;
+					case 17:oi.setOrderSourceName("波罗蜜");break;
 					}
 					
 					switch (oi.getOrderFlg()) {

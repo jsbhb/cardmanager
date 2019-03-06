@@ -632,6 +632,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 				case 16:
 					temp.setOrderSourceName("中信乐益通");
 					break;
+				case 17:
+					temp.setOrderSourceName("波罗蜜");
+					break;
 				default:
 					temp.setOrderSourceName("未知：" + temp.getOrderSource());
 					break;

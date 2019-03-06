@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.goods.model.CatalogModel;
+import com.card.manager.factory.goods.model.CategoryPropertyBindModel;
 import com.card.manager.factory.goods.model.CategoryTypeEnum;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
@@ -46,7 +48,7 @@ import net.sf.json.JSONObject;
  * @since JDK 1.7
  */
 @Service
-public class CatalogServiceImpl implements CatalogService {
+public class CatalogServiceImpl extends AbstractServcerCenterBaseService implements CatalogService {
 
 	@SuppressWarnings("rawtypes")
 	@Resource
@@ -159,7 +161,7 @@ public class CatalogServiceImpl implements CatalogService {
 			throw new Exception("新增商品分类信息操作失败:" + json.getString("errorMsg"));
 		}
 	}
-	
+
 	@Override
 	@Log(content = "更新商品分类信息操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void modify(CatalogModel model, StaffEntity staffEntity) throws Exception {
@@ -350,8 +352,7 @@ public class CatalogServiceImpl implements CatalogService {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> result = null;
 
-		result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_PUBLISH,
+		result = helper.request(URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_PUBLISH,
 				staffEntity.getToken(), true, null, HttpMethod.POST);
 
 		if (result == null)
@@ -364,7 +365,7 @@ public class CatalogServiceImpl implements CatalogService {
 		}
 
 	}
-	
+
 	@Override
 	@Log(content = "执行商品分类操作", source = Log.BACK_PLAT, type = Log.MODIFY)
 	public void updCategoryByParam(CatalogModel model, StaffEntity staffEntity) throws Exception {
@@ -413,11 +414,11 @@ public class CatalogServiceImpl implements CatalogService {
 	}
 
 	@Override
-	public SecondCatalogEntity queryFirstBySecondId(SecondCatalogEntity entity,String token) {
+	public SecondCatalogEntity queryFirstBySecondId(SecondCatalogEntity entity, String token) {
 		RestCommonHelper helper = new RestCommonHelper();
 		ResponseEntity<String> query_result = helper.request(
-				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_FIRST_BY_SECONDID, token, true, entity,
-				HttpMethod.POST);
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_FIRST_BY_SECONDID, token,
+				true, entity, HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), SecondCatalogEntity.class);
@@ -438,5 +439,64 @@ public class CatalogServiceImpl implements CatalogService {
 			retCategoryId = ServerCenterContants.THIRD_CATALOG + sequence;
 		}
 		return retCategoryId;
+	}
+
+	@Override
+	public FirstCatalogEntity getCatelogInfoByParams(Map<String, Object> params, String token) {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> query_result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_CATALOGINFO_BY_PARAMS, token,
+				true, null, HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), FirstCatalogEntity.class);
+	}
+
+	@Override
+	public void categoryJoinProperty(CategoryPropertyBindModel model, String propertyType, StaffEntity staffEntity)
+			throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper
+				.request(
+						URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_CATEGORY_JOIN_PROPERTY
+								+ "?propertyType=" + propertyType,
+						staffEntity.getToken(), true, model, HttpMethod.POST);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("类目关联属性操作失败:" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public void categoryUnJoinProperty(Map<String, Object> params, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_CATEGORY_UN_JOIN_PROPERTY,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("类目移除属性操作失败:" + json.getString("errorMsg"));
+		}
+
+	}
+
+	@Override
+	public void updCategoryJoinPropertyByParam(Map<String,Object> params, StaffEntity staffEntity) throws Exception {
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> result = helper.requestWithParams(
+				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_CATALOG_MODIFY_CATEGORY_JOIN_PROPERTY,
+				staffEntity.getToken(), true, null, HttpMethod.POST, params);
+
+		JSONObject json = JSONObject.fromObject(result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new Exception("更新类目关联属性操作失败:" + json.getString("errorMsg"));
+		}
+
 	}
 }

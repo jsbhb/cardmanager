@@ -890,6 +890,11 @@ public class LoginController extends BaseController {
 								+ ResourceContants.POPULARITY + "/" + ResourceContants.IMAGE + "/" + key + "/";
 						invitePath = URLUtils.get("static") + "/" + ResourceContants.H5 + "/" + ResourceContants.POPULARITY
 								 + "/" + ResourceContants.IMAGE + "/" + key + "/" + saveFileName;
+					} else if (type.equals(ResourceContants.GOODSBRAND)) {
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/"
+								 + ResourceContants.BRAND + "/" + key + "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/"
+								 + ResourceContants.BRAND + "/" + key + "/" + saveFileName;
 					} else {
 						sendFailureMessage(resp, "操作失败：没有文件处理类型信息");
 						return;

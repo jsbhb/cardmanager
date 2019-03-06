@@ -272,7 +272,6 @@ public class GoodsItemServiceImpl extends AbstractServcerCenterBaseService imple
 		for (String itemId : itemIdArr) {
 			for (String tagId : tagIdArr) {
 				entity = new GoodsTagBindEntity();
-				entity.setItemId(itemId);
 				entity.setTagId(Integer.valueOf(tagId));
 				entity.setOpt(staffEntity.getOptName());
 				list.add(entity);

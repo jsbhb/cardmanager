@@ -9,8 +9,6 @@ package com.card.manager.factory.goods.model;
 
 import com.card.manager.factory.base.Pagination;
 
-import net.sf.json.JSONObject;
-
 /**
  * ClassName: BrandEntity <br/>
  * Function: 品牌. <br/>
@@ -29,19 +27,13 @@ public class BrandEntity extends Pagination {
 	private String createTime;
 	private String updateTime;
 	private String opt;
-
-	public BrandEntity() {
-	}
-
-	public BrandEntity(JSONObject obj) {
-		this.id = obj.getInt("id");
-		this.brandId = obj.getString("brandId");
-		this.brand = obj.getString("brand");
-		this.opt = obj.getString("opt");
-		this.attr = obj.getString("attr");
-		this.createTime = obj.getString("createTime");
-		this.updateTime = obj.getString("updateTime");
-	}
+	
+	//商品库改造新增字段
+	private String brandLogo;
+	private String brandSynopsis;
+	private String brandNameCn;
+	private String brandNameEn;
+	private String country;
 
 	public int getId() {
 		return id;
@@ -120,6 +112,44 @@ public class BrandEntity extends Pagination {
 			return false;
 		return true;
 	}
-	
-	
+
+	public String getBrandLogo() {
+		return brandLogo;
+	}
+
+	public void setBrandLogo(String brandLogo) {
+		this.brandLogo = brandLogo;
+	}
+
+	public String getBrandSynopsis() {
+		return brandSynopsis;
+	}
+
+	public void setBrandSynopsis(String brandSynopsis) {
+		this.brandSynopsis = brandSynopsis;
+	}
+
+	public String getBrandNameCn() {
+		return brandNameCn;
+	}
+
+	public void setBrandNameCn(String brandNameCn) {
+		this.brandNameCn = brandNameCn;
+	}
+
+	public String getBrandNameEn() {
+		return brandNameEn;
+	}
+
+	public void setBrandNameEn(String brandNameEn) {
+		this.brandNameEn = brandNameEn;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
 }

@@ -31,20 +31,18 @@ import com.card.manager.factory.annotation.Auth;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.common.ResourceContants;
 import com.card.manager.factory.component.CachePoolComponent;
-import com.card.manager.factory.ftp.service.SftpService;
+import com.card.manager.factory.goods.GoodsUtil;
+import com.card.manager.factory.goods.grademodel.KJGoodsDTO;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
-import com.card.manager.factory.goods.model.GoodsEntity;
-import com.card.manager.factory.goods.model.GoodsItemEntity;
-import com.card.manager.factory.goods.model.GoodsPriceRatioEntity;
-import com.card.manager.factory.goods.model.GoodsTagBindEntity;
-import com.card.manager.factory.goods.model.GoodsTagEntity;
-import com.card.manager.factory.goods.model.SecondCatalogEntity;
-import com.card.manager.factory.goods.model.SpecsEntity;
-import com.card.manager.factory.goods.model.ThirdCatalogEntity;
-import com.card.manager.factory.goods.pojo.CreateGoodsInfoEntity;
+import com.card.manager.factory.goods.model.GoodsFile;
+import com.card.manager.factory.goods.model.WarehouseModel;
 import com.card.manager.factory.goods.pojo.GoodsFielsMaintainBO;
-import com.card.manager.factory.goods.pojo.GoodsInfoEntity;
-import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
+import com.card.manager.factory.goods.pojo.po.BackGoodsPO;
+import com.card.manager.factory.goods.pojo.po.Goods;
+import com.card.manager.factory.goods.pojo.po.GoodsPricePO;
+import com.card.manager.factory.goods.pojo.po.GoodsSpecs;
+import com.card.manager.factory.goods.pojo.po.GoodsSpecsTradePattern;
+import com.card.manager.factory.goods.pojo.po.Items;
 import com.card.manager.factory.goods.service.CatalogService;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.goods.service.SpecsService;
@@ -52,14 +50,9 @@ import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.socket.task.SocketClient;
 import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.util.CompressFileUtils;
-import com.card.manager.factory.util.DateUtil;
-import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
 import com.card.manager.factory.util.URLUtils;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/admin/goods/goodsMng")
@@ -75,9 +68,6 @@ public class GoodsMngController extends BaseController {
 	SpecsService specsService;
 
 	@Resource
-	SftpService sftpService;
-
-	@Resource
 	SysLogger sysLogger;
 
 	@RequestMapping(value = "/mng")
@@ -88,8 +78,8 @@ public class GoodsMngController extends BaseController {
 		return forword("goods/goods/add_choose", context);
 	}
 
-	@RequestMapping(value = "/toAdd")
-	public ModelAndView toAdd(HttpServletRequest req, HttpServletResponse resp) {
+	@RequestMapping(value = "/toAddKJGoods")
+	public ModelAndView toAddKJGoods(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
@@ -98,19 +88,9 @@ public class GoodsMngController extends BaseController {
 			context.put("brands", CachePoolComponent.getBrands(opt.getToken()));
 			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(opt.getToken());
 			context.put("firsts", catalogs);
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
-			context.put("tags", tags);
 
-			// 自动产生业务流水号：tmp+GoodsId+账号+时间+4位随机数
-			Integer num = (int) (Math.random() * 9000) + 1000;
-			String key = "";
-			try {
-				key = "tmpGoodsId" + opt.getBadge() + DateUtil.getNowPlusTimeMill() + num;
-			} catch (Exception e) {
-				e.printStackTrace();
-				key = "tmpGoodsId" + opt.getBadge() + num;
-			}
-			context.put("key", key);
+			// 先获取goodsId
+			context.put("goodsId", goodsService.getGoodsId());
 			return forword("goods/goods/add", context);
 		} catch (Exception e) {
 			context.put(ERROR, e.getMessage());
@@ -118,45 +98,381 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
+	@RequestMapping(value = "/checkEncodeExist", method = RequestMethod.POST)
+	public void checkEncodeExist(HttpServletRequest req, HttpServletResponse resp) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		// try {
+		// String encode = req.getParameter("encode");
+		// String goodsType = req.getParameter("goodsType");
+		// BackGoodsPO backGoodsPo =
+		// goodsService.queryBackGoodsPoByEncode(encode, goodsType,
+		// staffEntity);
+		// if (backGoodsPo != null) {
+		// // 初始化商详信息
+		// String detailInfo = "";
+		// // 包含商详地址
+		// if (backGoodsPo.getGoods().getDetailPath() != null
+		// && backGoodsPo.getGoods().getDetailPath().indexOf("html") > 0) {
+		// try {
+		// detailInfo =
+		// goodsService.getHtmlContext(backGoodsPo.getGoods().getDetailPath(),
+		// staffEntity);
+		// } catch (Exception e) {
+		// sendFailureMessage(resp, e.getMessage());
+		// }
+		// } else if (backGoodsPo.getGoods().getDetailPath() != null) {
+		// String[] imgArr = backGoodsPo.getGoods().getDetailPath().split(";");
+		// String BaseUrl = URLUtils.get("static");
+		// for (int i = 0; i < imgArr.length; i++) {
+		// detailInfo = detailInfo + "<p style=\"text-align: center;\"><img
+		// src=\"" + BaseUrl
+		// + "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+		// }
+		// detailInfo = detailInfo + "<p><br/></p>";
+		// }
+		// backGoodsPo.getGoods().setDetailPath(detailInfo);
+		// GoodsUtil.changeGoodsSpecsInfoToList(backGoodsPo.getSpecsList());
+		// GoodsUtil.changeGoodsCategoryInfo(backGoodsPo,
+		// staffEntity.getToken());
+		// sendSuccessObject(resp, backGoodsPo);
+		// } else {
+		// sendSuccessMessage(resp, "");
+		// }
+		// } catch (Exception e) {
+		// sendFailureMessage(resp, "操作失败：" + e.getMessage());
+		// return;
+		// }
+
+		BackGoodsPO backGoodsPo = new BackGoodsPO();
+		Goods g = new Goods();
+		g.setGoodsId("100001795");
+		g.setGoodsName("测试商品");
+		g.setType(0);
+		g.setBrandId("brand_5");
+		g.setBrandName("高丝");
+		g.setOrigin("美国");
+		g.setHscode("hscode123456");
+		g.setFirstCategory("first3");
+		g.setSecondCategory("second6");
+		g.setThirdCategory("third3");
+		List<GoodsFile> gfList = new ArrayList<GoodsFile>();
+		GoodsFile gf = null;
+		gf = new GoodsFile();
+		gf.setPath(
+				"https://static.cncoopbuy.com:8080/goods/100000798/master/images/008516dc-7d08-4048-b018-b2cc312241d6.jpg");
+		gfList.add(gf);
+		gf = new GoodsFile();
+		gf.setPath(
+				"https://static.cncoopbuy.com:8080/goods/100000798/master/images/aa6e55c1-7013-4d79-b0cb-577e4b4f9036.jpg");
+		gfList.add(gf);
+		gf = new GoodsFile();
+		gf.setPath(
+				"https://static.cncoopbuy.com:8080/goods/100000798/master/images/9ec7e9ec-030b-42a7-bb5d-21ffa0d068a7.jpg");
+		gfList.add(gf);
+		g.setGoodsFileList(gfList);
+		g.setDetailPath("https://teststatic.cncoopbuy.com:8080/goods/105050200/detail/html/GZKJ0495010037.html");
+		// 初始化商详信息
+		String detailInfo = "";
+		// 包含商详地址
+		if (g.getDetailPath() != null && g.getDetailPath().indexOf("html") > 0) {
+			try {
+				detailInfo = goodsService.getHtmlContext(g.getDetailPath(), staffEntity);
+			} catch (Exception e) {
+				sendFailureMessage(resp, e.getMessage());
+			}
+		} else if (g.getDetailPath() != null) {
+			String[] imgArr = g.getDetailPath().split(";");
+			String BaseUrl = URLUtils.get("static");
+			for (int i = 0; i < imgArr.length; i++) {
+				detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
+						+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+			}
+			detailInfo = detailInfo + "<p><br/></p>";
+		}
+		g.setDetailPath(detailInfo);
+		backGoodsPo.setGoods(g);
+
+		List<GoodsSpecs> gslist = new ArrayList<GoodsSpecs>();
+		GoodsSpecs gs = new GoodsSpecs();
+		gs.setSpecsId("100001795-1");
+		gs.setEncode("encode123456");
+		gs.setWeight(1500);
+		gs.setUnit("件");
+		gs.setDescription("测试specs");
+		gs.setSpecsGoodsName("30g");
+		gs.setConversion(5);
+		gs.setCarton("6box");
+		gs.setInfo(
+				"[{\"svV\":\"1盒装\",\"skId\":\"5\",\"svId\":\"60\",\"skV\":\"套装\"},{\"svV\":\"抹茶味\",\"skId\":\"1\",\"svId\":\"245\",\"skV\":\"口味\"}]");
+		gslist.add(gs);
+		backGoodsPo.setSpecsList(gslist);
+		GoodsUtil.changeGoodsSpecsInfoToList(backGoodsPo.getSpecsList());
+
+		List<Items> itemList = new ArrayList<Items>();
+		Items item = new Items();
+		item.setSupplierId(3);
+		item.setSupplierName("行云仓");
+		item.setItemCode("itemcode123456");
+		item.setSku("sku123456");
+		item.setStatus(2);
+		item.setUnit("件");
+		item.setShelfLife("2年");
+		itemList.add(item);
+		item = new Items();
+		item.setSupplierId(8);
+		item.setSupplierName("乾丰仓");
+		item.setItemCode("itemcode1234567");
+		item.setSku("sku1234567");
+		item.setStatus(1);
+		item.setUnit("件");
+		item.setShelfLife("1年");
+		itemList.add(item);
+		backGoodsPo.setItemsList(itemList);
+
+		List<GoodsSpecsTradePattern> specsTpList = new ArrayList<GoodsSpecsTradePattern>();
+		GoodsSpecsTradePattern gstp = new GoodsSpecsTradePattern();
+		gstp.setGoodsId("100001795");
+		gstp.setSpecsId("100001795-1");
+		gstp.setSpecsTpId("100001795-2");
+		specsTpList.add(gstp);
+		backGoodsPo.setGoodsSpecsTpList(specsTpList);
+
+		GoodsUtil.changeGoodsCategoryInfo(backGoodsPo, staffEntity.getToken());
+		sendSuccessObject(resp, backGoodsPo);
+		// sendSuccessMessage(resp, "");
+	}
+
+	@RequestMapping(value = "/saveKJGoodsInfo", method = RequestMethod.POST)
+	public void saveKJGoodsInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody KJGoodsDTO entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptName());
+		try {
+			goodsService.saveKJGoodsInfo(entity, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, "");
+	}
+
+	@RequestMapping(value = "/toEditKJGoodsInfo")
+	public ModelAndView toEditKJGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			// String itemId = req.getParameter("itemId");
+			// BackGoodsPO backGoodsPo =
+			// goodsService.queryBackGoodsPoByItemId(itemId, staffEntity);
+			// if (backGoodsPo != null) {
+			// // 初始化商详信息
+			// String detailInfo = "";
+			// // 包含商详地址
+			// if (backGoodsPo.getGoods().getDetailPath() != null
+			// && backGoodsPo.getGoods().getDetailPath().indexOf("html") > 0) {
+			// try {
+			// detailInfo =
+			// goodsService.getHtmlContext(backGoodsPo.getGoods().getDetailPath(),
+			// staffEntity);
+			// } catch (Exception e) {
+			// sendFailureMessage(resp, e.getMessage());
+			// }
+			// } else if (backGoodsPo.getGoods().getDetailPath() != null) {
+			// String[] imgArr =
+			// backGoodsPo.getGoods().getDetailPath().split(";");
+			// String BaseUrl = URLUtils.get("static");
+			// for (int i = 0; i < imgArr.length; i++) {
+			// detailInfo = detailInfo + "<p style=\"text-align: center;\"><img
+			// src=\"" + BaseUrl
+			// + "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+			// }
+			// detailInfo = detailInfo + "<p><br/></p>";
+			// }
+			// backGoodsPo.getGoods().setDetailPath(detailInfo);
+			// GoodsUtil.changeGoodsSpecsInfoToList(backGoodsPo.getSpecsList());
+			// GoodsUtil.changeGoodsCategoryInfo(backGoodsPo,
+			// staffEntity.getToken());
+			// }
+
+			BackGoodsPO backGoodsPo = new BackGoodsPO();
+			Goods g = new Goods();
+			g.setGoodsId("100001795");
+			g.setGoodsName("测试商品");
+			g.setDescription("卖点1 卖点2");
+			g.setType(0);
+			g.setBrandId("brand_5");
+			g.setBrandName("高丝");
+			g.setOrigin("美国");
+			g.setHscode("hscode123456");
+			g.setFirstCategory("first3");
+			g.setSecondCategory("second6");
+			g.setThirdCategory("third3");
+			List<GoodsFile> gfList = new ArrayList<GoodsFile>();
+			GoodsFile gf = null;
+			gf = new GoodsFile();
+			gf.setPath(
+					"https://static.cncoopbuy.com:8080/goods/100000798/master/images/008516dc-7d08-4048-b018-b2cc312241d6.jpg");
+			gfList.add(gf);
+			gf = new GoodsFile();
+			gf.setPath(
+					"https://static.cncoopbuy.com:8080/goods/100000798/master/images/aa6e55c1-7013-4d79-b0cb-577e4b4f9036.jpg");
+			gfList.add(gf);
+			gf = new GoodsFile();
+			gf.setPath(
+					"https://static.cncoopbuy.com:8080/goods/100000798/master/images/9ec7e9ec-030b-42a7-bb5d-21ffa0d068a7.jpg");
+			gfList.add(gf);
+			g.setGoodsFileList(gfList);
+			g.setDetailPath("https://teststatic.cncoopbuy.com:8080/goods/105050200/detail/html/GZKJ0495010037.html");
+			// 初始化商详信息
+			String detailInfo = "";
+			// 包含商详地址
+			if (g.getDetailPath() != null && g.getDetailPath().indexOf("html") > 0) {
+				try {
+					detailInfo = goodsService.getHtmlContext(g.getDetailPath(), staffEntity);
+				} catch (Exception e) {
+					sendFailureMessage(resp, e.getMessage());
+				}
+			} else if (g.getDetailPath() != null) {
+				String[] imgArr = g.getDetailPath().split(";");
+				String BaseUrl = URLUtils.get("static");
+				for (int i = 0; i < imgArr.length; i++) {
+					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
+							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
+				}
+				detailInfo = detailInfo + "<p><br/></p>";
+			}
+			g.setDetailPath(detailInfo);
+			backGoodsPo.setGoods(g);
+
+			List<GoodsSpecs> gslist = new ArrayList<GoodsSpecs>();
+			GoodsSpecs gs = new GoodsSpecs();
+			gs.setSpecsId("100001795-1");
+			gs.setEncode("encode123456");
+			gs.setWeight(1500);
+			gs.setUnit("件");
+			gs.setDescription("测试specs");
+			gs.setSpecsGoodsName("30g");
+			gs.setConversion(5);
+			gs.setCarton("6box");
+			gs.setInfo(
+					"[{\"svV\":\"1盒装\",\"skId\":\"5\",\"svId\":\"60\",\"skV\":\"套装\"},{\"svV\":\"抹茶味\",\"skId\":\"1\",\"svId\":\"245\",\"skV\":\"口味\"}]");
+			gslist.add(gs);
+			backGoodsPo.setSpecsList(gslist);
+			GoodsUtil.changeGoodsSpecsInfoToList(backGoodsPo.getSpecsList());
+
+			List<Items> itemList = new ArrayList<Items>();
+			Items item = new Items();
+			item.setItemId("100001795-3");
+			item.setSpecsTpId("100001795-2");
+			item.setSupplierId(3);
+			item.setSupplierName("行云仓");
+			item.setItemCode("itemcode123456");
+			item.setSku("sku123456");
+			item.setStatus(2);
+			item.setUnit("件");
+			item.setShelfLife("2年");
+			itemList.add(item);
+			backGoodsPo.setItemsList(itemList);
+
+			List<GoodsSpecsTradePattern> specsTpList = new ArrayList<GoodsSpecsTradePattern>();
+			GoodsSpecsTradePattern gstp = new GoodsSpecsTradePattern();
+			gstp.setGoodsId("100001795");
+			gstp.setSpecsId("100001795-1");
+			gstp.setSpecsTpId("100001795-2");
+			specsTpList.add(gstp);
+			backGoodsPo.setGoodsSpecsTpList(specsTpList);
+			GoodsUtil.changeGoodsCategoryInfo(backGoodsPo, staffEntity.getToken());
+
+			List<GoodsPricePO> priceList = new ArrayList<GoodsPricePO>();
+			GoodsPricePO goodsPrice = new GoodsPricePO();
+			goodsPrice.setItemId("100001795-3");
+			goodsPrice.setSpecsTpId("100001795-2");
+			goodsPrice.setCostPrice(110);
+			goodsPrice.setInternalPrice(120);
+			priceList.add(goodsPrice);
+			backGoodsPo.setPriceList(priceList);
+
+			List<WarehouseModel> stockList = new ArrayList<WarehouseModel>();
+			WarehouseModel stock = new WarehouseModel();
+			stock.setItemId("100001795-3");
+			stock.setSpecsTpId("100001795-2");
+			stock.setFxqty(100);
+			stockList.add(stock);
+			backGoodsPo.setStockList(stockList);
+
+			context.put("backGoodsPo", backGoodsPo);
+			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
+			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
+			List<FirstCatalogEntity> catalogs = catalogService.queryFirstCatalogs(staffEntity.getToken());
+			context.put("firsts", catalogs);
+
+			return forword("goods/goods/edit", context);
+		} catch (Exception e) {
+			context.put(ERROR, e.getMessage());
+			return forword(ERROR, context);
+		}
+	}
+
+	@RequestMapping(value = "/editKJGoodsInfo", method = RequestMethod.POST)
+	public void editKJGoodsInfo(HttpServletRequest req, HttpServletResponse resp, @RequestBody KJGoodsDTO entity) {
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		entity.setOpt(staffEntity.getOptName());
+		try {
+			goodsService.modifyKJGoodsInfo(entity, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+
+	// @RequestMapping(value = "/toTag")
+	// public ModelAndView toTag(HttpServletRequest req, HttpServletResponse
+	// resp) {
+	// Map<String, Object> context = getRootMap();
+	// StaffEntity opt = SessionUtils.getOperator(req);
+	// context.put(OPT, opt);
+	// try {
+	// return forword("goods/goods/addTag", context);
+	// } catch (Exception e) {
+	// context.put(ERROR, e.getMessage());
+	// return forword(ERROR, context);
+	// }
+	// }
+	//
+	// @RequestMapping(value = "/refreshTag", method = RequestMethod.POST)
+	// public void refreshTag(HttpServletRequest req, HttpServletResponse resp)
+	// {
+	// StaffEntity staffEntity = SessionUtils.getOperator(req);
+	// try {
+	// List<GoodsTagEntity> tags =
+	// goodsService.queryGoodsTags(staffEntity.getToken());
+	// sendSuccessObject(resp, tags);
+	// } catch (Exception e) {
+	// sendFailureMessage(resp, "操作失败：" + e.getMessage());
+	// return;
+	// }
+	// }
+	//
+	// @RequestMapping(value = "/saveTag", method = RequestMethod.POST)
+	// public void saveTag(HttpServletRequest req, HttpServletResponse resp,
+	// @RequestBody GoodsTagEntity goodsTag) {
+	// StaffEntity staffEntity = SessionUtils.getOperator(req);
+	// try {
+	// goodsTag.setPriority(1);
+	// goodsService.addGoodsTag(goodsTag, staffEntity.getToken());
+	// } catch (Exception e) {
+	// sendFailureMessage(resp, "操作失败：" + e.getMessage());
+	// return;
+	// }
+	// sendSuccessMessage(resp, null);
+	// }
+
 	@RequestMapping(value = "/toAddBatch")
 	public ModelAndView toAddBatch(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
 		StaffEntity opt = SessionUtils.getOperator(req);
 		context.put(OPT, opt);
 		return forword("goods/goods/goodsImport", context);
-	}
-
-	@RequestMapping(value = "/toShow")
-	public ModelAndView toShow(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put(OPT, opt);
-		try {
-			String id = req.getParameter("id");
-			GoodsEntity entity = goodsService.queryById(id, opt.getToken());
-			context.put("goods", entity);
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(opt.getToken());
-			context.put("tags", tags);
-			return forword("goods/goods/show", context);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-
-	}
-
-	@RequestMapping(value = "/createGoodsInfo", method = RequestMethod.POST)
-	public void createGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
-			@RequestBody CreateGoodsInfoEntity entity) {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		entity.setOpt(staffEntity.getOptid());
-		try {
-			goodsService.addGoodsInfoEntity(entity, staffEntity);
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-		sendSuccessMessage(resp, entity.getPicPath());
 	}
 
 	@RequestMapping(value = "/importGoodsInfo", method = RequestMethod.POST)
@@ -192,146 +508,6 @@ public class GoodsMngController extends BaseController {
 			resp.getWriter().println(e.getMessage());
 			return;
 		}
-	}
-
-	@RequestMapping(value = "/toEditGoodsInfo")
-	public ModelAndView toEditGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
-			context.put("specs", specs);
-
-			String itemId = req.getParameter("itemId");
-			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
-			for (GoodsItemEntity gie : goodsInfo.getGoods().getItems()) {
-				if (gie.getInfo() != null && !"".equals(gie.getInfo())) {
-					JSONArray jsonArray = JSONArray.fromObject(gie.getInfo().substring(1, gie.getInfo().length()));
-					int index = jsonArray.size();
-					List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
-					List<String> titles = new ArrayList<String>();
-					for (int i = 0; i < index; i++) {
-						JSONObject jObj = jsonArray.getJSONObject(i);
-						list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
-						titles.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class).getSkV());
-					}
-					gie.setSpecs(list);
-
-					context.put("specsInfos", list);
-					context.put("specsTitles", titles);
-				}
-			}
-			context.put("goodsInfo", goodsInfo);
-
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			for (GoodsTagEntity gte : tags) {
-				for (GoodsTagBindEntity gtbe : goodsInfo.getGoods().getGoodsTagBindList()) {
-					if (gte.getId() == gtbe.getTagId()) {
-						gte.setTagFunId(1);
-						break;
-					}
-				}
-			}
-			context.put("tags", tags);
-
-			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
-			for (FirstCatalogEntity first : catalogs) {
-				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
-					context.put("firstName", first.getName());
-					for (SecondCatalogEntity second : first.getSeconds()) {
-						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
-							context.put("secondName", second.getName());
-							for (ThirdCatalogEntity third : second.getThirds()) {
-								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
-									context.put("thirdName", third.getName());
-									break;
-								}
-							}
-							break;
-						}
-					}
-					break;
-				}
-			}
-
-			// 初始化商详信息
-			String detailInfo = "";
-			// 包含商详地址
-			if (goodsInfo.getGoods().getDetailPath() != null
-					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
-				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
-			} else if (goodsInfo.getGoods().getDetailPath() != null) {
-				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
-				String BaseUrl = URLUtils.get("static");
-				for (int i = 0; i < imgArr.length; i++) {
-					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
-							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
-				}
-				detailInfo = detailInfo + "<p><br/></p>";
-			}
-			context.put("detailInfo", detailInfo);
-
-			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
-			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
-
-			return forword("goods/goods/edit", context);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-	}
-
-	@RequestMapping(value = "/editGoodsInfo", method = RequestMethod.POST)
-	public void editGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
-			@RequestBody CreateGoodsInfoEntity entity) {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		entity.setOpt(staffEntity.getOptid());
-		try {
-			goodsService.updGoodsInfoEntity(entity, staffEntity);
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-
-		sendSuccessMessage(resp, null);
-	}
-
-	@RequestMapping(value = "/toTag")
-	public ModelAndView toTag(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity opt = SessionUtils.getOperator(req);
-		context.put(OPT, opt);
-		try {
-			return forword("goods/goods/addTag", context);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-	}
-
-	@RequestMapping(value = "/refreshTag", method = RequestMethod.POST)
-	public void refreshTag(HttpServletRequest req, HttpServletResponse resp) {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			sendSuccessObject(resp, tags);
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-	}
-
-	@RequestMapping(value = "/saveTag", method = RequestMethod.POST)
-	public void saveTag(HttpServletRequest req, HttpServletResponse resp, @RequestBody GoodsTagEntity goodsTag) {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			goodsTag.setPriority(1);
-			goodsService.addGoodsTag(goodsTag, staffEntity.getToken());
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-		sendSuccessMessage(resp, null);
 	}
 
 	private final int MAX_SIZE = 1024 * 50 * 1024; // 50MB
@@ -414,14 +590,14 @@ public class GoodsMngController extends BaseController {
 
 				File directory = new File(compressedFilePath + sourceNameWithoutSuffix);
 
-				//解压后的目录结构
+				// 解压后的目录结构
 				String[] itemCodeList = directory.list();
 				if (itemCodeList == null || itemCodeList.length == 0) {
 					sendFailureMessage(resp, "没有商品信息！");
 					return;
 				}
-				
-				//重命名目录结构
+
+				// 重命名目录结构
 				for (String itemCodeFile : itemCodeList) {
 					File fileDir = new File(compressedFilePath + sourceNameWithoutSuffix + "/" + itemCodeFile);
 					File newFileDir = new File(compressedFilePath + sourceNameWithoutSuffix + "/" + itemCode);
@@ -460,9 +636,7 @@ public class GoodsMngController extends BaseController {
 			}
 		} else {
 			sendFailureMessage(resp, "没有文件内容！");
-
 		}
-
 	}
 
 	private static boolean delAllFile(String path) {
@@ -506,17 +680,21 @@ public class GoodsMngController extends BaseController {
 		}
 	}
 
-//	private String getNewFileName(String itemCode, String fileName, StaffEntity staffEntity, Integer i) {
-//		// 文件后缀
-//		String suffix = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf("."), fileName.length())
-//				: null;
-//
-//		// 源文件名称
-//		String sourceNameWithoutSuffix = (fileName.indexOf(".") != -1 ? fileName.substring(0, fileName.lastIndexOf("."))
-//				: null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge() + "-" + i;
-//		// 源文件名称
-//		return itemCode + "_" + sourceNameWithoutSuffix + suffix;
-//	}
+	// private String getNewFileName(String itemCode, String fileName,
+	// StaffEntity staffEntity, Integer i) {
+	// // 文件后缀
+	// String suffix = fileName.indexOf(".") != -1 ?
+	// fileName.substring(fileName.lastIndexOf("."), fileName.length())
+	// : null;
+	//
+	// // 源文件名称
+	// String sourceNameWithoutSuffix = (fileName.indexOf(".") != -1 ?
+	// fileName.substring(0, fileName.lastIndexOf("."))
+	// : null) + "-" + sdf.format(new Date()) + "-" + staffEntity.getBadge() +
+	// "-" + i;
+	// // 源文件名称
+	// return itemCode + "_" + sourceNameWithoutSuffix + suffix;
+	// }
 
 	/**
 	 * dealGoodsPic:(这里用一句话描述这个方法的作用). <br/>
@@ -557,7 +735,6 @@ public class GoodsMngController extends BaseController {
 							|| fileList[i].endsWith(".jpeg")) {
 						coverList.add(fileList[i]);
 					}
-
 				}
 			}
 
@@ -571,13 +748,10 @@ public class GoodsMngController extends BaseController {
 				bo.setGoodsDetailPath(
 						dealDetailPic(itemCode, path + "/" + itemCode + "/" + "detail", detailList, staffEntity));
 			}
-
 		} else {
 			throw new Exception("文件格式出错");
 		}
-
 		return bo;
-
 	}
 
 	/**
@@ -590,12 +764,12 @@ public class GoodsMngController extends BaseController {
 	 */
 	private List<String> dealCoverPic(String itemCode, String path, List<String> coverList, StaffEntity staffEntity)
 			throws Exception {
-		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + 
-				itemCode + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
+		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + itemCode + "/"
+				+ ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/";
 
 		List<String> coverInviteList = new ArrayList<String>();
 		File file;
-//		String newFileName;
+		// String newFileName;
 		Collections.sort(coverList, new Comparator<String>() {
 
 			@Override
@@ -607,16 +781,14 @@ public class GoodsMngController extends BaseController {
 				} catch (Exception e) {
 					return 1;
 				}
-
 			}
-
 		});
-//		int i = 0;
+		// int i = 0;
 		for (String fileName : coverList) {
 			file = new File(path + "/" + fileName);
-//			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
-//			i++;
-			
+			// newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
+			// i++;
+
 			SocketClient client = null;
 			try {
 				client = new SocketClient();
@@ -630,11 +802,9 @@ public class GoodsMngController extends BaseController {
 					client.close();
 				}
 			}
-			
-			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + 
-					itemCode + "/" + ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + file.getName());
+			coverInviteList.add(URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + itemCode + "/"
+					+ ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + file.getName());
 		}
-
 		return coverInviteList;
 	}
 
@@ -648,10 +818,10 @@ public class GoodsMngController extends BaseController {
 	 */
 	private String dealDetailPic(String itemCode, String path, List<String> detailList, StaffEntity staffEntity)
 			throws Exception {
-		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + 
-				itemCode + "/" + ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/";
+		String remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + itemCode + "/"
+				+ ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/";
 		File file;
-//		String newFileName;
+		// String newFileName;
 		StringBuffer sb = new StringBuffer();
 
 		Collections.sort(detailList, new Comparator<String>() {
@@ -669,16 +839,14 @@ public class GoodsMngController extends BaseController {
 				} catch (Exception e) {
 					return 1;
 				}
-
 			}
-
 		});
-//		int i = 0;
+		// int i = 0;
 		for (String fileName : detailList) {
 			file = new File(path + "/" + fileName);
-//			newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
-//			i++;
-			
+			// newFileName = getNewFileName(itemCode, fileName, staffEntity, i);
+			// i++;
+
 			SocketClient client = null;
 			try {
 				client = new SocketClient();
@@ -692,14 +860,14 @@ public class GoodsMngController extends BaseController {
 					client.close();
 				}
 			}
-			
+
 			sb.append("<p style=\"text-align: center;\"><img src=\"");
-			sb.append(URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + itemCode + "/" + 
-						ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/" + file.getName());
+			sb.append(URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + itemCode + "/"
+					+ ResourceContants.DETAIL + "/" + ResourceContants.IMAGE + "/" + file.getName());
 			sb.append("\"></p>");
 		}
-		
-		//新建临时目录和文件 将商详内容写入文件中
+
+		// 新建临时目录和文件 将商详内容写入文件中
 		String tmpHtmlPath = path + "/" + ResourceContants.HTML + "/";
 		File directory = new File(tmpHtmlPath);
 		if (!directory.exists()) {
@@ -707,236 +875,18 @@ public class GoodsMngController extends BaseController {
 		}
 		tmpHtmlPath = tmpHtmlPath + "/" + itemCode + ResourceContants.HTML_SUFFIX;
 		InputStream is = new ByteArrayInputStream(sb.toString().getBytes("utf-8"));
-		BufferedInputStream bin=null;
-	    BufferedOutputStream bout=null;
-	    bin=new BufferedInputStream(is);
-	    bout=new BufferedOutputStream(new FileOutputStream(tmpHtmlPath));
-	    int len=-1;
-	    byte[] b=new byte[1024];
-	    while((len=bin.read(b))!=-1){
-	        bout.write(b,0,len);
-	    }
-	    bin.close();
-	    bout.close();
+		BufferedInputStream bin = null;
+		BufferedOutputStream bout = null;
+		bin = new BufferedInputStream(is);
+		bout = new BufferedOutputStream(new FileOutputStream(tmpHtmlPath));
+		int len = -1;
+		byte[] b = new byte[1024];
+		while ((len = bin.read(b)) != -1) {
+			bout.write(b, 0, len);
+		}
+		bin.close();
+		bout.close();
 
 		return goodsService.saveModelHtml(itemCode, tmpHtmlPath, staffEntity);
-	}
-
-	@RequestMapping(value = "/toCreateItemInfo")
-	public ModelAndView toCreateItemInfo(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
-			context.put("specs", specs);
-
-			String itemId = req.getParameter("itemId");
-			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
-			context.put("goodsInfo", goodsInfo);
-
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			for (GoodsTagEntity gte : tags) {
-				for (GoodsTagBindEntity gtbe : goodsInfo.getGoods().getGoodsTagBindList()) {
-					if (gte.getId() == gtbe.getTagId()) {
-						gte.setTagFunId(1);
-						break;
-					}
-				}
-			}
-			context.put("tags", tags);
-
-			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
-			for (FirstCatalogEntity first : catalogs) {
-				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
-					context.put("firstName", first.getName());
-					for (SecondCatalogEntity second : first.getSeconds()) {
-						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
-							context.put("secondName", second.getName());
-							for (ThirdCatalogEntity third : second.getThirds()) {
-								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
-									context.put("thirdName", third.getName());
-									break;
-								}
-							}
-							break;
-						}
-					}
-					break;
-				}
-			}
-
-			// 初始化商详信息
-			String detailInfo = "";
-			// 包含商详地址
-			if (goodsInfo.getGoods().getDetailPath() != null
-					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
-				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
-			} else if (goodsInfo.getGoods().getDetailPath() != null) {
-				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
-				String BaseUrl = URLUtils.get("static");
-				for (int i = 0; i < imgArr.length; i++) {
-					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
-							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
-				}
-				detailInfo = detailInfo + "<p><br></p>";
-			}
-			context.put("detailInfo", detailInfo);
-
-			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
-			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
-
-			return forword("goods/goods/create", context);
-		} catch (Exception e) {
-			context.put(MSG, e.getMessage());
-			return forword(MSG, context);
-		}
-	}
-
-	@RequestMapping(value = "/createItemInfo", method = RequestMethod.POST)
-	public void createItemInfo(HttpServletRequest req, HttpServletResponse resp,
-			@RequestBody CreateGoodsInfoEntity entity) {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		entity.setOpt(staffEntity.getOptid());
-		try {
-			goodsService.addItemInfoEntity(entity, staffEntity);
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-
-		sendSuccessMessage(resp, null);
-	}
-
-	@RequestMapping(value = "/toShowGoodsInfo")
-	public ModelAndView toShowGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			List<SpecsEntity> specs = specsService.queryAllSpecsInfo(staffEntity.getToken());
-			context.put("specs", specs);
-
-			String itemId = req.getParameter("itemId");
-			GoodsInfoEntity goodsInfo = goodsService.queryGoodsInfoEntityByItemId(itemId, staffEntity);
-			for (GoodsItemEntity gie : goodsInfo.getGoods().getItems()) {
-				if (gie.getInfo() != null && !"".equals(gie.getInfo())) {
-					JSONArray jsonArray = JSONArray.fromObject(gie.getInfo().substring(1, gie.getInfo().length()));
-					int index = jsonArray.size();
-					List<ItemSpecsPojo> list = new ArrayList<ItemSpecsPojo>();
-					List<String> titles = new ArrayList<String>();
-					for (int i = 0; i < index; i++) {
-						JSONObject jObj = jsonArray.getJSONObject(i);
-						list.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class));
-						titles.add(JSONUtilNew.parse(jObj.toString(), ItemSpecsPojo.class).getSkV());
-					}
-					gie.setSpecs(list);
-
-					context.put("specsInfos", list);
-					context.put("specsTitles", titles);
-				}
-			}
-			context.put("goodsInfo", goodsInfo);
-
-			List<GoodsTagEntity> tags = goodsService.queryGoodsTags(staffEntity.getToken());
-			for (GoodsTagEntity gte : tags) {
-				for (GoodsTagBindEntity gtbe : goodsInfo.getGoods().getGoodsTagBindList()) {
-					if (gte.getId() == gtbe.getTagId()) {
-						gte.setTagFunId(1);
-						break;
-					}
-				}
-			}
-			context.put("tags", tags);
-
-			List<FirstCatalogEntity> catalogs = catalogService.queryAll(staffEntity.getToken());
-			for (FirstCatalogEntity first : catalogs) {
-				if (first.getFirstId().equals(goodsInfo.getGoodsBase().getFirstCatalogId())) {
-					context.put("firstName", first.getName());
-					for (SecondCatalogEntity second : first.getSeconds()) {
-						if (second.getSecondId().equals(goodsInfo.getGoodsBase().getSecondCatalogId())) {
-							context.put("secondName", second.getName());
-							for (ThirdCatalogEntity third : second.getThirds()) {
-								if (third.getThirdId().equals(goodsInfo.getGoodsBase().getThirdCatalogId())) {
-									context.put("thirdName", third.getName());
-									break;
-								}
-							}
-							break;
-						}
-					}
-					break;
-				}
-			}
-
-			// 初始化商详信息
-			String detailInfo = "";
-			// 包含商详地址
-			if (goodsInfo.getGoods().getDetailPath() != null
-					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
-				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
-			} else if (goodsInfo.getGoods().getDetailPath() != null) {
-				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
-				String BaseUrl = URLUtils.get("static");
-				for (int i = 0; i < imgArr.length; i++) {
-					detailInfo = detailInfo + "<p style=\"text-align: center;\"><img src=\"" + BaseUrl
-							+ "/images/orignal/detail/" + imgArr[i] + "\"></p> ";
-				}
-				detailInfo = detailInfo + "<p><br></p>";
-			}
-			context.put("detailInfo", detailInfo);
-
-			context.put("suppliers", CachePoolComponent.getSupplier(staffEntity.getToken()));
-			context.put("brands", CachePoolComponent.getBrands(staffEntity.getToken()));
-
-			return forword("goods/goods/show", context);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-	}
-
-	@RequestMapping(value = "/toEditRatioGoodsInfo")
-	public ModelAndView toEditRatioGoodsInfo(HttpServletRequest req, HttpServletResponse resp) {
-		Map<String, Object> context = getRootMap();
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-		try {
-			String itemId = req.getParameter("itemId");
-			String goodsName = java.net.URLDecoder.decode(req.getParameter("goodsName"), "UTF-8");
-			String itemInfo = java.net.URLDecoder.decode(req.getParameter("itemInfo"), "UTF-8");
-			if (itemInfo == null || "null".equals(itemInfo)) {
-				itemInfo = "";
-			}
-			GoodsItemEntity entity = new GoodsItemEntity();
-			entity.setItemId(itemId);
-
-			List<GoodsPriceRatioEntity> goodPriceRatios = goodsService.queryGoodsPriceRatioList(entity,
-					staffEntity.getToken());
-			if (goodPriceRatios.size() <= 0) {
-				return forword("goods/goodsRatio/notice", context);
-			}
-
-			context.put("itemId", itemId);
-			context.put("goodsName", goodsName);
-			context.put("itemInfo", itemInfo);
-			context.put("goodPriceRatios", goodPriceRatios);
-			return forword("goods/goodsRatio/show", context);
-		} catch (Exception e) {
-			context.put(ERROR, e.getMessage());
-			return forword(ERROR, context);
-		}
-	}
-
-	@RequestMapping(value = "/syncRatioGoodsInfo")
-	public void syncRatioGoodsInfo(HttpServletRequest req, HttpServletResponse resp,
-			@RequestBody List<GoodsPriceRatioEntity> list) {
-		StaffEntity staffEntity = SessionUtils.getOperator(req);
-
-		try {
-			goodsService.syncRatioGoodsInfo(list, staffEntity);
-		} catch (Exception e) {
-			sendFailureMessage(resp, "操作失败：" + e.getMessage());
-			return;
-		}
-
-		sendSuccessMessage(resp, null);
 	}
 }

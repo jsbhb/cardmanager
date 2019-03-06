@@ -62,5 +62,7 @@ public interface BrandService extends ServerCenterService {
 	 * @since JDK 1.7
 	 */
 	void modify(BrandEntity entity, StaffEntity staffEntity) throws Exception;
+	
+	String getBrandId() throws Exception;
 
 }

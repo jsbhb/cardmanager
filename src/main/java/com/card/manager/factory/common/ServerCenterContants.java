@@ -35,7 +35,6 @@ public class ServerCenterContants {
 	public static final Integer SECOND_GRADE = 2;
 	public static final Integer THIRD_GRADE = 3;
 	public static final Integer FOURTH_GRADE = 4;
-	
 
 	/**
 	 * 权限中心url
@@ -74,8 +73,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/grade/update";
 	public static final String USER_CENTER_GRADE_QUERY = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/query";
-	public static final String USER_CENTER_GRADE_QUERY_CHILDREN = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/user/feign/grade/children";
+	public static final String USER_CENTER_GRADE_QUERY_CHILDREN = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/user/feign/grade/children";
 	public static final String USER_CENTER_PHONE_CHECK = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/user/userNameVerify";
 	public static final String USER_CENTER_PUSHUSER_REGISER = (TOKEN_NOT_NEED ? "/" : "/usercenter/auth/")
@@ -94,51 +93,78 @@ public class ServerCenterContants {
 			+ "/user/feign/list-grade";
 	public static final String USER_CENTER_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/type";
-	public static final String USER_CENTER_GRADE_TYPE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/type/update";
-	public static final String USER_CENTER_GRADE_TYPE_BY_ID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/type/{id}";
-	public static final String USER_CENTER_CHILDREN_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/type/children";
-	public static final String USER_CENTER_SHOPKEEPER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/cooperation/shopkeeper";
-	public static final String USER_CENTER_PARTNER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/cooperation/partner";
+	public static final String USER_CENTER_GRADE_TYPE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/type/update";
+	public static final String USER_CENTER_GRADE_TYPE_BY_ID = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/type/{id}";
+	public static final String USER_CENTER_CHILDREN_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/type/children";
+	public static final String USER_CENTER_SHOPKEEPER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/cooperation/shopkeeper";
+	public static final String USER_CENTER_PARTNER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/cooperation/partner";
 	public static final String USER_CENTER_GRADE_INIT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/area-center/init/{id}";
-	public static final String USER_CENTER_INVITER_IMPORT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/welfare/inviter/import";
+	public static final String USER_CENTER_INVITER_IMPORT = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/welfare/inviter/import";
 	public static final String USER_CENTER_INVITER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
 			+ SERVER_CENTER_EDITION + "/welfare/inviter/queryForPage";
-	public static final String USER_CENTER_INVITER_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/welfare/inviter/update";
-	public static final String USER_CENTER_INVITER_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/welfare/inviter/produceCode";
-	public static final String USER_CENTER_INVITER_SEND_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/welfare/inviter/sendProduceCode";
-	public static final String USER_CENTER_INVITER_STATISTIC = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/welfare/inviter/statistic/{gradeId}";
-	public static final String USER_CENTER_UPDATE_WELFARE_TYPE_INFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/updateWelfareType";
-	public static final String USER_CENTER_GET_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/rebate/formula/{id}";
-	public static final String USER_CENTER_SAVE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/rebate/formula";
-	public static final String USER_CENTER_LIST_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/rebate/formula/{needPaging}";
-	public static final String USER_CENTER_UPDATE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/grade/rebate/formula/update";
-	public static final String USER_CENTER_GET_USERINFO_BY_USERID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/user/{centerId}/{userId}";
-	public static final String USER_CENTER_GET_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/user/address/{userId}";
-	public static final String USER_CENTER_SAVE_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/user/address";
-	public static final String USER_CENTER_DELETE_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
-			+ "/user/address/{userId}/{id}";
+	public static final String USER_CENTER_INVITER_UPDATE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/welfare/inviter/update";
+	public static final String USER_CENTER_INVITER_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/welfare/inviter/produceCode";
+	public static final String USER_CENTER_INVITER_SEND_PRODUCE_CODE = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/welfare/inviter/sendProduceCode";
+	public static final String USER_CENTER_INVITER_STATISTIC = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/welfare/inviter/statistic/{gradeId}";
+	public static final String USER_CENTER_UPDATE_WELFARE_TYPE_INFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/updateWelfareType";
+	public static final String USER_CENTER_GET_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/rebate/formula/{id}";
+	public static final String USER_CENTER_SAVE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/rebate/formula";
+	public static final String USER_CENTER_LIST_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/rebate/formula/{needPaging}";
+	public static final String USER_CENTER_UPDATE_GRADE_TYPE_REBATEFORMULA = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/grade/rebate/formula/update";
+	public static final String USER_CENTER_GET_USERINFO_BY_USERID = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/user/{centerId}/{userId}";
+	public static final String USER_CENTER_GET_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/user/address/{userId}";
+	public static final String USER_CENTER_SAVE_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/user/address";
+	public static final String USER_CENTER_DELETE_USER_ADDRESSINFO = (TOKEN_NOT_NEED ? "/" : "/usercenter/")
+			+ SERVER_CENTER_EDITION + "/user/address/{userId}/{id}";
 	/**
 	 * 商品中心url
 	 */
+	/*------------------------属性管理---------------------*/
+	public static final String GOODS_CENTER_PROPERTY_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryForPage";
+	public static final String GOODS_CENTER_PROPERTY_ADD_NAME = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/addName";
+	public static final String GOODS_CENTER_PROPERTY_QUERY_NAME_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryName";
+	public static final String GOODS_CENTER_PROPERTY_QUERY_GUIDE_NAME_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryGuideName";
+	public static final String GOODS_CENTER_PROPERTY_EDIT_NAME = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/editName";
+	public static final String GOODS_CENTER_PROPERTY_DELETE_NAME = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/deleteName";
+	public static final String GOODS_CENTER_PROPERTY_ADD_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/addValue";
+	public static final String GOODS_CENTER_PROPERTY_QUERY_VALUE_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryValue";
+	public static final String GOODS_CENTER_PROPERTY_QUERY_GUIDE_VALUE_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryGuideValue";
+	public static final String GOODS_CENTER_PROPERTY_EDIT_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/editValue";
+	public static final String GOODS_CENTER_PROPERTY_DELETE_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/deleteValue";
+	public static final String GOODS_CENTER_PROPERTY_QUERY_LIST_BY_CATEGORY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryPropertyListByCategory";
+	public static final String GOODS_CENTER_PROPERTY_QUERY_VALUE_LIST_BY_ID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/property/queryPropertyValueListById";
 	/*------------------------品牌管理---------------------*/
 	public static final String GOODS_CENTER_BRAND_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/brand/queryForPage";
@@ -170,12 +196,12 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/specs/query";
 	public static final String GOODS_CENTER_SPECS_QUERY_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/queryAll";
-	public static final String GOODS_CENTER_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpece";
+	public static final String GOODS_CENTER_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/specs/selectAllSpece";
 	public static final String GOODS_CENTER_SPECS_VALUE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/selectAllSpeceValue";
-	public static final String GOODS_CENTER_SPECS_ADD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/specs/save/new";
+	public static final String GOODS_CENTER_SPECS_ADD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/specs/save/new";
 	public static final String GOODS_CENTER_SPECS_VALUE_ADD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/value/save";
 	public static final String GOODS_CENTER_SPECS_ALL_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -184,7 +210,6 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/specs/updateValue";
 	public static final String GOODS_CENTER_SPECS_UPDATE_SPECS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/specs/updateSpecs";
-
 
 	/*------------------------分类管理-----------------------*/
 	public static final String GOODS_CENTER_CATALOG_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -215,14 +240,27 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/catalog/queryThirdAll";
 	public static final String GOODS_CENTER_CATALOG_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/navigation/publish";
-	public static final String GOODS_CENTER_CATALOG_UPDATE_FIRST_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/catalog/updateFirstByParam";
-	public static final String GOODS_CENTER_CATALOG_UPDATE_SECOND_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/catalog/updateSecondByParam";
-	public static final String GOODS_CENTER_CATALOG_UPDATE_THIRD_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/catalog/updateThirdByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_FIRST_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/catalog/updateFirstByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_SECOND_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/catalog/updateSecondByParam";
+	public static final String GOODS_CENTER_CATALOG_UPDATE_THIRD_CATALOG_BY_PARAM = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/catalog/updateThirdByParam";
 	public static final String GOODS_CENTER_CATALOG_QUERY_FIRST_BY_SECONDID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/catalog/queryFirstBySecondId";
+	public static final String GOODS_CENTER_CATALOG_QUERY_CATALOGINFO_BY_PARAMS = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/catalog/queryCatalogInfoByParams?id={id}&catalog={catalog}";
+	public static final String GOODS_CENTER_CATALOG_QUERY_JOIN_PROPERTY_LIST_FOR_PAGE = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/catalog/queryJoinPropertyListForPage";
+	public static final String GOODS_CENTER_CATALOG_QUERY_ALL_PROPERTY_LIST_FOR_PAGE = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/catalog/queryAllPropertyListForPage";
+	public static final String GOODS_CENTER_CATALOG_CATEGORY_JOIN_PROPERTY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/categoryJoinProperty";
+	public static final String GOODS_CENTER_CATALOG_CATEGORY_UN_JOIN_PROPERTY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/catalog/categoryUnJoinProperty";
+	public static final String GOODS_CENTER_CATALOG_MODIFY_CATEGORY_JOIN_PROPERTY = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/catalog/modifyCategoryJoinProperty";
 
 	/*------------------------基础商品管理-----------------------*/
 	public static final String GOODS_BASE_ID_SEQUENCE = "base";
@@ -237,6 +275,9 @@ public class ServerCenterContants {
 
 	/*------------------------商品管理-----------------------*/
 	public static final String GOODS_ID_SEQUENCE = "goods";
+	public static final String GOODS_SPECS_ID_SEQUENCE = "goodsSpecs";
+	public static final String GOODS_SPECS_TP_ID_SEQUENCE = "goodsSpecsTp";
+	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";
 
 	public static final String GOODS_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goods/queryForPage";
@@ -244,8 +285,8 @@ public class ServerCenterContants {
 			+ "/goods/goods/save";
 	public static final String GOODS_PIC_BATCH_UPLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/maintain/files";
-	public static final String GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/maintain/files/queryGoodsIdByItemCode";
+	public static final String GOODS_CENTER_MAINTAIN_FILES_QUERY_GOODSID_BY_ITEMCODE = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/maintain/files/queryGoodsIdByItemCode";
 	public static final String GOODS_CENTER_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
 			+ "/goods/goods/query";
 	public static final String GOODS_CENTER_THIRD_QUERY = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -275,15 +316,24 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/goods/import/goods";
 	public static final String GOODS_CENTER_CREATE_ITEMINFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goods/saveItemInfo";
-	public static final String GOODS_CENTER_QUERY_GOODSINFO_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
-			+ "/goods/goods/queryGoodsInfoByGoodsId";
-	public static final String GOODS_CENTER_QUERY_GOODSPIC_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
-			+ "/goods/pic/{goodsId}";
-	public static final String GOODS_CENTER_QUERY_TAX_INFO_BY_ITEMID_LIST = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
-			+ "/goods/goods/queryItemTaxInfoByList";
+	public static final String GOODS_CENTER_QUERY_GOODSINFO_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/goods/queryGoodsInfoByGoodsId";
+	public static final String GOODS_CENTER_QUERY_GOODSPIC_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/pic/{goodsId}";
+	public static final String GOODS_CENTER_QUERY_TAX_INFO_BY_ITEMID_LIST = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/goods/queryItemTaxInfoByList";
+	/*------------------------商品库新商品管理-----------------------*/
+	public static final String GOODS_CENTER_SAVE_KJGOODS_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/saveKJGoodsInfo";
+	public static final String GOODS_CENTER_QUERY_KJGOODS_INFO_BY_PARAMS = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/queryKJGoodsInfoBySpecsTpId";
+	public static final String GOODS_CENTER_MODIFY_KJGOODS_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/goods/modifyKJGoodsInfo";
 
+	/*------------------------产品列表管理-----------------------*/
+	public static final String GOODS_CENTER_KJ_GOODS_ITEM_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/product/queryForPage";
 	/*------------------------商品明细管理-----------------------*/
-	public static final String GOODS_ITEM_ID_SEQUENCE = "goodsItem";
 
 	public static final String GOODS_CENTER_ITEM_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION
@@ -325,17 +375,18 @@ public class ServerCenterContants {
 	public static final String GOODS_CENTER_MAINTAIN_STOCK_BY_ITEMID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/maintainStockByItemId";
 	public static final String GOODS_CENTER_EXTENSION_QUERY_FOR_PAGE_DOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsExtensionForPageDownload?centerId={centerId}&gradeLevel={gradeLevel}";
+			+ SERVER_CENTER_EDITION
+			+ "/goods/item/queryGoodsExtensionForPageDownload?centerId={centerId}&gradeLevel={gradeLevel}";
 	public static final String GOODS_CENTER_QUERY_EXTENSION_INFO_BY_GOODSID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsExtensionInfo";
 	public static final String GOODS_CENTER_UPDATE_EXTENSION_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/updateGoodsExtensionInfo";
 	public static final String GOODS_CENTER_PUBLISH_ERROR_LIST = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/publish/exception/{centerId}/{type}";
-	public static final String GOODS_CENTER_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/publish/{centerId}";
-	public static final String GOODS_CENTER_UNPUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/publish/del/{centerId}";
+	public static final String GOODS_CENTER_PUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/publish/{centerId}";
+	public static final String GOODS_CENTER_UNPUBLISH = (TOKEN_NOT_NEED ? "/" : "/goodscenter/") + SERVER_CENTER_EDITION
+			+ "/goods/publish/del/{centerId}";
 	/*------------------------商品标签管理-----------------------*/
 	public static final String GOODS_CENTER_TAG_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/goodsTag/queryForPage";
@@ -357,8 +408,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/presell/pass";
 	public static final String GOODS_CENTER_QUERY_GOODS_PIRCE_RATIO_LIST_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsPriceRatioListInfo";
-	public static final String GOODS_CENTER_QUERY_GOODS_RATIO_PLATFORM_PAGE_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForPage";
+	public static final String GOODS_CENTER_QUERY_GOODS_RATIO_PLATFORM_PAGE_INFO = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/goods/item/queryGoodsRatioPlatformForPage";
 	public static final String GOODS_CENTER_CREATE_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/goods/item/createGoodsRatioPlatformInfo";
 	public static final String GOODS_CENTER_UPDATE_GOODS_RATIO_PLATFORM_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -376,9 +427,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityByParam";
 	public static final String GOODS_CENTER_MODIFY_BARGAIN_ACTIVITY_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/activity/backManager/modifyBargainActivityInfo";
-	public static final String GOODS_CENTER_SHOW_BARGAIN_ACTIVITY_SHOW_PAGE_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityShowPageInfo";
-	
+	public static final String GOODS_CENTER_SHOW_BARGAIN_ACTIVITY_SHOW_PAGE_INFO = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityShowPageInfo";
 
 	/*------------------------销售订单管理-----------------------*/
 	public static final String ORDER_CENTER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
@@ -397,10 +447,11 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/backcancel/{orderId}";
 	public static final String ORDER_CENTER_QUERY_THIRD_INFO = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/queryThirdInfo";
-	public static final String ORDER_CENTER_CACHE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/cache?gradeId={gradeId}&dataType={dataType}&time={time}&modelType={modelType}";
+	public static final String ORDER_CENTER_CACHE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/") + SERVER_CENTER_EDITION
+			+ "/cache?gradeId={gradeId}&dataType={dataType}&time={time}&modelType={modelType}";
 	public static final String ORDER_CENTER_QUERY_ORDERLISTFORDOWNLOAD = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
-			+ SERVER_CENTER_EDITION + "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}&type={type}&exportType={exportType}";
+			+ SERVER_CENTER_EDITION
+			+ "/order/stockOut/queryOrdreInfoListForDownload?startTime={startTime}&endTime={endTime}&gradeId={gradeId}&supplierId={supplierId}&type={type}&exportType={exportType}";
 	public static final String ORDER_CENTER_MAINTENANCEEXPRESS = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/stockOut/maintenance/express";
 	public static final String ORDER_CENTER_SENDSTOCKINGOODINFOTOMJY = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
@@ -434,8 +485,7 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/order/confirm/{userId}/{orderId}";
 	public static final String ORDER_CENTER_ORDER_CLOSE_UPDATE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/order/close/{userId}/{orderId}";
-	
-	
+
 	/*----------------------运费模板管理--------------------------------*/
 	public static final String ORDER_CENTER_POST_TEMPLATE_ENABLE = (TOKEN_NOT_NEED ? "/" : "/ordercenter/")
 			+ SERVER_CENTER_EDITION + "/express/template/enable/{id}";
@@ -459,8 +509,8 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/express/template/rule/param";
 	public static final String GOODS_CENTER_MALL_QUERY_COMPONENT_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/model/queryComponentForPage";
-	public static final String GOODS_CENTER_MALL_QUERY_COMPONENTDATA_BY_PAGEID = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
-			+ SERVER_CENTER_EDITION + "/mall/index/model/queryComponentDataByPageId";
+	public static final String GOODS_CENTER_MALL_QUERY_COMPONENTDATA_BY_PAGEID = (TOKEN_NOT_NEED ? "/"
+			: "/goodscenter/") + SERVER_CENTER_EDITION + "/mall/index/model/queryComponentDataByPageId";
 	public static final String GOODS_CENTER_MALL_UPDATE_COMPONENTDATA = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/model/updateComponentData";
 	public static final String GOODS_CENTER_MALL_MERGE_BIGSALEDATA = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
@@ -496,8 +546,7 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/mall/index/init";
 	public static final String GOODS_CENTER_MALL_QUERY_DATA_ALL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/mall/index/queryDataAll";
-	
-	
+
 	/*------------------------cms-----------------------*/
 	public static final String GOODS_CENTER_CMS_RETRIEVE_DATAL = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/cms/index/";
@@ -563,7 +612,7 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/finance/capitalpool/detail";
 	public static final String FINANCE_CENTER_ADD_CAPITALPOOL = (TOKEN_NOT_NEED ? "/" : "/financecenter/")
 			+ SERVER_CENTER_EDITION + "/finance/capitalpool";
-	
+
 	/**
 	 * 调度器管理中心url
 	 */
@@ -578,5 +627,5 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/timetask/stop";
 	public static final String TIMETASK_CENTER_UPDATE_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
 			+ SERVER_CENTER_EDITION + "/timetask/update";
-	
+
 }

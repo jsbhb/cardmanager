@@ -1,5 +1,6 @@
 package com.card.manager.factory.goods.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.ResourceContants;
+import com.card.manager.factory.common.ServerCenterContants;
+import com.card.manager.factory.exception.ServerCenterNullDataException;
 import com.card.manager.factory.goods.model.CatalogModel;
+import com.card.manager.factory.goods.model.CategoryPropertyBindModel;
 import com.card.manager.factory.goods.model.CategoryTypeEnum;
 import com.card.manager.factory.goods.model.FirstCatalogEntity;
+import com.card.manager.factory.goods.model.GoodsBaseEntity;
+import com.card.manager.factory.goods.model.PropertyEntity;
 import com.card.manager.factory.goods.model.SecondCatalogEntity;
 import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.service.CatalogService;
@@ -55,8 +61,8 @@ public class CatalogMngController extends BaseController {
 				return forword("error", context);
 			}
 			context.put("type", type);
-			
-			String key = ResourceContants.GOODS+"/"+ResourceContants.CATEGORY;
+
+			String key = ResourceContants.GOODS + "/" + ResourceContants.CATEGORY;
 			if (CategoryTypeEnum.FIRST.getType().equals(type)) {
 			} else if (CategoryTypeEnum.SECOND.getType().equals(type)) {
 				key = key + "/" + parentId;
@@ -64,9 +70,9 @@ public class CatalogMngController extends BaseController {
 				SecondCatalogEntity entity = new SecondCatalogEntity();
 				entity.setSecondId(parentId);
 				SecondCatalogEntity newEntity = catalogService.queryFirstBySecondId(entity, opt.getToken());
-				key = key + "/" + newEntity.getFirstId()+"/"+parentId;
+				key = key + "/" + newEntity.getFirstId() + "/" + parentId;
 			}
-			//根据分类等级获取对应的id
+			// 根据分类等级获取对应的id
 			String tmpCategoryId = catalogService.getGoodsCategoryId(type);
 			if ("".equals(tmpCategoryId)) {
 				context.put(MSG, "分类等级错误，请重试!");
@@ -74,7 +80,7 @@ public class CatalogMngController extends BaseController {
 			} else {
 				context.put("tmpCategoryId", tmpCategoryId);
 			}
-			key = key+"/"+tmpCategoryId;
+			key = key + "/" + tmpCategoryId;
 			context.put("key", key);
 
 			String parentName = java.net.URLDecoder.decode(req.getParameter("name"), "UTF-8");
@@ -107,8 +113,7 @@ public class CatalogMngController extends BaseController {
 		}
 		sendSuccessMessage(resp, null);
 	}
-	
-	
+
 	@RequestMapping(value = "/toEdit")
 	public ModelAndView toEdit(HttpServletRequest req, HttpServletResponse resp) {
 		Map<String, Object> context = getRootMap();
@@ -157,14 +162,14 @@ public class CatalogMngController extends BaseController {
 				return forword("error", context);
 			}
 			context.put("tagPath", tagPath);
-			
-			String key = ResourceContants.GOODS+"/"+ResourceContants.CATEGORY;
+
+			String key = ResourceContants.GOODS + "/" + ResourceContants.CATEGORY;
 			String categoryPath = java.net.URLDecoder.decode(req.getParameter("categoryPath"), "UTF-8");
 			if (StringUtil.isEmpty(categoryPath)) {
 				context.put(MSG, "没有分类路径!");
 				return forword("error", context);
 			}
-			context.put("key", key+"/"+categoryPath);
+			context.put("key", key + "/" + categoryPath);
 
 			return forword("goods/catalog/edit", context);
 		} catch (Exception e) {
@@ -172,7 +177,7 @@ public class CatalogMngController extends BaseController {
 			return forword("error", context);
 		}
 	}
-	
+
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public void modify(HttpServletRequest req, HttpServletResponse resp, @RequestBody CatalogModel model) {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
@@ -188,7 +193,7 @@ public class CatalogMngController extends BaseController {
 		}
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public void delete(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -196,12 +201,12 @@ public class CatalogMngController extends BaseController {
 		try {
 			String id = req.getParameter("id");
 			String type = req.getParameter("type");
-			if(StringUtil.isEmpty(id)||StringUtil.isEmpty(type)){
+			if (StringUtil.isEmpty(id) || StringUtil.isEmpty(type)) {
 				sendFailureMessage(resp, "信息不全");
 				return;
 			}
-			
-			catalogService.delete(id,type,staffEntity);
+
+			catalogService.delete(id, type, staffEntity);
 
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
@@ -251,8 +256,7 @@ public class CatalogMngController extends BaseController {
 
 		return pcb;
 	}
-	
-	
+
 	@RequestMapping(value = "/queryThirdCatalogBySecondId", method = RequestMethod.POST)
 	@ResponseBody
 	public PageCallBack queryThirdCatalogBySecondId(HttpServletRequest req, HttpServletResponse resp) {
@@ -293,7 +297,7 @@ public class CatalogMngController extends BaseController {
 			return forword("error", context);
 		}
 	}
-	
+
 	@RequestMapping(value = "/categoryInfoPublish", method = RequestMethod.POST)
 	public void categoryInfoPublish(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -306,7 +310,7 @@ public class CatalogMngController extends BaseController {
 		}
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/changeCategorySort", method = RequestMethod.POST)
 	public void changeCategorySort(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -324,14 +328,14 @@ public class CatalogMngController extends BaseController {
 			model.setType(catelog);
 			model.setSort(Integer.parseInt(sort));
 			model.setStatus(2);
-			catalogService.updCategoryByParam(model,staffEntity);
+			catalogService.updCategoryByParam(model, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/changeCategoryStatus", method = RequestMethod.POST)
 	public void changeCategoryStatus(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -349,14 +353,14 @@ public class CatalogMngController extends BaseController {
 			model.setType(catelog);
 			model.setSort(2);
 			model.setStatus(Integer.parseInt(status));
-			catalogService.updCategoryByParam(model,staffEntity);
+			catalogService.updCategoryByParam(model, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;
 		}
 		sendSuccessMessage(resp, null);
 	}
-	
+
 	@RequestMapping(value = "/changeCategoryPopular", method = RequestMethod.POST)
 	public void changeCategoryPopular(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -374,8 +378,158 @@ public class CatalogMngController extends BaseController {
 			model.setSort(2);
 			model.setStatus(2);
 			model.setIsPopular(Integer.parseInt(popular));
-			
-			catalogService.updCategoryByParam(model,staffEntity);
+
+			catalogService.updCategoryByParam(model, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/toJoinProperty")
+	public ModelAndView toJoinProperty(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		try {
+			StaffEntity opt = SessionUtils.getOperator(req);
+			String id = req.getParameter("id");
+			String catalog = req.getParameter("catalog");
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("id", id);
+			params.put("catalog", catalog);
+			context.put("catalogInfo", catalogService.getCatelogInfoByParams(params, opt.getToken()));
+			context.put("propertyType", req.getParameter("propertyType"));
+			context.put("opt", opt);
+			context.put("id", id);
+			context.put("catalog", catalog);
+			return forword("goods/catalog/catalogJoinProperty", context);
+		} catch (Exception e) {
+			context.put(MSG, e.getMessage());
+			return forword("error", context);
+		}
+	}
+
+	@RequestMapping(value = "/showJoinPropertyList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack showJoinPropertyList(HttpServletRequest req, HttpServletResponse resp,
+			CategoryPropertyBindModel model) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String propertyType = req.getParameter("propertyType");
+			params.put("propertyType", propertyType);
+
+			pcb = catalogService.dataList(model, params, staffEntity.getToken(),
+					ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_JOIN_PROPERTY_LIST_FOR_PAGE, CategoryPropertyBindModel.class);
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(model);
+			pcb.setSuccess(true);
+			return pcb;
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			return pcb;
+		}
+
+		return pcb;
+	}
+
+	@RequestMapping(value = "/pageForSearch")
+	public ModelAndView pageForSearch(HttpServletRequest req, HttpServletResponse resp, GoodsBaseEntity entity) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		context.put("propertyType", req.getParameter("propertyType"));
+		context.put(OPT, opt);
+		return forword("goods/catalog/pageForSearch", context);
+	}
+
+	@RequestMapping(value = "/queryAllPropertyList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageCallBack queryAllPropertyList(HttpServletRequest req, HttpServletResponse resp, PropertyEntity entity) {
+		PageCallBack pcb = null;
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		Map<String, Object> params = new HashMap<String, Object>();
+		try {
+			String propertyType = req.getParameter("propertyType");
+			params.put("propertyType", propertyType);
+
+			pcb = catalogService.dataList(entity, params, staffEntity.getToken(),
+					ServerCenterContants.GOODS_CENTER_CATALOG_QUERY_ALL_PROPERTY_LIST_FOR_PAGE, PropertyEntity.class);
+		} catch (ServerCenterNullDataException e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setPagination(entity);
+			pcb.setSuccess(true);
+			return pcb;
+		} catch (Exception e) {
+			if (pcb == null) {
+				pcb = new PageCallBack();
+			}
+			pcb.setErrTrace(e.getMessage());
+			pcb.setSuccess(false);
+			return pcb;
+		}
+
+		return pcb;
+	}
+
+	@RequestMapping(value = "/categoryJoinProperty", method = RequestMethod.POST)
+	public void categoryJoinProperty(HttpServletRequest req, HttpServletResponse resp,
+			@RequestBody CategoryPropertyBindModel model) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			model.setSort(1);
+			model.setOpt(staffEntity.getOptName());
+			catalogService.categoryJoinProperty(model, req.getParameter("propertyType"), staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/categoryUnJoinProperty", method = RequestMethod.POST)
+	public void categoryUnJoinProperty(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("id", req.getParameter("id"));
+			params.put("propertyType", req.getParameter("propertyType"));
+			catalogService.categoryUnJoinProperty(params, staffEntity);
+		} catch (Exception e) {
+			sendFailureMessage(resp, "操作失败：" + e.getMessage());
+			return;
+		}
+		sendSuccessMessage(resp, null);
+	}
+
+	@RequestMapping(value = "/changeCategoryJoinPropertySort", method = RequestMethod.POST)
+	public void changeCategoryJoinPropertySort(HttpServletRequest req, HttpServletResponse resp) {
+
+		StaffEntity staffEntity = SessionUtils.getOperator(req);
+		try {
+			String id = req.getParameter("id");
+			String propertyType = req.getParameter("propertyType");
+			String sort = req.getParameter("sort");
+			if (StringUtil.isEmpty(id) || StringUtil.isEmpty(propertyType) || StringUtil.isEmpty(sort)) {
+				sendFailureMessage(resp, "缺少参数，请确认");
+				return;
+			}
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("id", id);
+			params.put("sort", sort);
+			params.put("propertyType", propertyType);
+			catalogService.updCategoryJoinPropertyByParam(params, staffEntity);
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

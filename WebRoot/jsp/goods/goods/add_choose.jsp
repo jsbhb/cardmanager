@@ -15,7 +15,6 @@
 <body>
 	<section class="content-header">
 	      <ol class="breadcrumb">
-	        <li><a href="javascript:void(0);">首页</a></li>
 	        <li>商品管理</li>
 	        <li class="active">新增商品</li>
 	      </ol>
@@ -23,14 +22,18 @@
 	<section class="content-iframe content">
 	    <div class="choose-content">
 	    	<h1>选择上货方式</h1>
-	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAdd.shtml">
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAddKJGoods.shtml">
 	    		<i class="fa fa-child fa-fw"></i>
 	    		<span>自助上货</span>
 	    	</a>
-	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAddBatch.shtml">
+	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toEditKJGoodsInfo.shtml">
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量导入</span>
 	    	</a>
+<%-- 	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toAddBatch.shtml"> --%>
+<!-- 	    		<i class="fa  fa-file-excel-o fa-fw"></i> -->
+<!-- 	    		<span>批量导入</span> -->
+<!-- 	    	</a> -->
 	    	<a class="choose-content-item" href="${wmsUrl}/admin/goods/goodsMng/toBatchUploadPic.shtml">
 	    		<i class="fa  fa-file-excel-o fa-fw"></i>
 	    		<span>批量图片导入</span>

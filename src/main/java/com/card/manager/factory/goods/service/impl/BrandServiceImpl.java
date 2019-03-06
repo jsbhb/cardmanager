@@ -25,6 +25,7 @@ import com.card.manager.factory.goods.model.BrandEntity;
 import com.card.manager.factory.goods.service.BrandService;
 import com.card.manager.factory.system.mapper.StaffMapper;
 import com.card.manager.factory.system.model.StaffEntity;
+import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.URLUtils;
 
 import net.sf.json.JSONObject;
@@ -49,9 +50,6 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 	public void addBrand(BrandEntity entity, String token) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 
-		int brandIdSequence = staffMapper.nextVal("brand");
-		entity.setBrandId("brand_" + brandIdSequence);
-
 		ResponseEntity<String> usercenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.GOODS_CENTER_BRAND_SAVE, token, true, entity,
 				HttpMethod.POST);
@@ -65,6 +63,12 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 		CachePoolComponent.syncBrand(token);
 
 	}
+	
+	@Override
+	public String getBrandId() {
+		int brandIdSequence = staffMapper.nextVal("brand");
+		return "brand_" + brandIdSequence;
+	}
 
 	@Override
 	public BrandEntity queryById(String id, String token) {
@@ -77,7 +81,7 @@ public class BrandServiceImpl extends AbstractServcerCenterBaseService implement
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		return new BrandEntity(json.getJSONObject("obj"));
+		return JSONUtilNew.parse(json.getJSONObject("obj").toString(), BrandEntity.class);
 	}
 
 	@Override
