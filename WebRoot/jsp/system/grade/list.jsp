@@ -83,7 +83,7 @@
 							<th>上级机构</th>
 							<th>分级类型</th>
 							<th>公司</th>
-							<th>线下计算返佣</th>
+<!-- 							<th>线下计算返佣</th> -->
 							<th>负责人</th>
 							<th>电话号码</th>
 							<th>创建时间</th>
@@ -190,12 +190,12 @@ function rebuildTable(data){
 // 		}
 		str += "</td><td>" + (list[i].gradeTypeName == null ? "" : list[i].gradeTypeName);
 		str += "</td><td>" + (list[i].company == null ? "" : list[i].company);
-		var tmpCalcRebateFlg = list[i].calcRebateFlg;
-		if(tmpCalcRebateFlg != 0){
-			str += "</td><td>计算";
-		} else {
-			str += "</td><td>不计算";
-		}
+// 		var tmpCalcRebateFlg = list[i].calcRebateFlg;
+// 		if(tmpCalcRebateFlg != 0){
+// 			str += "</td><td>计算";
+// 		} else {
+// 			str += "</td><td>不计算";
+// 		}
 		str += "</td><td>" + (list[i].personInCharge == null ? "" : list[i].personInCharge);
 		str += "</td><td>" + (list[i].phone == null ? "" : list[i].phone);
 		str += "</td><td>" + (list[i].createTime == null ? "" : list[i].createTime);

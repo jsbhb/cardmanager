@@ -86,6 +86,11 @@ public class GradeMngController extends BaseController {
 		} else {
 			context.put("urlShow", "false");
 		}
+		if (opt.getGradeId() == 0 || opt.getGradeId() == 2) {
+			context.put("showShopExtensionFlg", "true");
+		} else {
+			context.put("showShopExtensionFlg", "false");
+		}
 		
 		// 自动产生业务流水号：tmp+GradeId+账号+时间+4位随机数
 		Integer num = (int) (Math.random() * 9000) + 1000;
@@ -283,6 +288,11 @@ public class GradeMngController extends BaseController {
 			if (gradeId.equals(opt.getGradeId()+"")) {
 				context.put("editFlg", "false");
 			}
+		}
+		if (opt.getGradeId() == 0 || opt.getGradeId() == 2) {
+			context.put("showShopExtensionFlg", "true");
+		} else {
+			context.put("showShopExtensionFlg", "false");
 		}
 		return forword("system/grade/edit", context);
 	}

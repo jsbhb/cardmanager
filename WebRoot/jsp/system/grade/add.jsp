@@ -47,7 +47,7 @@
 	                  <input type="hidden" readonly class="form-control" name="gradeLevel" value="${opt.gradeLevel+1}">
 				</div>
 			</div>
-			<div class="list-item">
+			<div class="list-item" style="display: none">
 				<label class="col-sm-3 item-left" >线下计算返佣<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 	                  <select class="form-control" name="calcRebateFlg" id="calcRebateFlg">
@@ -66,7 +66,7 @@
 	                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType">
 				</div>
 			</div>
-			<div class="select-content" style="width: 420px;top: 265px;">
+			<div class="select-content" style="width: 420px;top: 220px;">
            		<ul class="first-ul" style="margin-left:10px;">
            			<c:forEach var="menu" items="${gradeList}">
            				<c:set var="menu" value="${menu}" scope="request" />
@@ -74,24 +74,24 @@
 					</c:forEach>
            		</ul>
            	</div>
-			<div class="list-item" id="gradeInviter" style="display: none">
-				<label class="col-sm-3 item-left" >分级邀请人</label>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="gradeInviter">
-                    <div class="item-content">
-						（开通分级时对应的介绍人）
-	                </div>
-				</div>
-			</div>
-			<div class="list-item" id="profitRatio" style="display: none">
-				<label class="col-sm-3 item-left" >利润比例</label>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="profitRatio" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')">
-                    <div class="item-content">
-						（给介绍人的利润比例，例：5）
-	                </div>
-				</div>
-			</div>
+<!-- 			<div class="list-item" id="gradeInviter" style="display: none"> -->
+<!-- 				<label class="col-sm-3 item-left" >分级邀请人</label> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<!-- 					<input type="text" class="form-control" name="gradeInviter"> -->
+<!--                     <div class="item-content"> -->
+<!-- 						（开通分级时对应的介绍人） -->
+<!-- 	                </div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="list-item" id="profitRatio" style="display: none"> -->
+<!-- 				<label class="col-sm-3 item-left" >利润比例</label> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<!-- 					<input type="text" class="form-control" name="profitRatio" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')"> -->
+<!--                     <div class="item-content"> -->
+<!-- 						（给介绍人的利润比例，例：5） -->
+<!-- 	                </div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="list-item" id="customType" style="display: none">
 				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
@@ -118,6 +118,15 @@
 					<div class="item-content">
 		             	（对接appSecret，问技术部拿）
 		            </div>
+				</div>
+			</div>
+			<div class="list-item" id="shopExtension" style="display: none">
+				<label class="col-sm-3 item-left" >微店推广入口<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="shopExtensionFlg" id="shopExtensionFlg">
+   	    				<option value="0" selected>不显示</option>
+   	    				<option value="1">显示</option>
+	                </select>
 				</div>
 			</div>
 			<div class="title">
@@ -621,17 +630,17 @@
 			if (parId != 1) {
 				$('#customType').stop();
 				$('#customType').slideUp(300);
-				$('#gradeInviter').stop();
-				$('#gradeInviter').slideUp(300);
-				$('#profitRatio').stop();
-				$('#profitRatio').slideUp(300);
+// 				$('#gradeInviter').stop();
+// 				$('#gradeInviter').slideUp(300);
+// 				$('#profitRatio').stop();
+// 				$('#profitRatio').slideUp(300);
 			} else {
 				$('#customType').stop();
 				$('#customType').slideDown(300);
-				$('#gradeInviter').stop();
-				$('#gradeInviter').slideDown(300);
-				$('#profitRatio').stop();
-				$('#profitRatio').slideDown(300);
+// 				$('#gradeInviter').stop();
+// 				$('#gradeInviter').slideDown(300);
+// 				$('#profitRatio').stop();
+// 				$('#profitRatio').slideDown(300);
 			}
 		}
 	});
@@ -662,6 +671,14 @@
 	$('.item-right').on('click','.bgColor i.fa-search',function(){
 		setPicImgListData();
 	});
+	
+	$(function(){
+		var showShopExtensionFlg = "${showShopExtensionFlg}";
+		if (showShopExtensionFlg == "true") {
+			$('#shopExtension').stop();
+			$('#shopExtension').slideDown(300);
+		}
+	})
 	</script>
 </body>
 </html>

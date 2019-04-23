@@ -110,6 +110,8 @@ public class GradeEntity extends Pagination{
 	
 	private String gradeInviter;
 	
+	private Integer shopExtensionFlg;
+	
 	public String getAppKey() {
 		return appKey;
 	}
@@ -487,5 +489,13 @@ public class GradeEntity extends Pagination{
 
 	public void setGradeInviter(String gradeInviter) {
 		this.gradeInviter = gradeInviter;
+	}
+
+	public Integer getShopExtensionFlg() {
+		return shopExtensionFlg;
+	}
+
+	public void setShopExtensionFlg(Integer shopExtensionFlg) {
+		this.shopExtensionFlg = shopExtensionFlg;
 	}
 }

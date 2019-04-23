@@ -118,6 +118,18 @@
 					<c:when test="${order.orderSource==16}">
 						<input type="text" class="form-control" readonly value="中信乐益通">
 					</c:when>
+					<c:when test="${order.orderSource==17}">
+						<input type="text" class="form-control" readonly value="波罗蜜">
+					</c:when>
+					<c:when test="${order.orderSource==18}">
+						<input type="text" class="form-control" readonly value="马上消费金融">
+					</c:when>
+					<c:when test="${order.orderSource==19}">
+						<input type="text" class="form-control" readonly value="供销e家">
+					</c:when>
+					<c:when test="${order.orderSource==20}">
+						<input type="text" class="form-control" readonly value="淘宝">
+					</c:when>
 					<c:otherwise>
 						<input type="text" class="form-control" readonly value="订货平台">
 					</c:otherwise>
