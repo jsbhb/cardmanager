@@ -150,6 +150,12 @@
 	                 <input type="text" class="form-control" name="origin" value="${goodsInfo.goods.origin}" readonly/>
 				</div>
 			</div>
+	      	<div class="list-item">
+				<div class="col-sm-3 item-left">商品权重</div>
+				<div class="col-sm-9 item-right">
+	                 <input type="text" class="form-control" name="goodsTagRatio" value="${goodsInfo.goods.goodsTagRatio}" readonly>
+				</div>
+			</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">商品标签</div>
 				<div class="col-sm-9 item-right">

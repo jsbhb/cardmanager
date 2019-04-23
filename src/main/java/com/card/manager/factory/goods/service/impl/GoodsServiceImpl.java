@@ -355,6 +355,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
+		goods.setGoodsTagRatio(entity.getGoodsTagRatio());
 		entity.setGoodsId(Integer.parseInt(goods.getGoodsId()));
 
 		// -------------------保存商品详情---------------------//
@@ -558,6 +559,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
+		goods.setGoodsTagRatio(entity.getGoodsTagRatio());
 
 		// -------------------保存商品详情---------------------//
 		String savePath;
@@ -1485,6 +1487,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setGoodsName(entity.getGoodsName());
 		goods.setOrigin(entity.getOrigin());
 		goods.setType(entity.getType());
+		goods.setGoodsTagRatio(entity.getGoodsTagRatio());
 
 		// -------------------保存商品详情---------------------//
 		String savePath;

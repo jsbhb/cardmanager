@@ -64,6 +64,7 @@ public class CreateGoodsInfoEntity {
 	private String carTon;
 	private List<GoodsItemEntity> items;
 	private String createKey;
+	private int goodsTagRatio;
 	
 	
 	public int getBaseId() {
@@ -317,6 +318,12 @@ public class CreateGoodsInfoEntity {
 	}
 	public void setLinePrice(double linePrice) {
 		this.linePrice = linePrice;
+	}
+	public int getGoodsTagRatio() {
+		return goodsTagRatio;
+	}
+	public void setGoodsTagRatio(int goodsTagRatio) {
+		this.goodsTagRatio = goodsTagRatio;
 	}
 
 }
