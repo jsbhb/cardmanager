@@ -46,26 +46,26 @@
 	                  <input type="text" readonly class="form-control" name="parentGradeName" value="${grade.parentGradeName}">
 				</div>
 			</div>
-			<div class="list-item">
-				<label class="col-sm-3 item-left" >线下计算返佣<font style="color:red">*</font> </label>
-				<div class="col-sm-9 item-right">
-	                  <select class="form-control" name="calcRebateFlg" id="calcRebateFlg">
-	                  	  <c:choose>
-							   <c:when test="${grade.calcRebateFlg == 0}">
-							   		<option value="0" selected="selected">不计算</option>
-	                   	  			<option value="1">计算</option>
-							   </c:when>
-							   <c:otherwise>
-	                   	  			<option value="0">不计算</option>
-							   		<option value="1" selected="selected">计算</option>
-							   </c:otherwise>
-						  </c:choose> 
-		              </select>
-	                  <div class="item-content">
-						（线下订单导入时是否需要计算返佣）
-		              </div>
-				</div>
-			</div>
+<!-- 			<div class="list-item"> -->
+<!-- 				<label class="col-sm-3 item-left" >线下计算返佣<font style="color:red">*</font> </label> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<!-- 	                  <select class="form-control" name="calcRebateFlg" id="calcRebateFlg"> -->
+<%-- 	                  	  <c:choose> --%>
+<%-- 							   <c:when test="${grade.calcRebateFlg == 0}"> --%>
+<!-- 							   		<option value="0" selected="selected">不计算</option> -->
+<!-- 	                   	  			<option value="1">计算</option> -->
+<%-- 							   </c:when> --%>
+<%-- 							   <c:otherwise> --%>
+<!-- 	                   	  			<option value="0">不计算</option> -->
+<!-- 							   		<option value="1" selected="selected">计算</option> -->
+<%-- 							   </c:otherwise> --%>
+<%-- 						  </c:choose>  --%>
+<!-- 		              </select> -->
+<!-- 	                  <div class="item-content"> -->
+<!-- 						（线下订单导入时是否需要计算返佣） -->
+<!-- 		              </div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
@@ -74,7 +74,7 @@
 	                <input type="hidden" readonly class="form-control" id="parentGradeId" value="${gradeType.parentId}">
 				</div>
 			</div>
-			<div class="select-content" style="width: 420px;top: 265px;">
+			<div class="select-content" style="width: 420px;top: 220px;">
            		<ul class="first-ul" style="margin-left:10px;">
            			<c:forEach var="menu" items="${gradeList}">
            				<c:set var="menu" value="${menu}" scope="request" />
@@ -82,24 +82,24 @@
 					</c:forEach>
            		</ul>
            	</div>
-			<div class="list-item" id="gradeInviter" style="display: none">
-				<label class="col-sm-3 item-left" >分级邀请人</label>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="gradeInviter" id="gradeInviterInput" value="${grade.gradeInviter}">
-                    <div class="item-content">
-						（开通分级时对应的介绍人）
-	                </div>
-				</div>
-			</div>
-			<div class="list-item" id="profitRatio" style="display: none">
-				<label class="col-sm-3 item-left" >利润比例</label>
-				<div class="col-sm-9 item-right">
-					<input type="text" class="form-control" name="profitRatio" id="profitRatioInput" value="${grade.profitRatio}" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')">
-                    <div class="item-content">
-						（给介绍人的利润比例，例：5）
-	                </div>
-				</div>
-			</div>
+<!-- 			<div class="list-item" id="gradeInviter" style="display: none"> -->
+<!-- 				<label class="col-sm-3 item-left" >分级邀请人</label> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<%-- 					<input type="text" class="form-control" name="gradeInviter" id="gradeInviterInput" value="${grade.gradeInviter}"> --%>
+<!--                     <div class="item-content"> -->
+<!-- 						（开通分级时对应的介绍人） -->
+<!-- 	                </div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="list-item" id="profitRatio" style="display: none"> -->
+<!-- 				<label class="col-sm-3 item-left" >利润比例</label> -->
+<!-- 				<div class="col-sm-9 item-right"> -->
+<%-- 					<input type="text" class="form-control" name="profitRatio" id="profitRatioInput" value="${grade.profitRatio}" onkeyup="this.value=this.value.replace(/[^?\d]/g,'')"> --%>
+<!--                     <div class="item-content"> -->
+<!-- 						（给介绍人的利润比例，例：5） -->
+<!-- 	                </div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
 			<div class="list-item" id="customType" style="display: none">
 				<label class="col-sm-3 item-left" >客户类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
@@ -133,6 +133,23 @@
 					<div class="item-content">
 		             	（对接appSecret，问技术部拿）
 		            </div>
+				</div>
+			</div>
+			<div class="list-item" id="shopExtension" style="display: none">
+				<label class="col-sm-3 item-left" >微店推广入口<font style="color:red">*</font> </label>
+				<div class="col-sm-9 item-right">
+					<select class="form-control" name="shopExtensionFlg" id="shopExtensionFlg">
+						<c:choose>
+						   <c:when test="${grade.shopExtensionFlg == 0}">
+						   		<option value="0" selected>不显示</option>
+   	    						<option value="1">显示</option>
+						   </c:when>
+						   <c:otherwise>
+						   		<option value="0">不显示</option>
+   	    						<option value="1" selected>显示</option>
+						   </c:otherwise>
+						</c:choose>
+	                </select>
 				</div>
 			</div>
 			<div class="title">
@@ -432,16 +449,21 @@
 		if ($("#parentGradeId").val() == 1) {
 			$('#customType').stop();
 			$('#customType').slideDown(300);
-			$('#gradeInviter').stop();
-			$('#gradeInviter').slideDown(300);
-			$('#profitRatio').stop();
-			$('#profitRatio').slideDown(300);
+// 			$('#gradeInviter').stop();
+// 			$('#gradeInviter').slideDown(300);
+// 			$('#profitRatio').stop();
+// 			$('#profitRatio').slideDown(300);
 		}
 		if ($("#type").val() == 2) {
 			$('#key').stop();
 			$('#key').slideDown(300);
 			$('#secret').stop();
 			$('#secret').slideDown(300);
+		}
+		var showShopExtensionFlg = "${showShopExtensionFlg}";
+		if (showShopExtensionFlg == "true") {
+			$('#shopExtension').stop();
+			$('#shopExtension').slideDown(300);
 		}
 		$(".pagination-nav").pagination(options);
 	})
@@ -747,20 +769,20 @@
 			if (parId != 1) {
 				$('#customType').stop();
 				$('#customType').slideUp(300);
-				$('#gradeInviter').stop();
-				$('#gradeInviter').slideUp(300);
-				$('#profitRatio').stop();
-				$('#profitRatio').slideUp(300);
+// 				$('#gradeInviter').stop();
+// 				$('#gradeInviter').slideUp(300);
+// 				$('#profitRatio').stop();
+// 				$('#profitRatio').slideUp(300);
 				
-				$('#gradeInviterInput').val("");
-				$('#profitRatioInput').val("");
+// 				$('#gradeInviterInput').val("");
+// 				$('#profitRatioInput').val("");
 			} else {
 				$('#customType').stop();
 				$('#customType').slideDown(300);
-				$('#gradeInviter').stop();
-				$('#gradeInviter').slideDown(300);
-				$('#profitRatio').stop();
-				$('#profitRatio').slideDown(300);
+// 				$('#gradeInviter').stop();
+// 				$('#gradeInviter').slideDown(300);
+// 				$('#profitRatio').stop();
+// 				$('#profitRatio').slideDown(300);
 			}
 		}
 	});

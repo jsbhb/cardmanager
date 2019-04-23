@@ -37,6 +37,10 @@ public class ParemeterConverUtil {
 			put("自营", 14);
 			put("金融工厂", 15);
 			put("中信乐益通", 16);
+			put("波罗蜜", 17);
+			put("马上消费金融", 18);
+			put("供销e家", 19);
+			put("淘宝", 20);
 		}
 	};
 	

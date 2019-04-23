@@ -92,6 +92,10 @@
 	                   	  <option value="14">自营</option>
 	                   	  <option value="15">金融工厂</option>
 	                   	  <option value="16">中信乐益通</option>
+	                   	  <option value="17">波罗蜜</option>
+	                   	  <option value="18">马上消费金融</option>
+	                   	  <option value="19">供销e家</option>
+	                   	  <option value="20">淘宝</option>
 		                </select>
 					</div>
 				</div>
@@ -326,6 +330,10 @@ function rebuildTable(data){
 			case 14:str += "</td><td>自营";break;
 			case 15:str += "</td><td>金融工厂";break;
 			case 16:str += "</td><td>中信乐益通";break;
+			case 17:str += "</td><td>波罗蜜";break;
+			case 18:str += "</td><td>马上消费金融";break;
+			case 19:str += "</td><td>供销e家";break;
+			case 20:str += "</td><td>淘宝";break;
 			default:str += "</td><td>";
 		}
 		str += "</td><td>" + (list[i].shopName == "" ? "" : list[i].shopName);

@@ -14,7 +14,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="cache-control" content="no-cache">
 	<script type="text/javascript">
 		function toLogin(){
-			window.top.location = "${pageContext.request.contextPath}/admin/toLogin.shtml"
+// 			window.top.location = "${pageContext.request.contextPath}/admin/toLogin.shtml"
+			var link = window.location.href;
+            if(link.indexOf("cncoopbuy") != -1){
+                    window.top.location = "https://zserp.cncoopay.com/cardmanager/admin/main.shtml";
+            }else{
+                    window.top.location = "${pageContext.request.contextPath}/admin/toLogin.shtml"
+            }
 		}
 	</script>
 </head>

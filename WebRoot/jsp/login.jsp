@@ -117,9 +117,29 @@
 	}
 }
 </style>
+	<script type="text/javascript">
+		function IsPC() {
+		    var userAgentInfo = navigator.userAgent;
+		    var Agents = ["Android", "iPhone",
+		                "SymbianOS", "Windows Phone",
+		                "iPad", "iPod"];
+		    var flag = true;
+		    for (var v = 0; v < Agents.length; v++) {
+		        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+		            flag = false;
+		            break;
+		        }
+		    }
+		    return flag;
+		}
+		var flag = IsPC();//true为PC端，false为手机端
+		if (!flag) {
+			alert("请在电脑端使用火狐浏览器访问后台系统！");
+		}
+	</script>
 </head>
 
-<body>
+<body onLoad="IsPC();">
 	<!-- Top content -->
         <div class="top-content">
         	<div class="login-header">
@@ -186,8 +206,8 @@
     		            	}
 	    		         } ,
 	    		         error : function(data) {
-	    		        	 $('#submitBtn').click();
-// 	    		            	alert("网络异常，请稍后登录");	
+// 	    		        	 $('#submitBtn').click();
+	    		         	alert("网络异常，请稍后登录");	
 	    		       	 }
     				}
     			)
