@@ -57,6 +57,7 @@ public class GoodsEntity extends Pagination {
 	private List<GoodsTagBindEntity> goodsTagBindList;
 	private String tagId;
 	private GoodsBaseEntity baseEntity;
+	private int goodsTagRatio;
 
 	public GoodsEntity() {
 	}
@@ -76,6 +77,14 @@ public class GoodsEntity extends Pagination {
 		this.createTime = obj.getString("createTime");
 		this.updateTime = obj.getString("updateTime");
 		this.opt = obj.getString("opt");
+	}
+
+	public int getGoodsTagRatio() {
+		return goodsTagRatio;
+	}
+
+	public void setGoodsTagRatio(int goodsTagRatio) {
+		this.goodsTagRatio = goodsTagRatio;
 	}
 
 	public int getId() {

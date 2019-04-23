@@ -72,6 +72,7 @@ public class ImportGoodsBO {
 	private List<GoodsSpecsBO> specsList;
 	private List<GoodsRebateBO> rebateList;
 	private String tagNames;
+	private String goodsTagRatio;
 
 	public void init(Map<String, Integer> supplierMap, Map<String, Integer> gradeMapTemp,
 			Map<String, String> firstMapTemp, Map<String, String> secondMapTemp, Map<String, String> thirdMapTemp,
@@ -164,7 +165,16 @@ public class ImportGoodsBO {
 		list.add("specsList");
 		list.add("rebateList");
 		list.add("tagNames");
+		list.add("goodsTagRatio");
 		return list;
+	}
+
+	public String getGoodsTagRatio() {
+		return goodsTagRatio;
+	}
+
+	public void setGoodsTagRatio(String goodsTagRatio) {
+		this.goodsTagRatio = goodsTagRatio;
 	}
 
 	public String getTagNames() {

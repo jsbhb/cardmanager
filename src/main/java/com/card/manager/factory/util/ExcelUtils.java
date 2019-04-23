@@ -369,7 +369,7 @@ public class ExcelUtils {
 					hSModel = (T) clazz.newInstance();
 					for (Map.Entry<Integer, String> entry : map.entrySet()) {
 						temp = xssfRow.getCell(entry.getKey());
-						if (temp == null) {
+						if (temp == null || StringUtil.isEmpty(getValue(temp))) {
 							continue;
 						}
 						Method method;
