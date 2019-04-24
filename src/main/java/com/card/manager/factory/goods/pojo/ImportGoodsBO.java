@@ -149,6 +149,7 @@ public class ImportGoodsBO {
 		list.add("origin");
 		list.add("goodsName");
 		list.add("tagNames");
+		list.add("goodsTagRatio");
 		return list;
 	}
 
