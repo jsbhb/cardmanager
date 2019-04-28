@@ -70,6 +70,7 @@ import com.card.manager.factory.goods.pojo.ItemSpecsPojo;
 import com.card.manager.factory.goods.pojo.Tax;
 import com.card.manager.factory.goods.service.GoodsService;
 import com.card.manager.factory.log.LogUtil;
+import com.card.manager.factory.log.SysLogger;
 import com.card.manager.factory.socket.task.SocketClient;
 import com.card.manager.factory.supplier.model.SupplierEntity;
 import com.card.manager.factory.system.mapper.StaffMapper;
@@ -103,6 +104,9 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 
 	@Resource
 	StaffMapper<?> staffMapper;
+	
+	@Resource
+	SysLogger sysLogger;
 
 	@Override
 	public GoodsEntity queryById(String id, String token) {
@@ -359,6 +363,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		entity.setGoodsId(Integer.parseInt(goods.getGoodsId()));
 
 		// -------------------保存商品详情---------------------//
+		sysLogger.debug("商品新增时保存商详开始", "goodsId:======"+goods.getGoodsId());
 		String savePath;
 		String invitePath;
 		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
@@ -371,6 +376,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		ServletContext servletContext = webApplicationContext.getServletContext();
 		String path = servletContext.getRealPath("/") + "fileUpload";
 		File tmpFile = null;
+		sysLogger.debug("商品新增时商详内容", entity.getDetailInfo().replace(entity.getCreateKey(), goods.getGoodsId()).toString());
 		InputStream is = new ByteArrayInputStream(
 				entity.getDetailInfo().replace(entity.getCreateKey(), goods.getGoodsId()).getBytes("utf-8"));
 		File fd = new File(path);
@@ -397,6 +403,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 			File del = new File(tmpFile.toURI());
 			del.delete();
 		}
+		sysLogger.debug("商品新增时保存商详结束", "goodsId:======"+goods.getGoodsId());
 		goods.setDetailPath(invitePath);
 		// -------------------保存商品详情---------------------//
 
@@ -562,6 +569,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setGoodsTagRatio(entity.getGoodsTagRatio());
 
 		// -------------------保存商品详情---------------------//
+		sysLogger.debug("商品修改时保存商详开始", "goodsId:======"+goods.getGoodsId());
 		String savePath;
 		String invitePath;
 		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
@@ -569,36 +577,42 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
 				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + goods.getGoodsId()
 				+ ResourceContants.HTML_SUFFIX;
-		// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
-		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
-		ServletContext servletContext = webApplicationContext.getServletContext();
-		String path = servletContext.getRealPath("/") + "fileUpload";
-		File tmpFile = null;
-		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
-		File fd = new File(path);
-		if (!fd.exists()) {
-			fd.mkdirs();
-		}
-		String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
-		tmpFile = new File(path + "/" + tmpFileName);
-		FileUtil.inputStreamToFile(is, tmpFile);
-		SocketClient client = null;
-		try {
-			client = new SocketClient();
-			client.sendFile(tmpFile.getPath(), savePath);
-			client.quit();
-			client.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("修改商品时商品详情传输到资源服务器异常");
-		} finally {
-			if (client != null) {
-				client.close();
+		if ("".equals(entity.getDetailInfo().toString())) {
+			sysLogger.debug("商品修改时商详内容为空", "商详文件不修改");
+		} else {
+			// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+			String path = servletContext.getRealPath("/") + "fileUpload";
+			File tmpFile = null;
+			sysLogger.debug("商品修改时商详内容", entity.getDetailInfo().toString());
+			InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
+			File fd = new File(path);
+			if (!fd.exists()) {
+				fd.mkdirs();
 			}
-			// 将临时文件删除
-			File del = new File(tmpFile.toURI());
-			del.delete();
+			String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
+			tmpFile = new File(path + "/" + tmpFileName);
+			FileUtil.inputStreamToFile(is, tmpFile);
+			SocketClient client = null;
+			try {
+				client = new SocketClient();
+				client.sendFile(tmpFile.getPath(), savePath);
+				client.quit();
+				client.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new Exception("修改商品时商品详情传输到资源服务器异常");
+			} finally {
+				if (client != null) {
+					client.close();
+				}
+				// 将临时文件删除
+				File del = new File(tmpFile.toURI());
+				del.delete();
+			}
 		}
+		sysLogger.debug("商品修改时保存商详结束", "goodsId:======"+goods.getGoodsId());
 		goods.setDetailPath(invitePath);
 		// -------------------保存商品详情---------------------//
 
@@ -1490,6 +1504,7 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		goods.setGoodsTagRatio(entity.getGoodsTagRatio());
 
 		// -------------------保存商品详情---------------------//
+		sysLogger.debug("商品规格新增时保存商详开始", "goodsId:======"+goods.getGoodsId());
 		String savePath;
 		String invitePath;
 		savePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
@@ -1497,36 +1512,42 @@ public class GoodsServiceImpl extends AbstractServcerCenterBaseService implement
 		invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + goods.getGoodsId() + "/"
 				+ ResourceContants.DETAIL + "/" + ResourceContants.HTML + "/" + goods.getGoodsId()
 				+ ResourceContants.HTML_SUFFIX;
-		// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
-		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
-		ServletContext servletContext = webApplicationContext.getServletContext();
-		String path = servletContext.getRealPath("/") + "fileUpload";
-		File tmpFile = null;
-		InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
-		File fd = new File(path);
-		if (!fd.exists()) {
-			fd.mkdirs();
-		}
-		String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
-		tmpFile = new File(path + "/" + tmpFileName);
-		FileUtil.inputStreamToFile(is, tmpFile);
-		SocketClient client = null;
-		try {
-			client = new SocketClient();
-			client.sendFile(tmpFile.getPath(), savePath);
-			client.quit();
-			client.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Exception("修改商品时商品详情传输到资源服务器异常");
-		} finally {
-			if (client != null) {
-				client.close();
+		if ("".equals(entity.getDetailInfo().toString())) {
+			sysLogger.debug("商品规格新增时商详内容为空", "商详文件不修改");
+		} else {
+			// 通过输入流的方式将选择的文件内容转为FILE文件，此时会生成一个临时文件
+			WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+			ServletContext servletContext = webApplicationContext.getServletContext();
+			String path = servletContext.getRealPath("/") + "fileUpload";
+			File tmpFile = null;
+			sysLogger.debug("商品规格新增时商详内容", entity.getDetailInfo().toString());
+			InputStream is = new ByteArrayInputStream(entity.getDetailInfo().getBytes("utf-8"));
+			File fd = new File(path);
+			if (!fd.exists()) {
+				fd.mkdirs();
 			}
-			// 将临时文件删除
-			File del = new File(tmpFile.toURI());
-			del.delete();
+			String tmpFileName = goods.getGoodsId() + ResourceContants.HTML_SUFFIX;
+			tmpFile = new File(path + "/" + tmpFileName);
+			FileUtil.inputStreamToFile(is, tmpFile);
+			SocketClient client = null;
+			try {
+				client = new SocketClient();
+				client.sendFile(tmpFile.getPath(), savePath);
+				client.quit();
+				client.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new Exception("修改商品时商品详情传输到资源服务器异常");
+			} finally {
+				if (client != null) {
+					client.close();
+				}
+				// 将临时文件删除
+				File del = new File(tmpFile.toURI());
+				del.delete();
+			}
 		}
+		sysLogger.debug("商品规格新增时保存商详结束", "goodsId:======"+goods.getGoodsId());
 		goods.setDetailPath(invitePath);
 		// -------------------保存商品详情---------------------//
 
