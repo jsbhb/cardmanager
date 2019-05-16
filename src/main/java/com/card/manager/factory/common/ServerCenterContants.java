@@ -378,6 +378,9 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/activity/backManager/modifyBargainActivityInfo";
 	public static final String GOODS_CENTER_SHOW_BARGAIN_ACTIVITY_SHOW_PAGE_INFO = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
 			+ SERVER_CENTER_EDITION + "/activity/backManager/queryBargainActivityShowPageInfo";
+	public static final String LIST_GOODS_RAND = (TOKEN_NOT_NEED ? "/" : "/goodscenter/")
+			+ SERVER_CENTER_EDITION + "/goods/list/rand";
+	
 	
 
 	/*------------------------销售订单管理-----------------------*/
@@ -578,5 +581,13 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/timetask/stop";
 	public static final String TIMETASK_CENTER_UPDATE_TIMETASK = (TOKEN_NOT_NEED ? "/" : "/timetaskcenter/")
 			+ SERVER_CENTER_EDITION + "/timetask/update";
+	
+	/**
+	 * 三方服务url
+	 */
+	public static final String SAVE_NEWS = (TOKEN_NOT_NEED ? "/" : "/3rdcenter/")
+			+ SERVER_CENTER_EDITION + "/info/news";
+	public static final String LIST_NEWS_RAND = (TOKEN_NOT_NEED ? "/" : "/3rdcenter/")
+			+ SERVER_CENTER_EDITION + "/info/news/rand/{type}";
 	
 }

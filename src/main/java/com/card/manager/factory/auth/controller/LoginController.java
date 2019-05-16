@@ -93,13 +93,13 @@ public class LoginController extends BaseController {
 
 	@Resource
 	StatisticMngService statisticMngService;
-	
+
 	@Resource
 	PurchaseService purchaseService;
-	
+
 	@Resource
 	OrderService orderService;
-	
+
 	@Resource
 	FinanceMngService financeMngService;
 
@@ -505,7 +505,7 @@ public class LoginController extends BaseController {
 			OrderInfo pagination = new OrderInfo();
 			Map<String, Object> params = new HashMap<String, Object>();
 			pagination.setUserId(operator.getUserCenterId());
-			//一般贸易&后台订单
+			// 一般贸易&后台订单
 			pagination.setOrderFlag(2);
 			pagination.setOrderSource(Constants.PLATFORMSOURCE);
 			pagination.setCurrentPage(1);
@@ -513,10 +513,10 @@ public class LoginController extends BaseController {
 			PageCallBack pcb = orderService.dataList(pagination, params, operator.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
 			if (pcb != null) {
-				List<OrderInfo> orderLIst = (List<OrderInfo>)pcb.getObj();
+				List<OrderInfo> orderLIst = (List<OrderInfo>) pcb.getObj();
 				int totalRow = 0;
-				for(OrderInfo order :orderLIst) {
-					if (order.getStatus()==0) {
+				for (OrderInfo order : orderLIst) {
+					if (order.getStatus() == 0) {
 						totalRow++;
 					}
 				}
@@ -554,7 +554,7 @@ public class LoginController extends BaseController {
 			OrderInfo pagination = new OrderInfo();
 			Map<String, Object> params = new HashMap<String, Object>();
 			pagination.setUserId(operator.getUserCenterId());
-			//一般贸易&后台订单
+			// 一般贸易&后台订单
 			pagination.setOrderFlag(2);
 			pagination.setOrderSource(Constants.PLATFORMSOURCE);
 			pagination.setCurrentPage(1);
@@ -562,10 +562,10 @@ public class LoginController extends BaseController {
 			PageCallBack pcb = orderService.dataList(pagination, params, operator.getToken(),
 					ServerCenterContants.ORDER_CENTER_QUERY_FOR_PAGE, OrderInfo.class);
 			if (pcb != null) {
-				List<OrderInfo> orderLIst = (List<OrderInfo>)pcb.getObj();
+				List<OrderInfo> orderLIst = (List<OrderInfo>) pcb.getObj();
 				int totalRow = 0;
-				for(OrderInfo order :orderLIst) {
-					if (order.getStatus()==0) {
+				for (OrderInfo order : orderLIst) {
+					if (order.getStatus() == 0) {
 						totalRow++;
 					}
 				}
@@ -598,10 +598,11 @@ public class LoginController extends BaseController {
 					ServerCenterContants.FINANCE_CENTER_QUERY_CARDINFO, CardEntity.class);
 			String showCardInfo = "";
 			if (pcb != null) {
-				List<CardEntity> cardLIst = (List<CardEntity>)pcb.getObj();
-				for(CardEntity card :cardLIst) {
+				List<CardEntity> cardLIst = (List<CardEntity>) pcb.getObj();
+				for (CardEntity card : cardLIst) {
 					String tmpCardNo = card.getCardNo().toString();
-					showCardInfo = card.getCardBank()+"("+ tmpCardNo.substring(tmpCardNo.length()-5, tmpCardNo.length()) +")";
+					showCardInfo = card.getCardBank() + "("
+							+ tmpCardNo.substring(tmpCardNo.length() - 5, tmpCardNo.length()) + ")";
 				}
 				context.put("showCardInfo", showCardInfo);
 			} else {
@@ -617,7 +618,7 @@ public class LoginController extends BaseController {
 			String defaultAddressInfo = "";
 			for (Address add : addressList) {
 				if (DEFAULT.equals(add.getSetDefault())) {
-					defaultAddressInfo = add.getProvince()+add.getCity()+add.getArea();
+					defaultAddressInfo = add.getProvince() + add.getCity() + add.getArea();
 					break;
 				}
 			}
@@ -888,8 +889,15 @@ public class LoginController extends BaseController {
 					} else if (type.equals(ResourceContants.H5_POPULARITY)) {
 						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.H5 + "/"
 								+ ResourceContants.POPULARITY + "/" + ResourceContants.IMAGE + "/" + key + "/";
-						invitePath = URLUtils.get("static") + "/" + ResourceContants.H5 + "/" + ResourceContants.POPULARITY
-								 + "/" + ResourceContants.IMAGE + "/" + key + "/" + saveFileName;
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.H5 + "/"
+								+ ResourceContants.POPULARITY + "/" + ResourceContants.IMAGE + "/" + key + "/"
+								+ saveFileName;
+					} else if (type.equalsIgnoreCase(ResourceContants.INFO)) {
+						String date = DateUtil.getNowShortDate();
+						remotePath = ResourceContants.RESOURCE_BASE_PATH + "/" + ResourceContants.INFO + "/" + date
+								+ "/";
+						invitePath = URLUtils.get("static") + "/" + ResourceContants.INFO + "/" + date + "/"
+								+ saveFileName;
 					} else {
 						sendFailureMessage(resp, "操作失败：没有文件处理类型信息");
 						return;
@@ -925,7 +933,7 @@ public class LoginController extends BaseController {
 			return;
 		}
 	}
-	
+
 	@RequestMapping(value = "/uploadGoodsFile", method = RequestMethod.POST)
 	@Auth(verifyLogin = false, verifyURL = false)
 	public void uploadGoodsFile(@RequestParam("pic") MultipartFile pic, HttpServletRequest req,
@@ -969,10 +977,11 @@ public class LoginController extends BaseController {
 					String invitePath = "";
 					invitePath = URLUtils.get("static") + "/" + ResourceContants.GOODS + "/" + key + "/"
 							+ ResourceContants.MASTER + "/" + ResourceContants.IMAGE + "/" + saveFileName;
-					
+
 					GoodsFileUploadComponentImpl fuc = new GoodsFileUploadComponentImpl(key);
 					try {
-						fuc.fileUpload(tmpFile.getPath(), fuc.createRemotePath(),URLUtils.get("socketServerIp"),URLUtils.get("socketServerPort"));
+						fuc.fileUpload(tmpFile.getPath(), fuc.createRemotePath(), URLUtils.get("socketServerIp"),
+								URLUtils.get("socketServerPort"));
 						sendSuccessMessage(resp, invitePath);
 					} catch (UnknownHostException e) {
 						e.printStackTrace();

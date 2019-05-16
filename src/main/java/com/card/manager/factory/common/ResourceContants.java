@@ -46,4 +46,5 @@ public class ResourceContants {
 	public static final String CATEGORY = "category";
 	public static final String H5_POPULARITY = "H5-popularity";
 	public static final String POPULARITY = "popularity";
+	public static final String INFO = "info";
 }
