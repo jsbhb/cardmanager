@@ -24,13 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.card.manager.factory.base.BaseController;
 import com.card.manager.factory.base.PageCallBack;
 import com.card.manager.factory.common.ServerCenterContants;
-import com.card.manager.factory.component.CachePoolComponent;
 import com.card.manager.factory.exception.ServerCenterNullDataException;
-import com.card.manager.factory.goods.model.FirstCatalogEntity;
 import com.card.manager.factory.goods.model.GoodsEntity;
 import com.card.manager.factory.goods.model.GoodsItemEntity;
-import com.card.manager.factory.goods.model.SecondCatalogEntity;
-import com.card.manager.factory.goods.model.ThirdCatalogEntity;
 import com.card.manager.factory.goods.pojo.GoodsExtensionEntity;
 import com.card.manager.factory.goods.service.GoodsItemService;
 import com.card.manager.factory.shop.model.ShopEntity;
@@ -136,9 +132,9 @@ public class GoodsQRMngController extends BaseController {
 			if (entity != null) {
 				tmpLink = entity.getMobileUrl();
 			}
-			List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
-			List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
-			List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
+//			List<FirstCatalogEntity> first = CachePoolComponent.getFirstCatalog(staffEntity.getToken());
+//			List<SecondCatalogEntity> second = CachePoolComponent.getSecondCatalog(staffEntity.getToken());
+//			List<ThirdCatalogEntity> third = CachePoolComponent.getThirdCatalog(staffEntity.getToken());
 			
 			@SuppressWarnings("unchecked")
 			List<GoodsEntity> list = (List<GoodsEntity>) pcb.getObj();
@@ -147,25 +143,27 @@ public class GoodsQRMngController extends BaseController {
 					gEntity.setDetailPath("");
 				} else {
 					tmpLink = entity.getMobileUrl();
-					for (FirstCatalogEntity fce : first) {
-						if (gEntity.getBaseEntity().getFirstCatalogId().equals(fce.getFirstId())) {
-							tmpLink = tmpLink + "/" + fce.getAccessPath();
-							break;
-						}
-					}
-					for (SecondCatalogEntity sce : second) {
-						if (gEntity.getBaseEntity().getSecondCatalogId().equals(sce.getSecondId())) {
-							tmpLink = tmpLink + "/" + sce.getAccessPath();
-							break;
-						}
-					}
-					for (ThirdCatalogEntity tce : third) {
-						if (gEntity.getBaseEntity().getThirdCatalogId().equals(tce.getThirdId())) {
-							tmpLink = tmpLink + "/" + tce.getAccessPath();
-							break;
-						}
-					}
-					gEntity.setDetailPath(tmpLink + "/" + gEntity.getGoodsId() + ".html?shopId=" + staffEntity.getGradeId());
+					//基于商品链接跳转到小程序跳转规则修改调整商品二维码链接
+					gEntity.setDetailPath(tmpLink + "/goodsDetail.html?goodsId=" + gEntity.getGoodsId() + "&shopId=" + staffEntity.getGradeId());
+//					for (FirstCatalogEntity fce : first) {
+//						if (gEntity.getBaseEntity().getFirstCatalogId().equals(fce.getFirstId())) {
+//							tmpLink = tmpLink + "/" + fce.getAccessPath();
+//							break;
+//						}
+//					}
+//					for (SecondCatalogEntity sce : second) {
+//						if (gEntity.getBaseEntity().getSecondCatalogId().equals(sce.getSecondId())) {
+//							tmpLink = tmpLink + "/" + sce.getAccessPath();
+//							break;
+//						}
+//					}
+//					for (ThirdCatalogEntity tce : third) {
+//						if (gEntity.getBaseEntity().getThirdCatalogId().equals(tce.getThirdId())) {
+//							tmpLink = tmpLink + "/" + tce.getAccessPath();
+//							break;
+//						}
+//					}
+//					gEntity.setDetailPath(tmpLink + "/" + gEntity.getGoodsId() + ".html?shopId=" + staffEntity.getGradeId());
 				}
 			}
 			
