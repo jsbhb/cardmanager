@@ -46,7 +46,7 @@ public class GradeMngController extends BaseController {
 
 	@Resource
 	StaffMngService staffMngService;
-	
+
 	@Resource
 	GoodsService goodsService;
 
@@ -67,7 +67,7 @@ public class GradeMngController extends BaseController {
 			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
 			context.put("gradeList", gradeList);
 		} else {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType()+"", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType() + "", opt.getToken());
 			context.put("gradeList", gradeList);
 		}
 		if (opt.getGradeLevel() == 1) {
@@ -80,7 +80,7 @@ public class GradeMngController extends BaseController {
 		context.put("opt", opt);
 		List<CustomerTypeEntity> customerTypeList = CachePoolComponent.getCustomerType();
 		context.put("customerTypeList", customerTypeList);
-		
+
 		if (opt.getGradeType() == 0 || opt.getGradeType() == 1) {
 			context.put("urlShow", "true");
 		} else {
@@ -91,7 +91,7 @@ public class GradeMngController extends BaseController {
 		} else {
 			context.put("showShopExtensionFlg", "false");
 		}
-		
+
 		// 自动产生业务流水号：tmp+GradeId+账号+时间+4位随机数
 		Integer num = (int) (Math.random() * 9000) + 1000;
 		String key = "";
@@ -111,21 +111,21 @@ public class GradeMngController extends BaseController {
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		String backStr = "";
 		try {
-			//判断域名是否以/结尾  如果是去掉/
+			// 判断域名是否以/结尾 如果是去掉/
 			String tmpUrl = "";
 			String tmpLastStr = "";
 			if (gradeInfo.getRedirectUrl() != null) {
 				tmpUrl = gradeInfo.getRedirectUrl();
-				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				tmpLastStr = tmpUrl.substring(tmpUrl.length() - 1, tmpUrl.length());
 				if (tmpLastStr.equals("/")) {
-					gradeInfo.setRedirectUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+					gradeInfo.setRedirectUrl(tmpUrl.substring(0, tmpUrl.length() - 1));
 				}
 			}
 			if (gradeInfo.getMobileUrl() != null) {
 				tmpUrl = gradeInfo.getMobileUrl();
-				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				tmpLastStr = tmpUrl.substring(tmpUrl.length() - 1, tmpUrl.length());
 				if (tmpLastStr.equals("/")) {
-					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+					gradeInfo.setMobileUrl(tmpUrl.substring(0, tmpUrl.length() - 1));
 				}
 			}
 			gradeMngService.saveGrade(gradeInfo, staffEntity);
@@ -155,10 +155,25 @@ public class GradeMngController extends BaseController {
 			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
 			context.put("gradeList", gradeList);
 		} else {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType()+"", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType() + "", opt.getToken());
 			context.put("gradeList", gradeList);
 		}
 		return forword("system/grade/list", context);
+	}
+
+	/**
+	 * @fun 根据gradeId 获取对应的下级的gradeType
+	 * @param req
+	 * @param resp
+	 */
+	@RequestMapping(value = "/listGradeType")
+	public void listGradeType(HttpServletRequest req, HttpServletResponse resp) {
+		Map<String, Object> context = getRootMap();
+		StaffEntity opt = SessionUtils.getOperator(req);
+		String gradeId = req.getParameter("id");
+		context.put("opt", opt);
+		List<GradeTypeDTO> gradeList = gradeMngService.queryGradeTypeChildren(gradeId, opt.getToken());
+		sendSuccessObject(resp, gradeList);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -193,17 +208,17 @@ public class GradeMngController extends BaseController {
 				entity.setId(id);
 			}
 		}
-		
+
 		try {
 			pcb = gradeMngService.dataList(entity, params, opt.getToken(),
 					ServerCenterContants.USER_CENTER_GRADE_QUERY_FOR_PAGE, GradeEntity.class);
-			
+
 			if (opt.getRoleId() != AuthCommon.SUPER_ADMIN) {
 				int id = opt.getGradeId();
 				if (id != AuthCommon.EARA_ADMIN) {
 					if (pcb != null) {
 						List<GradeEntity> list = (List<GradeEntity>) pcb.getObj();
-						for (GradeEntity ge:list) {
+						for (GradeEntity ge : list) {
 							String tmpGradeTypeName = ge.getGradeTypeName();
 							if (tmpGradeTypeName.indexOf("（") != -1) {
 								tmpGradeTypeName = tmpGradeTypeName.substring(0, tmpGradeTypeName.indexOf("（"));
@@ -246,7 +261,7 @@ public class GradeMngController extends BaseController {
 		if (opt.getGradeLevel() == 1) {
 			context.put("charges", GradeCharge);
 		} else {
-			if (gradeId.equals(opt.getGradeId()+"")) {
+			if (gradeId.equals(opt.getGradeId() + "")) {
 				context.put("charges", GradeCharge);
 			} else {
 				List<StaffEntity> tmpGradeCharge = new ArrayList<StaffEntity>();
@@ -260,7 +275,7 @@ public class GradeMngController extends BaseController {
 			List<GradeTypeDTO> gradeList = goodsService.queryGradeType(null, opt.getToken());
 			context.put("gradeList", gradeList);
 		} else {
-			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType()+"", opt.getToken());
+			List<GradeTypeDTO> gradeList = goodsService.queryGradeTypeChildren(opt.getGradeType() + "", opt.getToken());
 			context.put("gradeList", gradeList);
 		}
 		try {
@@ -269,11 +284,11 @@ public class GradeMngController extends BaseController {
 				entity.setWelfareRebate(0.0);
 			}
 			context.put("grade", entity);
-			GradeTypeDTO gradeType = goodsService.queryGradeTypeById(entity.getGradeType()+"", opt.getToken());
+			GradeTypeDTO gradeType = goodsService.queryGradeTypeById(entity.getGradeType() + "", opt.getToken());
 			context.put("gradeType", gradeType);
 			List<CustomerTypeEntity> customerTypeList = CachePoolComponent.getCustomerType();
 			context.put("customerTypeList", customerTypeList);
-			
+
 			StaffEntity editStaff = staffMngService.queryStaffInfoByGradeId(gradeId);
 			context.put("editStaff", editStaff);
 		} catch (Exception e) {
@@ -285,7 +300,7 @@ public class GradeMngController extends BaseController {
 			context.put("urlShow", "true");
 		} else {
 			context.put("urlShow", "false");
-			if (gradeId.equals(opt.getGradeId()+"")) {
+			if (gradeId.equals(opt.getGradeId() + "")) {
 				context.put("editFlg", "false");
 			}
 		}
@@ -302,21 +317,21 @@ public class GradeMngController extends BaseController {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
-			//判断域名是否以/结尾  如果是去掉/
+			// 判断域名是否以/结尾 如果是去掉/
 			String tmpUrl = "";
 			String tmpLastStr = "";
 			if (gradeInfo.getRedirectUrl() != null) {
 				tmpUrl = gradeInfo.getRedirectUrl();
-				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				tmpLastStr = tmpUrl.substring(tmpUrl.length() - 1, tmpUrl.length());
 				if (tmpLastStr.equals("/")) {
-					gradeInfo.setRedirectUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+					gradeInfo.setRedirectUrl(tmpUrl.substring(0, tmpUrl.length() - 1));
 				}
 			}
 			if (gradeInfo.getMobileUrl() != null) {
 				tmpUrl = gradeInfo.getMobileUrl();
-				tmpLastStr = tmpUrl.substring(tmpUrl.length()-1, tmpUrl.length());
+				tmpLastStr = tmpUrl.substring(tmpUrl.length() - 1, tmpUrl.length());
 				if (tmpLastStr.equals("/")) {
-					gradeInfo.setMobileUrl(tmpUrl.substring(0,tmpUrl.length()-1));
+					gradeInfo.setMobileUrl(tmpUrl.substring(0, tmpUrl.length() - 1));
 				}
 			}
 			GradeBO grade = CachePoolComponent.getGrade(staffEntity.getToken()).get(gradeInfo.getId());
@@ -354,7 +369,6 @@ public class GradeMngController extends BaseController {
 		sendSuccessMessage(resp, null);
 	}
 
-
 	@RequestMapping(value = "/dataListForGrade")
 	@ResponseBody
 	public PageCallBack dataListForGrade(Pagination pagination, HttpServletRequest req, HttpServletResponse resp) {
@@ -386,14 +400,14 @@ public class GradeMngController extends BaseController {
 
 		return pcb;
 	}
-	
+
 	@RequestMapping(value = "/init", method = RequestMethod.POST)
 	public void gradeInit(HttpServletRequest req, HttpServletResponse resp) {
 
 		StaffEntity staffEntity = SessionUtils.getOperator(req);
 		try {
 			Integer id = Integer.valueOf(req.getParameter("id"));
-			gradeMngService.gradeInit(id,staffEntity.getToken());
+			gradeMngService.gradeInit(id, staffEntity.getToken());
 		} catch (Exception e) {
 			sendFailureMessage(resp, "操作失败：" + e.getMessage());
 			return;

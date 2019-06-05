@@ -100,6 +100,10 @@ public class ServerCenterContants {
 			+ "/grade/type/{id}";
 	public static final String USER_CENTER_CHILDREN_GRADE_TYPE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/grade/type/children";
+	public static final String USER_CENTER_CHILDREN_GRADE_TYPE_BYGRADEID = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/grade/type/children/gradeId";
+	public static final String SHOP_MANAGER_AUDIT = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
+			+ "/shop/audit";
 	public static final String USER_CENTER_SHOPKEEPER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
 			+ "/cooperation/shopkeeper";
 	public static final String USER_CENTER_PARTNER_QUERY_FOR_PAGE = (TOKEN_NOT_NEED ? "/" : "/usercenter/") + SERVER_CENTER_EDITION
@@ -589,5 +593,7 @@ public class ServerCenterContants {
 			+ SERVER_CENTER_EDITION + "/info/news";
 	public static final String LIST_NEWS_RAND = (TOKEN_NOT_NEED ? "/" : "/3rdcenter/")
 			+ SERVER_CENTER_EDITION + "/info/news/rand/{type}";
+	public static final String SEND_PHONE_MSG = (TOKEN_NOT_NEED ? "/" : "/3rdcenter/")
+			+ SERVER_CENTER_EDITION + "/third-part/msg";
 	
 }

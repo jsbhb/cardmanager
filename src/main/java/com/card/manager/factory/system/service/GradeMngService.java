@@ -10,6 +10,7 @@ package com.card.manager.factory.system.service;
 import java.util.List;
 
 import com.card.manager.factory.common.serivce.ServerCenterService;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.model.GradeEntity;
 import com.card.manager.factory.system.model.StaffEntity;
@@ -98,5 +99,14 @@ public interface GradeMngService extends ServerCenterService {
 	void gradeInit(Integer id, String token);
 	
 	List<com.card.manager.factory.system.model.UserInfo> queryAllUserInfoByShopIdForDownload(com.card.manager.factory.system.model.UserInfo info, String token);
+
+	List<GradeTypeDTO> queryGradeTypeChildren(String gradeId, String token);
+
+	/**
+	 * @fun 微店审核
+	 * @param ge
+	 * @param staffEntity
+	 */
+	String auditShopManager(GradeEntity ge, StaffEntity staffEntity);
 
 }

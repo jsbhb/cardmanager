@@ -112,6 +112,26 @@ public class GradeEntity extends Pagination{
 	
 	private Integer shopExtensionFlg;
 	
+	private Integer status;
+	
+	private String remark;
+	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	public String getAppKey() {
 		return appKey;
 	}

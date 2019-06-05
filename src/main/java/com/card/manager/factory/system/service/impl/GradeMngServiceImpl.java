@@ -21,11 +21,14 @@ import org.springframework.stereotype.Service;
 import com.card.manager.factory.annotation.Log;
 import com.card.manager.factory.auth.model.PlatUserType;
 import com.card.manager.factory.auth.model.UserInfo;
+import com.card.manager.factory.base.model.NotifyMsg;
+import com.card.manager.factory.base.model.NotifyTypeEnum;
 import com.card.manager.factory.common.AuthCommon;
 import com.card.manager.factory.common.RestCommonHelper;
 import com.card.manager.factory.common.ServerCenterContants;
 import com.card.manager.factory.common.serivce.impl.AbstractServcerCenterBaseService;
 import com.card.manager.factory.component.CachePoolComponent;
+import com.card.manager.factory.goods.grademodel.GradeTypeDTO;
 import com.card.manager.factory.shop.model.ShopEntity;
 import com.card.manager.factory.system.mapper.RoleMapper;
 import com.card.manager.factory.system.mapper.StaffMapper;
@@ -35,6 +38,7 @@ import com.card.manager.factory.system.model.StaffEntity;
 import com.card.manager.factory.system.service.GradeMngService;
 import com.card.manager.factory.system.service.StaffMngService;
 import com.card.manager.factory.util.ConvertUtil;
+import com.card.manager.factory.util.DateUtil;
 import com.card.manager.factory.util.JSONUtilNew;
 import com.card.manager.factory.util.MethodUtil;
 import com.card.manager.factory.util.URLUtils;
@@ -346,7 +350,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 				HttpMethod.POST);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
-		
+
 		if (!json.getBoolean("success")) {
 			return entity = new ShopEntity();
 		} else {
@@ -399,8 +403,8 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("needPaging", false);
 		ResponseEntity<String> query_result = helper.requestWithParams(
-				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_USERINFO_QUERY, token, true,
-				info, HttpMethod.POST, params);
+				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_MICRO_SHOP_USERINFO_QUERY, token, true, info,
+				HttpMethod.POST, params);
 
 		JSONObject json = JSONObject.fromObject(query_result.getBody());
 		JSONArray obj = json.getJSONArray("obj");
@@ -412,5 +416,92 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			list.add(JSONUtilNew.parse(jObj.toString(), com.card.manager.factory.system.model.UserInfo.class));
 		}
 		return list;
+	}
+
+	@Override
+	public List<GradeTypeDTO> queryGradeTypeChildren(String gradeId, String token) {
+		List<GradeTypeDTO> list = new ArrayList<GradeTypeDTO>();
+
+		RestCommonHelper helper = new RestCommonHelper();
+		String url = URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_CHILDREN_GRADE_TYPE_BYGRADEID
+				+ "?gradeId=" + gradeId;
+		ResponseEntity<String> query_result = helper.request(url, token, true, null, HttpMethod.GET);
+
+		JSONObject json = JSONObject.fromObject(query_result.getBody());
+
+		JSONArray obj = json.getJSONArray("obj");
+		if (obj == null || obj.size() == 0) {
+			return null;
+		}
+		for (int i = 0; i < obj.size(); i++) {
+			JSONObject jObj = obj.getJSONObject(i);
+			list.add(JSONUtilNew.parse(jObj.toString(), GradeTypeDTO.class));
+		}
+		return list;
+	}
+
+	@Override
+	public String auditShopManager(GradeEntity ge, StaffEntity staffEntity) {
+		String result = null;
+		RestCommonHelper helper = new RestCommonHelper();
+		ResponseEntity<String> usercenter_result = helper.request(
+				URLUtils.get("gateway") + ServerCenterContants.SHOP_MANAGER_AUDIT, staffEntity.getToken(), true, ge,
+				HttpMethod.POST);
+		JSONObject json = JSONObject.fromObject(usercenter_result.getBody());
+
+		if (!json.getBoolean("success")) {
+			throw new RuntimeException(json.getString("errorMsg"));
+		}
+		ge = JSONUtilNew.parse(json.getString("obj"), GradeEntity.class);
+		// 短信通知实体类
+		NotifyMsg nm = new NotifyMsg();
+		// 审核通过，后台账号开通
+		if (ge.getStatus() == 2) {
+			StaffEntity staff = new StaffEntity();
+			staff.setGradeName(ge.getGradeName());
+			staff.setParentGradeId(staff.getGradeId());
+			staff.setGradeId(ge.getId());
+
+			staff.setOptName(ge.getPersonInCharge());
+			staff.setGradeId(ge.getId());
+			staff.setUserCenterId(ge.getPersonInChargeId());
+
+			// 平台账号
+			staff.setPhone(ge.getPhone());
+			staff.setGradeType(ge.getGradeType());
+
+			staff.setRoleId(roleMapper.getRoleIdByGradeTypeId(ge.getGradeType()));
+
+			// 权限中心注册
+			try {
+				registerAuthCenter(staff, true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "权限中心注册失败";
+			}
+
+			CachePoolComponent.syncCenter(staff.getToken());
+			CachePoolComponent.syncShop(staff.getToken());
+			CachePoolComponent.addGrade(ConvertUtil.converToGradeBO(ge));
+
+			nm.setAccount(staff.getBadge());
+			nm.setType(NotifyTypeEnum.SHOP_MANAGER_AUDIT_PASS);
+		} else {
+			String remark = ge.getRemark().length() > 20 ? ge.getRemark().substring(0, 20) : ge.getRemark();
+			nm.setMsg(remark);
+			nm.setType(NotifyTypeEnum.SHOP_MANAGER_AUDIT_UNPASS);
+		}
+		// 发送短信通知
+		nm.setName(ge.getPersonInCharge());
+		nm.setPhone(ge.getPhone());
+		try {
+			nm.setTime(DateUtil.getNowFormateDate());
+		} catch (Exception e) {
+			return "获取短信参数出错";
+		}
+		helper.request(URLUtils.get("gateway") + ServerCenterContants.SEND_PHONE_MSG, staffEntity.getToken(), true,
+				nm, HttpMethod.POST);
+		
+		return result;
 	}
 }

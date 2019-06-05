@@ -19,6 +19,7 @@
 		      </ol>
 		      <div class="search">
 		      	<input type="text" name="gradeName" placeholder="输入分级名称" >
+		      	<input type="hidden" class="form-control" name="status" id="status" value = "2">
 		      	<div class="searchBtn" ><i class="fa fa-search fa-fw" id="querybtns"></i></div>
 	      		<div class="moreSearchBtn">高级搜索</div>
 			  </div>
