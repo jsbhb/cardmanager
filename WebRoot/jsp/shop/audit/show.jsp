@@ -65,7 +65,7 @@
 					</c:choose>
 				</div>
 			</div>
-			<div class="select-content" id="childGradeType" style="width: 420px;top: 220px;">
+			<div class="select-content" id="childGradeType" style="width: 420px;top: 170px;">
            		<ul class="first-ul" id="gradeType-ul" style="margin-left:5px;">
            			<c:if test="${not empty gradeTypeList}">
 	           			<c:forEach var="g" items="${gradeTypeList}">
@@ -287,8 +287,8 @@
 	//点击展开下拉列表
 	$('#parentGradeName').click(function(){
 		$('#parentGrade').css('width',$(this).outerWidth());
-		$('#parentGrade').css('left',$(this).offset().left);
-		$('#parentGrade').css('top',$(this).offset().top + $(this).height());
+		$('#parentGrade').css('left',$(this).offset().left - 25);
+		$('#parentGrade').css('top',$(this).offset().top + $(this).height() - 18);
 		$('#parentGrade').stop();
 		$('#parentGrade').slideDown(300);
 	});
@@ -371,6 +371,9 @@
 		$('#grade-ul').html(tmpBrands);
 	}
 
+	$('#closeBtn').click(function() {
+		parent.layer.closeAll();
+    });
 	</script>
 </body>
 </html>

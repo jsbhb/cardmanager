@@ -461,7 +461,7 @@ public class RebateMngController extends BaseController {
 				String tmpOrderId = "";
 				String tmpExpressInfo = "";
 				String tmpItemInfo = "";
-				String tmpReceiveProvince = "";
+//				String tmpReceiveProvince = "";
 				
 				List<String> itemIds = new ArrayList<String>();
 				List<OrderInfo> orderInfos = new ArrayList<OrderInfo>();
@@ -582,9 +582,9 @@ public class RebateMngController extends BaseController {
 					}
 
 					// 收件信息省市区拼起来，中间用空格隔开
-					tmpReceiveProvince = oi.getReceiveProvince() + " " + oi.getReceiveCity() + " "
-							+ oi.getReceiveArea();
-					oi.setReceiveProvince(tmpReceiveProvince);
+//					tmpReceiveProvince = oi.getReceiveProvince() + " " + oi.getReceiveCity() + " "
+//							+ oi.getReceiveArea();
+//					oi.setReceiveProvince(tmpReceiveProvince);
 				}
 				orderInfo.setOrderGoodsList(orderGoodsList);
 				orderInfos.add(orderInfo);
@@ -635,11 +635,11 @@ public class RebateMngController extends BaseController {
 
 				String[] nameArray = new String[] { "订单号", "状态", "区域中心", "供应商", "自有编码", "品名", "成本价", "零售价", "商品规格",
 						"订单数量", "商品数量", "一级类目", "二级类目", "三级类目", "订单来源", "订单类型", "支付金额", "返佣抵扣", "邮费金额", "税费金额",
-						"商品邮费", "商品税费", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省市区", "收件信息", "下单时间", "物流信息" };
+						"商品邮费", "商品税费", "支付方式", "支付流水号", "支付时间", "收件人", "收件电话", "省", "市", "区", "收件信息", "下单时间", "物流信息" };
 				String[] colArray = new String[] { "OrderId", "StatusName", "GradeName", "SupplierName", "Sku",
 						"ItemName", "ProxyPrice", "ActualPrice", "ItemInfo", "ItemQuantity", "Packing", "FirstName",
 						"SecondName", "ThirdName", "OrderSourceName", "OrderFlgName", "Payment", "RebateFee", "PostFee", "TaxFee", "SinglePostFee", "SingleTaxFee", 
-						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveAddress", "CreateTime",
+						"PayTypeName", "PayNo", "PayTime", "ReceiveName", "ReceivePhone", "ReceiveProvince", "ReceiveCity", "ReceiveArea", "ReceiveAddress", "CreateTime",
 						"ExpressInfo" };
 				SXSSFWorkbook swb = new SXSSFWorkbook(100);
 				ExcelUtil.createExcel(ReportList, nameArray, colArray, filePath, 0, startTime + "~" + endTime, swb);
