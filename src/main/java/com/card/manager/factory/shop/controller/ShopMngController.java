@@ -39,6 +39,7 @@ import com.card.manager.factory.util.ExcelUtil;
 import com.card.manager.factory.util.FileDownloadUtil;
 import com.card.manager.factory.util.SessionUtils;
 import com.card.manager.factory.util.StringUtil;
+import com.card.manager.factory.util.TreePackUtil;
 
 @Controller
 @RequestMapping("/admin/shop/shopMng")
@@ -198,6 +199,9 @@ public class ShopMngController extends BaseController {
 				}
 			}
 		}
+		List<GradeBO> tmpGradeList = TreePackUtil.packGradeChildren(gradeList, opt.getGradeId());
+		gradeList.clear();
+		packGradeList(gradeList,tmpGradeList);
 		context.put("gradeList", gradeList);
 		List<GradeTypeDTO> gradeTypeList = gradeMngService.queryGradeTypeChildren(parentGradeId, opt.getToken());
 		context.put("gradeTypeList", gradeTypeList);
@@ -215,6 +219,15 @@ public class ShopMngController extends BaseController {
 			return forword("error", context);
 		}
 		return forword("shop/audit/show", context);
+	}
+
+	private void packGradeList(List<GradeBO> gradeList, List<GradeBO> tmpGradeList) {
+		for(GradeBO dto : tmpGradeList){
+			gradeList.add(dto);
+			if(dto.getChildren() != null){
+				packGradeList(gradeList, dto.getChildren());
+			}
+		}
 	}
 
 	private void packGradeTypeDTOList(List<Integer> tmp,List<GradeTypeDTO> tmpList) {

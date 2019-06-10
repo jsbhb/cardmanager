@@ -475,6 +475,7 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 			// 权限中心注册
 			try {
 				registerAuthCenter(staff, true);
+				staffMngService.sync2S(staffEntity, Integer.parseInt(staff.getOptid()));
 			} catch (Exception e) {
 				e.printStackTrace();
 				return "权限中心注册失败";

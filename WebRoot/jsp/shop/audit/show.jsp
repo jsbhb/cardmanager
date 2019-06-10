@@ -28,7 +28,14 @@
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >上级机构<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
-				<input type="text" class="form-control" id="parentGradeName" style="background:#fff;" placeholder="选择上级机构" value="${grade.parentGradeName}"/>
+				<c:choose>
+				<c:when test="${grade.status==0}">
+					<input type="text" class="form-control" id="parentGradeName" style="background:#fff;" placeholder="选择上级机构" value="${grade.parentGradeName}"/>
+	            </c:when>
+	            <c:otherwise>
+	            	<input type="text" class="form-control" readonly  value="${grade.parentGradeName}"/>
+	            </c:otherwise>
+	            </c:choose>
 	            <input type="hidden" class="form-control" name="parentId" id="parentId" value = "${grade.parentId}"/>
 				<div class="list-item" style="display:none">
 					<div class="col-sm-3 item-left">上级机构</div>
@@ -54,15 +61,14 @@
 				<label class="col-sm-3 item-left" >分级类型<font style="color:red">*</font> </label>
 				<div class="col-sm-9 item-right">
 					<c:choose>
-					<c:when test="${not empty gradeTypeList}">
-						<input type="text" class="form-control" id="gradeTypeName" readonly style="background:#fff;" value="${gradeType.name}">
+					<c:when test="${grade.status==0}">
+						<input type="text" class="form-control" id="gradeTypeName" style="background:#fff;" readonly value="${gradeType.name}">
+		            </c:when>
+		            <c:otherwise>
+		            	<input type="text" class="form-control"  readonly  value="${gradeType.name}">
+		            </c:otherwise>
+		            </c:choose>
 		                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="${grade.gradeType}">
-					</c:when>
-					<c:otherwise>
-						<input type="text" class="form-control" id="gradeTypeName" readonly style="background:#fff;" value="">
-		                <input type="hidden" readonly class="form-control" name="gradeType" id="gradeType" value="">
-					</c:otherwise>
-					</c:choose>
 				</div>
 			</div>
 			<div class="select-content" id="childGradeType" style="width: 420px;top: 170px;">
@@ -121,7 +127,14 @@
 			<div class="list-item">
 				<label class="col-sm-3 item-left" >备注</label>
 				<div class="col-sm-9 item-right">
+				<c:choose>
+					<c:when test="${grade.status==0}">
 	                  <input type="text" class="form-control" name="remark" id="remark" value="${grade.remark}">
+	                </c:when>
+	                <c:otherwise>
+	                	<input type="text" class="form-control" name="remark" readonly id="remark" value="${grade.remark}">
+	                </c:otherwise>
+	                </c:choose>
 				</div>
 				<div class="item-content">
 					（由于短信限制，审核失败原因填写小于20字）
