@@ -83,7 +83,7 @@ public class ImportGoodsBO {
 		secondCatalogId = secondMapTemp.get(Utils.removePoint(secondCatalogName));
 		thirdCatalogId = thirdMapTemp.get(Utils.removePoint(thirdCatalogName));
 		supplierId = supplierMap.get(Utils.removePoint(supplierName));
-		incrementTax = incrementTax == null || "".equals(incrementTax) ? "0.16" : incrementTax;
+		incrementTax = incrementTax == null || "".equals(incrementTax) ? "0.13" : incrementTax;
 		tariff = tariff == null || "".equals(tariff) ? "0" : tariff;
 		exciseFax = exciseFax == null || "".equals(exciseFax) ? "0" : exciseFax;
 		type = ParemeterConverUtil.getOrderFlag(Utils.removePoint(typeName));
