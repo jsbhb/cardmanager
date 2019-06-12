@@ -49,6 +49,7 @@ public class ParemeterConverUtil {
 		{
 			put("跨境", 0);
 			put("一般贸易", 2);
+			put("直邮", 3);
 		}
 	};
 	
