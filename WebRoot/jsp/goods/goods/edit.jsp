@@ -144,18 +144,18 @@
 						<c:choose>
 						<c:when test="${goodsInfo.goods.type==0}">
 	                  	  	<option selected="selected" value="0">保税商品</option>
-		                	<option value="1">直邮商品</option>
                 	  		<option value="2">一般贸易商品</option>
+		                	<option value="3">直邮商品</option>
 						</c:when>
-						<c:when test="${goodsInfo.goods.type==1}">
+						<c:when test="${goodsInfo.goods.type==3}">
 	                  	  	<option value="0">保税商品</option>
-		                	<option selected="selected" value="1">直邮商品</option>
                 	  		<option value="2">一般贸易商品</option>
+		                	<option selected="selected" value="3">直邮商品</option>
 						</c:when>
 						<c:otherwise>
                 	  		<option value="0">保税商品</option>
-		                	<option value="1">直邮商品</option>
                 	    	<option selected="selected" value="2">一般贸易商品</option>
+		                	<option value="3">直邮商品</option>
 						</c:otherwise>
 						</c:choose> 
 	                </select>

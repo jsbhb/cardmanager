@@ -56,8 +56,8 @@
 			            <select class="form-control" name="goodsType" id="goodsType">
 		                	<option selected="selected" value="">商品类型</option>
 		                	<option value="0">保税商品</option>
-		                	<option value="1">直邮商品</option>
 		                	<option value="2">一般贸易商品</option>
+		                	<option value="3">直邮商品</option>
 			            </select>
 					</div>
 				</div>
@@ -231,8 +231,8 @@ function rebuildTable(data){
 		var goodsType = list[i].type;
 		switch(goodsType){
 			case 0:str += "</td><td>保税商品";break;
-			case 1:str += "</td><td>直邮商品";break;
 			case 2:str += "</td><td>一般贸易商品";break;
+			case 3:str += "</td><td>直邮商品";break;
 			default:str += "</td><td>状态类型："+goodsType;
 		}
 		str += "</td><td>" + (list[i].encode == null ? "" : list[i].encode);

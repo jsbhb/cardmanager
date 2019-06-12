@@ -145,8 +145,8 @@
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="type" id="type">
                 	  <option selected="selected" value="0">保税商品</option>
-                	  <option value="1">直邮商品</option>
                 	  <option value="2">一般贸易商品</option>
+                	  <option value="3">直邮商品</option>
 	                </select>
 	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>
 				</div>
