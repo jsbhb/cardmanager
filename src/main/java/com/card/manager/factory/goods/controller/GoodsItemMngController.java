@@ -594,12 +594,13 @@ public class GoodsItemMngController extends BaseController {
 				
 				if (gi.getGoodsType() != null) {
 					switch (gi.getGoodsType()) {
-					case "0":gi.setGoodsTypeName("跨境商品");break;
+					case "0":gi.setGoodsTypeName("保税商品");break;
+					case "1":gi.setGoodsTypeName("直邮商品");break;
 					case "2":gi.setGoodsTypeName("一般贸易商品");break;
-					default :gi.setGoodsTypeName("跨境商品");
+					default :gi.setGoodsTypeName("保税商品");
 					}
 				} else {
-					gi.setGoodsTypeName("跨境商品");
+					gi.setGoodsTypeName("保税商品");
 				}
 				
 				String infoStr = gi.getInfo();

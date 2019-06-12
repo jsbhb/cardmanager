@@ -68,7 +68,7 @@
 				</div>
 			</div>
 			<div class="title">
-        		<h1>海关信息(跨境商品必填)</h1>
+        		<h1>海关信息(保税商品必填)</h1>
         	</div>
 			<div class="list-item">
 				<div class="col-sm-3 item-left">海关代码</div>

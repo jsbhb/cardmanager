@@ -145,7 +145,8 @@ function rebuildTable(data){
 
 		var goodsType = list[i].type;
 		switch(goodsType){
-			case 0:str += "</td><td>跨境商品";break;
+			case 0:str += "</td><td>保税商品";break;
+			case 1:str += "</td><td>直邮商品";break;
 			case 2:str += "</td><td>一般贸易商品";break;
 			default:str += "</td><td>状态类型："+goodsType;
 		}

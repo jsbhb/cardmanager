@@ -144,7 +144,8 @@
 				<div class="col-sm-3 item-left">商品类型</div>
 				<div class="col-sm-9 item-right">
 					<select class="form-control" name="type" id="type">
-                	  <option selected="selected" value="0">跨境商品</option>
+                	  <option selected="selected" value="0">保税商品</option>
+                	  <option value="1">直邮商品</option>
                 	  <option value="2">一般贸易商品</option>
 	                </select>
 	               <input type="hidden" class="form-control" name="supplierName" id="supplierName"/>

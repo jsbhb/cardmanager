@@ -79,7 +79,8 @@
 					<div class="searchItem">
 			            <select class="form-control" name="goodsType" id="goodsType">
 		                	<option selected="selected" value="">商品类型</option>
-		                	<option value="0">跨境商品</option>
+		                	<option value="0">保税商品</option>
+		                	<option value="1">直邮商品</option>
 		                	<option value="2">一般贸易商品</option>
 			            </select>
 					</div>
