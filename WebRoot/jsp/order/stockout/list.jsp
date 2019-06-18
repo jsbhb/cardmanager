@@ -297,7 +297,7 @@ function rebuildTable(data){
 			case 12:
 				if (orderFlag == 0) {
 					str += "</td><td>海关申报中";
-				} else if (orderFlag == 2) {
+				} else {
 					str += "</td><td>待发货";
 				}
 				break;
