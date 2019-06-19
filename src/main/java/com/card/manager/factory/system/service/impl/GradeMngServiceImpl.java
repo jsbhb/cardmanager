@@ -115,18 +115,14 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		RestCommonHelper helper = new RestCommonHelper();
 
 		// 确认当前分级负责人电话是否已经存在
-		// ResponseEntity<String> phonecheck_result =
-		// helper.request(URLUtils.get("gateway")
-		// + ServerCenterContants.USER_CENTER_PHONE_CHECK + "?account=" +
-		// gradeInfo.getPhone(), staff.getToken(),
-		// true, null, HttpMethod.GET);
-		// JSONObject pcjson =
-		// JSONObject.fromObject(phonecheck_result.getBody());
-		//
-		// if (!pcjson.getBoolean("success")) {
-		// throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() +
-		// "已经被使用，请修改后重试");
-		// }
+		ResponseEntity<String> phonecheck_result = helper.request(URLUtils.get("gateway")
+				+ ServerCenterContants.USER_CENTER_PHONE_CHECK + "?account=" + gradeInfo.getPhone(), staff.getToken(),
+				true, null, HttpMethod.GET);
+		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
+
+		if (!pcjson.getBoolean("success")) {
+			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
+		}
 
 		// 用户中心注册
 		ResponseEntity<String> usercenter_result = helper.request(
@@ -278,18 +274,14 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 	public void updateGrade(GradeEntity gradeInfo, StaffEntity staffEntity) throws Exception {
 		RestCommonHelper helper = new RestCommonHelper();
 		// 确认当前分级负责人电话是否已经存在
-		// ResponseEntity<String> phonecheck_result = helper.request(
-		// URLUtils.get("gateway") +
-		// ServerCenterContants.USER_CENTER_PHONE_CHECK+"?account="+gradeInfo.getPhone(),
-		// staffEntity.getToken(), true,
-		// null, HttpMethod.GET);
-		// JSONObject pcjson =
-		// JSONObject.fromObject(phonecheck_result.getBody());
-		//
-		// if (!pcjson.getBoolean("success")) {
-		// throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() +
-		// "已经被使用，请修改后重试");
-		// }
+		ResponseEntity<String> phonecheck_result = helper.request(URLUtils.get("gateway")
+				+ ServerCenterContants.USER_CENTER_PHONE_CHECK + "?account=" + gradeInfo.getPhone(),
+				staffEntity.getToken(), true, null, HttpMethod.GET);
+		JSONObject pcjson = JSONObject.fromObject(phonecheck_result.getBody());
+
+		if (!pcjson.getBoolean("success")) {
+			throw new Exception("校验失败,手机号：" + gradeInfo.getPhone() + "已经被使用，请修改后重试");
+		}
 
 		ResponseEntity<String> goodscenter_result = helper.request(
 				URLUtils.get("gateway") + ServerCenterContants.USER_CENTER_GRADE_UPDATE, staffEntity.getToken(), true,
@@ -500,9 +492,9 @@ public class GradeMngServiceImpl extends AbstractServcerCenterBaseService implem
 		} catch (Exception e) {
 			return "获取短信参数出错";
 		}
-		helper.request(URLUtils.get("gateway") + ServerCenterContants.SEND_PHONE_MSG, staffEntity.getToken(), true,
-				nm, HttpMethod.POST);
-		
+		helper.request(URLUtils.get("gateway") + ServerCenterContants.SEND_PHONE_MSG, staffEntity.getToken(), true, nm,
+				HttpMethod.POST);
+
 		return result;
 	}
 }
