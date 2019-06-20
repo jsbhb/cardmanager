@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -259,7 +260,13 @@ public class GoodsMngController extends BaseController {
 			// 包含商详地址
 			if (goodsInfo.getGoods().getDetailPath() != null
 					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
-				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+				try {
+					detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+				} catch (FileNotFoundException e) {
+					detailInfo = "";
+				} catch (Exception e) {
+					throw e;
+				}
 			} else if (goodsInfo.getGoods().getDetailPath() != null) {
 				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
 				String BaseUrl = URLUtils.get("static");
@@ -770,7 +777,13 @@ public class GoodsMngController extends BaseController {
 			// 包含商详地址
 			if (goodsInfo.getGoods().getDetailPath() != null
 					&& goodsInfo.getGoods().getDetailPath().indexOf("html") > 0) {
-				detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+				try {
+					detailInfo = goodsService.getHtmlContext(goodsInfo.getGoods().getDetailPath(), staffEntity);
+				} catch (FileNotFoundException e) {
+					detailInfo = "";
+				} catch (Exception e) {
+					throw e;
+				}
 			} else if (goodsInfo.getGoods().getDetailPath() != null) {
 				String[] imgArr = goodsInfo.getGoods().getDetailPath().split(";");
 				String BaseUrl = URLUtils.get("static");
