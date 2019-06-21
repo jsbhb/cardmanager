@@ -562,6 +562,9 @@ public class FinanceMngServiceImpl extends AbstractServcerCenterBaseService impl
 				case 2:
 					temp.setOrderType("一般贸易订单");
 					break;
+				case 3:
+					temp.setOrderType("直邮订单");
+					break;
 				default:
 					temp.setOrderType("未知" + temp.getOrderFlag());
 					break;

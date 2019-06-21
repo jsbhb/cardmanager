@@ -69,6 +69,7 @@
 	                   	  <option selected="selected" value="">订单类型</option>
 	                   	  <option value="0">跨境</option>
 	                   	  <option value="2">一般贸易</option>
+	                   	  <option value="3">直邮</option>
 		                </select>
 					</div>
 				</div>
@@ -325,6 +326,7 @@ function rebuildTable(data){
 			case 0:str += "</td><td>跨境";break;
 			case 1:str += "</td><td>大贸";break;
 			case 2:str += "</td><td>一般贸易";break;
+			case 3:str += "</td><td>直邮";break;
 			default:str += "</td><td>";
 		}
 		

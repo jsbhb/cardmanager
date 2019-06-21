@@ -73,6 +73,7 @@
 		                   	  <option selected="selected" value="">订单类型</option>
 		                   	  <option value="0">跨境</option>
 		                   	  <option value="2">一般贸易</option>
+		                   	  <option value="3">直邮</option>
 			                </select>
 						</div>
 					</div>
@@ -234,6 +235,7 @@
 			switch(orderFlag) {
 			case 0:str += "</td><td>跨境订单";break;
 			case 2:str += "</td><td>一般贸易订单";break;
+			case 3:str += "</td><td>直邮订单";break;
 			default : str += "</td><td>未知类型："+orderFlag;
 			}
 			str += "</td><td>" + list[i].rebateMoney;

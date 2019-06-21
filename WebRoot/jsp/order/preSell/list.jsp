@@ -69,6 +69,7 @@
 	                   	  <option selected="selected" value="">订单类型</option>
 	                   	  <option value="0">跨境</option>
 	                   	  <option value="2">一般贸易</option>
+	                   	  <option value="3">直邮</option>
 		                </select>
 					</div>
 				</div>

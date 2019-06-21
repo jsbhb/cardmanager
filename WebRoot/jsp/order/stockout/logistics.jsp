@@ -43,9 +43,9 @@
 	                <c:when test="${order.orderFlag==0}">
 	                <c:if test="${order.status==12}">海关申报中</c:if>
 	                </c:when>
-	                <c:when test="${order.orderFlag==2}">
+	                <c:otherwise>
 	                <c:if test="${order.status==12}">待发货</c:if>
-	                </c:when>
+	                </c:otherwise>
 	                </c:choose>
 	                <c:if test="${order.status==99}">异常状态</c:if>
 				</div>
